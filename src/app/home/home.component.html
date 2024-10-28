@@ -1,0 +1,42 @@
+<!-- Toolbar Structure -->
+<mat-toolbar class="logo-matching-toolbar">
+  <!-- Logo -->
+  <img src="../../assets/navLogo.png" alt="Tune Up Logo" class="logo" />
+
+  <!-- Centered Navigation Links -->
+  <div class="nav-links">
+    <a mat-button routerLink="/home" routerLinkActive="active-link">Home</a>
+    <a mat-button routerLink="/about" routerLinkActive="active-link">About</a>
+    <a mat-button routerLink="/services" routerLinkActive="active-link">Services</a>
+    <a mat-button routerLink="/contact" routerLinkActive="active-link">Contact</a>
+  </div>
+
+  <!-- Account Icon with Dropdown Menu -->
+  <button mat-icon-button [matMenuTriggerFor]="accountMenu" class="account-icon" aria-label="Account">
+    <mat-icon>account_circle</mat-icon>
+  </button>
+
+  <!-- Dropdown Menu for Account Icon -->
+  <mat-menu #accountMenu="matMenu">
+    <button mat-menu-item routerLink="/login">
+      <mat-icon>login</mat-icon> Login
+    </button>
+    <button mat-menu-item routerLink="/student-signup">
+      <mat-icon>person_add</mat-icon> Student Sign Up
+    </button>
+    <button mat-menu-item routerLink="/tutor-signup">
+      <mat-icon>person_add_alt</mat-icon> Tutor Sign Up
+    </button>
+  </mat-menu>
+
+</mat-toolbar>
+
+
+<!-- Welcome Container -->
+<div class="welcome-container">
+  <h1>Welcome to TuneUp</h1>
+  <p><p>
+  <p>Take the next step in Music Mastery Today</p>
+  <button mat-raised-button color="primary">Get Started</button>
+</div>
+
