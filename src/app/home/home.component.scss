@@ -125,31 +125,94 @@ mat-menu-item {
   font-size: 1.6rem; /* Adjust font size */
 }
 
+
+@keyframes slideshow {
+  0% {
+    background-image: url('../../assets/musicLesson.png');
+  }
+  50% {
+    background-image: url('../../assets/violin.png'); /* First image */
+  }
+  100% {
+    background-image: url('../../assets/musicLesson.png');
+  }
+}
+
 .welcome-container {
-  display: flex;                  /* Use flexbox for alignment */
-  flex-direction: column;        /* Stack children vertically */
-  align-items: center;           /* Center items horizontally */
-  justify-content: center;       /* Center items vertically */
-  height: calc(100vh - 190px);  /* Full height minus navbar height */
-  background-color: #f5f5f5;     /* Optional background color */
-  padding: 20px;                 /* Add padding */
-  text-align: center;            /* Center text */
+  display: flex;                             /* Use flexbox for alignment */
+  flex-direction: column;                   /* Stack children vertically */
+  align-items: center;                      /* Center items horizontally */
+  justify-content: center;                  /* Center items vertically */
+  height: calc(100vh - 190px);             /* Full height minus navbar height */
+  animation: slideshow 12s infinite;       /* Slide show effect lasting 12 seconds */
+  background-size: cover;                   /* Ensure the background covers the entire container */
+  background-position: center;              /* Center the background image */
+  background-repeat: no-repeat;             /* Prevent the background from repeating */
+  text-align: center;                       /* Center text */
+  padding: 20px;                            /* Add padding */
+  color: #ffffff;                             /* Optional: set text color for better contrast */
 }
 
 .welcome-container h1 {
-  font-size: 2.5rem;             /* Font size for heading */
-  margin: 10px 0;                /* Spacing around heading */
+  font-size: 3.5rem;                        /* Font size for heading */
+  margin: 10px 0;                           /* Spacing around heading */
 }
 
-.welcome-container p {
-  font-size: 1.5rem;             /* Font size for paragraph */
-  margin-bottom: 20px;           /* Spacing below paragraph */
-}
 
 .welcome-container button {
-  font-size: 1.5rem;             /* Font size for button */
+  font-size: 2rem;             /* Font size for button */
   padding: 15px 30px;            /* Increase padding for button */
   height: auto;                  /* Let height adjust based on padding */
   min-height: 60px;              /* Set a minimum height for the button */
   border-radius: 25px;           /* Optional: make button corners rounded */
+}
+
+.services-container {
+  display: flex;                             /* Use flexbox for centering */
+  justify-content: center;                  /* Center the content horizontally */
+  align-items: center;                      /* Center the content vertically */
+  height: 200px;                            /* Set height for the container */
+  background-color: #ffffff;               /* Match background color with the navbar */
+  color: #0c0b0b;                             /* Set text color */
+  text-align: center;                       /* Center text */
+  margin-top: 20px;                         /* Space above the container */
+}
+
+.services-container h2 {
+  font-size: 2.5rem;                        /* Font size for heading */
+  margin: 0;                                /* Remove margin */
+}
+
+
+.image-links-container {
+  display: flex;                              /* Use flexbox for layout */
+  justify-content: space-around;              /* Evenly space items */
+  align-items: center;                        /* Center items vertically */
+  margin: 40px 0;                            /* Space above and below the container */
+  padding: 20px;                             /* Add padding inside the container */
+}
+
+.image-link {
+  text-align: center;                        /* Center text for each link */
+  margin: 0 20px;                           /* Add horizontal margin */
+}
+
+.image-link img {
+  width: 150px;                             /* Fixed width for images */
+  height: auto;                             /* Maintain aspect ratio */
+  border-radius: 10px;                      /* Optional: round corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Optional: shadow effect */
+}
+
+.image-link a {
+  display: block;                           /* Make link a block element */
+  margin-top: 10px;                        /* Space above the link */
+  font-size: 1.5rem;                       /* Font size for links */
+  color: #000;                             /* Link color */
+  text-decoration: none;                   /* Remove underline */
+  transition: color 0.3s;                  /* Transition for hover effect */
+}
+
+.image-link a:hover {
+  color: #007BFF;                          /* Change color on hover */
 }
