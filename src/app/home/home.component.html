@@ -21,21 +21,18 @@
     <button mat-menu-item routerLink="/login">
       <mat-icon>login</mat-icon> Login
     </button>
-    <button mat-menu-item routerLink="/student-signup">
+    <button mat-menu-item routerLink="/signup">
       <mat-icon>person_add</mat-icon> Student Sign Up
     </button>
-    <button mat-menu-item routerLink="/tutor-signup">
+    <button mat-menu-item routerLink="/signup">
       <mat-icon>person_add_alt</mat-icon> Tutor Sign Up
     </button>
   </mat-menu>
-
 </mat-toolbar>
-
 
 <!-- Welcome Container -->
 <div class="welcome-container">
   <h1>Welcome to TuneUp</h1>
-  <p><p>
   <p>Take the next step in Music Mastery Today</p>
   <button mat-raised-button color="primary">Get Started</button>
 </div>
@@ -43,7 +40,6 @@
 <div class="services-container">
   <h2>Our Services</h2>
 </div>
-
 
 <div class="image-links-container">
   <div class="image-link">
@@ -64,3 +60,32 @@
   </div>
 </div>
 
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-links">
+      <a routerLink="/privacy" routerLinkActive="active-link">Privacy Policy</a>
+      <a routerLink="/terms" routerLinkActive="active-link">Terms of Service</a>
+      <a routerLink="/contact" routerLinkActive="active-link">Contact Us</a>
+    </div>
+    <div class="social-media">
+      <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+        <mat-icon>facebook</mat-icon>
+      </a>
+      <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
+        <mat-icon>x</mat-icon>
+      </a>
+      <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+        <mat-icon>instagram</mat-icon>
+      </a>
+      <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">
+        <mat-icon>linkedin</mat-icon> <!-- LinkedIn Icon -->
+      </a>
+      <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer">
+        <mat-icon>youtube</mat-icon> <!-- YouTube Icon -->
+      </a>
+
+    </div>
+    <p>&copy; 2024 TuneUp. All Rights Reserved.</p>
+  </div>
+</footer>

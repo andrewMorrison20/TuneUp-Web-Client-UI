@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -6,37 +6,44 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   hidePassword = true;
 
   constructor(private fb: FormBuilder) {
+    // Initialize the form in the constructor
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]]
     });
   }
 
-  // Move the login functions outside of the constructor
+  ngOnInit() {
+    // Any additional initialization can be done here if needed
+    // For example, resetting the form if navigating back to this component
+    this.loginForm.reset();
+  }
+
+  // Social login methods
   loginWithGoogle() {
-    // Implement Google login logic here
     console.log('Login with Google');
+    // Implement Google login logic here
   }
 
   loginWithFacebook() {
-    // Implement Facebook login logic here
     console.log('Login with Facebook');
+    // Implement Facebook login logic here
   }
 
   loginWithOutlook() {
-    // Implement Outlook login logic here
     console.log('Login with Outlook');
+    // Implement Outlook login logic here
   }
 
   onLogin() {
     if (this.loginForm.valid) {
-      // Handle login
       console.log('Login successful', this.loginForm.value);
+      // Handle the login process
     }
   }
 }
