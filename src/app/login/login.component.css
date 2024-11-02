@@ -1,0 +1,108 @@
+/* Center the form on the page */
+.login-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+/* Style the login card to make it larger */
+.login-card {
+  width: 500px; /* Set larger width */
+  padding: 50px; /* Add padding for more space */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.full-width {
+  width: 100%;
+}
+
+mat-card-title {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* Additional options styling for "Remember me" and "Forgot password?" */
+.additional-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 20px; /* Adds space between this section and the button */
+}
+
+.forgot-password-link {
+  color: #3f51b5; /* Primary color */
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.forgot-password-link:hover {
+  text-decoration: underline;
+}
+
+/* Footer styling */
+.signup-footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.signup-link {
+  color: #3f51b5;
+  text-decoration: none;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.signup-link:hover {
+  text-decoration: underline;
+}
+
+/* Rounded button */
+button[mat-raised-button] {
+  border-radius: 25px; /* Rounds the button */
+  padding: 10px 20px;
+}
+
+.button-actions {
+  display: flex;
+  justify-content: center; /* Centers the button horizontally */
+  margin-top: 20px; /* Optional: Adds some top margin if desired */
+}
+
+.sso-options {
+  text-align: center;
+  margin-top: 20px; /* Space above SSO section */
+}
+
+.sso-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px; /* Space between text and buttons */
+}
+
+button[mat-icon-button] {
+  margin: 0 10px; /* Space between SSO buttons */
+  width: 48px; /* Set a fixed width for consistent button sizes */
+  height: 48px; /* Set a fixed height for consistent button sizes */
+  background-color: #f1f1f1; /* Light background color */
+  border-radius: 50%; /* Make buttons circular */
+}
+
+button[mat-icon-button]:hover {
+  background-color: #e0e0e0; /* Change background on hover */
+}
+
+:host {
+  display: block; /* Make the host element a block element */
+  background: linear-gradient(to bottom right,
+  #98C0B4 0%,
+  #A7D2C6 25%,
+  #B6E5E3 50%,
+  #D0F0E0 75%,
+  #E6F8F5 100%); /* More pronounced gradient with multiple stops */
+  height: 100vh; /* Ensure it takes full viewport height */
+}
