@@ -10,6 +10,8 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {MatCard, MatCardActions, MatCardContent, MatCardFooter, MatCardTitle} from "@angular/material/card";
 import {MatCheckbox} from "@angular/material/checkbox";
+import {AuthenticationModule} from "../authentication/authentication.module";
+import {HttpClientModule} from "@angular/common/http";
 
 
 @NgModule({
@@ -18,6 +20,7 @@ import {MatCheckbox} from "@angular/material/checkbox";
     CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
+    HttpClientModule,
     MatInputModule,
     MatIconModule,
     MatButtonModule,
@@ -27,7 +30,8 @@ import {MatCheckbox} from "@angular/material/checkbox";
     MatCard,
     MatCardActions,
     MatCardFooter,
-    MatCheckbox
+    MatCheckbox,
+    AuthenticationModule
   ]
 })
 
