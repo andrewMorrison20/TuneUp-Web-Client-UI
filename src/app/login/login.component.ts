@@ -32,34 +32,39 @@ export class LoginComponent implements OnInit {
     this.loginForm.reset();
   }
 
- onSubmit(){
+ onLogin(){
     if(this.loginForm.invalid){
       return;
     }
 
     const { email, password } = this.loginForm.value;
     const body = {
-      username: email,
+      email: email,
       password: password
     }
     const headers = new HttpHeaders().append('Content-Type', 'application/json');
-    this.http.post(`http://localhost:8080/auth/basicauth`,body,{ headers: headers })
+    this.http.post(`http://localhost:8080/auth/login`,body,{ headers: headers })
       .subscribe(
         response => {
           const decodedJWT = this.jwtHelper.decodeToken((response as any)['token']);
           console.log('Decoded JWT: ' + decodedJWT);
-          this.completeSaveAndNavigate(decodedJWT);
+          this.completeSaveAndNavigate(decodedJWT)
+            .then(() => console.log('Navigation complete'))
+            .catch(error => console.error('Navigation error:', error));
         });
   }
 
-  private async completeSaveAndNavigate(token: any){
-    const authUserObj = AuthenticatedUser.save("John Doe", 'user', token.access_token, token.refresh_token, 'form' );
-    console.log('Authenticated User:', authUserObj);
+  private async completeSaveAndNavigate(token: any) {
+    try {
+      const authUserObj = AuthenticatedUser.save("John Doe", 'user', token.access_token, token.refresh_token, 'form');
+      console.log('Authenticated User:', authUserObj);
 
-    await this.router.navigate(['/home']);
-
+      const navigationSuccess = await this.router.navigate(['/home']);
+      console.log('Navigation status:', navigationSuccess);
+    } catch (error) {
+      console.error('Error during navigation:', error);
+    }
   }
-
 
   loginWithGoogle() {
     console.log('Login with Google');
@@ -76,11 +81,5 @@ export class LoginComponent implements OnInit {
 
   }
 
-  onLogin() {
-    if (this.loginForm.valid) {
-      console.log('Login successful', this.loginForm.value);
-
-    }
-  }
 }
 

@@ -11,6 +11,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatCard, MatCardActions, MatCardContent, MatCardFooter, MatCardTitle} from "@angular/material/card";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {AuthenticationModule} from "../authentication/authentication.module";
+import {HttpClientModule} from "@angular/common/http";
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import {AuthenticationModule} from "../authentication/authentication.module";
     CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
+    HttpClientModule,
     MatInputModule,
     MatIconModule,
     MatButtonModule,
