@@ -9,6 +9,8 @@ import {MatAnchor, MatButton, MatIconButton} from "@angular/material/button";
 import {MatInput} from "@angular/material/input";
 import {MatNavList} from "@angular/material/list";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
+import {NavModule} from "../components/nav/nav.module";
+import {FooterModule} from "../components/footer/footer.module";
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
     MatNavList,
     MatMenuTrigger,
     MatMenu,
-    MatMenuItem
+    MatMenuItem,
+    NavModule,
+    FooterModule
   ],
   exports:[HomeComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -1,0 +1,118 @@
+/* Styling for mat-toolbar */
+mat-toolbar {
+  height: 190px;              /* Height of the toolbar */
+  padding: 0 16px;           /* Adjust padding as needed */
+  display: flex;
+  justify-content: space-between; /* Ensure space between logo, links, and account */
+  align-items: center;       /* Center items vertically */
+}
+
+/* Logo Styling */
+.logo {
+  height: 190px;             /* Height of the logo */
+  width: auto;               /* Maintain aspect ratio */
+  margin-right: 20px;        /* Space between logo and nav links */
+}
+
+/* Navigation links container styling */
+.nav-links {
+  display: flex;
+  justify-content: flex-start;     /* Align nav links to the left */
+  gap: 100px;                     /* Space between links */
+  flex: 1;                         /* Allow this to expand */
+}
+
+/* Collapsed navigation links (on mobile screens) */
+.nav-links.collapsed {
+  display: none;  /* Hide the links when collapsed */
+}
+
+/* Nav links styling */
+.nav-links a {
+  font-size: 1rem;                /* Font size for links */
+  color: #ffffff;                 /* Link color */
+  text-decoration: none;          /* Remove underline */
+  transition: transform 0.2s ease;
+  margin-bottom: 20px;
+}
+
+/* Account icon button styling */
+.account-icon {
+  color: #ffffff;
+  margin-left: 50px;
+  margin-right: 100px;
+  margin-bottom: 20px;
+  width: 25px;            /* Set desired width */
+  height: 25px;
+}
+
+/* Styling for mat-icon */
+mat-icon {
+  font-size: 1.4rem;
+}
+
+/* Hover effect for buttons and links */
+mat-button:hover, .logo-matching-toolbar a:hover {
+  transform: scale(1.1);     /* Enlarge on hover */
+  text-decoration: underline;
+}
+
+/* Navbar background color */
+.logo-matching-toolbar {
+  background-color: #98C0B4; /* Set navbar background color */
+  color: #ffffff;             /* Set text color for better contrast */
+}
+
+/* Ensure all buttons and links inherit the color */
+.logo-matching-toolbar a,
+.logo-matching-toolbar button {
+  color: #ffffff;             /* Ensure all buttons and links in the toolbar are white */
+}
+
+
+
+/* Hamburger Menu */
+.hamburger-menu {
+  display: none;  /* Hidden by default */
+  cursor: pointer;  /* Show pointer cursor when hovering */
+  background: none;  /* Remove any default background */
+  border: none;      /* Remove any default border */
+}
+
+/* Show the hamburger menu on small screens */
+@media (max-width: 768px) {
+  .hamburger-menu {
+    display: block;  /* Display the hamburger icon on small screens */
+  }
+
+  /* Collapse nav links on small screens */
+  .nav-links {
+    display: flex;  /* Display nav links as flex */
+    flex-direction: column;  /* Stack the links vertically */
+    position: absolute;
+    top: 60px;       /* Adjust the position when the menu is collapsed */
+    left: 0;
+    right: 0;
+    background-color: #98C0B4; /* Background color for the collapsed menu */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Optional shadow for the dropdown */
+    padding: 10px 0;
+  }
+
+  /* Hide the nav links when collapsed */
+  .nav-links.collapsed {
+    display: none;
+  }
+
+  /* Add padding for each link */
+  .nav-links a {
+    padding: 10px 20px;
+    text-align: center;
+  }
+
+  /* Account icon needs to be handled separately, if desired */
+  .account-icon {
+    position: absolute;
+    right: 20px;
+    top: 50px;  /* Position the account icon */
+  }
+}

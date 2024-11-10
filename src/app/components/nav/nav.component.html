@@ -1,0 +1,39 @@
+<mat-toolbar class="logo-matching-toolbar">
+  <!-- Logo -->
+  <img src="/assets/navLogo.png" alt="Tune Up Logo" class="logo" />
+
+  <!-- Hamburger Icon (visible on smaller screens) -->
+  <button *ngIf="!isCollapsed" (click)="toggleMenu()" class="hamburger-menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+
+  <!-- Centered Navigation Links (Visible on larger screens) -->
+  <div ngclass="nav-links" [ngClass]="{'collapsed': isCollapsed}">
+    <a mat-button routerLink="/home" routerLinkActive="active-link">Home</a>
+    <a mat-button routerLink="/about" routerLinkActive="active-link">About</a>
+    <a mat-button routerLink="/services" routerLinkActive="active-link">Services</a>
+    <a mat-button routerLink="/contact" routerLinkActive="active-link">Contact</a>
+  </div>
+
+  <!-- Search Bar (Center) -->
+  <app-search-bar></app-search-bar> <!-- Insert the search bar here -->
+
+  <!-- Account Icon with Dropdown Menu (Right) -->
+  <button mat-icon-button [matMenuTriggerFor]="accountMenu" class="account-icon" aria-label="Account">
+    <mat-icon>account_circle</mat-icon>
+  </button>
+
+  <!-- Dropdown Menu for Account Icon -->
+  <mat-menu #accountMenu="matMenu">
+    <button mat-menu-item routerLink="/login">
+      <mat-icon>login</mat-icon> Login
+    </button>
+    <button mat-menu-item routerLink="/signup">
+      <mat-icon>person_add</mat-icon> Student Sign Up
+    </button>
+    <button mat-menu-item routerLink="/signup">
+      <mat-icon>person_add_alt</mat-icon> Tutor Sign Up
+    </button>
+  </mat-menu>
+</mat-toolbar>

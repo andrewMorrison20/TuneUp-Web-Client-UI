@@ -1,35 +1,5 @@
-<!-- Toolbar Structure -->
-<mat-toolbar class="logo-matching-toolbar">
-  <!-- Logo -->
-  <img src="../../assets/navLogo.png" alt="Tune Up Logo" class="logo" />
 
-  <!-- Centered Navigation Links -->
-  <div class="nav-links">
-    <a mat-button routerLink="/home" routerLinkActive="active-link">Home</a>
-    <a mat-button routerLink="/about" routerLinkActive="active-link">About</a>
-    <a mat-button routerLink="/services" routerLinkActive="active-link">Services</a>
-    <a mat-button routerLink="/contact" routerLinkActive="active-link">Contact</a>
-  </div>
-
-  <!-- Account Icon with Dropdown Menu -->
-  <button mat-icon-button [matMenuTriggerFor]="accountMenu" class="account-icon" aria-label="Account">
-    <mat-icon>account_circle</mat-icon>
-  </button>
-
-  <!-- Dropdown Menu for Account Icon -->
-  <mat-menu #accountMenu="matMenu">
-    <button mat-menu-item routerLink="/login">
-      <mat-icon>login</mat-icon> Login
-    </button>
-    <button mat-menu-item routerLink="/signup">
-      <mat-icon>person_add</mat-icon> Student Sign Up
-    </button>
-    <button mat-menu-item routerLink="/signup">
-      <mat-icon>person_add_alt</mat-icon> Tutor Sign Up
-    </button>
-  </mat-menu>
-</mat-toolbar>
-
+<app-navbar></app-navbar>
 <!-- Welcome Container -->
 <div class="welcome-container">
   <h1>Welcome to TuneUp</h1>
@@ -60,32 +30,4 @@
   </div>
 </div>
 
-<!-- Footer -->
-<footer class="footer">
-  <div class="footer-content">
-    <div class="footer-links">
-      <a routerLink="/privacy" routerLinkActive="active-link">Privacy Policy</a>
-      <a routerLink="/terms" routerLinkActive="active-link">Terms of Service</a>
-      <a routerLink="/contact" routerLinkActive="active-link">Contact Us</a>
-    </div>
-    <div class="social-media">
-      <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
-        <mat-icon>facebook</mat-icon>
-      </a>
-      <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
-        <mat-icon>x</mat-icon>
-      </a>
-      <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
-        <mat-icon>instagram</mat-icon>
-      </a>
-      <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">
-        <mat-icon>linkedin</mat-icon> <!-- LinkedIn Icon -->
-      </a>
-      <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer">
-        <mat-icon>youtube</mat-icon> <!-- YouTube Icon -->
-      </a>
-
-    </div>
-    <p>&copy; 2024 TuneUp. All Rights Reserved.</p>
-  </div>
-</footer>
+<app-footer></app-footer>

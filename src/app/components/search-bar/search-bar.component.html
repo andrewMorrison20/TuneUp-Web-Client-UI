@@ -1,0 +1,31 @@
+
+<div class="search-bar-container">
+  <!-- Location Dropdown -->
+  <mat-form-field appearance="fill" class="dropdown">
+    <mat-label>Location</mat-label>
+    <mat-select [(value)]="selectedLocation" (selectionChange)="onLocationChange()">
+      <mat-option *ngFor="let location of locations" [value]="location">
+        {{ location }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Instrument Dropdown -->
+  <mat-form-field appearance="fill" class="dropdown">
+    <mat-label>Instrument</mat-label>
+    <mat-select [(value)]="selectedInstrument" (selectionChange)="onInstrumentChange()">
+      <mat-option *ngFor="let instrument of instruments" [value]="instrument">
+        {{ instrument }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Search Bar -->
+  <mat-form-field appearance="fill" class="search-input">
+    <mat-label>Search</mat-label>
+    <input matInput [(ngModel)]="searchQuery" placeholder="Search..." />
+  </mat-form-field>
+
+  <!-- Search Button -->
+  <button mat-raised-button (click)="onSearchClick()">Search</button>
+</div>
