@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 })
 export class NavComponent {
   // Variable to toggle the menu on smaller screens
-  isCollapsed = false;
+  isCollapsed = true;
 
   // Toggle the collapse state of the menu
   toggleMenu() {
