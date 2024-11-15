@@ -3,10 +3,13 @@
   width: 100%; /* Ensure the search bar container is full width */
   display: flex;
   justify-content: center; /* Center the search bar */
+  align-items: center; /* Vertically align content */
   padding: 20px 0;
   background-color: #98C0B4; /* Match the navbar color */
+  box-sizing: border-box; /* Include padding in width calculations */
 }
 
+/* Inner container for the search bar */
 .search-bar-container {
   display: flex;
   align-items: center;
@@ -16,9 +19,12 @@
   border-radius: 5px;
   padding: 10px;
   width: 100%;
-  max-width: 800px; /* Optional: Limit max width */
+  max-width: 800px; /* Center with a maximum width */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add subtle shadow */
+  box-sizing: border-box; /* Ensure padding doesn't exceed the container width */
 }
 
+/* Mobile adjustments */
 @media (max-width: 768px) {
   .search-bar-container {
     flex-direction: column; /* Stack elements vertically on small screens */

@@ -21,23 +21,35 @@ mat-toolbar {
   height: 60px; /* Default height for smaller screens */
   transition: height 0.3s ease; /* Smooth transition for height adjustment */
 }
-
 /* Website Title Styling */
 .website-title {
-  font-size: 1.5rem; /* Large font size for the title */
-  font-weight: 600; /* Bold title */
   display: flex;
   justify-content: flex-start; /* Align to the left on large screens */
   align-items: center; /* Vertically center the title */
   flex: 1; /* Allow the title to take up available space */
   transition: justify-content 0.3s ease; /* Smooth transition when title moves */
+  padding-left: 20px; /* Optional: Adds padding to the left for alignment */
 }
 
-/* Logo Styling */
-.logo {
-  height: 40px; /* Set smaller height for logo */
-  width: auto;  /* Maintain aspect ratio */
+/* Anchor tag styling to remove default link styles */
+.website-title a {
+  text-decoration: none; /* Remove underline from the link */
 }
+
+/* Styling for the logo image */
+.website-title .logo {
+  height: 80px; /* Make the logo larger */
+  width: auto; /* Maintain the aspect ratio */
+  object-fit: contain; /* Ensure the logo fits within the available space */
+}
+
+/* Optional: Adjust the size of the logo for smaller screens */
+@media (max-width: 768px) {
+  .website-title .logo {
+    height: 60px; /* Make the logo smaller on mobile */
+  }
+}
+
 
 /* Navigation Links Styling */
 .nav-links {
@@ -109,9 +121,10 @@ mat-toolbar {
   }
 
   .nav-links a {
-    padding: 10px 20px; /* Add padding to each link */
-    text-align: center; /* Center text */
-    font-size: 1.2rem; /* Increase font size for mobile */
+    font-size: 1.6rem; /* Increase font size of links */
+    font-weight: 500;  /* Slightly bold to make them stand out more */
+    padding: 8px 15px; /* Add padding for clickable area */
+    transition: transform 0.3s ease; /* Smooth scaling transition */
   }
 
   /* Account icon should stay on the right */
