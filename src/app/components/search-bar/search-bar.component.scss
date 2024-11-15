@@ -1,74 +1,39 @@
-/* Styling for the search bar container */
+/* Full-width container for the search bar */
+.search-container {
+  width: 100%; /* Ensure the search bar container is full width */
+  display: flex;
+  justify-content: center; /* Center the search bar */
+  padding: 20px 0;
+  background-color: #98C0B4; /* Match the navbar color */
+}
+
 .search-bar-container {
   display: flex;
-  align-items: center;              /* Vertically center the items */
-  justify-content: center;          /* Center all items horizontally */
-  padding: 10px;
-  gap: 10px;                        /* Space between elements */
-  background-color: #ffffff;        /* White background for the entire container */
-  border-radius: 5px;               /* Rounded corners */
-  border: 0px solid #ccc;           /* Border around the entire container */
-  height: 60px;                     /* Ensure consistent height for the entire container */
-}
-
-/* Styling for the dropdowns and search input */
-.mat-form-field, .search-input {
-  flex: 1;                           /* Allow them to grow and take available space */
-  height: 50px;                      /* Set a consistent height */
-  display: flex;                     /* Ensure content is centered */
-  align-items: center;               /* Vertically center the content */
-  justify-content: center;           /* Horizontally center the content */
-  margin-bottom: 0;                  /* Remove any bottom margin */
-}
-
-/* Remove underline from mat-form-field (inputs and selects) */
-.mat-form-field-appearance-fill .mat-form-field-ripple {
-  display: none;                    /* Hide the underline */
-}
-
-/* Styling for the search input */
-.search-input {
-  width: 300px;
-  height: 80px /* Make the search input twice the width of dropdowns */
-}
-
-/* Styling for the dropdowns */
-.mat-select {
-  height: 50px;                     /* Ensure the dropdown matches the height */
-}
-
-.mat-form-field .mat-select-trigger {
-  height: 100% !important;          /* Ensure the dropdown's trigger height is consistent */
-}
-
-/* Styling for the search button */
-button {
-  height: 50px;                     /* Button height matching the input field height */
-  background-color: #55e7bd;        /* Button background color */
-  color: white;                     /* Button text color */
-  padding: 0px 20px;                /* Horizontal padding */
-  border-radius: 5px;               /* Rounded corners for the button */
-  font-size: 1rem;                  /* Button text size */
-  display: flex;
   align-items: center;
-  justify-content: center;
-  width: 150px;                     /* Fixed width for button */
+  justify-content: space-between;
+  gap: 10px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
+  max-width: 800px; /* Optional: Limit max width */
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .search-bar-container {
-    flex-direction: column;          /* Stack items vertically on small screens */
-    align-items: stretch;            /* Stretch elements to full width */
-    gap: 10px;                       /* Space between stacked elements */
+    flex-direction: column; /* Stack elements vertically on small screens */
+    align-items: stretch;   /* Stretch inputs and buttons */
+    gap: 10px;              /* Add some space between items */
+    margin-top: 60px;       /* Add margin to prevent overlap with navbar */
   }
 
-  .search-input, .dropdown {
-    width: 100%;                     /* Make the inputs full width */
+  .search-input,
+  .dropdown {
+    width: 100%;            /* Ensure the inputs take the full width */
   }
 
-  button {
-    width: 100%;                     /* Make the button full width on small screens */
-    margin-top: 5px;                 /* Add space between button and inputs */
+  .search-bar-container button {
+    width: 100%;            /* Make the button full width */
+    margin-top: 10px;       /* Add spacing between button and inputs */
   }
 }

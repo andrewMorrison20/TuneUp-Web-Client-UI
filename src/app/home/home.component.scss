@@ -9,21 +9,20 @@ mat-button:hover, .logo-matching-toolbar a:hover {
   text-decoration: underline;
 }
 
-/* Full-width container for the search bar */
-.search-container {
-  width: 100%;                 /* Full width */
-  background-color: #98C0B4;  /* Same color as the navbar */
-  display: flex;               /* Use flexbox to center the search bar */
-  justify-content: center;     /* Center horizontally */
-  padding: 20px 0;            /* Add padding for spacing */
-}
+ /* Full-width container for the search bar (home page layout) */
+ .search-container {
+   width: 100%;                      /* Full width */
+   background-color: #98C0B4;         /* Same color as the navbar */
+   display: flex;                     /* Use flexbox for centering */
+   justify-content: center;           /* Center horizontally */
+   align-items: center;               /* Center vertically */
+   padding: 20px 0;                   /* Add padding for spacing */
+ }
 
-/* Style for the search bar */
-.search-bar {
-  width: 100%;                 /* Make the search bar take the full width */
-  max-width: 800px;           /* Optional: Set a maximum width for better appearance */
-  font-size: 1.5rem;          /* Increase font size for better visibility */
-}
+ /* Add margin-top to prevent overlap with navbar */
+ .search-container {
+   margin-top: 70px; /* Adjust this based on your navbar height */
+ }
 
 /* Style for the input field to ensure full white background */
 mat-form-field {

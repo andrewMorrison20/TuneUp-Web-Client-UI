@@ -11,28 +11,30 @@ import {MatNavList} from "@angular/material/list";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {NavModule} from "../components/nav/nav.module";
 import {FooterModule} from "../components/footer/footer.module";
+import {SearchBarModule} from "../components/search-bar/search-bar.module";
 
 @NgModule({
   declarations: [
     HomeComponent
   ],
-  imports: [
-    HomeRoutingModule,
-    MatSlideToggle,
-    MatToolbar,
-    MatIcon,
-    MatFormField,
-    MatAnchor,
-    MatButton,
-    MatInput,
-    MatIconButton,
-    MatNavList,
-    MatMenuTrigger,
-    MatMenu,
-    MatMenuItem,
-    NavModule,
-    FooterModule
-  ],
+    imports: [
+        HomeRoutingModule,
+        MatSlideToggle,
+        MatToolbar,
+        MatIcon,
+        MatFormField,
+        MatAnchor,
+        MatButton,
+        MatInput,
+        MatIconButton,
+        MatNavList,
+        MatMenuTrigger,
+        MatMenu,
+        MatMenuItem,
+        NavModule,
+        FooterModule,
+        SearchBarModule
+    ],
   exports:[HomeComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
