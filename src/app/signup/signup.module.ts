@@ -10,25 +10,29 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatCard, MatCardActions, MatCardContent, MatCardFooter, MatCardTitle} from "@angular/material/card";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {SignupComponent} from "./signup.component";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {HttpClientModule} from "@angular/common/http";
 
 
 @NgModule({
   declarations: [SignupComponent],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    MatButtonModule,
-    SignupRoutingModule,
-    MatCardContent,
-    MatCardTitle,
-    MatCard,
-    MatCardActions,
-    MatCardFooter,
-    MatCheckbox
-  ]
+    imports: [
+        CommonModule,
+        HttpClientModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatIconModule,
+        MatButtonModule,
+        SignupRoutingModule,
+        MatCardContent,
+        MatCardTitle,
+        MatCard,
+        MatCardActions,
+        MatCardFooter,
+        MatCheckbox,
+        MatProgressSpinner
+    ]
 })
 
 export class SignupModule { }

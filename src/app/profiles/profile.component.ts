@@ -21,24 +21,6 @@ export class ProfileComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Get profile type (tutor or student) and ID from the route parameters
-    this.profileType = this.route.snapshot.data['type'];
-    const id = this.route.snapshot.paramMap.get('id');
-
-    if (this.profileType && id) {
-      // Fetch profile data based on profile type
-      if (this.profileType === 'tutor') {
-        this.profileService.getTutorProfile(id).subscribe(
-          (profile) => (this.profile = profile),
-          (error) => console.error('Error fetching tutor profile:', error)
-        );
-      } else if (this.profileType === 'student') {
-        this.profileService.getStudentProfile(id).subscribe(
-          (profile) => (this.profile = profile),
-          (error) => console.error('Error fetching student profile:', error)
-        );
-      }
-    }
   }
 
   isTutorProfile(profile: Profile): profile is TutorProfile {

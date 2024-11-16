@@ -12,9 +12,9 @@
   <!-- Instrument Dropdown -->
   <mat-form-field appearance="fill" class="dropdown">
     <mat-label>Instrument</mat-label>
-    <mat-select [(value)]="selectedInstrument" (selectionChange)="onInstrumentChange()">
-      <mat-option *ngFor="let instrument of instruments" [value]="instrument">
-        {{ instrument }}
+    <mat-select [(value)]="selectedInstrumentId" (selectionChange)="onInstrumentChange()">
+      <mat-option *ngFor="let instrument of instruments" [value]="instrument.id">
+        {{ instrument.name }}
       </mat-option>
     </mat-select>
   </mat-form-field>
@@ -28,3 +28,4 @@
   <!-- Search Button -->
   <button mat-raised-button (click)="onSearchClick()">Search</button>
 </div>
+

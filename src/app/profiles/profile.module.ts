@@ -11,10 +11,13 @@ import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
+import {ProfileCardComponent} from "./profile-card/profile-card.component";
+import {RouterLink} from "@angular/router";
 
 @NgModule({
   declarations: [
-    ProfileComponent
+    ProfileComponent,
+    ProfileCardComponent
   ],
   imports: [
     CommonModule,
@@ -25,6 +28,7 @@ import { MatDividerModule } from '@angular/material/divider';
     MatProgressBarModule,
     MatChipsModule,
     MatDividerModule,
+    RouterLink,
   ],
   providers: [
     ProfileService
