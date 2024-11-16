@@ -1,0 +1,39 @@
+<app-navbar></app-navbar>
+<app-search-bar></app-search-bar>
+
+<div class="main-container">
+  <!-- Sidebar (Placeholder) -->
+  <div class="sidebar">
+    <h3>Filters</h3>
+    <div class="filter-placeholder">Instruments</div>
+    <div class="filter-placeholder">Location</div>
+    <div class="filter-placeholder">Rating</div>
+    <div class="filter-placeholder">Price</div>
+  </div>
+
+  <!-- Main Content (Profiles) -->
+  <div class="search-results-container">
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+
+    <div *ngIf="error" class="error-message">
+      {{ error }}
+    </div>
+
+    <div *ngIf="!isLoading && profiles.length > 0" class="profile-cards-grid">
+      <app-profile-card *ngFor="let profile of profiles" [profile]="profile"></app-profile-card>
+    </div>
+
+    <div *ngIf="!isLoading && profiles.length === 0" class="no-results">
+      No profiles found.
+    </div>
+
+    <!-- Pagination Controls -->
+    <mat-paginator
+      [length]="totalElements"
+      [pageSize]="pageSize"
+      [pageIndex]="pageIndex"
+      [pageSizeOptions]="[5, 10, 25, 50]"
+      (page)="onPageChange($event)">
+    </mat-paginator>
+  </div>
+</div>

@@ -88,3 +88,23 @@ button[mat-icon-button]:hover {
   #E6F8F5 100%); /* More pronounced gradient with multiple stops */
   height: 100vh; /* Ensure it takes full viewport height */
 }
+
+.success-message {
+  display: flex;
+  align-items: center;
+  color: #4caf50; /* Green for success */
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  color: #f44336; /* Red for error */
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+mat-spinner {
+  vertical-align: middle;
+}

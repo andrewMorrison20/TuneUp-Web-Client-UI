@@ -12,6 +12,8 @@ import {MatCard, MatCardActions, MatCardContent, MatCardFooter, MatCardTitle} fr
 import {MatCheckbox} from "@angular/material/checkbox";
 import {AuthenticationModule} from "../authentication/authentication.module";
 import {HttpClientModule} from "@angular/common/http";
+import {NavModule} from "../components/nav/nav.module";
+import {SearchBarModule} from "../components/search-bar/search-bar.module";
 
 
 @NgModule({
@@ -31,6 +33,8 @@ import {HttpClientModule} from "@angular/common/http";
     MatCardActions,
     MatCardFooter,
     MatCheckbox,
+    NavModule,
+    SearchBarModule,
     AuthenticationModule
   ]
 })

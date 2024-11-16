@@ -3,6 +3,11 @@
     <mat-card-title>Login</mat-card-title>
 
     <mat-card-content>
+      <!-- Error message displayed here if login fails -->
+      <div *ngIf="errorMessage" class="error-message">
+        <mat-error>{{ errorMessage }}</mat-error>
+      </div>
+
       <mat-form-field appearance="outline" class="full-width">
         <mat-icon matPrefix>person</mat-icon> <!-- Person icon for email -->
         <mat-label>Email</mat-label>

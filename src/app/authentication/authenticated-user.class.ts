@@ -1,13 +1,13 @@
 import { JwtHelperService } from '@auth0/angular-jwt';
 
-export interface IAuthenticatedUser {
+export interface BaseAuthenticatedUser {
     user: string;
     console: string;
     token : string;
     refreshToken: string;
 }
 
-export class AuthenticatedUser implements IAuthenticatedUser {
+export class AuthenticatedUser implements BaseAuthenticatedUser {
     public user: string;
     public console: string;
     public token : string;
@@ -15,7 +15,7 @@ export class AuthenticatedUser implements IAuthenticatedUser {
     public authType: string;
 
     constructor(user: string, _console: string, token : string, refreshToken: string, authType: string){
-        this.user = user; 
+        this.user = user;
         this.console = _console;
         this.token = token;
         this.refreshToken = refreshToken;
@@ -34,6 +34,10 @@ export class AuthenticatedUser implements IAuthenticatedUser {
         return this.console === 'user';
     }
 
+    forTutorConsole() {
+        return this.console === 'Tutor';
+    }
+
     static getAuthUserToken(){
         const userObj = AuthenticatedUser.fromString(sessionStorage.getItem(AuthenticatedUser.key) ?? localStorage.getItem(AuthenticatedUser.key) ?? '');
         if (userObj) {
@@ -42,7 +46,7 @@ export class AuthenticatedUser implements IAuthenticatedUser {
         return '';
     }
 
-    static getAuthRefeshToken(){
+    static getAuthRefreshToken(){
         const userObj = AuthenticatedUser.fromString(sessionStorage.getItem(AuthenticatedUser.key) ?? localStorage.getItem(AuthenticatedUser.key) ?? '');
         if (userObj) {
             return userObj.refreshToken;
@@ -99,7 +103,7 @@ export class AuthenticatedUser implements IAuthenticatedUser {
         sessionStorage.removeItem(AuthenticatedUser.key)
     }
     static fromString(json: string){
-        if(!json){ 
+        if(!json){
             return null;
         }
         const obj = JSON.parse(json);

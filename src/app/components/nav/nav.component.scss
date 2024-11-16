@@ -1,118 +1,143 @@
+/* General styling for text color and common properties */
+*,
+.mat-form-field,
+.nav-links a,
+.account-icon,
+.mat-icon,
+.logo-matching-toolbar a,
+.logo-matching-toolbar button {
+  color: #000000; /* Set text color to black */
+  box-sizing: border-box; /* Ensure proper box sizing */
+}
+
 /* Styling for mat-toolbar */
 mat-toolbar {
-  height: 190px;              /* Height of the toolbar */
-  padding: 0 16px;           /* Adjust padding as needed */
+  padding: 0 16px; /* Adjust padding */
   display: flex;
   justify-content: space-between; /* Ensure space between logo, links, and account */
-  align-items: center;       /* Center items vertically */
+  align-items: center; /* Center items vertically */
+  background-color: #fff; /* White background for a clean look */
+  color: #000; /* Black text color */
+  height: 60px; /* Default height for smaller screens */
+  transition: height 0.3s ease; /* Smooth transition for height adjustment */
+}
+/* Website Title Styling */
+.website-title {
+  display: flex;
+  justify-content: flex-start; /* Align to the left on large screens */
+  align-items: center; /* Vertically center the title */
+  flex: 1; /* Allow the title to take up available space */
+  transition: justify-content 0.3s ease; /* Smooth transition when title moves */
+  padding-left: 20px; /* Optional: Adds padding to the left for alignment */
 }
 
-/* Logo Styling */
-.logo {
-  height: 190px;             /* Height of the logo */
-  width: auto;               /* Maintain aspect ratio */
-  margin-right: 20px;        /* Space between logo and nav links */
+/* Anchor tag styling to remove default link styles */
+.website-title a {
+  text-decoration: none; /* Remove underline from the link */
 }
 
-/* Navigation links container styling */
+/* Styling for the logo image */
+.website-title .logo {
+  height: 80px; /* Make the logo larger */
+  width: auto; /* Maintain the aspect ratio */
+  object-fit: contain; /* Ensure the logo fits within the available space */
+}
+
+/* Optional: Adjust the size of the logo for smaller screens */
+@media (max-width: 768px) {
+  .website-title .logo {
+    height: 60px; /* Make the logo smaller on mobile */
+  }
+}
+
+
+/* Navigation Links Styling */
 .nav-links {
   display: flex;
-  justify-content: flex-start;     /* Align nav links to the left */
-  gap: 100px;                     /* Space between links */
-  flex: 1;                         /* Allow this to expand */
+  justify-content: flex-start; /* Align links to the left */
+  gap: 30px; /* Reduced gap for better spacing */
+  font-size: 1rem; /* Adjust font size for normal screens */
+  flex: 1; /* Allow links to expand */
+  transition: transform 0.3s ease; /* Smooth transition when collapsing/expanding */
 }
 
 /* Collapsed navigation links (on mobile screens) */
 .nav-links.collapsed {
-  display: none;  /* Hide the links when collapsed */
+  display: none; /* Hide the links when collapsed */
 }
 
-/* Nav links styling */
-.nav-links a {
-  font-size: 1rem;                /* Font size for links */
-  color: #ffffff;                 /* Link color */
-  text-decoration: none;          /* Remove underline */
-  transition: transform 0.2s ease;
-  margin-bottom: 20px;
-}
-
-/* Account icon button styling */
+/* Account icon styling */
 .account-icon {
-  color: #ffffff;
-  margin-left: 50px;
-  margin-right: 100px;
-  margin-bottom: 20px;
-  width: 25px;            /* Set desired width */
+  width: 25px; /* Smaller icon for smaller screens */
   height: 25px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
-
-/* Styling for mat-icon */
-mat-icon {
-  font-size: 1.4rem;
-}
-
-/* Hover effect for buttons and links */
-mat-button:hover, .logo-matching-toolbar a:hover {
-  transform: scale(1.1);     /* Enlarge on hover */
-  text-decoration: underline;
-}
-
-/* Navbar background color */
-.logo-matching-toolbar {
-  background-color: #98C0B4; /* Set navbar background color */
-  color: #ffffff;             /* Set text color for better contrast */
-}
-
-/* Ensure all buttons and links inherit the color */
-.logo-matching-toolbar a,
-.logo-matching-toolbar button {
-  color: #ffffff;             /* Ensure all buttons and links in the toolbar are white */
-}
-
-
 
 /* Hamburger Menu */
 .hamburger-menu {
-  display: none;  /* Hidden by default */
-  cursor: pointer;  /* Show pointer cursor when hovering */
-  background: none;  /* Remove any default background */
-  border: none;      /* Remove any default border */
+  display: none; /* Hidden by default */
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 2rem; /* Larger icon size */
 }
 
-/* Show the hamburger menu on small screens */
+/* On small screens (max-width: 768px) */
 @media (max-width: 768px) {
+  mat-toolbar {
+    height: 50px; /* Adjust height for small screens */
+    padding: 0 8px; /* Adjust padding for small screens */
+  }
+
+  /* Title font size for mobile screens */
+  .website-title {
+    font-size: 1.2rem;
+    justify-content: center; /* Center the title */
+  }
+
+  /* Position the hamburger menu on the left */
   .hamburger-menu {
-    display: block;  /* Display the hamburger icon on small screens */
+    display: block;
+    position: absolute; /* Absolute positioning to avoid overlap */
+    left: 16px; /* Align it to the left */
   }
 
-  /* Collapse nav links on small screens */
   .nav-links {
-    display: flex;  /* Display nav links as flex */
-    flex-direction: column;  /* Stack the links vertically */
+    flex-direction: column; /* Stack links vertically */
+    background-color: #fff; /* Background color for dropdown */
     position: absolute;
-    top: 60px;       /* Adjust the position when the menu is collapsed */
+    top: 60px; /* Position below the toolbar */
     left: 0;
-    right: 0;
-    background-color: #98C0B4; /* Background color for the collapsed menu */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Optional shadow for the dropdown */
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     padding: 10px 0;
+    display: none; /* Hide by default */
   }
 
-  /* Hide the nav links when collapsed */
-  .nav-links.collapsed {
-    display: none;
+  /* Show the nav links when expanded */
+  .nav-links.expanded {
+    display: flex; /* Display links */
   }
 
-  /* Add padding for each link */
   .nav-links a {
-    padding: 10px 20px;
-    text-align: center;
+    font-size: 1.6rem; /* Increase font size of links */
+    font-weight: 500;  /* Slightly bold to make them stand out more */
+    padding: 8px 15px; /* Add padding for clickable area */
+    transition: transform 0.3s ease; /* Smooth scaling transition */
   }
 
-  /* Account icon needs to be handled separately, if desired */
+  /* Account icon should stay on the right */
   .account-icon {
     position: absolute;
-    right: 20px;
-    top: 50px;  /* Position the account icon */
+    right: 10px;
+    top: 15px; /* Position account icon on mobile */
   }
+}
+
+/* Hover effect for links and buttons */
+.mat-button:hover,
+.nav-links a:hover {
+  transform: scale(1.1); /* Enlarge on hover */
+  text-decoration: underline;
 }

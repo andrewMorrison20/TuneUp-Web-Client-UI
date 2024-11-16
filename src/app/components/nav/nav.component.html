@@ -1,23 +1,22 @@
 <mat-toolbar class="logo-matching-toolbar">
-  <!-- Logo -->
-  <img src="/assets/navLogo.png" alt="Tune Up Logo" class="logo" />
-
   <!-- Hamburger Icon (visible on smaller screens) -->
-  <button *ngIf="!isCollapsed" (click)="toggleMenu()" class="hamburger-menu">
+  <button (click)="toggleMenu()" class="hamburger-menu">
     <mat-icon>menu</mat-icon>
   </button>
 
+  <!-- Website Title (on the left, but centered on small screens) -->
+  <div class="website-title">
+    <img src="/assets/mainLogo.png" alt="TuneUp Logo" class="logo" />
+  </div>
+
 
   <!-- Centered Navigation Links (Visible on larger screens) -->
-  <div ngclass="nav-links" [ngClass]="{'collapsed': isCollapsed}">
+  <div class="nav-links" [ngClass]="{'expanded': !isCollapsed}">
     <a mat-button routerLink="/home" routerLinkActive="active-link">Home</a>
     <a mat-button routerLink="/about" routerLinkActive="active-link">About</a>
     <a mat-button routerLink="/services" routerLinkActive="active-link">Services</a>
     <a mat-button routerLink="/contact" routerLinkActive="active-link">Contact</a>
   </div>
-
-  <!-- Search Bar (Center) -->
-  <app-search-bar></app-search-bar> <!-- Insert the search bar here -->
 
   <!-- Account Icon with Dropdown Menu (Right) -->
   <button mat-icon-button [matMenuTriggerFor]="accountMenu" class="account-icon" aria-label="Account">

@@ -1,0 +1,58 @@
+/* Container for the main content */
+.main-container {
+  display: flex;
+  flex-direction: row; /* Align items horizontally */
+  gap: 16px;
+}
+
+/* Sidebar styles */
+.sidebar {
+  width: 200px; /* Set the width of the sidebar */
+  background-color: #f4f4f4;
+  padding: 16px;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+  height: 100%; /* Ensure it stretches the full height */
+}
+
+/* Placeholder filter styles */
+.filter-placeholder {
+  background-color: #e0e0e0;
+  margin: 8px 0;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+/* Main container for the search results */
+.search-results-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 20px;
+}
+
+/* Profile cards grid */
+.profile-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* Default 5 items per row */
+  gap: 1.5rem;
+  width: 100%;
+  padding: 1rem;
+}
+
+/* For medium screens (e.g., tablets) - 3 items per row */
+@media (max-width: 1200px) {
+  .profile-cards-grid {
+    grid-template-columns: repeat(3, 1fr); /* 3 items per row */
+  }
+}
+
+/* For smaller screens (e.g., mobile phones) - 1 item per row */
+@media (max-width: 900px) {
+  .profile-cards-grid {
+    grid-template-columns: 1fr; /* 1 item per row for mobile screens */
+    justify-items: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically */
+  }
+}

@@ -12,6 +12,9 @@ export const routes: Routes = [
   { path: 'signup',
     loadChildren: () => import('./signup/signup.module').then(m => m.SignupModule),
     title: 'login form'},
+  { path: 'profiles/search',
+    loadChildren: () => import('./profiles/profile.module').then(m => m.ProfileModule),
+  title: 'profiles details'}
   ];
 
 export default routes;

@@ -1,5 +1,7 @@
 
 <app-navbar></app-navbar>
+<app-search-bar></app-search-bar>
+
 <!-- Welcome Container -->
 <div class="welcome-container">
   <h1>Welcome to TuneUp</h1>
@@ -7,27 +9,32 @@
   <button mat-raised-button color="primary">Get Started</button>
 </div>
 
-<div class="services-container">
-  <h2>Our Services</h2>
+
+<!-- First Section -->
+<div class="matching-container">
+  <div class="image-container">
+    <img src="./assets/vocalLesson.jpg" alt="Matching Image">
+  </div>
+  <div class="text-container">
+    <h2>Struggling to find a match for music tuition?</h2>
+    <p>We know that finding the right teacher can be a chore! <br>
+      That's why we've developed a tutor-student matching platform to create the perfect learning environment!
+      <br>Sound good?
+      Take the quiz!</p>
+    <button (click)="onTakeQuiz()">Take the Quiz</button>
+  </div>
 </div>
 
-<div class="image-links-container">
-  <div class="image-link">
-    <img src="./assets/student.png" alt="Students" />
-    <a href="/students">Students</a>
+<!-- Second Section -->
+<div class="services-container">
+  <div class="text-container">
+    <h2>Our Services</h2>
+    <p>We offer personalized music tutoring with expert teachers in various instruments. Whether you're a beginner or advanced, we match you with the perfect tutor to fit your needs.</p>
   </div>
-  <div class="image-link">
-    <img src="./assets/student.png" alt="Tutors" />
-    <a href="/tutors">Tutors</a>
-  </div>
-  <div class="image-link">
-    <img src="./assets/student.png" alt="Groups" />
-    <a href="/groups">Groups</a>
-  </div>
-  <div class="image-link">
-    <img src="./assets/student.png" alt="Parents" />
-    <a href="/parents">Parents</a>
+  <div class="image-container">
+    <img src="./assets/pianoKeyLabelsSide.jpg" alt="Services Image">
   </div>
 </div>
+
 
 <app-footer></app-footer>
