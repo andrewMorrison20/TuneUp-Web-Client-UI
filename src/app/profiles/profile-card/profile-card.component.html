@@ -1,0 +1,42 @@
+<mat-card class="profile-card" *ngIf="profile">
+<mat-card>
+
+    <img class="profile-image" src="/assets/guitarLesson.jpg" alt="{{ profile.name }}'s profile picture" />
+
+
+  <mat-card-header>
+    <mat-card-title>{{ profile.name || 'Unknown' }}</mat-card-title>
+    <mat-card-subtitle>{{ profile.profileType || 'Not specified' }}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <!-- Bio Section -->
+    <div class="bio">
+      <strong>Bio:</strong>
+      <p>{{ profile.bio || 'No bio available' }}</p>
+    </div>
+
+    <!-- Instruments Section -->
+    <div *ngIf="profile.instruments !== undefined">
+      <strong>Instruments:</strong>
+      <p *ngIf="profile.instruments && profile.instruments.length > 0">
+        {{ profile.instruments.join(', ') }}
+      </p>
+      <p *ngIf="profile.instruments && profile.instruments.length === 0">
+        No instruments listed
+      </p>
+    </div>
+    <div *ngIf="profile.instruments === undefined">
+      <p><strong>Instruments:</strong> Not available</p>
+    </div>
+  </mat-card-content>
+
+  <!-- Actions -->
+  <mat-card-actions align="end">
+    <button mat-raised-button color="primary" *ngIf="profile.appUserId" [routerLink]="['/profile', profile.appUserId]">
+      View Profile
+    </button>
+  </mat-card-actions>
+</mat-card>
+
+
