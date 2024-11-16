@@ -1,41 +1,44 @@
-/* search-results.component.css */
+/* Container for the main content */
+.main-container {
+  display: flex;
+  flex-direction: row; /* Align items horizontally */
+  gap: 16px;
+}
+
+/* Sidebar styles */
+.sidebar {
+  width: 200px; /* Set the width of the sidebar */
+  background-color: #f4f4f4;
+  padding: 16px;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+  height: 100%; /* Ensure it stretches the full height */
+}
+
+/* Placeholder filter styles */
+.filter-placeholder {
+  background-color: #e0e0e0;
+  margin: 8px 0;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+/* Main container for the search results */
 .search-results-container {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-}
-
-.profile-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
-  width: 100%;
-  padding: 1rem;
-}
-
-.error-message {
-  color: red;
-  font-size: 1.2rem;
-}
-
-.no-results {
-  font-size: 1.2rem;
-  color: gray;
-  text-align: center;
-}
-
-/* Add to the component's CSS or the global styles */
-.search-results-container {
   padding: 20px;
 }
 
-/* The grid container for profile cards */
+/* Profile cards grid */
 .profile-cards-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 5 items per row */
-  gap: 20px; /* Space between cards */
-  margin-top: 20px;
+  grid-template-columns: repeat(5, 1fr); /* Default 5 items per row */
+  gap: 1.5rem;
+  width: 100%;
+  padding: 1rem;
 }
 
 /* For medium screens (e.g., tablets) - 3 items per row */
