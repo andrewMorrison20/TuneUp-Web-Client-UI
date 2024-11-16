@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit {
   private async completeSaveAndNavigate(token: any) {
     try {
       const authUserObj = AuthenticatedUser.save(
-        'John Doe',
+        'John',
         'user',
         token.access_token,
         token.refresh_token,

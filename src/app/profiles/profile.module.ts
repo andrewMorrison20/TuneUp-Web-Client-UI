@@ -13,11 +13,23 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import {ProfileCardComponent} from "./profile-card/profile-card.component";
 import {RouterLink} from "@angular/router";
+import {SearchResultsComponent} from "./search-results/search-results.component";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {MatPaginator} from "@angular/material/paginator";
+import {MatButton} from "@angular/material/button";
+import { RouterModule, Routes } from '@angular/router';
+import {NavModule} from "../components/nav/nav.module";
+import {SearchBarModule} from "../components/search-bar/search-bar.module";
+
+const profileRoutes: Routes = [
+  { path: '', component: SearchResultsComponent }  // Route for displaying the search results page
+];
 
 @NgModule({
   declarations: [
     ProfileComponent,
-    ProfileCardComponent
+    ProfileCardComponent,
+    SearchResultsComponent
   ],
   imports: [
     CommonModule,
@@ -28,13 +40,22 @@ import {RouterLink} from "@angular/router";
     MatProgressBarModule,
     MatChipsModule,
     MatDividerModule,
+    MatCardModule,
     RouterLink,
+    RouterModule.forChild(profileRoutes),
+    MatProgressSpinner,
+    MatPaginator,
+    NavModule,
+    SearchBarModule,
+    MatButton,
   ],
   providers: [
     ProfileService
   ],
   exports: [
-    ProfileComponent
+    ProfileComponent,
+    SearchResultsComponent,
+    ProfileCardComponent
   ]
 })
 export class ProfileModule { }

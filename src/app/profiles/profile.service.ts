@@ -74,7 +74,7 @@ export class ProfileService {
       bio: profile.bio,
       onlineLessons: profile.onlineLessons,
       profileType: profile.profileType,
-      instruments: profile.instruments,
+      instruments: profile.instruments ? profile.instruments.map((instrument: any) => instrument.name) : [],
       appUserId: profile.appUserId
     };
   }
