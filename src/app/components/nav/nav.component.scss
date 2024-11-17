@@ -50,7 +50,7 @@ mat-toolbar {
 /* Navigation Links Styling */
 .nav-links {
   display: flex;
-  justify-content: flex-start; /* Align links to the left */
+  justify-content: center; /* Align links to the left */
   gap: 30px; /* Reduced gap for better spacing */
   font-size: 1.5rem; /* Adjust font size for normal screens */
   flex: 1; /* Allow links to expand */
