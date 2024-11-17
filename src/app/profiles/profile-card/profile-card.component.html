@@ -33,7 +33,7 @@
 
   <!-- Actions -->
   <mat-card-actions align="end">
-    <button mat-raised-button color="primary" *ngIf="profile.appUserId" [routerLink]="['/profile', profile.appUserId]">
+    <button mat-raised-button color="primary" *ngIf="profile.id" [routerLink]="['/profiles', profile.id]">
       View Profile
     </button>
   </mat-card-actions>
