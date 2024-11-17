@@ -60,5 +60,10 @@ export class ProfileComponent implements OnInit {
     }
     return this.profile;
   }
+
+  startChat(): void {
+    console.log('Starting chat with', this.profile?.name);
+
+  }
 }
 

@@ -22,9 +22,25 @@
         </div>
       </div>
 
+      <div class="chat-button-container">
+        <button mat-raised-button color="accent" class="chat-button" (click)="startChat()">
+          <mat-icon>chat</mat-icon> Start Chat
+        </button>
+      </div>
       <!-- Additional Profile Details Section (Add as needed) -->
       <div class="profile-details">
-        <!-- Add additional profile content here -->
+        <div *ngIf="profile.instruments !== undefined">
+          <strong>Instruments:</strong>
+          <p *ngIf="profile.instruments && profile.instruments.length > 0">
+            {{ profile.instruments.join(', ') }}
+          </p>
+          <p *ngIf="profile.instruments && profile.instruments.length === 0">
+            No instruments listed
+          </p>
+        </div>
+        <div *ngIf="profile.instruments === undefined">
+          <p><strong>Instruments:</strong> Not available</p>
+        </div>
       </div>
     </div>
   </ng-template>
