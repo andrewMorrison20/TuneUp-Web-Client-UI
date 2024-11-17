@@ -81,10 +81,10 @@ button[mat-icon-button]:hover {
 :host {
   display: block; /* Make the host element a block element */
   background: linear-gradient(to bottom right,
-  #98C0B4 0%,
-  #A7D2C6 25%,
-  #B6E5E3 50%,
-  #D0F0E0 75%,
+  #ffffff 0%,
+  rgba(255, 255, 255, 0.76) 25%,
+  rgba(255, 255, 255, 0.68) 50%,
+  rgba(255, 255, 255, 0.86) 75%,
   #E6F8F5 100%); /* More pronounced gradient with multiple stops */
   height: 100vh; /* Ensure it takes full viewport height */
 }

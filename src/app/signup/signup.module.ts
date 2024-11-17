@@ -12,6 +12,7 @@ import {MatCheckbox} from "@angular/material/checkbox";
 import {SignupComponent} from "./signup.component";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {HttpClientModule} from "@angular/common/http";
+import {NavModule} from "../components/nav/nav.module";
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import {HttpClientModule} from "@angular/common/http";
         MatCardActions,
         MatCardFooter,
         MatCheckbox,
-        MatProgressSpinner
+        MatProgressSpinner,
+        NavModule
     ]
 })
 
