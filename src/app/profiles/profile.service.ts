@@ -35,14 +35,17 @@ export class ProfileService {
 
   constructor(private http: HttpClient) {}
 
-  getProfiles(page: number = 0, size: number = 10, sort: string = 'displayName,asc'): Observable<Profile[]> {
+  getProfiles(page: number = 0, size: number = 10, sort: string = 'displayName,asc'): Observable<{ profiles: Profile[]; totalElements: number }> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())
       .set('sort', sort);
 
     return this.http.get<ProfileResponse>(this.apiUrl, { params }).pipe(
-      map(response => this.mapProfiles(response.content))
+      map(response => ({
+        profiles: this.mapProfiles(response.content),
+        totalElements: response.totalElements,
+        }))
     );
   }
 
@@ -95,7 +98,7 @@ export class ProfileService {
       achievements: [],
       completedCourses: [],
       grades: [],
-      instruments: [],
+      instruments: profile.instruments ? profile.instruments.map((instrument: any) => instrument.name) : [],
       profilePicture: "",
       reviews: [],
       id: profile.id,
