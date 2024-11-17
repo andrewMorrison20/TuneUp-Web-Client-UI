@@ -1,61 +1,53 @@
-/* Full-width container for the search bar */
+
 .search-container {
   width: 100%;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
-  background-color: #98C0B4;
+  padding: 50px;
+  background-color: #ffffff;
   box-sizing: border-box;
 }
 
-/* Search bar inner container */
+
 .search-bar-container {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 8px;
   background-color: #ffffff;
-  border-radius: 10px;
-  padding: 20px;
+
+
+  box-shadow: 8px 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  padding-left: 20px;
+  padding-top: 40px;
   width: 100%;
-  max-width: 800px; /* Wider container */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
 }
 
-/* Mat-form-field adjustments */
 .mat-form-field {
   flex: 1;
   width: 100%;
-  max-width: 300px; /* Adjust width of dropdowns */
+  max-width: 200px;
 }
-
 .dropdown .mat-form-field {
   width: 100%;
 }
 
-/* Input and dropdown highlight on focus */
-.mat-form-field.mat-focused .mat-form-field-flex {
-  border-color: #007BFF !important; /* Blue highlight */
-  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
-}
-
-/* Search input specific styling */
 .search-input {
   flex: 2;
+  max-width: 500px;
 }
 
-/* Search button styling */
 button[mat-raised-button] {
-  background-color: #007BFF; /* Blue button */
+  background-color: #007BFF;
   color: #fff;
   border-radius: 5px;
   padding: 10px 20px;
   transition: background-color 0.3s, transform 0.2s;
 }
 
-/* Hover and active effects for the button */
 button[mat-raised-button]:hover {
   background-color: #0056b3;
   transform: scale(1.05);
@@ -71,7 +63,7 @@ button[mat-raised-button]:active {
     flex-direction: column;
     align-items: stretch;
     gap: 10px;
-    max-width: 90%;
+    max-width: 100%;
   }
 
   .mat-form-field,

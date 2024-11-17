@@ -19,6 +19,7 @@ export class SearchBarComponent implements OnInit {
 
   locations: string[] = ['Northern Ireland', 'England', 'Scotland', 'Wales'];
   instruments: Instrument[] = [];
+  selectedProfileType: String = "Tutor";
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -51,6 +52,10 @@ export class SearchBarComponent implements OnInit {
     console.log('Search Query:', this.searchQuery);
     console.log('Selected Location:', this.selectedLocation);
     console.log('Selected Instrument ID:', this.selectedInstrumentId);
+  }
+
+  onProfileTypeChange() {
+    console.log('Selected profileType:', this.selectedProfileType);
   }
 }
 

@@ -5,13 +5,15 @@
   gap: 16px;
 }
 
-/* Sidebar styles */
+
 .sidebar {
-  width: 200px; /* Set the width of the sidebar */
-  background-color: #f4f4f4;
-  padding: 16px;
+  width: 200px;
+  background-color: #ffffff;
+  padding: 20px;
   box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
-  height: 100%; /* Ensure it stretches the full height */
+  position: sticky;
+  top: 100px; /* Adjust this value to start below the navbar and search bar */
+  height: calc(100vh - 100px); /* Full height minus the space for the navbar and search bar */
 }
 
 /* Placeholder filter styles */

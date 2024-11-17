@@ -1,4 +1,4 @@
-/* General styling for text color and common properties */
+
 *,
 .mat-form-field,
 .nav-links a,
@@ -6,47 +6,42 @@
 .mat-icon,
 .logo-matching-toolbar a,
 .logo-matching-toolbar button {
-  color: #000000; /* Set text color to black */
-  box-sizing: border-box; /* Ensure proper box sizing */
+  color: #000000;
+  box-sizing: border-box;
 }
 
-/* Styling for mat-toolbar */
 mat-toolbar {
-  padding: 0 16px; /* Adjust padding */
+  padding: 0 16px;
   display: flex;
-  justify-content: space-between; /* Ensure space between logo, links, and account */
-  align-items: center; /* Center items vertically */
-  background-color: #fff; /* White background for a clean look */
-  color: #000; /* Black text color */
-  height: 60px; /* Default height for smaller screens */
-  transition: height 0.3s ease; /* Smooth transition for height adjustment */
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  color: #000;
+  height: 110px;
+  transition: height 0.3s ease;
 }
 /* Website Title Styling */
 .website-title {
   display: flex;
-  justify-content: flex-start; /* Align to the left on large screens */
-  align-items: center; /* Vertically center the title */
-  flex: 1; /* Allow the title to take up available space */
-  transition: justify-content 0.3s ease; /* Smooth transition when title moves */
-  padding-left: 20px; /* Optional: Adds padding to the left for alignment */
+  justify-content: flex-start;
+  align-items: center;
+  flex: 1;
+  transition: justify-content 0.3s ease;
+  padding-left: 20px;
 }
 
-/* Anchor tag styling to remove default link styles */
-.website-title a {
-  text-decoration: none; /* Remove underline from the link */
-}
 
-/* Styling for the logo image */
+
 .website-title .logo {
-  height: 80px; /* Make the logo larger */
-  width: auto; /* Maintain the aspect ratio */
-  object-fit: contain; /* Ensure the logo fits within the available space */
+  height: 100px;
+  width: auto;
+  object-fit: contain;
 }
 
-/* Optional: Adjust the size of the logo for smaller screens */
+
 @media (max-width: 768px) {
-  .website-title .logo {
-    height: 60px; /* Make the logo smaller on mobile */
+ .logo {
+    height: 70px;
   }
 }
 
@@ -56,7 +51,7 @@ mat-toolbar {
   display: flex;
   justify-content: flex-start; /* Align links to the left */
   gap: 30px; /* Reduced gap for better spacing */
-  font-size: 1rem; /* Adjust font size for normal screens */
+  font-size: 1.5rem; /* Adjust font size for normal screens */
   flex: 1; /* Allow links to expand */
   transition: transform 0.3s ease; /* Smooth transition when collapsing/expanding */
 }
@@ -76,18 +71,18 @@ mat-toolbar {
 
 /* Hamburger Menu */
 .hamburger-menu {
-  display: none; /* Hidden by default */
+  display: none;
   cursor: pointer;
   background: none;
   border: none;
-  font-size: 2rem; /* Larger icon size */
+  font-size: 2rem;
 }
 
-/* On small screens (max-width: 768px) */
+
 @media (max-width: 768px) {
   mat-toolbar {
-    height: 50px; /* Adjust height for small screens */
-    padding: 0 8px; /* Adjust padding for small screens */
+    height: 110px;
+    padding: 0 8px;
   }
 
   /* Title font size for mobile screens */
