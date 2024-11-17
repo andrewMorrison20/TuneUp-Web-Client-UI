@@ -9,52 +9,6 @@ mat-button:hover, .logo-matching-toolbar a:hover {
   text-decoration: underline;
 }
 
- /* Full-width container for the search bar (home page layout) */
- .search-container {
-   width: 100%;                      /* Full width */
-   background-color: #98C0B4;         /* Same color as the navbar */
-   display: flex;                     /* Use flexbox for centering */
-   justify-content: center;           /* Center horizontally */
-   align-items: center;               /* Center vertically */
-   padding: 20px 0;                   /* Add padding for spacing */
- }
-
- /* Add margin-top to prevent overlap with navbar */
- .search-container {
-   margin-top: 70px; /* Adjust this based on your navbar height */
- }
-
-/* Style for the input field to ensure full white background */
-mat-form-field {
-  background-color: #ffffff;  /* Set background color for the entire field */
-  border-radius: 4px;         /* Optional: rounded corners for the search bar */
-  border: 1px solid #98C0B4;  /* Add border matching the navbar color */
-}
-
-/* Ensure the input inside the mat-form-field has a white background */
-mat-form-field input {
-  font-size: 1.5rem;          /* Increase font size for input field */
-  background-color: #ffffff;  /* Set input background to white */
-  border: none;               /* Remove default input border */
-}
-
-/* Optional: Ensure the outline of the mat-form-field is clear */
-mat-form-field .mat-form-field-outline {
-  border-color: transparent;  /* Hide the default outline color */
-}
-
-/* Optional: Style for the focused outline of the mat-form-field */
-mat-form-field:focus-within .mat-form-field-outline {
-  border-color: #98C0B4;      /* Outline color when focused */
-}
-
-/* Responsive adjustments if necessary */
-@media (max-width: 768px) {
-  .search-bar {
-    max-width: 90%;            /* On small screens, allow a larger width */
-  }
-}
-
 .account-icon {
   margin-left: 20px; /* Adjust as needed for spacing */
 }
@@ -68,8 +22,6 @@ mat-menu {
 mat-menu-item {
   font-size: 1.6rem; /* Adjust font size */
 }
-
-
 
 
  .welcome-container {
@@ -198,17 +150,16 @@ mat-menu-item {
    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
  }
 
- /* Optional: Responsive adjustments for smaller screens */
  @media (max-width: 768px) {
    .matching-container,
    .services-container {
-     flex-direction: column;                 /* Stack the image and text on smaller screens */
+     flex-direction: column;
      text-align: center;
    }
 
    .matching-container .image-container,
    .services-container .image-container {
-     margin: 0 0 20px 0;                      /* Add space below the image on small screens */
+     margin: 0 0 20px 0;
    }
 
    .matching-container .text-container,
@@ -218,13 +169,13 @@ mat-menu-item {
 
    .matching-container .text-container h2,
    .services-container .text-container h2 {
-     font-size: 2.2rem;                       /* Adjust heading size */
+     font-size: 2.2rem;
    }
 
    .matching-container .text-container p,
    .services-container .text-container p {
      font-size: 1.4rem;
-     line-height: 1.8;           /* Adjust paragraph size */
+     line-height: 1.8;
    }
  }
 
@@ -232,11 +183,11 @@ mat-menu-item {
  .matching-container .text-container,
  .services-container .text-container {
    display: flex;
-   flex-direction: column;                  /* Stack text and button vertically */
-   align-items: center;                     /* Center the content horizontally */
-   justify-content: center;                 /* Center vertically */
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
    text-align: center;
-   line-height: 1.8;           /* Ensure text is centered */
+   line-height: 1.8;
  }
 
  .matching-container .text-container button,

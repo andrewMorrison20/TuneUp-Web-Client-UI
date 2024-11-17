@@ -1,45 +1,81 @@
 /* Full-width container for the search bar */
 .search-container {
-  width: 100%; /* Ensure the search bar container is full width */
+  width: 100%;
+  height: 100vh;
   display: flex;
-  justify-content: center; /* Center the search bar */
-  align-items: center; /* Vertically align content */
-  padding: 20px 0;
-  background-color: #98C0B4; /* Match the navbar color */
-  box-sizing: border-box; /* Include padding in width calculations */
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #98C0B4;
+  box-sizing: border-box;
 }
 
-/* Inner container for the search bar */
+/* Search bar inner container */
 .search-bar-container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+  gap: 15px;
   background-color: #ffffff;
-  border-radius: 5px;
-  padding: 10px;
+  border-radius: 10px;
+  padding: 20px;
   width: 100%;
-  max-width: 800px; /* Center with a maximum width */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add subtle shadow */
-  box-sizing: border-box; /* Ensure padding doesn't exceed the container width */
+  max-width: 800px; /* Wider container */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+/* Mat-form-field adjustments */
+.mat-form-field {
+  flex: 1;
+  width: 100%;
+  max-width: 300px; /* Adjust width of dropdowns */
+}
+
+.dropdown .mat-form-field {
+  width: 100%;
+}
+
+/* Input and dropdown highlight on focus */
+.mat-form-field.mat-focused .mat-form-field-flex {
+  border-color: #007BFF !important; /* Blue highlight */
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+/* Search input specific styling */
+.search-input {
+  flex: 2;
+}
+
+/* Search button styling */
+button[mat-raised-button] {
+  background-color: #007BFF; /* Blue button */
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 20px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Hover and active effects for the button */
+button[mat-raised-button]:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+button[mat-raised-button]:active {
+  transform: scale(0.98);
 }
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
   .search-bar-container {
-    flex-direction: column; /* Stack elements vertically on small screens */
-    align-items: stretch;   /* Stretch inputs and buttons */
-    gap: 10px;              /* Add some space between items */
-    margin-top: 60px;       /* Add margin to prevent overlap with navbar */
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    max-width: 90%;
   }
 
-  .search-input,
-  .dropdown {
-    width: 100%;            /* Ensure the inputs take the full width */
-  }
-
-  .search-bar-container button {
-    width: 100%;            /* Make the button full width */
-    margin-top: 10px;       /* Add spacing between button and inputs */
+  .mat-form-field,
+  button[mat-raised-button] {
+    width: 100%;
   }
 }
