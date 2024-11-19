@@ -47,15 +47,12 @@ export class LoginComponent implements OnInit {
     this.http.post('http://localhost:8080/auth/login', body, { headers })
       .subscribe(
         (response: any) => {
-          // Handle success (response contains JWT token)
-          const decodedJWT = this.jwtHelper.decodeToken(response.token);
-          console.log('Decoded JWT:', decodedJWT);
-          this.completeSaveAndNavigate(decodedJWT)
+          console.log('RESPONSE', response)
+          this.completeSaveAndNavigate(response.token)
             .then(() => console.log('Navigation complete'))
             .catch((error) => console.error('Navigation error:', error));
         },
         (error: HttpErrorResponse) => {
-          // Handle error (e.g., invalid credentials)
           this.handleLoginError(error);
         }
       );
@@ -64,10 +61,9 @@ export class LoginComponent implements OnInit {
   private async completeSaveAndNavigate(token: any) {
     try {
       const authUserObj = AuthenticatedUser.save(
-        'John',
+        this.jwtHelper.decodeToken(token).username,
         'user',
-        token.access_token,
-        token.refresh_token,
+        token,
         'form'
       );
       console.log('Authenticated User:', authUserObj);
