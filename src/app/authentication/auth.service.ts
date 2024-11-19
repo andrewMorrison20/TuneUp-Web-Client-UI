@@ -19,12 +19,14 @@ export class AuthService {
 
 
     public login(user: string, _console: string, token: string, refreshToken : string, authType: string){
-        const authenticatedUser = new AuthenticatedUser(user,_console, token, refreshToken, authType);
+        const authenticatedUser = new AuthenticatedUser(user,_console, token,
+          //refreshToken,
+          authType);
         sessionStorage.setItem(AuthenticatedUser.key, authenticatedUser.toString());
-        this.startTokenRefreshCycle(authenticatedUser);
+       //this.startTokenRefreshCycle(authenticatedUser);
     }
 
-    public startTokenRefreshCycle(authenticatedUser: AuthenticatedUser) {
+    /*public startTokenRefreshCycle(authenticatedUser: AuthenticatedUser) {
         if (this.refreshInterval){
             clearInterval(this.refreshInterval);
         }
@@ -32,11 +34,11 @@ export class AuthService {
         this.refreshInterval = setInterval(() => {
             this.performTokenRefresh(authenticatedUser);
         }, this.getRefreshTime(authenticatedUser.token));
-    }
+    }*/
 
-    performTokenRefresh(authenticatedUser: AuthenticatedUser) {
+   /* performTokenRefresh(authenticatedUser: AuthenticatedUser) {
         const refreshHeaders: HttpHeaders = buildDefaultPostHeaders().set('Authorisation', `Bearer ${authenticatedUser.refreshToken}`);
-    }
+    }*/
 
     public clearAuthenticationCredentials(){
         AuthenticatedUser.deleteObj();

@@ -1,6 +1,6 @@
 <div class="search-bar-container">
   <!-- Location Dropdown -->
-  <mat-form-field appearance="fill" class="dropdown">
+  <mat-form-field appearance="outline" class="dropdown">
     <mat-label>Location</mat-label>
     <mat-select [(value)]="selectedLocation" (selectionChange)="onLocationChange()">
       <mat-option *ngFor="let location of locations" [value]="location">
@@ -10,7 +10,7 @@
   </mat-form-field>
 
   <!-- Instrument Dropdown -->
-  <mat-form-field appearance="fill" class="dropdown">
+  <mat-form-field appearance="outline" class="dropdown">
     <mat-label>Instrument</mat-label>
     <mat-select [(value)]="selectedInstrumentId" (selectionChange)="onInstrumentChange()">
       <mat-option *ngFor="let instrument of instruments" [value]="instrument.id">
@@ -19,8 +19,18 @@
     </mat-select>
   </mat-form-field>
 
+  <!-- Profile Type Dropdown -->
+  <mat-form-field appearance="outline" class="dropdown">
+    <mat-label>Profile Type</mat-label>
+    <mat-select [(value)]="selectedProfileType" (selectionChange)="onProfileTypeChange()">
+      <mat-option value="student">Student</mat-option>
+      <mat-option value="tutor">Tutor</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
   <!-- Search Bar -->
-  <mat-form-field appearance="fill" class="search-input">
+  <mat-form-field appearance="outline" class="search-input">
     <mat-label>Search</mat-label>
     <input matInput [(ngModel)]="searchQuery" placeholder="Search..." />
   </mat-form-field>

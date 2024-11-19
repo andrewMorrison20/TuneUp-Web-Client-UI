@@ -7,6 +7,8 @@ import { MatButtonModule } from '@angular/material/button';    // Import MatButt
 import { MatInputModule } from '@angular/material/input';      // Import MatInput
 import { MatIconModule } from '@angular/material/icon';
 import {MatButtonToggle} from "@angular/material/button-toggle";
+import {HttpClientModule} from "@angular/common/http";
+import {AuthenticationModule} from "./authentication/authentication.module";
 
 
 @Component({
@@ -15,6 +17,8 @@ import {MatButtonToggle} from "@angular/material/button-toggle";
   imports: [
     RouterOutlet,
     RouterModule,
+    HttpClientModule,
+    AuthenticationModule,
     MatSlideToggleModule,
     MatIconModule,
     MatButtonModule,

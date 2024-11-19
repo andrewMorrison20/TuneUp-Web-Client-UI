@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 interface Instrument {
   name: string;
@@ -18,8 +19,9 @@ export class SearchBarComponent implements OnInit {
 
   locations: string[] = ['Northern Ireland', 'England', 'Scotland', 'Wales'];
   instruments: Instrument[] = [];
+  selectedProfileType: String = "Tutor";
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
     this.loadInstruments();
@@ -42,14 +44,18 @@ export class SearchBarComponent implements OnInit {
   }
 
   onInstrumentChange(): void {
-    // You can log the selected instrument id or any other processing
     console.log('Selected Instrument ID:', this.selectedInstrumentId);
   }
 
   onSearchClick(): void {
+    this.router.navigate(['/profiles/search']);
     console.log('Search Query:', this.searchQuery);
     console.log('Selected Location:', this.selectedLocation);
     console.log('Selected Instrument ID:', this.selectedInstrumentId);
+  }
+
+  onProfileTypeChange() {
+    console.log('Selected profileType:', this.selectedProfileType);
   }
 }
 

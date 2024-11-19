@@ -30,9 +30,9 @@ export class SearchResultsComponent implements OnInit {
     this.isLoading = true;
 
     this.profileService.getProfiles(this.pageIndex, this.pageSize, 'displayName,asc').subscribe({
-      next: (profiles) => {
-        this.profiles = profiles; // Assign the fetched profiles
-        this.totalElements = profiles.length; // Update pagination details if needed
+      next: (data) => {
+        this.profiles = data.profiles;
+        this.totalElements = data.totalElements;
         this.isLoading = false;
       },
       error: (err) => {

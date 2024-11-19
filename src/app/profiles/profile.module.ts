@@ -22,7 +22,8 @@ import {NavModule} from "../components/nav/nav.module";
 import {SearchBarModule} from "../components/search-bar/search-bar.module";
 
 const profileRoutes: Routes = [
-  { path: '', component: SearchResultsComponent }  // Route for displaying the search results page
+  { path: 'search', component: SearchResultsComponent },
+  { path: ':id', component: ProfileComponent }
 ];
 
 @NgModule({

@@ -1,0 +1,49 @@
+<app-navbar></app-navbar>
+<app-search-bar></app-search-bar>
+<br>
+
+<!-- Profile Page Container -->
+<div class="profile-page-container mat-elevation-z3">
+  <!-- Show loading spinner or message if profile is null -->
+  <div *ngIf="!profile; else profileContent">
+    <p>Loading profile...</p> <!-- Or add a spinner component here -->
+  </div>
+
+  <!-- Profile Content -->
+  <ng-template #profileContent>
+    <div *ngIf="profile">
+      <!-- Profile Header -->
+      <div class="profile-header">
+        <img [src]="profile?.profilePicture || 'assets/pianoKeyLabelsSide.jpg'" alt="Profile Picture" class="profile-picture">
+        <div class="profile-header-details">
+          <h1>{{ profile?.name }}</h1>
+          <p class="bio">{{ profile?.bio }}</p>
+          <span class="profile-type-chip mat-chip mat-chip-outline">{{ profile?.profileType | titlecase }}</span>
+        </div>
+      </div>
+
+      <div class="chat-button-container">
+        <button mat-raised-button color="accent" class="chat-button" (click)="startChat()">
+          <mat-icon>chat</mat-icon> Start Chat
+        </button>
+      </div>
+      <!-- Additional Profile Details Section (Add as needed) -->
+      <div class="profile-details">
+        <div *ngIf="profile.instruments !== undefined">
+          <strong>Instruments:</strong>
+          <p *ngIf="profile.instruments && profile.instruments.length > 0">
+            {{ profile.instruments.join(', ') }}
+          </p>
+          <p *ngIf="profile.instruments && profile.instruments.length === 0">
+            No instruments listed
+          </p>
+        </div>
+        <div *ngIf="profile.instruments === undefined">
+          <p><strong>Instruments:</strong> Not available</p>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>
+
+

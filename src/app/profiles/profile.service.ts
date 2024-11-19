@@ -35,21 +35,34 @@ export class ProfileService {
 
   constructor(private http: HttpClient) {}
 
-  // Method to get profiles with pagination and sorting parameters
-  getProfiles(page: number = 0, size: number = 10, sort: string = 'displayName,asc'): Observable<Profile[]> {
+  getProfiles(page: number = 0, size: number = 10, sort: string = 'displayName,asc'): Observable<{ profiles: Profile[]; totalElements: number }> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())
       .set('sort', sort);
 
-    // Send GET request to the backend API and map the response to map content
     return this.http.get<ProfileResponse>(this.apiUrl, { params }).pipe(
-      map(response => this.mapProfiles(response.content))  // Map the content to Tutor or Student profiles
+      map(response => ({
+        profiles: this.mapProfiles(response.content),
+        totalElements: response.totalElements,
+        }))
+    );
+  }
+
+  getProfileById(id: string) {
+    const url = `${this.apiUrl}/${id}`;
+    const params = new HttpParams().set('id', id);
+
+    return this.http.get<Profile>(url).pipe(
+      map(response => this.mapProfiles([response]))
+    ).pipe(
+      map(profiles => profiles[0])
     );
   }
 
 
   private mapProfiles(rawProfiles: any[]): Profile[] {
+    console.log('Profile : ', rawProfiles)
     return rawProfiles.map(profile => {
       if (profile.profileType === 'TUTOR') {
         return this.mapToTutorProfile(profile);
@@ -85,7 +98,7 @@ export class ProfileService {
       achievements: [],
       completedCourses: [],
       grades: [],
-      instruments: [],
+      instruments: profile.instruments ? profile.instruments.map((instrument: any) => instrument.name) : [],
       profilePicture: "",
       reviews: [],
       id: profile.id,

@@ -1,5 +1,8 @@
+<app-navbar></app-navbar>
+
 <form [formGroup]="signupForm" class="login-form">
-  <mat-card class="login-card">
+  <mat-card class="login-card double-width-card">
+    <div class="left-side">
     <mat-card-title>Sign Up</mat-card-title>
 
     <!-- Feedback Messages -->
@@ -100,5 +103,13 @@
       <span>Already have an account?</span>
       <a routerLink="/login" class="signup-link">Sign in</a>
     </mat-card-footer>
+    </div>
+
+    <!-- Right side: Image -->
+    <div class="right-side">
+      <img src="./assets/pexels-pavel-danilyuk-7521284.jpg" alt="Login Image" class="login-image" />
+    </div>
   </mat-card>
+
 </form>
+
