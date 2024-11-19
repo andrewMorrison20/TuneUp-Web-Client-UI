@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { AuthenticatedUser } from '../authentication/authenticated-user.class';
-import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 
 @Component({
@@ -13,21 +12,17 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   hidePassword = true;
-  jwtHelper: JwtHelperService;
   errorMessage: string = ''; // For displaying error message
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private jwtService: JwtHelperService,
     private router: Router
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]]
     });
-
-    this.jwtHelper = jwtService;
   }
 
   ngOnInit(): void {
@@ -58,10 +53,11 @@ export class LoginComponent implements OnInit {
       );
   }
 
-  private async completeSaveAndNavigate(token: any) {
+  private async completeSaveAndNavigate(token: string) {
     try {
+      const decodedToken = JSON.parse(atob(token.split('.')[1])); // Decode the JWT payload
       const authUserObj = AuthenticatedUser.save(
-        this.jwtHelper.decodeToken(token).username,
+        decodedToken.username,
         'user',
         token,
         'form'
