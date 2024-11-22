@@ -27,7 +27,8 @@
           <mat-icon>chat</mat-icon> Start Chat
         </button>
       </div>
-      <!-- Additional Profile Details Section (Add as needed) -->
+
+      <!-- Additional Profile Details Section -->
       <div class="profile-details">
         <div *ngIf="profile.instruments !== undefined">
           <strong>Instruments:</strong>
@@ -42,8 +43,14 @@
           <p><strong>Instruments:</strong> Not available</p>
         </div>
       </div>
+
+      <!-- Reviews Section -->
+      <div class="reviews-section">
+        <h2>Reviews</h2>
+          <app-review-card
+            *ngFor="let review of profile.reviews"
+            [profile]="{ name: profile.name, reviews: [review] }">
+          </app-review-card>
+      </div>
     </div>
-  </ng-template>
-</div>
-
-
+  </ng-template></div>

@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { TutorProfile } from './interfaces/tutor.model';
 import { StudentProfile } from './interfaces/student.model';
+import {Review} from "./interfaces/review.model";
 
 type Profile = TutorProfile | StudentProfile;
 
@@ -32,6 +33,9 @@ interface ProfileResponse {
 })
 export class ProfileService {
   private apiUrl = 'http://localhost:8080/api/profiles';
+  public apiReviewUrl = 'http://localhost:8080/api/review';
+
+
 
   constructor(private http: HttpClient) {}
 
@@ -49,6 +53,14 @@ export class ProfileService {
     );
   }
 
+  public getProfileReviews(profile: any) {
+    const url = `${this.apiReviewUrl}/${profile.id}`;
+    const params = new HttpParams().set('id',profile.id);
+    profile.reviews = this.http.get<ProfileResponse>(url).pipe(
+      map(response => this.mapReviews([response]))
+    )
+
+  }
   getProfileById(id: string) {
     const url = `${this.apiUrl}/${id}`;
     const params = new HttpParams().set('id', id);
@@ -74,6 +86,16 @@ export class ProfileService {
     });
   }
 
+  private mapReviews(rawReviews: any[]): Review[] {
+    console.log('Reviews', rawReviews)
+    return rawReviews.map(review => {
+      if(rawReviews != null) {
+        return this.mapToReview(review);
+      } else {
+      throw new Error('Empty Review')}});
+  }
+
+
   private mapToTutorProfile(profile: any): TutorProfile {
     return {
       enrolledStudents: 0,
@@ -81,7 +103,7 @@ export class ProfileService {
       profilePicture: "",
       qualifications: "",
       rating: 0,
-      reviews: [],
+      reviews:[],
       id: profile.id,
       name: profile.displayName,
       bio: profile.bio,
@@ -109,5 +131,13 @@ export class ProfileService {
       appUserId: profile.appUserId,
       enrolledCourses: []
     };
+  }
+
+  private mapToReview(review: any): Review {
+    return {
+      comment: review.comment,
+      rating: review.rating,
+      reviewer: review.reviewerName
+    }
   }
 }

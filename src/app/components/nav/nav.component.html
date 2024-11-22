@@ -1,16 +1,15 @@
 <mat-toolbar class="logo-matching-toolbar">
-  <!-- Hamburger Icon (visible on smaller screens) -->
+  <!-- Hamburger Icon -->
   <button (click)="toggleMenu()" class="hamburger-menu">
     <mat-icon>menu</mat-icon>
   </button>
 
-  <!-- Website Title (on the left, but centered on small screens) -->
+  <!-- Website Title -->
   <div class="website-title">
     <img src="/assets/mainLogo.png" alt="TuneUp Logo" class="logo" />
   </div>
 
-
-  <!-- Centered Navigation Links (Visible on larger screens) -->
+  <!-- Centered Navigation Links -->
   <div class="nav-links" [ngClass]="{'expanded': !isCollapsed}">
     <a mat-button routerLink="/home" routerLinkActive="active-link">Home</a>
     <a mat-button routerLink="/about" routerLinkActive="active-link">About</a>
@@ -18,21 +17,38 @@
     <a mat-button routerLink="/contact" routerLinkActive="active-link">Contact</a>
   </div>
 
-  <!-- Account Icon with Dropdown Menu (Right) -->
-  <button mat-icon-button [matMenuTriggerFor]="accountMenu" class="account-icon" aria-label="Account">
-    <mat-icon>account_circle</mat-icon>
-  </button>
+  <!-- Conditional Menu Items -->
+  <ng-container *ngIf="AuthenticatedUser.userLoggedIn(); else loggedOutMenu">
+    <button mat-icon-button [matMenuTriggerFor]="accountMenu" class="account-icon" aria-label="Account">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu #accountMenu="matMenu">
+      <button mat-menu-item routerLink="/account">
+        <mat-icon>settings</mat-icon> Account Settings
+      </button>
+      <button mat-menu-item routerLink="/dashboard">
+        <mat-icon>dashboard</mat-icon> Dashboard
+      </button>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon> Logout
+      </button>
+    </mat-menu>
+  </ng-container>
 
-  <!-- Dropdown Menu for Account Icon -->
-  <mat-menu #accountMenu="matMenu">
-    <button mat-menu-item routerLink="/login">
-      <mat-icon>login</mat-icon> Login
+  <ng-template #loggedOutMenu>
+    <button mat-icon-button [matMenuTriggerFor]="accountMenu" class="account-icon" aria-label="Account">
+      <mat-icon>account_circle</mat-icon>
     </button>
-    <button mat-menu-item routerLink="/signup">
-      <mat-icon>person_add</mat-icon> Student Sign Up
-    </button>
-    <button mat-menu-item routerLink="/signup">
-      <mat-icon>person_add_alt</mat-icon> Tutor Sign Up
-    </button>
-  </mat-menu>
+    <mat-menu #accountMenu="matMenu">
+      <button mat-menu-item routerLink="/login">
+        <mat-icon>login</mat-icon> Login
+      </button>
+      <button mat-menu-item routerLink="/signup">
+        <mat-icon>person_add</mat-icon> Student Sign Up
+      </button>
+      <button mat-menu-item routerLink="/signup">
+        <mat-icon>person_add_alt</mat-icon> Tutor Sign Up
+      </button>
+    </mat-menu>
+  </ng-template>
 </mat-toolbar>

@@ -20,6 +20,7 @@ import {MatButton} from "@angular/material/button";
 import { RouterModule, Routes } from '@angular/router';
 import {NavModule} from "../components/nav/nav.module";
 import {SearchBarModule} from "../components/search-bar/search-bar.module";
+import {ReviewCardComponent} from "../review-card/review-card.component";
 
 const profileRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent },
@@ -30,7 +31,8 @@ const profileRoutes: Routes = [
   declarations: [
     ProfileComponent,
     ProfileCardComponent,
-    SearchResultsComponent
+    SearchResultsComponent,
+    ReviewCardComponent
   ],
   imports: [
     CommonModule,
