@@ -47,10 +47,9 @@
       <!-- Reviews Section -->
       <div class="reviews-section">
         <h2>Reviews</h2>
-          <app-review-card
-            *ngFor="let review of profile.reviews"
-            [profile]="{ name: profile.name, reviews: [review] }">
-          </app-review-card>
+        <app-review-card
+          [profile]="{ name: profile.name, reviews: profile.reviews }">
+        </app-review-card>
       </div>
     </div>
   </ng-template></div>

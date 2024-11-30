@@ -53,14 +53,21 @@ export class ProfileService {
     );
   }
 
-  public getProfileReviews(profile: any) {
+  public getProfileReviews(profile: any): void {
     const url = `${this.apiReviewUrl}/${profile.id}`;
-    const params = new HttpParams().set('id',profile.id);
-    profile.reviews = this.http.get<ProfileResponse>(url).pipe(
-      map(response => this.mapReviews([response]))
-    )
-
+    this.http.get<ProfileResponse[]>(url).pipe(
+      map(response => this.mapReviews(response)) // Map the reviews to the desired format
+    ).subscribe(
+      (reviews) => {
+        profile.reviews = reviews; // Assign the resolved reviews
+        console.log('Resolved reviews:', reviews);
+      },
+      (error) => {
+        console.error('Error fetching reviews:', error);
+      }
+    );
   }
+
   getProfileById(id: string) {
     const url = `${this.apiUrl}/${id}`;
     const params = new HttpParams().set('id', id);

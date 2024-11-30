@@ -36,7 +36,8 @@ export class ProfileComponent implements OnInit {
       (profile) => {
         // Assign the fetched profile data to the profile variable
         this.profile = profile;
-        console.log('Profile is', profile); // To check the profile data
+        console.log('Profile is', profile);
+        this.profileService.getProfileReviews(this.profile)// To check the profile data
       },
       (error) => {
         // Handle error
