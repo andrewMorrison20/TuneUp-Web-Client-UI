@@ -47,9 +47,15 @@
       <!-- Reviews Section -->
       <div class="reviews-section">
         <h2>Reviews</h2>
+        <!-- Render the review card only if reviews exist -->
         <app-review-card
+          *ngIf="profile && profile.reviews && profile.reviews.length > 0"
           [profile]="{ name: profile.name, reviews: profile.reviews }">
         </app-review-card>
+        <!-- Fallback message -->
+        <p *ngIf="profile && profile.reviews && profile.reviews.length === 0" class="no-reviews-message">
+          No reviews yet.
+        </p>
       </div>
     </div>
   </ng-template></div>
