@@ -1,38 +1,83 @@
 <app-navbar></app-navbar>
 <div class="account-settings-container">
-  <mat-card>
-    <mat-card-title>Account Settings</mat-card-title>
-    <mat-card-content>
-      <form [formGroup]="settingsForm" (ngSubmit)="onSubmit()">
-        <!-- Name -->
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Name</mat-label>
-          <input matInput placeholder="Enter your name" formControlName="name" />
-        </mat-form-field>
+  <!-- Left Side: Display Current Values -->
+  <div class="current-details">
+    <mat-card>
+      <mat-card-title>Current Account Details</mat-card-title>
+      <mat-card-content>
+        <p><strong>Name:</strong> </p>
+        <p><strong>Email:</strong> </p>
+        <p><strong>Postcode:</strong> </p>
+        <p><strong>Address Line 1:</strong></p>
+        <p><strong>Address Line 2:</strong> </p>
+        <p><strong>City:</strong> </p>
+        <p><strong>Country:</strong></p>
+      </mat-card-content>
+    </mat-card>
+  </div>
 
-        <!-- Email -->
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Email</mat-label>
-          <input
-            matInput
-            type="email"
-            placeholder="Enter your email"
-            formControlName="email"
-          />
-        </mat-form-field>
+  <!-- Right Side: Update Forms -->
+  <div class="update-forms">
+    <mat-card>
+      <mat-card-title>Update Account Details</mat-card-title>
+      <mat-card-content>
 
-        <!-- Address -->
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Address</mat-label>
-          <textarea
-            matInput
-            placeholder="Enter your address"
-            formControlName="address"
-          ></textarea>
-        </mat-form-field>
+        <!-- Update Name Section -->
+        <form [formGroup]="nameForm" (ngSubmit)="onSubmitName()" class="form-section">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="Enter your name" formControlName="name" />
+          </mat-form-field>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!nameForm.valid">
+            Update Name
+          </button>
+        </form>
 
-        <!-- Change Password -->
-        <div class="password-section">
+        <!-- Update Email Section -->
+        <form [formGroup]="emailForm" (ngSubmit)="onSubmitEmail()" class="form-section">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              type="email"
+              placeholder="Enter your email"
+              formControlName="email"
+            />
+          </mat-form-field>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!emailForm.valid">
+            Update Email
+          </button>
+        </form>
+
+        <!-- Update Address Section -->
+        <form [formGroup]="addressForm" (ngSubmit)="onSubmitAddress()" class="form-section">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Postcode</mat-label>
+            <input matInput placeholder="Enter your postcode" formControlName="postcode" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Address Line 1</mat-label>
+            <input matInput placeholder="Enter address line 1" formControlName="addressLine1" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Address Line 2</mat-label>
+            <input matInput placeholder="Enter address line 2 (optional)" formControlName="addressLine2" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>City</mat-label>
+            <input matInput placeholder="Enter your city" formControlName="city" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Country</mat-label>
+            <input matInput placeholder="Enter your country" formControlName="country" />
+          </mat-form-field>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!addressForm.valid">
+            Update Address
+          </button>
+        </form>
+
+        <!-- Change Password Section -->
+        <form [formGroup]="passwordForm" (ngSubmit)="onSubmitPassword()" class="form-section">
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>New Password</mat-label>
             <input
@@ -42,7 +87,6 @@
               formControlName="password"
             />
           </mat-form-field>
-
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Confirm Password</mat-label>
             <input
@@ -52,18 +96,12 @@
               formControlName="confirmPassword"
             />
           </mat-form-field>
-        </div>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!passwordForm.valid">
+            Update Password
+          </button>
+        </form>
 
-        <!-- Submit Button -->
-        <button
-          mat-raised-button
-          color="primary"
-          type="submit"
-          [disabled]="!settingsForm.valid"
-        >
-          Save Changes
-        </button>
-      </form>
-    </mat-card-content>
-  </mat-card>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>

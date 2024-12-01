@@ -10,6 +10,7 @@ import {MatInput} from "@angular/material/input";
 import {NavModule} from "../components/nav/nav.module";
 import {HttpClientModule} from "@angular/common/http";
 import {AccountSettingsRoutingModule} from "./account-settings-routing.module";
+import {MatOption, MatSelect} from "@angular/material/select";
 
 
 
@@ -28,10 +29,12 @@ import {AccountSettingsRoutingModule} from "./account-settings-routing.module";
     MatIconModule,
     HttpClientModule,
     ReactiveFormsModule,
+    MatOption,
     MatButton,
     MatInput,
     NavModule,
     AccountSettingsRoutingModule,
+    MatSelect,
   ]
 })
 export class AccountSettingsModule { }
