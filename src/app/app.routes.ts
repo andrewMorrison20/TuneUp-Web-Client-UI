@@ -15,6 +15,10 @@ export const routes: Routes = [
   { path: 'profiles',
     loadChildren: () => import('./profiles/profile.module').then(m => m.ProfileModule),
   title: 'profiles details'},
+  { path: 'accountSettings',
+    loadChildren: () => import('./account-settings/account-settings.module').then(m => m.AccountSettingsModule),
+    title:'Account Settings',
+  },
   { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];
 

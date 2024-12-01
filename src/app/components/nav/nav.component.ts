@@ -8,13 +8,11 @@ import {Router} from "@angular/router";
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent {
-  // Variable to toggle the menu on smaller screens
   isCollapsed = true;
   constructor(private router: Router) {
 
   }
 
-  // Toggle the collapse state of the menu
   toggleMenu() {
     this.isCollapsed = !this.isCollapsed;
   }

@@ -1,0 +1,24 @@
+.account-settings-container {
+  max-width: 600px;
+  margin: 50px auto;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.password-section {
+  display: flex;
+  flex-direction: column;
+}
+
+mat-card {
+  padding: 20px;
+}
+
+mat-card-title {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
