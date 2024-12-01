@@ -11,22 +11,12 @@ export class ReviewCardComponent implements OnInit {
   @Input() profile!: { reviews: Review[]; name: string };
 
   currentReviewIndex: number = 0;
-  averageRating: number = 0;
   showFullText: boolean = false;
 
   constructor(private profileService: ProfileService) {}
 
   ngOnInit(): void {
     console.log('fetching reviews for', this.profile)
-    this.calculateAverageRating();
-  }
-
-  calculateAverageRating(): void {
-    const ratings = this.profile.reviews.map((review) => review.rating);
-    if (ratings.length > 0) {
-      const total = ratings.reduce((sum, rating) => sum + rating, 0);
-      this.averageRating = parseFloat((total / ratings.length).toFixed(1));
-    }
   }
 
   prevReview(): void {
