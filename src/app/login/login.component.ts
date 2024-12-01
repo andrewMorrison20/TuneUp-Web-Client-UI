@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
       .subscribe(
         (response: any) => {
           console.log('RESPONSE', response)
-          this.completeSaveAndNavigate(response.token)
+          this.completeSaveAndNavigate(response.token, response.userDto.id)
             .then(() => console.log('Navigation complete'))
             .catch((error) => console.error('Navigation error:', error));
         },
@@ -53,14 +53,15 @@ export class LoginComponent implements OnInit {
       );
   }
 
-  private async completeSaveAndNavigate(token: string) {
+  private async completeSaveAndNavigate(token: string, id :number) {
     try {
       const decodedToken = JSON.parse(atob(token.split('.')[1])); // Decode the JWT payload
       const authUserObj = AuthenticatedUser.save(
         decodedToken.username,
         'user',
         token,
-        'form'
+        'form',
+        id
       );
       console.log('Authenticated User:', authUserObj);
 

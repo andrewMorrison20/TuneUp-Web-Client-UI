@@ -11,12 +11,14 @@ export class AuthenticatedUser implements BaseAuthenticatedUser {
   public console: string;
   public token: string;
   public authType: string;
+  public id: number
 
-  constructor(user: string, _console: string, token: string, authType: string) {
+  constructor(user: string, _console: string, token: string, authType: string, id: number) {
     this.user = user;
     this.console = _console;
     this.token = token;
     this.authType = authType;
+    this.id = id;
   }
 
   toString() {
@@ -38,6 +40,11 @@ export class AuthenticatedUser implements BaseAuthenticatedUser {
   static getAuthUserToken(): string {
     const userObj = this.getAuthenticatedUser();
     return userObj ? userObj.token : '';
+  }
+
+  static getAuthUserId(): number {
+    const userObj = this.getAuthenticatedUser();
+    return userObj ? userObj.id : 0;
   }
 
   static getAuthenticatedUser(): AuthenticatedUser | null {
@@ -73,8 +80,8 @@ export class AuthenticatedUser implements BaseAuthenticatedUser {
     return this.getAuthenticatedUser() !== null;
   }
 
-  static save(user: string, _console: string, token: string, authType: string): AuthenticatedUser {
-    const objToSave = new AuthenticatedUser(user, _console, token, authType);
+  static save(user: string, _console: string, token: string, authType: string,id: number): AuthenticatedUser {
+    const objToSave = new AuthenticatedUser(user, _console, token, authType,id);
     sessionStorage.setItem(this.key, objToSave.toString());
     return objToSave;
   }
@@ -85,7 +92,7 @@ export class AuthenticatedUser implements BaseAuthenticatedUser {
 
   static fromString(json: string): AuthenticatedUser {
     const obj = JSON.parse(json);
-    return new AuthenticatedUser(obj.user, obj.console, obj.token, obj.authType);
+    return new AuthenticatedUser(obj.user, obj.console, obj.token, obj.authType,obj.id);
   }
 
   static key = 'authenticatedUser';
