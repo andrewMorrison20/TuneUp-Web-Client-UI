@@ -14,4 +14,5 @@ export interface TutorProfile {
   enrolledStudents: number;
   rating: number;
   reviews: Review[];
+  pricesMap: Map<string, number>;
 }

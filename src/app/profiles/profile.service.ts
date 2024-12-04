@@ -117,10 +117,17 @@ export class ProfileService {
       onlineLessons: profile.onlineLessons,
       profileType: profile.profileType,
       instruments: profile.instruments ? profile.instruments.map((instrument: any) => instrument.name) : [],
-      appUserId: profile.appUserId
+      appUserId: profile.appUserId,
+      pricesMap: profile.prices ? this.mapPricesToMap(profile.prices) : new Map()
     };
   }
 
+  private mapPricesToMap(prices: any[]): Map<string, number> {
+    return prices.reduce((map: Map<string, number>, price: any) => {
+      map.set(this.formatPeriod(price.period), price.rate);
+      return map;
+    }, new Map());
+  }
 
   private mapToStudentProfile(profile: any): StudentProfile {
     return {
@@ -146,5 +153,15 @@ export class ProfileService {
       rating: review.rating,
       reviewer: review.reviewerName
     }
+  }
+
+  private formatPeriod(period: string): string {
+    const periodMap: { [key: string]: string } = {
+      ONE_HOUR: '1 hour',
+      TWO_HOURS: '2 hours',
+      HALF_HOUR: '30 minutes',
+      CUSTOM: 'Custom duration',
+    };
+    return periodMap[period] || period; // Fallback to raw period if not mapped
   }
 }

@@ -27,23 +27,42 @@
           <mat-icon>chat</mat-icon> Start Chat
         </button>
       </div>
-
+<br>
       <!-- Additional Profile Details Section -->
-      <div class="profile-details">
-        <div *ngIf="profile.instruments !== undefined">
-          <strong>Instruments:</strong>
-          <p *ngIf="profile.instruments && profile.instruments.length > 0">
-            {{ profile.instruments.join(', ') }}
-          </p>
-          <p *ngIf="profile.instruments && profile.instruments.length === 0">
-            No instruments listed
-          </p>
+      <div class="profile-section">
+        <div class="instruments-section">
+          <h2>Instruments</h2>
+          <div class="instrument-container">
+            <div *ngIf="profile.instruments !== undefined">
+              <div *ngIf="profile.instruments && profile.instruments.length > 0">
+                <p>{{ profile.instruments.join(', ') }}</p>
+              </div>
+              <div *ngIf="profile.instruments && profile.instruments.length === 0">
+                <p>No instruments listed</p>
+              </div>
+            </div>
+            <div *ngIf="profile.instruments === undefined">
+              <p>Instruments: Not available</p>
+            </div>
+          </div>
         </div>
-        <div *ngIf="profile.instruments === undefined">
-          <p><strong>Instruments:</strong> Not available</p>
+
+        <!-- Pricing Section -->
+        <div class="pricing-section" *ngIf="isTutorProfile(profile) && profile.pricesMap !== undefined">
+        <h2>Pricing</h2>
+          <div class="pricing-container">
+            <div class="pricing-row" *ngFor="let price of profile.pricesMap | keyvalue">
+              <div class="instrument-column">
+                <p>{{ price.key }}</p>
+              </div>
+              <div class="price-column">
+                <p>£{{ price.value }}</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
+<br>
       <!-- Reviews Section -->
       <div class="reviews-section">
         <h2>Reviews</h2>
@@ -58,4 +77,6 @@
         </p>
       </div>
     </div>
-  </ng-template></div>
+
+  </ng-template>
+</div>
