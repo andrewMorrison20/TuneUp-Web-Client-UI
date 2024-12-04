@@ -66,5 +66,12 @@ export class ProfileComponent implements OnInit {
     console.log('Starting chat with', this.profile?.name);
 
   }
+
+  isPricesMapNotEmpty(): boolean {
+    if (!this.profile) {
+      return false; // Return false if profile is null
+    }
+    return this.isTutorProfile(this.profile) && this.profile.pricesMap?.size > 0;
+  }
 }
 

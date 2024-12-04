@@ -48,7 +48,7 @@
         </div>
 
         <!-- Pricing Section -->
-        <div class="pricing-section" *ngIf="isTutorProfile(profile) && profile.pricesMap !== undefined">
+        <div class="pricing-section" *ngIf="isTutorProfile(profile) && isPricesMapNotEmpty() ">
         <h2>Pricing</h2>
           <div class="pricing-container">
             <div class="pricing-row" *ngFor="let price of profile.pricesMap | keyvalue">
