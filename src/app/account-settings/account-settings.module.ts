@@ -11,6 +11,7 @@ import {NavModule} from "../components/nav/nav.module";
 import {HttpClientModule} from "@angular/common/http";
 import {AccountSettingsRoutingModule} from "./account-settings-routing.module";
 import {MatOption, MatSelect} from "@angular/material/select";
+import {AccountSettingsService} from "./account-settings.service";
 
 
 
@@ -18,8 +19,12 @@ import {MatOption, MatSelect} from "@angular/material/select";
   declarations: [
     AccountSettingsComponent,
   ],
+  providers:[
+    AccountSettingsService,
+  ],
   imports: [
     CommonModule,
+    HttpClientModule,
     MatCard,
     MatCardTitle,
     MatLabel,

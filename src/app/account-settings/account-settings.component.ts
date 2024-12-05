@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {AccountResponse, AccountSettingsService} from './account-settings.service'
+import {AuthenticatedUser} from "../authentication/authenticated-user.class";
 
 @Component({
   selector: 'app-account-settings',
@@ -11,9 +13,9 @@ export class AccountSettingsComponent {
   emailForm: FormGroup;
   addressForm: FormGroup;
   passwordForm: FormGroup;
+  accountDetails: AccountResponse | null = null;
 
-  constructor(private fb: FormBuilder) {
-    // Initialize individual forms
+  constructor(private fb: FormBuilder, private accountService: AccountSettingsService) {
     this.nameForm = this.fb.group({
       name: ['', [Validators.required]],
     });
@@ -36,6 +38,17 @@ export class AccountSettingsComponent {
     });
   }
 
+  ngOnInit() {
+    const userId = AuthenticatedUser.getAuthUserId()
+    this.accountService.getUserAccountDetails(userId).subscribe(
+      (data: AccountResponse) => {
+        this.accountDetails = data;
+      },
+      (error) => {
+        console.error('Failed to fetch account details', error);
+      }
+    );
+  }
   // Handlers for each section
   onSubmitName() {
     if (this.nameForm.valid) {

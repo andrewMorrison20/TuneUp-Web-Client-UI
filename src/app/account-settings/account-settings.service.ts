@@ -1,12 +1,20 @@
 import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
+import {Observable} from "rxjs";
 
-interface AccountResponse{
+export interface AccountResponse{
   id: number,
   name: string,
   email: string,
   password: string,
-  username: string
+  username: string,
+  address?: {
+    postcode: string;
+    addressLine1: string;
+    addressLine2?: string;
+    city: string;
+    country: string;
+  }
 }
 
 @Injectable()
@@ -17,9 +25,9 @@ export class AccountSettingsService {
 
   }
 
-  public getUserAccountDetails(){
-    const reqUrl = this.baseServerUrl;
-    return this.http.get<AccountResponse>(reqUrl)
+  public getUserAccountDetails(id: number): Observable<AccountResponse> {
+    const reqUrl = `${this.baseServerUrl}/${id}`;
+    return this.http.get<AccountResponse>(reqUrl);
   }
 
 }
