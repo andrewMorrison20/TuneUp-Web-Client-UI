@@ -1,0 +1,38 @@
+<div class="review-card">
+  <!-- Navigation Arrows -->
+  <button class="arrow left-arrow" (click)="prevReview()">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+
+  <!-- Review Content -->
+  <div class="review-content">
+    <!-- Reviewer's Name -->
+    <h3 class="reviewer-name">{{ currentReview.reviewer }}</h3>
+
+    <!-- Average Rating -->
+    <div class="average-rating">
+      <span class="stars">
+        <ng-container *ngFor="let star of getStars(); let i = index">
+          <mat-icon *ngIf="i < currentReview.rating">star</mat-icon>
+          <mat-icon *ngIf="i >= currentReview.rating">star_border</mat-icon>
+        </ng-container>
+      </span>
+      <span class="rating-text">{{ currentReview.rating}} / 5</span>
+    </div>
+
+    <!-- Review Text -->
+    <p [class.truncated]="!showFullText && isTextTruncated()">
+      {{ currentReview.comment }}
+    </p>
+
+    <!-- "See More" Link -->
+    <a *ngIf="isTextTruncated()" class="see-more-link" (click)="toggleText()">
+      {{ showFullText ? 'See Less' : 'See More' }}
+    </a>
+  </div>
+
+  <!-- Navigation Arrows -->
+  <button class="arrow right-arrow" (click)="nextReview()">
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+</div>

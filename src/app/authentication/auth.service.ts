@@ -18,10 +18,10 @@ export class AuthService {
     ) {}
 
 
-    public login(user: string, _console: string, token: string, refreshToken : string, authType: string){
+    public login(user: string, _console: string, token: string, refreshToken : string, authType: string, id: number){
         const authenticatedUser = new AuthenticatedUser(user,_console, token,
           //refreshToken,
-          authType);
+          authType,id);
         sessionStorage.setItem(AuthenticatedUser.key, authenticatedUser.toString());
        //this.startTokenRefreshCycle(authenticatedUser);
     }

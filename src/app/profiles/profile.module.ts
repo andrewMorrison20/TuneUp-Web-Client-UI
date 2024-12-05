@@ -20,17 +20,20 @@ import {MatButton} from "@angular/material/button";
 import { RouterModule, Routes } from '@angular/router';
 import {NavModule} from "../components/nav/nav.module";
 import {SearchBarModule} from "../components/search-bar/search-bar.module";
+import {ReviewCardComponent} from "../review-card/review-card.component";
+import {AuthGuard} from "../authentication/auth-guard";
 
 const profileRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent },
-  { path: ':id', component: ProfileComponent }
+  { path: ':id', component: ProfileComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({
   declarations: [
     ProfileComponent,
     ProfileCardComponent,
-    SearchResultsComponent
+    SearchResultsComponent,
+    ReviewCardComponent
   ],
   imports: [
     CommonModule,

@@ -36,7 +36,8 @@ export class ProfileComponent implements OnInit {
       (profile) => {
         // Assign the fetched profile data to the profile variable
         this.profile = profile;
-        console.log('Profile is', profile); // To check the profile data
+        console.log('Profile is', profile);
+        this.profileService.getProfileReviews(this.profile)// To check the profile data
       },
       (error) => {
         // Handle error
@@ -64,6 +65,13 @@ export class ProfileComponent implements OnInit {
   startChat(): void {
     console.log('Starting chat with', this.profile?.name);
 
+  }
+
+  isPricesMapNotEmpty(): boolean {
+    if (!this.profile) {
+      return false; // Return false if profile is null
+    }
+    return this.isTutorProfile(this.profile) && this.profile.pricesMap?.size > 0;
   }
 }
 

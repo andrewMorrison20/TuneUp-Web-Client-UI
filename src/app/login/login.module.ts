@@ -14,10 +14,14 @@ import {AuthenticationModule} from "../authentication/authentication.module";
 import {HttpClientModule} from "@angular/common/http";
 import {NavModule} from "../components/nav/nav.module";
 import {SearchBarModule} from "../components/search-bar/search-bar.module";
+import {ResetPasswordComponent} from "./reset-password/reset-password.component";
 
 
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [
+    LoginComponent,
+    ResetPasswordComponent
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,

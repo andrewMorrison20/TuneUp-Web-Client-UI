@@ -1,0 +1,86 @@
+.review-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center; /* Center vertically */
+  justify-content: space-between; /* Space out arrows and content */
+  position: relative;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.arrow {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  font-size: 1.5rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.left-arrow {
+  position: absolute;
+  left: 16px;
+}
+
+.right-arrow {
+  position: absolute;
+  right: 16px;
+}
+
+.review-content {
+  flex: 1;
+  text-align: center;
+  margin: 0 48px; /* Space between arrows and content */
+}
+
+.reviewer-name {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.average-rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stars mat-icon {
+  color: gold;
+}
+
+.rating-text {
+  margin-left: 8px;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.review-body p {
+  margin: 8px 0;
+  line-height: 1.5;
+}
+
+.review-body p.truncated {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.see-more-link {
+  color: #007bff;
+  cursor: pointer;
+  font-size: 0.9em;
+  text-decoration: underline;
+}

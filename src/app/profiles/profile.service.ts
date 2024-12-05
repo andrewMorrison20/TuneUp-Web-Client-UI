@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { TutorProfile } from './interfaces/tutor.model';
 import { StudentProfile } from './interfaces/student.model';
+import {Review} from "./interfaces/review.model";
 
 type Profile = TutorProfile | StudentProfile;
 
@@ -32,6 +33,9 @@ interface ProfileResponse {
 })
 export class ProfileService {
   private apiUrl = 'http://localhost:8080/api/profiles';
+  public apiReviewUrl = 'http://localhost:8080/api/review';
+
+
 
   constructor(private http: HttpClient) {}
 
@@ -46,6 +50,21 @@ export class ProfileService {
         profiles: this.mapProfiles(response.content),
         totalElements: response.totalElements,
         }))
+    );
+  }
+
+  public getProfileReviews(profile: any): void {
+    const url = `${this.apiReviewUrl}/${profile.id}`;
+    this.http.get<ProfileResponse[]>(url).pipe(
+      map(response => this.mapReviews(response)) // Map the reviews to the desired format
+    ).subscribe(
+      (reviews) => {
+        profile.reviews = reviews; // Assign the resolved reviews
+        console.log('Resolved reviews:', reviews);
+      },
+      (error) => {
+        console.error('Error fetching reviews:', error);
+      }
     );
   }
 
@@ -74,6 +93,16 @@ export class ProfileService {
     });
   }
 
+  private mapReviews(rawReviews: any[]): Review[] {
+    console.log('Reviews', rawReviews)
+    return rawReviews.map(review => {
+      if(rawReviews != null) {
+        return this.mapToReview(review);
+      } else {
+      throw new Error('Empty Review')}});
+  }
+
+
   private mapToTutorProfile(profile: any): TutorProfile {
     return {
       enrolledStudents: 0,
@@ -81,17 +110,24 @@ export class ProfileService {
       profilePicture: "",
       qualifications: "",
       rating: 0,
-      reviews: [],
+      reviews:[],
       id: profile.id,
       name: profile.displayName,
       bio: profile.bio,
       onlineLessons: profile.onlineLessons,
       profileType: profile.profileType,
       instruments: profile.instruments ? profile.instruments.map((instrument: any) => instrument.name) : [],
-      appUserId: profile.appUserId
+      appUserId: profile.appUserId,
+      pricesMap: profile.prices ? this.mapPricesToMap(profile.prices) : new Map()
     };
   }
 
+  private mapPricesToMap(prices: any[]): Map<string, number> {
+    return prices.reduce((map: Map<string, number>, price: any) => {
+      map.set(this.formatPeriod(price.period), price.rate);
+      return map;
+    }, new Map());
+  }
 
   private mapToStudentProfile(profile: any): StudentProfile {
     return {
@@ -109,5 +145,23 @@ export class ProfileService {
       appUserId: profile.appUserId,
       enrolledCourses: []
     };
+  }
+
+  private mapToReview(review: any): Review {
+    return {
+      comment: review.comment,
+      rating: review.rating,
+      reviewer: review.reviewerName
+    }
+  }
+
+  private formatPeriod(period: string): string {
+    const periodMap: { [key: string]: string } = {
+      ONE_HOUR: '1 hour',
+      TWO_HOURS: '2 hours',
+      HALF_HOUR: '30 minutes',
+      CUSTOM: 'Custom duration',
+    };
+    return periodMap[period] || period; // Fallback to raw period if not mapped
   }
 }
