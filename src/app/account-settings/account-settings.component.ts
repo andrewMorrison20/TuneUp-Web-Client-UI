@@ -97,7 +97,7 @@ export class AccountSettingsComponent {
   onSubmitAddress() {
     if (this.addressForm.valid) {
       const userId = AuthenticatedUser.getAuthUserId();
-      this.accountService.updateUserDetails(userId, this.addressForm.value).subscribe({
+      this.accountService.updateUserDetails(userId, {address:this.addressForm.value}).subscribe({
         next: (updatedDetails) => {
           this.accountDetails = updatedDetails;
           this.setFeedback('Address updated successfully!', 'success');

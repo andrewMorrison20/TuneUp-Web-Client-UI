@@ -8,11 +8,11 @@
       <mat-card-content>
         <p><strong>Name:</strong> {{accountDetails?.name}}</p>
         <p><strong>Email:</strong> {{accountDetails?.email}}</p>
-        <p><strong>Postcode:</strong> placeholder</p>
-        <p><strong>Address Line 1:</strong> placeholder</p>
-        <p><strong>Address Line 2:</strong> placeholder</p>
-        <p><strong>City:</strong> placeholder</p>
-        <p><strong>Country:</strong> placeholder</p>
+        <p><strong>Postcode:</strong> {{accountDetails?.address?.postcode}}</p>
+        <p><strong>Address Line 1:</strong> {{accountDetails?.address?.addressLine1}}</p>
+        <p><strong>Address Line 2:</strong>{{accountDetails?.address?.addressLine2}}</p>
+        <p><strong>City:</strong> {{accountDetails?.address?.city}}</p>
+        <p><strong>Country:</strong> {{accountDetails?.address?.country}}</p>
       </mat-card-content>
     </mat-card>
   </div>
