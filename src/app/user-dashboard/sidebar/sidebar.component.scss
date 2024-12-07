@@ -1,0 +1,59 @@
+.sidenav-container {
+  height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #a8e8d0;
+  color: white;
+
+  .mat-toolbar {
+    font-size: 24px;
+    color: white;
+  }
+
+  .mat-nav-list {
+    a {
+      text-decoration: none;
+      color: white;
+      font-size: 30px;
+
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+      }
+
+      &.active {
+        font-weight: bold;
+        border-left: 4px solid white;
+      }
+    }
+  }
+}
+
+.content {
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.toggle-button {
+  color: white;
+  font-size: 28px; /* Larger toggle button */
+}
+
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 200px; /* Narrower sidebar on mobile */
+    .mat-toolbar {
+      font-size: 20px; /* Smaller toolbar */
+    }
+    .mat-nav-list {
+      a {
+        font-size: 18px; /* Smaller text */
+        mat-icon {
+          font-size: 24px; /* Smaller icons */
+        }
+      }
+    }
+  }
+}
