@@ -58,3 +58,21 @@ form {
     order: 2;
   }
 }
+
+.feedback-container {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.success-message {
+  color: white;
+  background-color: green;
+}
+
+.error-message {
+  color: white;
+  background-color: red;
+}

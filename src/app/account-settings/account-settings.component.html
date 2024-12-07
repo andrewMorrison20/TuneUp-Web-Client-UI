@@ -1,17 +1,18 @@
 <app-navbar></app-navbar>
 <div class="account-settings-container">
+
   <!-- Left Side: Display Current Values -->
   <div class="current-details">
     <mat-card>
       <mat-card-title>Current Account Details</mat-card-title>
       <mat-card-content>
         <p><strong>Name:</strong> {{accountDetails?.name}}</p>
-        <p><strong>Email:</strong> {{accountDetails?.email}} </p>
-        <p><strong>Postcode:</strong> placeholder </p>
-        <p><strong>Address Line 1:</strong>placeholder</p>
-        <p><strong>Address Line 2:</strong>placeholder </p>
-        <p><strong>City:</strong>placeholder </p>
-        <p><strong>Country:</strong>placeholder</p>
+        <p><strong>Email:</strong> {{accountDetails?.email}}</p>
+        <p><strong>Postcode:</strong> placeholder</p>
+        <p><strong>Address Line 1:</strong> placeholder</p>
+        <p><strong>Address Line 2:</strong> placeholder</p>
+        <p><strong>City:</strong> placeholder</p>
+        <p><strong>Country:</strong> placeholder</p>
       </mat-card-content>
     </mat-card>
   </div>
@@ -21,6 +22,11 @@
     <mat-card>
       <mat-card-title>Update Account Details</mat-card-title>
       <mat-card-content>
+
+        <!-- Feedback Section -->
+        <div *ngIf="feedbackMessage" [ngClass]="feedbackType === 'success' ? 'success-message' : 'error-message'" class="feedback-container">
+          {{ feedbackMessage }}
+        </div>
 
         <!-- Update Name Section -->
         <form [formGroup]="nameForm" (ngSubmit)="onSubmitName()" class="form-section">

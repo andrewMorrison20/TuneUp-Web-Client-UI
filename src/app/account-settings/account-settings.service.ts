@@ -30,4 +30,10 @@ export class AccountSettingsService {
     return this.http.get<AccountResponse>(reqUrl);
   }
 
+  public updateUserDetails(id: number, updateData: Partial<AccountResponse>): Observable<AccountResponse> {
+    const reqUrl = `${this.baseServerUrl}/update`;
+    const payload = { id, ...updateData };
+    return this.http.put<AccountResponse>(reqUrl, payload);
+  }
+
 }
