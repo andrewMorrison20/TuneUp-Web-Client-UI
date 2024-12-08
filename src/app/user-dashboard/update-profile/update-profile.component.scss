@@ -1,0 +1,120 @@
+.update-profile-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.update-profile-container h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.profile-update-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.profile-preview img {
+  max-width: 100px;
+  max-height: 100px;
+  border-radius: 50%;
+  margin-top: 10px;
+}
+
+.btn-save {
+  align-self: flex-end;
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-save:hover {
+  background-color: #0056b3;
+}
+.pricing-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.pricing-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.pricing-list li button {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pricing-list li button:hover {
+  background-color: #d9363e;
+}
+
+.custom-pricing {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* Add Pricing Button */
+.btn-add-pricing {
+  background-color: #007bff; /* Blue background */
+  color: #fff; /* White text */
+  padding: 6px 12px; /* Smaller padding */
+  font-size: 14px; /* Smaller font size */
+  border: none; /* Remove border */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-add-pricing:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+.btn-add-pricing:focus {
+  outline: none;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5); /* Focus ring */
+}

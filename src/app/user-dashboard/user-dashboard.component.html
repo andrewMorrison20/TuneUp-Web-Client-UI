@@ -1,16 +1,55 @@
-<div class="dashboard-container">
+<app-navbar></app-navbar>
+<mat-sidenav-container class="sidenav-container">
   <!-- Sidebar -->
-  <nav class="sidebar">
-    <ul>
-      <li><a routerLink="/user-dashboard/update-profile" routerLinkActive="active">Update Profile</a></li>
-      <li><a routerLink="/user-dashboard/my-tuitions" routerLinkActive="active">My Tuitions</a></li>
-      <li><a routerLink="/user-dashboard/study-hub" routerLinkActive="active">Study Hub</a></li>
-      <li><a routerLink="/user-dashboard/payments" routerLinkActive="active">Payments</a></li>
-    </ul>
-  </nav>
+  <mat-sidenav
+    #sidenav
+    mode="side"
+    class="sidebar"
+    [opened]="isDesktopView"
+    [disableClose]="isDesktopView"
+  >
+    <mat-nav-list>
+      <a mat-list-item routerLink="/user-dashboard/update-profile" routerLinkActive="active">
+        <mat-icon>person</mat-icon>
+        <span>Update Profile</span>
+      </a>
+      <a mat-list-item routerLink="/user-dashboard/my-tuitions" routerLinkActive="active">
+        <mat-icon>school</mat-icon>
+        <span>My Tuitions</span>
+      </a>
+      <a mat-list-item routerLink="/user-dashboard/study-hub" routerLinkActive="active">
+        <mat-icon>book</mat-icon>
+        <span>Study Hub</span>
+      </a>
+      <a mat-list-item routerLink="/user-dashboard/payments" routerLinkActive="active">
+        <mat-icon>payment</mat-icon>
+        <span>Payments</span>
+      </a>
+      <a mat-list-item routerLink="/user-dashboard/chats" routerLinkActive="active">
+        <mat-icon>chat</mat-icon>
+        <span>Chats</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
 
-  <!-- Content Area -->
-  <div class="content">
-    <router-outlet></router-outlet>
-  </div>
-</div>
+  <!-- Top Navigation -->
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <!-- Hamburger menu for mobile view -->
+      <button
+        mat-icon-button
+        (click)="toggleSidenav(sidenav)"
+        aria-label="Toggle navigation"
+        *ngIf="!isDesktopView"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>User Dashboard</span>
+    </mat-toolbar>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

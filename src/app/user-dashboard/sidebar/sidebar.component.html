@@ -7,50 +7,48 @@
     [opened]="isDesktopView"
     [disableClose]="isDesktopView"
   >
-    <mat-toolbar color="primary">
-      Dashboard
-    </mat-toolbar>
     <mat-nav-list>
       <a mat-list-item routerLink="/user-dashboard/update-profile" routerLinkActive="active">
         <mat-icon>person</mat-icon>
-        <span> Update Profile </span>
+        <span>Update Profile</span>
       </a>
-      <br>
       <a mat-list-item routerLink="/user-dashboard/my-tuitions" routerLinkActive="active">
         <mat-icon>school</mat-icon>
-        <span> My Tuitions </span>
+        <span>My Tuitions</span>
       </a>
-      <br>
       <a mat-list-item routerLink="/user-dashboard/study-hub" routerLinkActive="active">
         <mat-icon>book</mat-icon>
-        <span> Study Hub </span>
+        <span>Study Hub</span>
       </a>
-      <br>
       <a mat-list-item routerLink="/user-dashboard/payments" routerLinkActive="active">
         <mat-icon>payment</mat-icon>
-        <span> Payments </span>
+        <span>Payments</span>
       </a>
-      <br>
+      <a mat-list-item routerLink="/user-dashboard/chats" routerLinkActive="active">
+        <mat-icon>chat</mat-icon>
+        <span>Chats</span>
+      </a>
     </mat-nav-list>
   </mat-sidenav>
 
-  <!-- Main Content -->
+  <!-- Top Navigation -->
   <mat-sidenav-content>
     <mat-toolbar color="primary">
+      <!-- Hamburger menu for mobile view -->
       <button
         mat-icon-button
         (click)="toggleSidenav(sidenav)"
         aria-label="Toggle navigation"
-        class="toggle-button"
+        *ngIf="!isDesktopView"
       >
         <mat-icon>menu</mat-icon>
       </button>
       <span>User Dashboard</span>
     </mat-toolbar>
 
-    <div class="content">
+    <!-- Main Content Area -->
+    <div class="main-content">
       <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
-

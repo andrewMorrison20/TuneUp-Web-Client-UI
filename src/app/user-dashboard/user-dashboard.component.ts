@@ -1,12 +1,11 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-sidebar',
-  templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss']
+  selector: 'app-user-dashboard',
+  templateUrl: './user-dashboard.component.html',
+  styleUrls: ['./user-dashboard.component.scss']
 })
-export class SidebarComponent implements OnInit {
-
+export class UserDashboardComponent implements OnInit {
   isDesktopView: boolean = true;
 
   ngOnInit(): void {
@@ -23,6 +22,6 @@ export class SidebarComponent implements OnInit {
   }
 
   toggleSidenav(sidenav: any): void {
-    sidenav.toggle();
+    sidenav.toggle(); // Toggles sidebar visibility
   }
 }

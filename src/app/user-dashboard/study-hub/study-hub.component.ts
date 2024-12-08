@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrl: './study-hub.component.scss'
 })
 export class StudyHubComponent {
+  isSidebarOpen: boolean = true; // Sidebar is open by default
 
+  toggleSidebar(): void {
+    this.isSidebarOpen = !this.isSidebarOpen; // Toggle the sidebar state
+  }
 }

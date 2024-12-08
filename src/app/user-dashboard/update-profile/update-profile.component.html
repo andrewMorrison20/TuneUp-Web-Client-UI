@@ -1,3 +1,103 @@
-<app-navbar></app-navbar>
-<app-sidebar></app-sidebar>
+<div class="update-profile-container">
+  <h1>Update Profile</h1>
+
+  <form (ngSubmit)="onSubmit()" #profileForm="ngForm" class="profile-update-form">
+    <!-- Profile Picture Update -->
+    <div class="form-group">
+      <label for="profilePicture">Profile Picture</label>
+      <input type="file" id="profilePicture" (change)="onFileSelected($event)" />
+      <div class="profile-preview">
+        <img *ngIf="profilePicturePreview" [src]="profilePicturePreview" alt="Profile Preview" />
+      </div>
+    </div>
+
+    <!-- Genre Dropdown -->
+    <div class="form-group">
+      <label for="genre">Genre</label>
+      <select id="genre" [(ngModel)]="profile.genre" name="genre" required>
+        <option *ngFor="let genre of genres" [value]="genre">{{ genre }}</option>
+      </select>
+    </div>
+
+    <!-- Instruments Dropdown -->
+    <div class="form-group">
+      <label for="instrument">Instrument</label>
+      <select id="instrument" [(ngModel)]="profile.instrument" name="instrument" required>
+        <option *ngFor="let instrument of instruments" [value]="instrument">{{ instrument }}</option>
+      </select>
+    </div>
+
+    <!-- Profile Type Dropdown -->
+    <div class="form-group">
+      <label for="profileType">Profile Type</label>
+      <select id="profileType" [(ngModel)]="profile.profileType" name="profileType" required>
+        <option *ngFor="let type of profileTypes" [value]="type">{{ type }}</option>
+      </select>
+    </div>
+
+    <!-- Bio -->
+    <div class="form-group">
+      <label for="bio">Bio</label>
+      <textarea id="bio" [(ngModel)]="profile.bio" name="bio" rows="5"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Pricing</label>
+
+      <!-- Pricing List -->
+      <ul class="pricing-list">
+        <li *ngFor="let price of profile.pricingList; let i = index">
+          {{ price.duration }} - £{{ price.amount }}
+          <button type="button" (click)="removePricing(i)">Remove</button>
+        </li>
+      </ul>
+
+      <!-- Standard Pricing -->
+      <div class="form-group">
+        <label for="duration">Duration</label>
+        <select id="duration" [(ngModel)]="newPricing.duration" name="duration" required>
+          <option *ngFor="let duration of durations" [value]="duration">{{ duration }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="price">Price (£)</label>
+        <select id="price" [(ngModel)]="newPricing.amount" name="price" required>
+          <option *ngFor="let price of prices" [value]="price">£{{ price }}</option>
+        </select>
+      </div>
+      <button type="button" class="btn-add-pricing" (click)="addPricing()">Add Pricing</button>
+
+      <!-- Custom Pricing -->
+      <div class="custom-pricing">
+        <label>Custom Pricing</label>
+        <div class="form-group">
+          <label for="customDuration">Custom Duration</label>
+          <input
+            type="text"
+            id="customDuration"
+            [(ngModel)]="customPricing.duration"
+            placeholder="Enter custom duration"
+            name="customDuration"
+          />
+        </div>
+        <div class="form-group">
+          <label for="customAmount">Custom Price (£)</label>
+          <input
+            type="number"
+            id="customAmount"
+            [(ngModel)]="customPricing.amount"
+            placeholder="Enter custom price"
+            name="customAmount"
+          />
+        </div>
+        <button type="button" (click)="addCustomPricing()">Add Custom Pricing</button>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" class="btn-save">Save Changes</button>
+  </form>
+</div>
+
+
 

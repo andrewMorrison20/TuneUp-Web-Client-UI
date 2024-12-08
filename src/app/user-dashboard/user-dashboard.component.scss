@@ -1,0 +1,19 @@
+.sidenav-container {
+  height: 100vh; /* Full height */
+}
+
+.sidebar {
+  width: 240px;
+  background-color: #a8e8d0/* Fixed width for the sidebar */
+}
+
+.mat-sidenav-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.main-content {
+  padding: 16px;
+  overflow-y: auto; /* Scrollable content */
+}
