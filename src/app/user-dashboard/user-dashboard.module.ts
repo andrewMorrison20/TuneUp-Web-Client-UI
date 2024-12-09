@@ -20,6 +20,7 @@ import {MatOption, MatSelect} from "@angular/material/select";
 import {MatInput} from "@angular/material/input";
 import {UpdateProfileComponent} from "./update-profile/update-profile.component";
 import {UserDashboardComponent} from "./user-dashboard.component";
+import {AccountSettingsModule} from "../account-settings/account-settings.module";
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import {UserDashboardComponent} from "./user-dashboard.component";
   imports: [
     CommonModule,
     UserDashboardRoutingModule,
+    AccountSettingsModule,
     HttpClientModule,
     MatSidenavModule,
     MatToolbarModule,
