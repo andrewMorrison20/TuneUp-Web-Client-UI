@@ -21,6 +21,7 @@ import {MatInput} from "@angular/material/input";
 import {UpdateProfileComponent} from "./update-profile/update-profile.component";
 import {UserDashboardComponent} from "./user-dashboard.component";
 import {AccountSettingsModule} from "../account-settings/account-settings.module";
+import {FooterModule} from "../components/footer/footer.module";
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import {AccountSettingsModule} from "../account-settings/account-settings.module
     MatFormField,
     MatSelect,
     MatOption,
-    MatInput
+    MatInput,
+    FooterModule
   ]
 })
 export class UserDashboardModule { }
