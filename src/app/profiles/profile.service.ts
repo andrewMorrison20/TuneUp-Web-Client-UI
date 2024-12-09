@@ -118,7 +118,8 @@ export class ProfileService {
       profileType: profile.profileType,
       instruments: profile.instruments ? profile.instruments.map((instrument: any) => instrument.name) : [],
       appUserId: profile.appUserId,
-      pricesMap: profile.prices ? this.mapPricesToMap(profile.prices) : new Map()
+      pricesMap: profile.prices ? this.mapPricesToMap(profile.prices) : new Map(),
+      genres:profile.genres? profile.genres.map((genre: any) => genre.name) : []
     };
   }
 
@@ -143,7 +144,8 @@ export class ProfileService {
       onlineLessons: profile.onlineLessons,
       profileType: profile.profileType,
       appUserId: profile.appUserId,
-      enrolledCourses: []
+      enrolledCourses: [],
+      genres:profile.genres? profile.genres.map((genre: any) => genre.name) : []
     };
   }
 

@@ -15,4 +15,5 @@ export interface TutorProfile {
   rating: number;
   reviews: Review[];
   pricesMap: Map<string, number>;
+  genres: string[];
 }
