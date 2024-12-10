@@ -15,12 +15,14 @@ import {HttpClientModule} from "@angular/common/http";
 import {NavModule} from "../components/nav/nav.module";
 import {SearchBarModule} from "../components/search-bar/search-bar.module";
 import {ResetPasswordComponent} from "./reset-password/reset-password.component";
+import {UpdatePasswordComponent} from "./reset-password/update-password/update-password.component";
 
 
 @NgModule({
   declarations: [
     LoginComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    UpdatePasswordComponent
   ],
   imports: [
     CommonModule,

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-reset-password',
@@ -7,13 +8,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./reset-password.component.scss'],
 })
 export class ResetPasswordComponent {
-  forgotPasswordForm: FormGroup; // Form group for the email input
-  errorMessage: string | null = null; // To hold error messages
+  forgotPasswordForm: FormGroup;
+  errorMessage: string | null = null;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private http: HttpClient) {
     // Initialize the form group
     this.forgotPasswordForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]], // Email field with validation
+      email: ['', [Validators.required, Validators.email]],
     });
   }
 
@@ -21,30 +22,24 @@ export class ResetPasswordComponent {
     if (this.forgotPasswordForm.valid) {
       const email = this.forgotPasswordForm.get('email')?.value;
       console.log('Sending password reset email to:', email);
-      this.requestEmailLink(email).then(
-        () => {
-          alert('Password reset email sent successfully!');
+
+      this.requestEmailLink(email).subscribe({
+        next: () => {
+          alert('Password Reset Email sent successfully.');
           this.errorMessage = null;
         },
-        (error) => {
-          this.errorMessage = error;
-        }
-      );
+        error: (err) => {
+          this.errorMessage = err.error.message || 'Failed to send password reset email.';
+        },
+      });
     } else {
       this.errorMessage = 'Please provide a valid email address.';
     }
   }
 
-
-  requestEmailLink(email: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (email === 'fail@example.com') {
-          reject('Failed to send password reset email. Please try again.');
-        } else {
-          resolve();
-        }
-      }, 1000);
-    });
+  // Send email request to backend
+  requestEmailLink(email: string) {
+    const url =  'http://localhost:8080/api/users/requestResetPasswordEmail';
+    return this.http.post(url, { email });
   }
 }
