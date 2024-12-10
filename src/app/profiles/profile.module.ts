@@ -22,6 +22,7 @@ import {NavModule} from "../components/nav/nav.module";
 import {SearchBarModule} from "../components/search-bar/search-bar.module";
 import {ReviewCardComponent} from "../review-card/review-card.component";
 import {AuthGuard} from "../authentication/auth-guard";
+import {FooterModule} from "../components/footer/footer.module";
 
 const profileRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent },
@@ -35,24 +36,25 @@ const profileRoutes: Routes = [
     SearchResultsComponent,
     ReviewCardComponent
   ],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    MatCardModule,
-    MatIconModule,
-    MatListModule,
-    MatProgressBarModule,
-    MatChipsModule,
-    MatDividerModule,
-    MatCardModule,
-    RouterLink,
-    RouterModule.forChild(profileRoutes),
-    MatProgressSpinner,
-    MatPaginator,
-    NavModule,
-    SearchBarModule,
-    MatButton,
-  ],
+    imports: [
+        CommonModule,
+        HttpClientModule,
+        MatCardModule,
+        MatIconModule,
+        MatListModule,
+        MatProgressBarModule,
+        MatChipsModule,
+        MatDividerModule,
+        MatCardModule,
+        RouterLink,
+        RouterModule.forChild(profileRoutes),
+        MatProgressSpinner,
+        MatPaginator,
+        NavModule,
+        SearchBarModule,
+        MatButton,
+        FooterModule,
+    ],
   providers: [
     ProfileService
   ],

@@ -3,13 +3,16 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 20px;
-  max-width: 1200px;
+  max-width: 1500px;
   margin: 50px auto;
 }
 
 .current-details {
   flex: 1;
-  max-width: 45%;
+  max-width: 100%;
+  width: 100%;
+  font-size: 1.2rem; /* Adjust font size as desired */
+  line-height: 1.6;  /* Optional: improves readability */
 }
 
 .update-forms {

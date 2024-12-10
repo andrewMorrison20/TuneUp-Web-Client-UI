@@ -14,4 +14,5 @@ export interface StudentProfile {
   grades: string[];
   reviews: Review[];
   appUserId: number;
+  genres: string[];
 }
