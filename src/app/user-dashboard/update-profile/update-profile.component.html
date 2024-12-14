@@ -94,6 +94,27 @@
       </div>
     </div>
 
+    <div class="form-group">
+      <label for="tuitionRegion">Tuition Region</label>
+      <input
+        type="text"
+        id="tuitionRegion"
+        [(ngModel)]="searchQuery"
+        (input)="onRegionSearch()"
+        name="tuitionRegion"
+        placeholder="Search for a region"
+      />
+      <ul *ngIf="regionSuggestions.length > 0" class="region-suggestions">
+        <li
+          *ngFor="let region of regionSuggestions"
+          (click)="selectRegion(region)"
+        >
+          {{ region.name }}
+        </li>
+      </ul>
+      <p *ngIf="selectedRegion">Selected: {{ selectedRegion.name }}</p>
+    </div>
+
     <!-- Submit Button -->
     <button type="submit" class="btn-save">Save Changes</button>
   </form>

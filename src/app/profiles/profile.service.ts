@@ -119,7 +119,8 @@ export class ProfileService {
       instruments: profile.instruments ? profile.instruments.map((instrument: any) => instrument.name) : [],
       appUserId: profile.appUserId,
       pricesMap: profile.prices ? this.mapPricesToMap(profile.prices) : new Map(),
-      genres:profile.genres? profile.genres.map((genre: any) => genre.name) : []
+      genres:profile.genres? profile.genres.map((genre: any) => genre.name) : [],
+      tuitionRegion: profile.tuitionRegion ? profile.tuitionRegion.name : null
     };
   }
 
@@ -145,7 +146,8 @@ export class ProfileService {
       profileType: profile.profileType,
       appUserId: profile.appUserId,
       enrolledCourses: [],
-      genres:profile.genres? profile.genres.map((genre: any) => genre.name) : []
+      genres:profile.genres? profile.genres.map((genre: any) => genre.name) : [],
+      tuitionRegion: profile.tuitionRegion ? profile.tuitionRegion.name : null
     };
   }
 

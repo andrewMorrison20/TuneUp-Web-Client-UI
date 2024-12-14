@@ -16,4 +16,5 @@ export interface TutorProfile {
   reviews: Review[];
   pricesMap: Map<string, number>;
   genres: string[];
+  tuitionRegion: string;
 }
