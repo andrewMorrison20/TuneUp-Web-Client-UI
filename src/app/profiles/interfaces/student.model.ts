@@ -15,4 +15,5 @@ export interface StudentProfile {
   reviews: Review[];
   appUserId: number;
   genres: string[];
+  tuitionRegion: string;
 }

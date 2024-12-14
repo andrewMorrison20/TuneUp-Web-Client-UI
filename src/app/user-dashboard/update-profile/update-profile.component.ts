@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-update-profile',
@@ -20,6 +21,7 @@ export class UpdateProfileComponent {
     bio: '',
     pricingList: [] as { duration: string; amount: number }[], // List of pricing entries
     profilePicture: null,
+    tuitionRegion: null, // Add tuition region property to profile
   };
 
   newPricing = {
@@ -27,13 +29,18 @@ export class UpdateProfileComponent {
     amount: this.prices[0], // Default to the first price
   };
 
-  // Set amount as a number instead of null
   customPricing = {
     duration: '',
     amount: 0, // Default to 0 or any initial valid number
   };
 
   profilePicturePreview: string | null = null;
+
+  regionSuggestions: any[] = []; // List of suggestions for the region search
+  searchQuery: string = ''; // Search query for the tuition region
+  selectedRegion: any = null; // Selected region object
+
+  constructor(private http: HttpClient) {}
 
   onFileSelected(event: any): void {
     const file = event.target.files[0];
@@ -54,7 +61,6 @@ export class UpdateProfileComponent {
   }
 
   addCustomPricing(): void {
-    // Ensure valid number for amount and non-empty duration before pushing
     if (this.customPricing.duration.trim() && this.customPricing.amount > 0) {
       this.profile.pricingList.push({ ...this.customPricing });
       this.customPricing = { duration: '', amount: 0 }; // Reset custom pricing inputs
@@ -65,8 +71,31 @@ export class UpdateProfileComponent {
     this.profile.pricingList.splice(index, 1); // Remove pricing entry by index
   }
 
+  onRegionSearch(): void {
+    if (this.searchQuery.trim().length > 2) {
+      // Call the backend API to fetch region suggestions
+      this.http
+        .get<any[]>(`http://localhost:8080/api/regions?query=${this.searchQuery.trim()}`)
+        .subscribe((data) => {
+          this.regionSuggestions = data; // Populate suggestions
+        });
+    } else {
+      this.regionSuggestions = []; // Clear suggestions if query is too short
+    }
+  }
+
+  selectRegion(region: any): void {
+    // Set the selected region and update the profile's tuition region
+    this.selectedRegion = region;
+    this.profile.tuitionRegion = region; // Save region in the profile object
+    this.regionSuggestions = []; // Clear suggestions
+  }
+
   onSubmit(): void {
     console.log('Profile Updated:', this.profile);
-    // Logic to save the updated profile
+    // Logic to save the updated profile (e.g., HTTP PUT request to backend)
+    this.http
+      .put('/api/profiles', this.profile)
+      .subscribe((response) => console.log('Profile updated successfully', response));
   }
 }

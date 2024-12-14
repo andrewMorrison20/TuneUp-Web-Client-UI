@@ -84,3 +84,33 @@ button:hover {
     margin: 8px;
   }
 }
+mat-card-subtitle {
+  font-size: 1.1em;
+  margin-top: 4px;
+  display: flex; /* Arrange profile type and area side by side */
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  justify-content: center; /* Center-align subtitle content */
+  gap: 8px; /* Add spacing between elements */
+}
+
+/* Style for Profile Type */
+.profile-type {
+  font-weight: bold;
+  color: #3f51b5; /* Primary color */
+  font-size: 1.2em; /* Slightly larger font */
+}
+
+/* Style for Area */
+.profile-area {
+  color: rgba(0, 0, 0, 0.7); /* Neutral color for contrast */
+  font-size: 1em; /* Smaller font compared to profile type */
+  font-style: italic; /* Differentiate visually */
+}
+
+/* Media Query for Mobile Responsiveness */
+@media (max-width: 600px) {
+  mat-card-subtitle {
+    flex-direction: column; /* Stack type and area vertically */
+    gap: 4px; /* Reduce gap for smaller screens */
+  }
+}
