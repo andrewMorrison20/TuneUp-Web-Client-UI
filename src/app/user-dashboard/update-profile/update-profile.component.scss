@@ -1,20 +1,30 @@
 .update-profile-container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin: 20px auto;
+  max-width: 1200px;
+}
+
+.sub-container {
+  flex: 1;
+  padding: 16px;
+}
+
+mat-card {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
-.update-profile-container h1 {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  text-align: center;
+mat-card-title {
+  font-size: 20px;
+  font-weight: 500;
+  color: #3f51b5;
+  margin-bottom: 16px;
 }
 
-.profile-update-form {
+.profile-update-form,
+.pricing-form {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -26,19 +36,6 @@
   gap: 8px;
 }
 
-.form-group label {
-  font-weight: bold;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
 .profile-preview img {
   max-width: 100px;
   max-height: 100px;
@@ -46,21 +43,6 @@
   margin-top: 10px;
 }
 
-.btn-save {
-  align-self: flex-end;
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px 20px;
-  font-size: 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.btn-save:hover {
-  background-color: #0056b3;
-}
 .pricing-list {
   list-style: none;
   padding: 0;
@@ -84,40 +66,30 @@
   padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .pricing-list li button:hover {
   background-color: #d9363e;
 }
 
-.custom-pricing {
-  margin-top: 20px;
-  padding: 10px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-/* Add Pricing Button */
+.btn-save,
 .btn-add-pricing {
-  background-color: #007bff; /* Blue background */
-  color: #fff; /* White text */
-  padding: 6px 12px; /* Smaller padding */
-  font-size: 14px; /* Smaller font size */
-  border: none; /* Remove border */
-  border-radius: 4px; /* Rounded corners */
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
+.btn-save:hover,
 .btn-add-pricing:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+  background-color: #0056b3;
 }
 
-.btn-add-pricing:focus {
-  outline: none;
-  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5); /* Focus ring */
-}
 .region-suggestions {
   list-style: none;
   margin: 0;
@@ -134,4 +106,15 @@
 
 .region-suggestions li:hover {
   background-color: #f0f0f0;
+}
+/* Responsive design for mobile devices */
+@media (max-width: 768px) {
+  .update-profile-container {
+    flex-direction: column; /* Stack containers vertically */
+    gap: 24px; /* Increase gap between stacked containers */
+  }
+
+  .sub-container {
+    min-width: 100%; /* Full width for each container */
+  }
 }

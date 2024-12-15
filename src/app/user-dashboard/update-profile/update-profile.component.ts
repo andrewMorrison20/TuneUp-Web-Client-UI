@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import {Genre, Instrument} from "../../components/search-bar/search-bar.component";
+
 
 @Component({
   selector: 'app-update-profile',
@@ -7,16 +9,16 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./update-profile.component.scss']
 })
 export class UpdateProfileComponent {
-  genres = ['Rock', 'Jazz', 'Classical', 'Pop', 'Hip Hop'];
-  instruments = ['Guitar', 'Piano', 'Drums', 'Violin', 'Flute'];
+  genres: Genre [] = [];
+  instruments : Instrument [] = [];
   profileTypes = ['Student', 'Tutor', 'Parent'];
 
   durations = ['30 mins', '1 hr', '1.5 hrs', '2 hrs', '3 hrs'];
   prices = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]; // Increment by £5
 
   profile = {
-    genre: '',
-    instrument: '',
+    genres: '',
+    instruments: '',
     profileType: '',
     bio: '',
     pricingList: [] as { duration: string; amount: number }[], // List of pricing entries
@@ -42,6 +44,10 @@ export class UpdateProfileComponent {
 
   constructor(private http: HttpClient) {}
 
+  ngOnInit(): void {
+    this.loadInstruments();
+    this.loadGenres();
+  }
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
@@ -80,7 +86,7 @@ export class UpdateProfileComponent {
           this.regionSuggestions = data; // Populate suggestions
         });
     } else {
-      this.regionSuggestions = []; // Clear suggestions if query is too short
+      this.regionSuggestions = []
     }
   }
 
@@ -88,7 +94,7 @@ export class UpdateProfileComponent {
     // Set the selected region and update the profile's tuition region
     this.selectedRegion = region;
     this.profile.tuitionRegion = region; // Save region in the profile object
-    this.regionSuggestions = []; // Clear suggestions
+    this.regionSuggestions = [];
   }
 
   onSubmit(): void {
@@ -97,5 +103,29 @@ export class UpdateProfileComponent {
     this.http
       .put('/api/profiles', this.profile)
       .subscribe((response) => console.log('Profile updated successfully', response));
+  }
+
+  loadInstruments(): void {
+    this.http.get<Instrument[]>('http://localhost:8080/api/instruments')
+      .subscribe({
+        next: (data) => {
+          this.instruments = data; // Store full instrument objects
+        },
+        error: (err) => {
+          console.error('Error fetching instruments:', err);
+        }
+      })
+  }
+
+    loadGenres(): void {
+      this.http.get<Genre[]>('http://localhost:8080/api/genres')
+        .subscribe({
+          next: (data) => {
+            this.genres = data; // Store full genre objects
+          },
+          error: (err) => {
+            console.error('Error fetching genres :', err);
+          }
+        })
   }
 }

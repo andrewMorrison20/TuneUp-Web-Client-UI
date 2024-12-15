@@ -22,6 +22,7 @@ import {UpdateProfileComponent} from "./update-profile/update-profile.component"
 import {UserDashboardComponent} from "./user-dashboard.component";
 import {AccountSettingsModule} from "../account-settings/account-settings.module";
 import {FooterModule} from "../components/footer/footer.module";
+import {MatCard, MatCardSubtitle, MatCardTitle} from "@angular/material/card";
 
 @NgModule({
   declarations: [
@@ -53,7 +54,10 @@ import {FooterModule} from "../components/footer/footer.module";
     MatSelect,
     MatOption,
     MatInput,
-    FooterModule
+    FooterModule,
+    MatCardSubtitle,
+    MatCardTitle,
+    MatCard
   ]
 })
 export class UserDashboardModule { }

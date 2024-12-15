@@ -2,7 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-interface Instrument {
+export interface Instrument {
+  name: string;
+  id: number;
+}
+
+export interface Genre {
   name: string;
   id: number;
 }
