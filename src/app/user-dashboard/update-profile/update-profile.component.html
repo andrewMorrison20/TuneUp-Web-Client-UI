@@ -72,7 +72,6 @@
     <form (ngSubmit)="onSubmit()" #pricingForm="ngForm" class="pricing-form">
       <!-- Pricing List -->
       <div class="form-group">
-        <label>Pricing List</label>
         <mat-list>
           <mat-list-item *ngFor="let price of profile.pricingList; let i = index">
             {{ price.duration }} - £{{ price.amount }}
