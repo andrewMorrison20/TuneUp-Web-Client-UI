@@ -19,6 +19,7 @@
           <h1>{{ profile?.name }}</h1>
           <p class="bio">{{ profile?.bio }}</p>
           <span class="profile-type-chip mat-chip mat-chip-outline">{{ profile?.profileType | titlecase }}</span>
+          <span class="profile-type-chip mat-chip mat-chip-outline" *ngIf="profile.tuitionRegion">  {{ profile.tuitionRegion | titlecase}}</span>
         </div>
       </div>
 
