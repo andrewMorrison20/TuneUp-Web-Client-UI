@@ -1,4 +1,6 @@
 import {Review} from "./review.model";
+import {Instrument} from "../../components/search-bar/search-bar.component";
+import {TuitionRegion} from "./tuition-region.model";
 
 export interface TutorProfile {
   id: number;
@@ -8,13 +10,12 @@ export interface TutorProfile {
   appUserId: number;
   profilePicture: string;
   qualifications: string;
-  instruments: string[];
+  instruments: Instrument[];
   onlineLessons: boolean;
-  pricing: number;
   enrolledStudents: number;
   rating: number;
   reviews: Review[];
   pricesMap: Map<string, number>;
   genres: string[];
-  tuitionRegion: string;
+  tuitionRegion: TuitionRegion;
 }

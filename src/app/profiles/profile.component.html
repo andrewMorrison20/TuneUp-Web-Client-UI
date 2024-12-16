@@ -19,7 +19,7 @@
           <h1>{{ profile?.name }}</h1>
           <p class="bio">{{ profile?.bio }}</p>
           <span class="profile-type-chip mat-chip mat-chip-outline">{{ profile?.profileType | titlecase }}</span>
-          <span class="profile-type-chip mat-chip mat-chip-outline" *ngIf="profile.tuitionRegion">  {{ profile.tuitionRegion | titlecase}}</span>
+          <span class="profile-type-chip mat-chip mat-chip-outline" *ngIf="profile.tuitionRegion">  {{ profile.tuitionRegion.name | titlecase}}</span>
         </div>
       </div>
 
@@ -50,18 +50,27 @@
         <div class="instruments-section">
           <h2>Instruments</h2>
           <div class="instrument-container">
-            <div *ngIf="profile.instruments !== undefined">
-              <div *ngIf="profile.instruments && profile.instruments.length > 0">
-                <p>{{ profile.instruments.join(', ') }}</p>
+            <!-- Check if instruments are available -->
+            <div *ngIf="profile.instruments !== undefined; else noData">
+              <div *ngIf="profile.instruments.length > 0; else noInstruments">
+                <ul>
+                  <li *ngFor="let instrument of profile.instruments">
+                    {{ instrument.name }}
+                  </li>
+                </ul>
               </div>
-              <div *ngIf="profile.instruments && profile.instruments.length === 0">
-                <p>No instruments listed</p>
-              </div>
-            </div>
-            <div *ngIf="profile.instruments === undefined">
-              <p>Instruments: Not available</p>
             </div>
           </div>
+
+          <!-- Fallback for no instruments listed -->
+          <ng-template #noInstruments>
+            <p>No instruments listed</p>
+          </ng-template>
+
+          <!-- Fallback for undefined instruments -->
+          <ng-template #noData>
+            <p>Instruments: Not available</p>
+          </ng-template>
         </div>
 
         <!-- Pricing Section -->

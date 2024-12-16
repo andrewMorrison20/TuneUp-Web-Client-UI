@@ -11,4 +11,5 @@ type Profile = TutorProfile | StudentProfile;
 })
 export class ProfileCardComponent {
   @Input() profile: Profile | null = null;
+
 }

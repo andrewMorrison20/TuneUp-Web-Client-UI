@@ -2,7 +2,7 @@
   <!-- Sub-container for General Profile Information -->
   <mat-card class="sub-container sub-container-1">
     <mat-card-title>Update Profile Information</mat-card-title>
-    <form (ngSubmit)="onSubmit()" #profileForm="ngForm" class="profile-update-form">
+    <form (ngSubmit)="onSubmitProfile()" #profileForm="ngForm" class="profile-update-form">
       <!-- Profile Picture -->
       <div class="form-group">
         <label for="profilePicture">Profile Picture</label>
@@ -69,11 +69,11 @@
   <!-- Sub-container for Pricing Information -->
   <mat-card class="sub-container sub-container-2">
     <mat-card-title>Update Pricing</mat-card-title>
-    <form (ngSubmit)="onSubmit()" #pricingForm="ngForm" class="pricing-form">
+    <form (ngSubmit)="onSubmitPricing()" #pricingForm="ngForm" class="pricing-form">
       <!-- Pricing List -->
       <div class="form-group">
         <mat-list>
-          <mat-list-item *ngFor="let price of profile.pricingList; let i = index">
+          <mat-list-item *ngFor="let price of pricingList; let i = index">
             {{ price.duration }} - £{{ price.amount }}
             <button mat-icon-button color="warn" (click)="removePricing(i)">
               <mat-icon>delete</mat-icon>

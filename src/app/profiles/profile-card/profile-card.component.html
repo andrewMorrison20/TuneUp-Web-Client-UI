@@ -5,7 +5,7 @@
     <mat-card-title>{{ profile.name || 'Unknown' }}</mat-card-title>
     <mat-card-subtitle>
       <span class="profile-type">{{ profile.profileType || 'Not specified' }}</span>
-      <span class="profile-area" *ngIf="profile.tuitionRegion"> : {{ profile.tuitionRegion }}</span>
+      <span class="profile-area" *ngIf="profile.tuitionRegion"> : {{ profile.tuitionRegion.name }}</span>
     </mat-card-subtitle>
   </mat-card-header>
 
@@ -16,19 +16,29 @@
       <p>{{ profile.bio || 'No bio available' }}</p>
     </div>
 
-    <!-- Instruments Section -->
-    <div *ngIf="profile.instruments !== undefined">
-      <strong>Instruments:</strong>
-      <p *ngIf="profile.instruments && profile.instruments.length > 0">
-        {{ profile.instruments.join(', ') }}
-      </p>
-      <p *ngIf="profile.instruments && profile.instruments.length === 0">
-        No instruments listed
-      </p>
+    <div class="instruments-section">
+      <strong>Instruments</strong>
+      <div class="instrument-container">
+        <div *ngIf="profile.instruments !== undefined; else noData">
+          <div *ngIf="profile.instruments.length > 0; else noInstruments">
+            <p>
+              <!-- Use *ngFor to display instruments inline -->
+              <span *ngFor="let instrument of profile.instruments; let last = last">
+            {{ instrument.name }}<span *ngIf="!last">, </span>
+          </span>
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
-    <div *ngIf="profile.instruments === undefined">
+
+    <ng-template #noInstruments>
+      <p>No instruments listed</p>
+    </ng-template>
+
+    <ng-template #noData>
       <p><strong>Instruments:</strong> Not available</p>
-    </div>
+    </ng-template>
   </mat-card-content>
 
   <!-- Actions -->

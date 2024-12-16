@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Genre, Instrument} from "../../components/search-bar/search-bar.component";
+import {ProfileService} from "../../profiles/profile.service";
+import {AuthenticatedUser} from "../../authentication/authenticated-user.class";
+import {TutorProfile} from "../../profiles/interfaces/tutor.model";
+import {StudentProfile} from "../../profiles/interfaces/student.model";
 
 
 @Component({
@@ -9,22 +13,13 @@ import {Genre, Instrument} from "../../components/search-bar/search-bar.componen
   styleUrls: ['./update-profile.component.scss']
 })
 export class UpdateProfileComponent {
+  profile!: TutorProfile | StudentProfile;
+  pricingList: { duration: string; amount: number }[] = [];
   genres: Genre [] = [];
   instruments : Instrument [] = [];
   profileTypes = ['Student', 'Tutor', 'Parent'];
-
-  durations = ['30 mins', '1 hr', '1.5 hrs', '2 hrs', '3 hrs'];
-  prices = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]; // Increment by £5
-
-  profile = {
-    genres: '',
-    instruments: '',
-    profileType: '',
-    bio: '',
-    pricingList: [] as { duration: string; amount: number }[], // List of pricing entries
-    profilePicture: null,
-    tuitionRegion: null, // Add tuition region property to profile
-  };
+  durations = ['30 mins','45 mins', '1 hr', '1.25 hrs','1.5 hr','2 hrs','2.25 hrs','2.5 hrs', '3 hrs'];
+  prices = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50,55,60,65,70,75,80,85,90];
 
   newPricing = {
     duration: this.durations[0], // Default to the first duration
@@ -33,18 +28,19 @@ export class UpdateProfileComponent {
 
   customPricing = {
     duration: '',
-    amount: 0, // Default to 0 or any initial valid number
+    amount: 0,
   };
 
   profilePicturePreview: string | null = null;
 
-  regionSuggestions: any[] = []; // List of suggestions for the region search
-  searchQuery: string = ''; // Search query for the tuition region
-  selectedRegion: any = null; // Selected region object
+  regionSuggestions: any[] = [];
+  searchQuery: string = '';
+  selectedRegion: any = null;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private profileService: ProfileService) {}
 
   ngOnInit(): void {
+    this.loadProfile();
     this.loadInstruments();
     this.loadGenres();
   }
@@ -62,28 +58,28 @@ export class UpdateProfileComponent {
 
   addPricing(): void {
     if (this.newPricing.duration && this.newPricing.amount) {
-      this.profile.pricingList.push({ ...this.newPricing });
+      this.pricingList.push({ ...this.newPricing });
     }
   }
 
   addCustomPricing(): void {
     if (this.customPricing.duration.trim() && this.customPricing.amount > 0) {
-      this.profile.pricingList.push({ ...this.customPricing });
-      this.customPricing = { duration: '', amount: 0 }; // Reset custom pricing inputs
+      this.pricingList.push({ ...this.customPricing });
+      this.customPricing = { duration: '', amount: 0 };
     }
   }
 
   removePricing(index: number): void {
-    this.profile.pricingList.splice(index, 1); // Remove pricing entry by index
+    this.pricingList.splice(index, 1);
   }
 
   onRegionSearch(): void {
     if (this.searchQuery.trim().length > 2) {
-      // Call the backend API to fetch region suggestions
+
       this.http
         .get<any[]>(`http://localhost:8080/api/regions?query=${this.searchQuery.trim()}`)
         .subscribe((data) => {
-          this.regionSuggestions = data; // Populate suggestions
+          this.regionSuggestions = data;
         });
     } else {
       this.regionSuggestions = []
@@ -91,17 +87,21 @@ export class UpdateProfileComponent {
   }
 
   selectRegion(region: any): void {
-    // Set the selected region and update the profile's tuition region
+
     this.selectedRegion = region;
-    this.profile.tuitionRegion = region; // Save region in the profile object
+    this.profile.tuitionRegion = region;
     this.regionSuggestions = [];
   }
 
-  onSubmit(): void {
+  onSubmitProfile(): void {
     console.log('Profile Updated:', this.profile);
-    // Logic to save the updated profile (e.g., HTTP PUT request to backend)
+   this.profileService.updateProfile(this.profile);
+  }
+
+  onSubmitPricing(): void {
+    console.log('Pricing Updated:', this.profile);
     this.http
-      .put('/api/profiles', this.profile)
+      .put('http:localhost:8080/api/profiles/update', this.profile)
       .subscribe((response) => console.log('Profile updated successfully', response));
   }
 
@@ -127,5 +127,17 @@ export class UpdateProfileComponent {
             console.error('Error fetching genres :', err);
           }
         })
+  }
+
+  private loadProfile() {
+    this.profileService.getProfileByAppUserId(AuthenticatedUser.getAuthUserId()) .subscribe({
+      next: (data) => {
+        this.profile = data; // Store full instrument objects
+      },
+      error: (err) => {
+        console.error('Error fetching instruments:', err);
+      }
+    })
+
   }
 }

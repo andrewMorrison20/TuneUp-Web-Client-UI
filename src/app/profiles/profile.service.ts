@@ -79,6 +79,23 @@ export class ProfileService {
     );
   }
 
+  public getProfileByAppUserId(userId: number) {
+    const url = `${this.apiUrl}/profile/${userId}`;
+
+    return this.http.get<Profile>(url).pipe(
+      map(response => this.mapProfiles([response]))
+    ).pipe(
+      map(profiles => profiles[0])
+    );
+  }
+
+  public updateProfile( profile: Profile){
+    const url = `${this.apiUrl}/update`;
+    this.http
+      .put(url,profile)
+      .subscribe((response) => console.log('Profile updated successfully', response));
+  }
+
 
   private mapProfiles(rawProfiles: any[]): Profile[] {
     console.log('Profile : ', rawProfiles)
@@ -106,7 +123,6 @@ export class ProfileService {
   private mapToTutorProfile(profile: any): TutorProfile {
     return {
       enrolledStudents: 0,
-      pricing: 0,
       profilePicture: "",
       qualifications: "",
       rating: 0,
@@ -116,11 +132,11 @@ export class ProfileService {
       bio: profile.bio,
       onlineLessons: profile.onlineLessons,
       profileType: profile.profileType,
-      instruments: profile.instruments ? profile.instruments.map((instrument: any) => instrument.name) : [],
+      instruments: profile.instruments,
       appUserId: profile.appUserId,
       pricesMap: profile.prices ? this.mapPricesToMap(profile.prices) : new Map(),
       genres:profile.genres? profile.genres.map((genre: any) => genre.name) : [],
-      tuitionRegion: profile.tuitionRegion ? profile.tuitionRegion.name : null
+      tuitionRegion: profile.tuitionRegion
     };
   }
 
@@ -136,7 +152,7 @@ export class ProfileService {
       achievements: [],
       completedCourses: [],
       grades: [],
-      instruments: profile.instruments ? profile.instruments.map((instrument: any) => instrument.name) : [],
+      instruments: profile.instruments,
       profilePicture: "",
       reviews: [],
       id: profile.id,
@@ -147,7 +163,7 @@ export class ProfileService {
       appUserId: profile.appUserId,
       enrolledCourses: [],
       genres:profile.genres? profile.genres.map((genre: any) => genre.name) : [],
-      tuitionRegion: profile.tuitionRegion ? profile.tuitionRegion.name : null
+      tuitionRegion: profile.tuitionRegion
     };
   }
 
