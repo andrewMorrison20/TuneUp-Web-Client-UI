@@ -1,5 +1,5 @@
 import {Review} from "./review.model";
-import {Instrument} from "../../components/search-bar/search-bar.component";
+import {Genre, Instrument} from "../../components/search-bar/search-bar.component";
 import {TuitionRegion} from "./tuition-region.model";
 
 export interface TutorProfile {
@@ -16,6 +16,6 @@ export interface TutorProfile {
   rating: number;
   reviews: Review[];
   pricesMap: Map<string, number>;
-  genres: string[];
+  genres: Genre[];
   tuitionRegion: TuitionRegion;
 }

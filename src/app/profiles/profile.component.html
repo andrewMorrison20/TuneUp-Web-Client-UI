@@ -31,20 +31,21 @@
 <br>
       <!-- Additional Profile Details Section -->
       <div class="profile-section">
-        <div class="genre-section">
+        <div class="genres-section">
           <h2>Genres</h2>
           <div class="Genre-container">
-            <div *ngIf="profile.genres.length > 0">
-              <p>{{ profile.genres.join(',  ') }}</p>
+            <div *ngIf="profile.genres !== undefined; else noData">
+              <div *ngIf="profile.genres.length > 0;">
+                <p>
+                  <!-- Use *ngFor to display instruments inline -->
+                  <span *ngFor="let genre of profile.genres; let last = last">
+            {{ genre.name }}<span *ngIf="!last">, </span>
+          </span>
+                </p>
               </div>
-              <div *ngIf="profile.genres && profile.genres.length === 0">
-                <p>No Genres listed</p>
-              </div>
-            </div>
-            <div *ngIf="profile.genres === undefined">
-              <p>Genres: Not available</p>
             </div>
           </div>
+        </div>
 
 
         <div class="instruments-section">
