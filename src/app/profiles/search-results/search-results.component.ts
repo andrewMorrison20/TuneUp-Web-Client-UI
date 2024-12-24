@@ -17,7 +17,7 @@ export class SearchResultsComponent implements OnInit {
 
   // Pagination properties
   totalElements = 0;
-  pageSize = 10; // Items per page
+  pageSize = 8; // Items per page
   pageIndex = 0; // Current page index
 
   constructor(private profileService: ProfileService) {}

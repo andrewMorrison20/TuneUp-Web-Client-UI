@@ -39,7 +39,7 @@ export class ProfileService {
 
   constructor(private http: HttpClient) {}
 
-  getProfiles(page: number = 0, size: number = 10, sort: string = 'displayName,asc'): Observable<{ profiles: Profile[]; totalElements: number }> {
+  getProfiles(page: number = 0, size: number = 8, sort: string = 'displayName,asc'): Observable<{ profiles: Profile[]; totalElements: number }> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())
@@ -123,7 +123,7 @@ export class ProfileService {
   private mapToTutorProfile(profile: any): TutorProfile {
     return {
       enrolledStudents: 0,
-      profilePicture: profile.image,
+      profilePicture: profile.profilePicture,
       qualifications: "",
       rating: 0,
       reviews:[],
@@ -153,7 +153,7 @@ export class ProfileService {
       completedCourses: [],
       grades: [],
       instruments: profile.instruments,
-      profilePicture: profile.image,
+      profilePicture: profile.profilePicture,
       reviews: [],
       id: profile.id,
       name: profile.displayName,

@@ -52,7 +52,19 @@ export class UpdateProfileComponent {
         this.profilePicturePreview = e.target.result;
       };
       reader.readAsDataURL(file);
-      this.profile.profilePicture = file;
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      this.http.post('http://localhost:8080/api/images', formData).subscribe({
+        next: (image: any) => {
+          this.profile.profilePicture = image;
+          console.log('Image uploaded successfully:', image);
+        },
+        error: (err) => {
+          console.error('Error uploading image:', err);
+        }
+      });
     }
   }
 
