@@ -68,8 +68,46 @@
       <button mat-raised-button color="accent" type = "button" routerLink="/profiles/{{profile.id}}">View Profile</button>
   </mat-card>
 
+  <!-- Sub-container for Achievements and Qualifications -->
+  <mat-card class="sub-container sub-container-3" *ngIf="profile.profileType === 'Student'">
+    <mat-card-title>Achievements and Qualifications</mat-card-title>
+    <form (ngSubmit)="onSubmitQualifications()" #qualificationForm="ngForm" class="qualification-form">
+      <!-- Qualifications List -->
+      <div class="form-group">
+        <mat-list>
+          <mat-list-item *ngFor="let qualification of qualifications; let i = index">
+              {{ qualification.name }} - {{ qualification.description }}
+            <button mat-icon-button color="warn" (click)="removeQualification(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-list-item>
+        </mat-list>
+      </div>
+
+      <!-- Add Qualification -->
+      <mat-card-subtitle>Add a Qualification</mat-card-subtitle>
+      <mat-form-field appearance="outline" class="form-group">
+        <mat-label>Qualification Name</mat-label>
+        <input matInput [(ngModel)]="newQualification.name" name="qualificationName" placeholder="Enter qualification name"  />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="form-group">
+        <mat-label>Description</mat-label>
+        <textarea
+          matInput
+          [(ngModel)]="newQualification.description"
+          name="qualificationDescription"
+          placeholder="Enter qualification description"
+        ></textarea>
+      </mat-form-field>
+      <button mat-raised-button color="accent" type="button" (click)="addQualification()">Add Qualification</button>
+
+      <!-- Submit Button -->
+      <button mat-raised-button color="primary" type="submit">Save Achievements</button>
+    </form>
+  </mat-card>
+
   <!-- Sub-container for Pricing Information -->
-  <mat-card class="sub-container sub-container-2">
+  <mat-card class="sub-container sub-container-2" *ngIf="profile.profileType === 'Tutor'">
     <mat-card-title>Update Pricing</mat-card-title>
     <form (ngSubmit)="onSubmitPricing()" #pricingForm="ngForm" class="pricing-form">
       <!-- Pricing List -->
@@ -127,4 +165,5 @@
       <button mat-raised-button color="primary" type="submit">Save Pricing</button>
     </form>
   </mat-card>
+
 </div>

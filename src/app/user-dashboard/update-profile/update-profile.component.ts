@@ -36,6 +36,8 @@ export class UpdateProfileComponent {
   regionSuggestions: any[] = [];
   searchQuery: string = '';
   selectedRegion: any = null;
+  qualifications: { name: string; description: string }[] = [];
+  newQualification = { name: '', description: '' };
 
   constructor(private http: HttpClient, private profileService: ProfileService) {}
 
@@ -152,4 +154,34 @@ export class UpdateProfileComponent {
     })
 
   }
+  // Add a qualification to the list
+  addQualification(): void {
+    if (this.newQualification.name.trim() && this.newQualification.description.trim()) {
+      this.qualifications.push({ ...this.newQualification });
+      this.newQualification = { name: '', description: '' }; // Reset input fields
+    } else {
+      alert('Both qualification name and description are required.');
+    }
+  }
+
+  // Remove a qualification from the list
+  removeQualification(index: number): void {
+    this.qualifications.splice(index, 1);
+  }
+
+  // Handle form submission for qualifications
+  onSubmitQualifications(): void {
+    console.log('Qualifications Submitted:', this.qualifications);
+    // Add your backend API call here
+    /*this.http
+      .post('http://localhost:8080/api/qualifications', {
+        profileId: this.profile.id,
+        qualifications: this.qualifications,
+      })
+      .subscribe({
+        next: (response) => console.log('Qualifications saved successfully:', response),
+        error: (err) => console.error('Error saving qualifications:', err),
+      });*/
+  }
+
 }

@@ -36,7 +36,8 @@ mat-card-title {
 }
 
 .profile-update-form,
-.pricing-form {
+.pricing-form,
+.qualification-form{
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -48,9 +49,8 @@ mat-card-title {
   gap: 8px;
 }
 
-
-
-.pricing-list {
+.pricing-list,
+.qualification-list{
   list-style: none;
   padding: 0;
   margin: 10px 0;
@@ -93,7 +93,8 @@ mat-card-title {
 }
 
 .btn-save:hover,
-.btn-add-pricing:hover {
+.btn-add-pricing:hover,
+.btn-add-qualification:hover,{
   background-color: #0056b3;
 }
 
@@ -124,4 +125,19 @@ mat-card-title {
   .sub-container {
     min-width: 100%; /* Full width for each container */
   }
+
+
+
+  .btn-save,
+  .btn-add-qualification {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
 }
