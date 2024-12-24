@@ -39,7 +39,7 @@ export class ProfileService {
 
   constructor(private http: HttpClient) {}
 
-  getProfiles(page: number = 0, size: number = 8, sort: string = 'displayName,asc'): Observable<{ profiles: Profile[]; totalElements: number }> {
+  getAllProfiles(page: number = 0, size: number = 8, sort: string = 'displayName,asc'): Observable<{ profiles: Profile[]; totalElements: number }> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())
@@ -49,7 +49,24 @@ export class ProfileService {
       map(response => ({
         profiles: this.mapProfiles(response.content),
         totalElements: response.totalElements,
-        }))
+      }))
+    );
+  }
+
+  /**
+   * Get filtered profiles based on search criteria with pagination and sorting.
+   */
+  getFilteredProfiles(searchParams: any, page: number = 0, size: number = 8, sort: string = 'displayName,asc'): Observable<{ profiles: any[]; totalElements: number }> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('sort', sort);
+
+    return this.http.post<ProfileResponse>(`${this.apiUrl}/search`, searchParams, { params }).pipe(
+      map(response => ({
+        profiles: this.mapProfiles(response.content),
+        totalElements: response.totalElements,
+      }))
     );
   }
 

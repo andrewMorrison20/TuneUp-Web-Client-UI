@@ -20,11 +20,11 @@ export interface Genre {
 export class SearchBarComponent implements OnInit {
   searchQuery: string = '';
   selectedLocation: string = '';
-  selectedInstrumentId: number | null = null; // Store the ID of the selected instrument
+  selectedInstrumentId: number [] | null = null; // Store the ID of the selected instrument
 
   locations: string[] = ['Northern Ireland', 'England', 'Scotland', 'Wales'];
   instruments: Instrument[] = [];
-  selectedProfileType: String = "Tutor";
+  selectedProfileType: string = "";
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -53,10 +53,19 @@ export class SearchBarComponent implements OnInit {
   }
 
   onSearchClick(): void {
-    this.router.navigate(['/profiles/search']);
-    console.log('Search Query:', this.searchQuery);
-    console.log('Selected Location:', this.selectedLocation);
-    console.log('Selected Instrument ID:', this.selectedInstrumentId);
+    // Construct the query object
+    const queryParams = {
+      keyword: this.searchQuery || null,
+      country: this.selectedLocation || null,
+      instruments: this.selectedInstrumentId ? [this.selectedInstrumentId] : null,
+      profileType: this.selectedProfileType || null,
+      page: 0,
+      size: 10,
+      sort: 'displayName,asc'
+    };
+
+    // Navigate to the search-results route and pass query parameters
+    this.router.navigate(['/profiles/search'], { queryParams });
   }
 
   onProfileTypeChange() {

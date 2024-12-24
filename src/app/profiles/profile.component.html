@@ -20,6 +20,7 @@
           <p class="bio">{{ profile?.bio }}</p>
           <span class="profile-type-chip mat-chip mat-chip-outline">{{ profile?.profileType | titlecase }}</span>
           <span class="profile-type-chip mat-chip mat-chip-outline" *ngIf="profile.tuitionRegion">  {{ profile.tuitionRegion.name | titlecase}}</span>
+          <span class="profile-type-chip mat-chip mat-chip-outline" *ngIf="profile.onlineLessons">  Offers Online Lessons </span>
         </div>
       </div>
 
@@ -32,10 +33,10 @@
       <!-- Additional Profile Details Section -->
       <div class="profile-section">
         <div class="genres-section">
-          <h2>Genres</h2>
           <div class="Genre-container">
             <div *ngIf="profile.genres !== undefined; else noData">
               <div *ngIf="profile.genres.length > 0;">
+                <h2>Genres</h2>
                 <p>
                   <!-- Use *ngFor to display instruments inline -->
                   <span *ngFor="let genre of profile.genres; let last = last">
@@ -104,7 +105,6 @@
         </p>
       </div>
     </div>
-
   </ng-template>
 </div>
 <app-footer></app-footer>
