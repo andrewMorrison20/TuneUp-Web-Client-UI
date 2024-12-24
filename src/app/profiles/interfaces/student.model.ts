@@ -1,6 +1,7 @@
 import {Review} from "./review.model";
 import {Genre, Instrument} from "../../components/search-bar/search-bar.component";
 import {TuitionRegion} from "./tuition-region.model";
+import {Image} from "./image.model";
 
 export interface StudentProfile {
   id: number;
@@ -8,7 +9,7 @@ export interface StudentProfile {
   bio: string;
   profileType: string;
   onlineLessons: boolean;
-  profilePicture: string;
+  profilePicture: Image;
   enrolledCourses: string[];
   completedCourses: string[];
   achievements: string[];

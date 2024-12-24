@@ -123,7 +123,7 @@ export class ProfileService {
   private mapToTutorProfile(profile: any): TutorProfile {
     return {
       enrolledStudents: 0,
-      profilePicture: "",
+      profilePicture: profile.image,
       qualifications: "",
       rating: 0,
       reviews:[],
@@ -153,7 +153,7 @@ export class ProfileService {
       completedCourses: [],
       grades: [],
       instruments: profile.instruments,
-      profilePicture: "",
+      profilePicture: profile.image,
       reviews: [],
       id: profile.id,
       name: profile.displayName,

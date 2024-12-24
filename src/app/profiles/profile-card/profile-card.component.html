@@ -1,5 +1,6 @@
 <mat-card class="profile-card" *ngIf="profile">
-  <img class="profile-image" src="/assets/guitarLesson.jpg" alt="{{ profile.name }}'s profile picture" />
+  <img class="profile-image" [src]= "profile?.profilePicture?.url || 'https://storage.googleapis.com/download/storage/v1/b/tuneup_profile_images/o/79a88d6b-8196-49cf-9cde-d6d4d3bf10fd-defaultProfilePicture.jpg?generation=1735034744997677&alt=media'" alt=
+    "{{ profile.name }}'s profile picture" />
 
   <mat-card-header>
     <mat-card-title>{{ profile.name || 'Unknown' }}</mat-card-title>

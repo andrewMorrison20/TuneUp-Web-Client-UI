@@ -1,6 +1,7 @@
 import {Review} from "./review.model";
 import {Genre, Instrument} from "../../components/search-bar/search-bar.component";
 import {TuitionRegion} from "./tuition-region.model";
+import {Image} from "./image.model";
 
 export interface TutorProfile {
   id: number;
@@ -8,7 +9,7 @@ export interface TutorProfile {
   bio: string;
   profileType: string;
   appUserId: number;
-  profilePicture: string;
+  profilePicture: Image;
   qualifications: string;
   instruments: Instrument[];
   onlineLessons: boolean;

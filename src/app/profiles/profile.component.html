@@ -14,7 +14,7 @@
     <div *ngIf="profile">
       <!-- Profile Header -->
       <div class="profile-header">
-        <img [src]="profile?.profilePicture || 'assets/pianoKeyLabelsSide.jpg'" alt="Profile Picture" class="profile-picture">
+        <img [src]="profile?.profilePicture?.url || 'https://storage.googleapis.com/download/storage/v1/b/tuneup_profile_images/o/79a88d6b-8196-49cf-9cde-d6d4d3bf10fd-defaultProfilePicture.jpg?generation=1735034744997677&alt=media'" alt="Profile Picture" class="profile-picture">
         <div class="profile-header-details">
           <h1>{{ profile?.name }}</h1>
           <p class="bio">{{ profile?.bio }}</p>
