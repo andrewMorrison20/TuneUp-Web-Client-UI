@@ -2,6 +2,7 @@ import {Review} from "./review.model";
 import {Genre, Instrument} from "../../components/search-bar/search-bar.component";
 import {TuitionRegion} from "./tuition-region.model";
 import {Image} from "./image.model";
+import {Price} from "./price";
 
 export interface TutorProfile {
   id: number;
@@ -16,7 +17,7 @@ export interface TutorProfile {
   enrolledStudents: number;
   rating: number;
   reviews: Review[];
-  pricesMap: Map<string, number>;
+  prices: Price[];
   genres: Genre[];
   tuitionRegion: TuitionRegion;
 }

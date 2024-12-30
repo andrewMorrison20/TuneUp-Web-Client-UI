@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { TutorProfile } from './interfaces/tutor.model';
 import { StudentProfile } from './interfaces/student.model';
 import {Review} from "./interfaces/review.model";
+import {Price} from "./interfaces/price";
 
 type Profile = TutorProfile | StudentProfile;
 
@@ -151,14 +152,14 @@ export class ProfileService {
       profileType: profile.profileType,
       instruments: profile.instruments,
       appUserId: profile.appUserId,
-      pricesMap: profile.prices ? this.mapPricesToMap(profile.prices) : new Map(),
+      prices: profile.prices,
       genres:profile.genres,
       tuitionRegion: profile.tuitionRegion
     };
   }
 
-  private mapPricesToMap(prices: any[]): Map<string, number> {
-    return prices.reduce((map: Map<string, number>, price: any) => {
+  private mapPricesToMap(prices: Price[]): Map<string, number> {
+    return prices.reduce((map: Map<string, number>, price: Price) => {
       map.set(this.formatPeriod(price.period), price.rate);
       return map;
     }, new Map());
@@ -192,11 +193,20 @@ export class ProfileService {
     }
   }
 
-  private formatPeriod(period: string): string {
+  public formatPeriod(period: string): string {
     const periodMap: { [key: string]: string } = {
       ONE_HOUR: '1 hour',
       TWO_HOURS: '2 hours',
       HALF_HOUR: '30 minutes',
+      QUARTER_HOUR: '15 minutes',
+      THREE_QUARTERS_HOUR: '45 minutes',
+      ONE_AND_HALF_HOUR: '1.5 hours',
+      ONE_AND_QUARTER_HOURS: '1.25 hours',
+      ONE_THREE_QUARTER_HOURS: '1.75 hours',
+      TWO_AND_HALF_HOUR: '2.5 hours',
+      TWO_AND_QUARTER_HOURS: '2.25 hours',
+      TWO_THREE_QUARTER_HOURS: '2.75 hours',
+
       CUSTOM: 'Custom duration',
     };
     return periodMap[period] || period; // Fallback to raw period if not mapped

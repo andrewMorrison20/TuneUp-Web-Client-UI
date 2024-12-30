@@ -114,7 +114,7 @@
       <div class="form-group">
         <mat-list>
           <mat-list-item *ngFor="let price of pricingList; let i = index">
-            {{ price.duration }} - £{{ price.amount }}
+            {{ profileService.formatPeriod(price.duration) }} - £{{ price.amount }}
             <button mat-icon-button color="warn" (click)="removePricing(i)">
               <mat-icon>delete</mat-icon>
             </button>
@@ -126,16 +126,17 @@
       <mat-form-field appearance="outline" class="form-group">
         <mat-label>Duration</mat-label>
         <mat-select [(ngModel)]="newPricing.duration" name="duration" required>
-          <mat-option *ngFor="let duration of durations" [value]="duration">{{ duration }}</mat-option>
+          <mat-option *ngFor="let duration of durations" [value]="duration">{{ profileService.formatPeriod(duration) }}</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field appearance="outline" class="form-group">
         <mat-label>Price (£)</mat-label>
         <mat-select [(ngModel)]="newPricing.amount" name="price" required>
-          <mat-option *ngFor="let price of prices" [value]="price">£{{ price }}</mat-option>
+          <mat-option *ngFor="let rate of rates" [value]="rate">£{{ rate }}</mat-option>
         </mat-select>
       </mat-form-field>
       <button mat-raised-button color="accent" type="button" (click)="addPricing()">Add Pricing</button>
+
 
       <!-- Custom Pricing -->
       <mat-card-subtitle>Custom Pricing</mat-card-subtitle>

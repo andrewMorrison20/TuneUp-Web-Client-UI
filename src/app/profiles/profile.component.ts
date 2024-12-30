@@ -16,7 +16,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private profileService: ProfileService
+    protected profileService: ProfileService
   ) {}
 
   ngOnInit(): void {
@@ -71,7 +71,7 @@ export class ProfileComponent implements OnInit {
     if (!this.profile) {
       return false; // Return false if profile is null
     }
-    return this.isTutorProfile(this.profile) && this.profile.pricesMap?.size > 0;
+    return this.isTutorProfile(this.profile) && this.profile.prices?.length > 0;
   }
 }
 

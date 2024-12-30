@@ -79,12 +79,12 @@
         <div class="pricing-section" *ngIf="isTutorProfile(profile) && isPricesMapNotEmpty() ">
         <h2>Pricing</h2>
           <div class="pricing-container">
-            <div class="pricing-row" *ngFor="let price of profile.pricesMap | keyvalue">
+            <div class="pricing-row" *ngFor="let price of profile.prices">
               <div class="instrument-column">
-                <p>{{ price.key }}</p>
+                <p>{{ profileService.formatPeriod(price.period) }}</p>
               </div>
               <div class="price-column">
-                <p>£{{ price.value }}</p>
+                <p>£{{ price.rate }}</p>
               </div>
             </div>
           </div>

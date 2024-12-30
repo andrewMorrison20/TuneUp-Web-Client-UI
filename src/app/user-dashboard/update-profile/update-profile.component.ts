@@ -5,6 +5,7 @@ import {ProfileService} from "../../profiles/profile.service";
 import {AuthenticatedUser} from "../../authentication/authenticated-user.class";
 import {TutorProfile} from "../../profiles/interfaces/tutor.model";
 import {StudentProfile} from "../../profiles/interfaces/student.model";
+import {Price} from "../../profiles/interfaces/price";
 
 
 @Component({
@@ -18,12 +19,13 @@ export class UpdateProfileComponent {
   genres: Genre [] = [];
   instruments : Instrument [] = [];
   profileTypes = ['Student', 'Tutor', 'Parent'];
-  durations = ['30 mins','45 mins', '1 hr', '1.25 hrs','1.5 hr','2 hrs','2.25 hrs','2.5 hrs', '3 hrs'];
-  prices = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50,55,60,65,70,75,80,85,90];
+  durations: string[] = [];
+  rates: number[] = [];
+  prices :  number[] = [];
 
   newPricing = {
     duration: this.durations[0], // Default to the first duration
-    amount: this.prices[0], // Default to the first price
+    amount: this.prices[0], // Default to the first price.ts
   };
 
   customPricing = {
@@ -38,13 +40,15 @@ export class UpdateProfileComponent {
   selectedRegion: any = null;
   qualifications: { name: string; description: string }[] = [];
   newQualification = { name: '', description: '' };
+  standardPrices: Price[] =[];
 
-  constructor(private http: HttpClient, private profileService: ProfileService) {}
+  constructor(private http: HttpClient, protected profileService: ProfileService) {}
 
   ngOnInit(): void {
     this.loadProfile();
     this.loadInstruments();
     this.loadGenres();
+    this.loadPricing();
   }
   onFileSelected(event: any): void {
     const file = event.target.files[0];
@@ -184,4 +188,26 @@ export class UpdateProfileComponent {
       });*/
   }
 
+  loadPricing(): void {
+    console.log('Loading standard pricing...');
+    this.http.get<Price[]>('http://localhost:8080/api/prices/standardPricing')
+      .subscribe({
+        next: (data) => {
+          this.standardPrices = data;
+          console.log('Assigned pricing:', this.standardPrices);
+
+          // Process durations and rates here
+          this.durations = Array.from(new Set(this.standardPrices.map(p => p.period)));
+          console.log('DURATIONS:', this.durations);
+
+          this.rates = Array.from(
+            new Set(this.standardPrices.map(p => Number(p.rate)))
+          ).sort((a, b) => a - b);
+          console.log('Sorted Rates:', this.rates);
+        },
+        error: (err) => {
+          console.error('Error fetching standard pricing:', err);
+        }
+      });
+}
 }
