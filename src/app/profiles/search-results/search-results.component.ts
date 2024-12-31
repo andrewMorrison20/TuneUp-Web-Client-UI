@@ -23,7 +23,7 @@ export class SearchResultsComponent implements OnInit {
 
   // Search criteria
   keyword: string | null = null;
-  country: string | null = null;
+  genres:number[] | null = null;
   instruments: number[] | null = null;
   profileType: string | null = null;
 
@@ -33,11 +33,11 @@ export class SearchResultsComponent implements OnInit {
     // Fetch query parameters and load profiles
     this.route.queryParams.subscribe((params) => {
       this.keyword = params['keyword'] || null;
-      this.country = params['country'] || null;
-      this.instruments = params['instruments'] ? JSON.parse(params['instruments']) : null;
+      this.genres = params['genres'] || null;
+      this.instruments = params['instruments'] || null;
       this.profileType = params['profileType'] || null;
       this.pageIndex = params['page'] || 0;
-      this.pageSize = params['size'] || 10;
+      this.pageSize = params['size'] || 8;
 
       this.fetchProfiles();
     });
@@ -48,7 +48,7 @@ export class SearchResultsComponent implements OnInit {
 
     const searchParams = {
       keyword: this.keyword,
-      country: this.country,
+      genres:this.genres,
       instruments: this.instruments,
       profileType: this.profileType
     };

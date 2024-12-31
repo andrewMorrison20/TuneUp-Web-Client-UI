@@ -1,20 +1,22 @@
 <div class="search-bar-container">
-  <!-- Location Dropdown -->
-  <mat-form-field appearance="outline" class="dropdown">
-    <mat-label>Location</mat-label>
-    <mat-select [(value)]="selectedLocation" (selectionChange)="onLocationChange()">
-      <mat-option *ngFor="let location of locations" [value]="location">
-        {{ location }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
   <!-- Instrument Dropdown -->
   <mat-form-field appearance="outline" class="dropdown">
     <mat-label>Instrument</mat-label>
     <mat-select [(value)]="selectedInstrumentId" (selectionChange)="onInstrumentChange()">
+      <mat-option [value]="null">None</mat-option>
       <mat-option *ngFor="let instrument of instruments" [value]="instrument.id">
         {{ instrument.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!--Genre Dropdown -->
+  <mat-form-field appearance="outline" class="dropdown">
+    <mat-label>Genre</mat-label>
+    <mat-select [(value)]="selectedGenreId" (selectionChange)="onGenreChange()">
+      <mat-option [value]="null">None</mat-option>
+      <mat-option *ngFor="let genre of genres" [value]="genre.id">
+        {{ genre.name }}
       </mat-option>
     </mat-select>
   </mat-form-field>
@@ -23,6 +25,7 @@
   <mat-form-field appearance="outline" class="dropdown">
     <mat-label>Profile Type</mat-label>
     <mat-select [(value)]="selectedProfileType" (selectionChange)="onProfileTypeChange()">
+      <mat-option [value]="null">None</mat-option>
       <mat-option value="student">Student</mat-option>
       <mat-option value="tutor">Tutor</mat-option>
     </mat-select>

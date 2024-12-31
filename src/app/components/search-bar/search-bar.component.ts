@@ -19,17 +19,18 @@ export interface Genre {
 })
 export class SearchBarComponent implements OnInit {
   searchQuery: string = '';
-  selectedLocation: string = '';
-  selectedInstrumentId: number [] | null = null; // Store the ID of the selected instrument
+  selectedInstrumentId: number[] | null = null;
+  selectedGenreId: number[] | null = null;
 
-  locations: string[] = ['Northern Ireland', 'England', 'Scotland', 'Wales'];
   instruments: Instrument[] = [];
   selectedProfileType: string = "";
+  genres: Genre[] = [];
 
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
     this.loadInstruments();
+    this.loadGenres();
   }
 
   loadInstruments(): void {
@@ -44,23 +45,23 @@ export class SearchBarComponent implements OnInit {
       });
   }
 
-  onLocationChange(): void {
-    console.log('Selected Location:', this.selectedLocation);
-  }
-
   onInstrumentChange(): void {
     console.log('Selected Instrument ID:', this.selectedInstrumentId);
+  }
+
+  onGenreChange(): void {
+    console.log('Selected genre ID:', this.selectedGenreId);
   }
 
   onSearchClick(): void {
     // Construct the query object
     const queryParams = {
       keyword: this.searchQuery || null,
-      country: this.selectedLocation || null,
-      instruments: this.selectedInstrumentId ? [this.selectedInstrumentId] : null,
+      instruments: this.selectedInstrumentId || null,
+      genres: this.selectedGenreId ||null,
       profileType: this.selectedProfileType || null,
       page: 0,
-      size: 10,
+      size: 8,
       sort: 'displayName,asc'
     };
 
@@ -70,6 +71,18 @@ export class SearchBarComponent implements OnInit {
 
   onProfileTypeChange() {
     console.log('Selected profileType:', this.selectedProfileType);
+  }
+
+  loadGenres(): void {
+    this.http.get<Genre[]>('http://localhost:8080/api/genres')
+      .subscribe({
+        next: (data) => {
+          this.genres = data; // Store full instrument objects
+        },
+        error: (err) => {
+          console.error('Error fetching genres:', err);
+        }
+      });
   }
 }
 

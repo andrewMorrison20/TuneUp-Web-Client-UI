@@ -1,8 +1,8 @@
 export interface Price {
-  id: number;
   period: string;
-  description?: string;
   rate: number;
+  description:string
   standardPricing: boolean;
 }
+
 

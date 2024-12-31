@@ -81,7 +81,7 @@
           <div class="pricing-container">
             <div class="pricing-row" *ngFor="let price of profile.prices">
               <div class="instrument-column">
-                <p>{{ profileService.formatPeriod(price.period) }}</p>
+                <p>{{ price.standardPricing ? price.period : price.description }}</p>
               </div>
               <div class="price-column">
                 <p>£{{ price.rate }}</p>

@@ -6,6 +6,7 @@ import {AuthenticatedUser} from "../../authentication/authenticated-user.class";
 import {TutorProfile} from "../../profiles/interfaces/tutor.model";
 import {StudentProfile} from "../../profiles/interfaces/student.model";
 import {Price} from "../../profiles/interfaces/price";
+import {PeriodMap} from "../../profiles/interfaces/period";
 
 
 @Component({
@@ -15,7 +16,7 @@ import {Price} from "../../profiles/interfaces/price";
 })
 export class UpdateProfileComponent {
   profile!: TutorProfile | StudentProfile;
-  pricingList: { duration: string; amount: number }[] = [];
+  pricingList: Price[] = [];
   genres: Genre [] = [];
   instruments : Instrument [] = [];
   profileTypes = ['Student', 'Tutor', 'Parent'];
@@ -23,14 +24,18 @@ export class UpdateProfileComponent {
   rates: number[] = [];
   prices :  number[] = [];
 
-  newPricing = {
-    duration: this.durations[0], // Default to the first duration
-    amount: this.prices[0], // Default to the first price.ts
+  newPricing: Price = {
+    period: this.durations[0] || '',
+    rate: this.prices[0] || 0,
+    standardPricing: true,
+    description:''
   };
 
-  customPricing = {
-    duration: '',
-    amount: 0,
+  customPricing: Price = {
+    period: 'CUSTOM',
+    rate: 0,
+    standardPricing: false,
+    description:''
   };
 
   profilePicturePreview: string | null = null;
@@ -75,17 +80,37 @@ export class UpdateProfileComponent {
   }
 
   addPricing(): void {
-    if (this.newPricing.duration && this.newPricing.amount) {
-      this.pricingList.push({ ...this.newPricing });
+    if (this.newPricing.period && this.newPricing.rate) {
+      // Check for duplicates in pricingList
+      const duplicate = this.pricingList.some(
+        price => price.period === this.newPricing.period && price.rate === this.newPricing.rate
+      );
+
+      if (!duplicate) {
+        this.pricingList.push({ ...this.newPricing });
+      } else {
+        alert('This period and rate combination already exists.');
+      }
     }
   }
 
   addCustomPricing(): void {
-    if (this.customPricing.duration.trim() && this.customPricing.amount > 0) {
-      this.pricingList.push({ ...this.customPricing });
-      this.customPricing = { duration: '', amount: 0 };
+    if (this.customPricing.description.trim() && this.customPricing.rate > 0) {
+      // Check for duplicates in pricingList
+      const duplicate = this.pricingList.some(
+        price => price.description === this.customPricing.description && price.rate === this.customPricing.rate
+      );
+
+      if (!duplicate) {
+        this.pricingList.push({ ...this.customPricing });
+        // Reset the customPricing object
+        this.customPricing = { period: 'CUSTOM', rate: 0, standardPricing: false, description: '' };
+      } else {
+        alert('This description and rate combination already exists.');
+      }
     }
   }
+
 
   removePricing(index: number): void {
     this.pricingList.splice(index, 1);
@@ -118,9 +143,7 @@ export class UpdateProfileComponent {
 
   onSubmitPricing(): void {
     console.log('Pricing Updated:', this.profile);
-    this.http
-      .put('http:localhost:8080/api/profiles/update', this.profile)
-      .subscribe((response) => console.log('Profile updated successfully', response));
+    this.profileService.updateProfilePricing(this.pricingList,this.profile);
   }
 
   loadInstruments(): void {
@@ -192,22 +215,25 @@ export class UpdateProfileComponent {
     console.log('Loading standard pricing...');
     this.http.get<Price[]>('http://localhost:8080/api/prices/standardPricing')
       .subscribe({
-        next: (data) => {
-          this.standardPrices = data;
+        next: (data: Price[]) => {
+          // Convert backend enum strings to human-readable strings for the frontend
+          this.standardPrices = data.map(price => ({
+            ...price,
+            period: PeriodMap[price.period as keyof typeof PeriodMap] || price.period // Convert enum to human-readable, fallback to raw value
+          }));
+
           console.log('Assigned pricing:', this.standardPrices);
 
-          // Process durations and rates here
+          // Extract durations (human-readable strings) and rates for UI
           this.durations = Array.from(new Set(this.standardPrices.map(p => p.period)));
           console.log('DURATIONS:', this.durations);
 
-          this.rates = Array.from(
-            new Set(this.standardPrices.map(p => Number(p.rate)))
-          ).sort((a, b) => a - b);
+          this.rates = Array.from(new Set(this.standardPrices.map(p => p.rate))).sort((a, b) => a - b);
           console.log('Sorted Rates:', this.rates);
         },
         error: (err) => {
           console.error('Error fetching standard pricing:', err);
         }
       });
-}
+  }
 }
