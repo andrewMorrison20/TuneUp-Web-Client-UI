@@ -7,6 +7,7 @@ import {TutorProfile} from "../../profiles/interfaces/tutor.model";
 import {StudentProfile} from "../../profiles/interfaces/student.model";
 import {Price} from "../../profiles/interfaces/price";
 import {PeriodMap} from "../../profiles/interfaces/period";
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -47,7 +48,7 @@ export class UpdateProfileComponent {
   newQualification = { name: '', description: '' };
   standardPrices: Price[] =[];
 
-  constructor(private http: HttpClient, protected profileService: ProfileService) {}
+  constructor(private http: HttpClient, protected profileService: ProfileService,  private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.loadProfile();
@@ -70,6 +71,7 @@ export class UpdateProfileComponent {
       this.http.post('http://localhost:8080/api/images', formData).subscribe({
         next: (image: any) => {
           this.profile.profilePicture = image;
+          this.snackBar.open('Profile photo uploaded successfully.', 'Close', { duration: 3000 });
           console.log('Image uploaded successfully:', image);
         },
         error: (err) => {
@@ -137,13 +139,30 @@ export class UpdateProfileComponent {
   }
 
   onSubmitProfile(): void {
-    console.log('Profile Updated:', this.profile);
-   this.profileService.updateProfile(this.profile);
+    this.profileService.updateProfile(this.profile).subscribe({
+      next: (response) => {
+        this.snackBar.open('Profile updated successfully!', 'Close', { duration: 3000 });
+        console.log('Profile updated successfully:', response);
+      },
+      error: (err) => {
+        this.snackBar.open('Failed to update profile. Please try again.', 'Close', { duration: 3000 });
+        console.error('Error updating profile:', err);
+      }
+    });
   }
 
+
   onSubmitPricing(): void {
-    console.log('Pricing Updated:', this.profile);
-    this.profileService.updateProfilePricing(this.pricingList,this.profile);
+    this.profileService.updateProfilePricing(this.pricingList, this.profile).subscribe({
+      next: (response) => {
+        this.snackBar.open('Pricing updated successfully!', 'Close', { duration: 3000 });
+        console.log('Pricing updated successfully:', response);
+      },
+      error: (err) => {
+        this.snackBar.open('Failed to update pricing. Please try again.', 'Close', { duration: 3000 });
+        console.error('Error updating pricing:', err);
+      }
+    });
   }
 
   loadInstruments(): void {
@@ -153,6 +172,7 @@ export class UpdateProfileComponent {
           this.instruments = data; // Store full instrument objects
         },
         error: (err) => {
+          this.snackBar.open('Failed to fetched instruments. Please refresh the page.', 'Close', { duration: 3000 });
           console.error('Error fetching instruments:', err);
         }
       })
@@ -165,6 +185,7 @@ export class UpdateProfileComponent {
             this.genres = data; // Store full genre objects
           },
           error: (err) => {
+            this.snackBar.open('Failed to fetch genres. Please refresh the page.', 'Close', { duration: 3000 });
             console.error('Error fetching genres :', err);
           }
         })
@@ -173,10 +194,11 @@ export class UpdateProfileComponent {
   private loadProfile() {
     this.profileService.getProfileByAppUserId(AuthenticatedUser.getAuthUserId()) .subscribe({
       next: (data) => {
-        this.profile = data; // Store full instrument objects
+        this.profile = data;
       },
       error: (err) => {
-        console.error('Error fetching instruments:', err);
+        this.snackBar.open('Failed to fetch profile. Please refresh the page.', 'Close', { duration: 3000 });
+        console.error('Error fetching profile:', err);
       }
     })
 
@@ -232,6 +254,7 @@ export class UpdateProfileComponent {
           console.log('Sorted Rates:', this.rates);
         },
         error: (err) => {
+          this.snackBar.open('Failed to Pricing. Please refresh the page.', 'Close', { duration: 3000 });
           console.error('Error fetching standard pricing:', err);
         }
       });

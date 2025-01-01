@@ -5,7 +5,7 @@ import {Image} from "./image.model";
 
 export interface StudentProfile {
   id: number;
-  name: string;
+  displayName: string;
   bio: string;
   profileType: string;
   onlineLessons: boolean;

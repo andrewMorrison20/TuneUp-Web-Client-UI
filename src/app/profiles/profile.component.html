@@ -16,7 +16,7 @@
       <div class="profile-header">
         <img [src]="profile?.profilePicture?.url || 'https://storage.googleapis.com/download/storage/v1/b/tuneup_profile_images/o/79a88d6b-8196-49cf-9cde-d6d4d3bf10fd-defaultProfilePicture.jpg?generation=1735034744997677&alt=media'" alt="Profile Picture" class="profile-picture">
         <div class="profile-header-details">
-          <h1>{{ profile?.name }}</h1>
+          <h1>{{ profile?.displayName }}</h1>
           <p class="bio">{{ profile?.bio }}</p>
           <span class="profile-type-chip mat-chip mat-chip-outline">{{ profile?.profileType | titlecase }}</span>
           <span class="profile-type-chip mat-chip mat-chip-outline" *ngIf="profile.tuitionRegion">  {{ profile.tuitionRegion.name | titlecase}}</span>
@@ -97,7 +97,7 @@
         <!-- Render the review card only if reviews exist -->
         <app-review-card
           *ngIf="profile && profile.reviews && profile.reviews.length > 0"
-          [profile]="{ name: profile.name, reviews: profile.reviews }">
+          [profile]="{ name: profile.displayName, reviews: profile.reviews }">
         </app-review-card>
         <!-- Fallback message -->
         <p *ngIf="profile && profile.reviews && profile.reviews.length === 0" class="no-reviews-message">

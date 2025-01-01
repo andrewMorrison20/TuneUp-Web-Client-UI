@@ -6,7 +6,7 @@ import {Price} from "./price";
 
 export interface TutorProfile {
   id: number;
-  name: string;
+  displayName: string;
   bio: string;
   profileType: string;
   appUserId: number;

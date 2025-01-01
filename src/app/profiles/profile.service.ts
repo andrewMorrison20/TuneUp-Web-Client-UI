@@ -108,21 +108,13 @@ export class ProfileService {
     );
   }
 
-  public updateProfile( profile: Profile){
+  public updateProfile(profile: Profile): Observable<any> {
     const url = `${this.apiUrl}/update`;
-    this.http
-      .put(url,profile)
-      .subscribe((response) => console.log('Profile updated successfully', response));
+    return this.http.put(url, profile);
   }
 
-  /*public updateProfilePricing( priceSet: Price[], profile: Profile){
-    const url = `${this.apiUrl}/update/pricing/${profile.id}`;
-    this.http
-      .put(url,priceSet)
-      .subscribe((response) => console.log('Profile Pricing updated successfully', response));
-  }*/
 
-  public updateProfilePricing(priceSet: Price[], profile: Profile): void {
+  public updateProfilePricing(priceSet: Price[], profile: Profile): Observable<any> {
     // Map human-readable strings to backend enum format
     const transformedPriceSet = priceSet.map(price => ({
       ...price,
@@ -132,19 +124,16 @@ export class ProfileService {
     console.log('Transformed Prices for Backend:', transformedPriceSet);
 
     const url = `${this.apiUrl}/update/pricing/${profile.id}`;
-    this.http.put(url, transformedPriceSet)
-      .subscribe({
-        next: response => console.log('Profile Pricing updated successfully', response),
-        error: err => console.error('Error updating pricing:', err)
-      });
+    // Return the HTTP PUT observable
+    return this.http.put(url, transformedPriceSet);
   }
 
   private mapProfiles(rawProfiles: any[]): Profile[] {
     console.log('Profile : ', rawProfiles)
     return rawProfiles.map(profile => {
-      if (profile.profileType === 'TUTOR') {
+      if (profile.profileType === 'Tutor') {
         return this.mapToTutorProfile(profile);
-      } else if (profile.profileType === 'STUDENT') {
+      } else if (profile.profileType === 'Student') {
         return this.mapToStudentProfile(profile);
       } else {
         throw new Error('Unknown profile type');
@@ -170,7 +159,7 @@ export class ProfileService {
       rating: 0,
       reviews:[],
       id: profile.id,
-      name: profile.displayName,
+      displayName: profile.displayName,
       bio: profile.bio,
       onlineLessons: profile.onlineLessons,
       profileType: profile.profileType,
@@ -191,7 +180,7 @@ export class ProfileService {
       profilePicture: profile.profilePicture,
       reviews: [],
       id: profile.id,
-      name: profile.displayName,
+      displayName: profile.displayName,
       bio: profile.bio,
       onlineLessons: profile.onlineLessons,
       profileType: profile.profileType,

@@ -63,7 +63,7 @@ export class ProfileComponent implements OnInit {
   }
 
   startChat(): void {
-    console.log('Starting chat with', this.profile?.name);
+    console.log('Starting chat with', this.profile?.displayName);
 
   }
 

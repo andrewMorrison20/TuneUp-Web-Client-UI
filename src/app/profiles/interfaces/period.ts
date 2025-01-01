@@ -25,5 +25,5 @@ export const PeriodMap: { [key in Period]: string } = {
   [Period.TWO_AND_HALF_HOUR]: '2.5 hours',
   [Period.TWO_AND_QUARTER_HOURS]: '2.25 hours',
   [Period.TWO_THREE_QUARTER_HOURS]: '2.75 hours',
-  [Period.CUSTOM]: 'Custom duration'
+  [Period.CUSTOM]: 'CUSTOM'
 };

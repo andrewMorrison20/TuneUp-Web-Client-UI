@@ -12,6 +12,12 @@
         </div>
       </div>
 
+      <!-- Bio -->
+      <mat-form-field appearance="outline" class="form-group">
+        <mat-label>Display Name</mat-label>
+        <textarea matInput [(ngModel)]="profile.displayName" name="dispalyName" rows="1"></textarea>
+      </mat-form-field>
+
       <!-- Genre Dropdown -->
       <mat-form-field appearance="outline" class="form-group">
         <mat-label>Genre</mat-label>
