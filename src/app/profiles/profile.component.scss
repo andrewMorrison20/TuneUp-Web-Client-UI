@@ -238,4 +238,18 @@ body {
     text-align: left;
     margin-top: 0.5rem;
   }
+
+  .back-to-results-container {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 16px;
+  }
+
+  .back-to-results-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+  }
 }

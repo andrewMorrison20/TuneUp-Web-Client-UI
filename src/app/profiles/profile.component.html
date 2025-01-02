@@ -1,9 +1,14 @@
 <app-navbar></app-navbar>
-<app-search-bar></app-search-bar>
-<br>
 
 <!-- Profile Page Container -->
 <div class="profile-page-container mat-elevation-z3">
+  <!-- Back to Results Button -->
+  <div class="back-to-results-container">
+    <button mat-raised-button color="primary" class="back-to-results-button" (click)="goBackToResults()">
+      <mat-icon>arrow_back</mat-icon> Back to Results
+    </button>
+  </div>
+  <br>
   <!-- Show loading spinner or message if profile is null -->
   <div *ngIf="!profile; else profileContent">
     <p>Loading profile...</p> <!-- Or add a spinner component here -->

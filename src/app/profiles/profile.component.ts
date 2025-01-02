@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { ProfileService } from './profile.service';
 import { TutorProfile } from './interfaces/tutor.model';
 import { StudentProfile } from './interfaces/student.model';
@@ -16,6 +16,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     protected profileService: ProfileService
   ) {}
 
@@ -46,7 +47,6 @@ export class ProfileComponent implements OnInit {
     );
   }
 
-
   isStudentProfile(profile: Profile): profile is StudentProfile {
     return (profile as StudentProfile).enrolledCourses !== undefined;
   }
@@ -73,5 +73,9 @@ export class ProfileComponent implements OnInit {
     }
     return this.isTutorProfile(this.profile) && this.profile.prices?.length > 0;
   }
+
+  goBackToResults(): void {
+      this.router.navigate(['/profiles/search']);
+    }
 }
 
