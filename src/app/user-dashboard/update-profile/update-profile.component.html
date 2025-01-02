@@ -15,8 +15,16 @@
       <!-- Bio -->
       <mat-form-field appearance="outline" class="form-group">
         <mat-label>Display Name</mat-label>
-        <textarea matInput [(ngModel)]="profile.displayName" name="dispalyName" rows="1"></textarea>
+        <textarea
+          matInput
+          [(ngModel)]="profile.displayName"
+          name="displayName"
+          rows="1"
+          maxlength="50"
+        ></textarea>
+        <mat-hint align="end">{{ profile.displayName.length }} / 50</mat-hint>
       </mat-form-field>
+
 
       <!-- Genre Dropdown -->
       <mat-form-field appearance="outline" class="form-group">
@@ -45,7 +53,13 @@
       <!-- Bio -->
       <mat-form-field appearance="outline" class="form-group">
         <mat-label>Bio</mat-label>
-        <textarea matInput [(ngModel)]="profile.bio" name="bio" rows="5"></textarea>
+        <textarea matInput [(ngModel)]="profile.bio"
+                  name="bio"
+                  rows="5"
+                  maxlength="250"
+        >
+        </textarea>
+        <mat-hint align="end">{{ profile.bio.length }} / 250</mat-hint>
       </mat-form-field>
 
       <!-- Tuition Region -->
@@ -94,7 +108,8 @@
       <mat-card-subtitle>Add a Qualification</mat-card-subtitle>
       <mat-form-field appearance="outline" class="form-group">
         <mat-label>Qualification Name</mat-label>
-        <input matInput [(ngModel)]="newQualification.name" name="qualificationName" placeholder="Enter qualification name"  />
+        <input matInput [(ngModel)]="newQualification.name" name="qualificationName" placeholder="Enter qualification name"  maxlength="50"/>
+        <mat-hint align = 'end'>{{newQualification.name.length}}/25</mat-hint>
       </mat-form-field>
       <mat-form-field appearance="outline" class="form-group">
         <mat-label>Description</mat-label>
@@ -103,7 +118,9 @@
           [(ngModel)]="newQualification.description"
           name="qualificationDescription"
           placeholder="Enter qualification description"
+          maxlength = 50
         ></textarea>
+        <mat-hint align = "end">{{ newQualification.description.length}}/150</mat-hint>
       </mat-form-field>
       <button mat-raised-button color="accent" type="button" (click)="addQualification()">Add Qualification</button>
 
@@ -153,8 +170,10 @@
           type="text"
           [(ngModel)]="customPricing.description"
           name="customDuration"
+          maxlength="50"
           placeholder="Enter custom duration"
         />
+        <mat-hint align="end">{{ customPricing.description }} / 50</mat-hint>
       </mat-form-field>
       <mat-form-field appearance="outline" class="form-group">
         <mat-label>Custom Price (£)</mat-label>

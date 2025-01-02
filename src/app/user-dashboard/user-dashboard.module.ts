@@ -15,7 +15,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {NavModule} from "../components/nav/nav.module";
 import {ChatsComponent} from "./chats/chats.component";
 import {FormsModule} from "@angular/forms";
-import {MatFormField, MatLabel} from "@angular/material/form-field";
+import {MatFormField, MatHint, MatLabel} from "@angular/material/form-field";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {MatInput} from "@angular/material/input";
 import {UpdateProfileComponent} from "./update-profile/update-profile.component";
@@ -45,6 +45,7 @@ import {MatCard, MatCardSubtitle, MatCardTitle} from "@angular/material/card";
     MatSidenavModule,
     MatToolbarModule,
     MatListModule,
+    MatHint,
     MatLabel,
     MatIconModule,
     MatButtonModule,

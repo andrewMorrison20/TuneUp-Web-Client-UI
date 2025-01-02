@@ -97,22 +97,40 @@ export class UpdateProfileComponent {
   }
 
   addCustomPricing(): void {
-    if (this.customPricing.description.trim() && this.customPricing.rate > 0) {
+    if (
+      this.isValidDescription(this.customPricing.description) &&
+      this.isValidRate(this.customPricing.rate)
+    ) {
       // Check for duplicates in pricingList
       const duplicate = this.pricingList.some(
-        price => price.description === this.customPricing.description && price.rate === this.customPricing.rate
+        price =>
+          price.description === this.customPricing.description &&
+          price.rate === this.customPricing.rate
       );
 
       if (!duplicate) {
         this.pricingList.push({ ...this.customPricing });
-        // Reset the customPricing object
         this.customPricing = { period: 'CUSTOM', rate: 0, standardPricing: false, description: '' };
       } else {
         alert('This description and rate combination already exists.');
       }
+    } else {
+      if (!this.isValidDescription(this.customPricing.description)) {
+        alert('Description must be provided and be 50 characters or fewer.');
+      } else if (!this.isValidRate(this.customPricing.rate)) {
+        alert('Please enter a valid price with up to two decimal places (e.g., 10.99).');
+      }
     }
   }
 
+  private isValidDescription(description: string): boolean {
+    return description.trim().length > 0 && description.length <= 50;
+  }
+
+
+  private isValidRate(rate: number): boolean {
+    return /^\d+(\.\d{1,2})?$/.test(rate.toString());
+  }
 
   removePricing(index: number): void {
     this.pricingList.splice(index, 1);
