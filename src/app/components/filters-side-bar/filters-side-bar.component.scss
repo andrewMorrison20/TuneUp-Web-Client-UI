@@ -1,0 +1,19 @@
+.filter-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Space between dropdowns */
+
+  mat-expansion-panel {
+    width: 100%; /* Ensure panels take the full width */
+  }
+
+  .checkbox-list {
+    display: flex;
+    flex-direction: column;
+    padding:25px;
+  }
+
+  mat-checkbox {
+    width: 100%;
+  }
+}

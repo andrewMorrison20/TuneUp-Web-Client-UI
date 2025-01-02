@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProfileService } from '../profile.service';
 import { TutorProfile } from '../interfaces/tutor.model';
@@ -26,11 +26,15 @@ export class SearchResultsComponent implements OnInit {
   genres:number[] | null = null;
   instruments: number[] | null = null;
   profileType: string | null = null;
+  isMobile: boolean = false;
+  filtersBannerExpanded: boolean = false;
+  searchBannerExpanded: boolean = false;
 
   constructor(private profileService: ProfileService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    // Fetch query parameters and load profiles
+
+    this.checkScreenSize();
     this.route.queryParams.subscribe((params) => {
       this.keyword = params['keyword'] || null;
       this.genres = params['genres'] || null;
@@ -39,10 +43,18 @@ export class SearchResultsComponent implements OnInit {
       this.pageIndex = params['page'] || 0;
       this.pageSize = params['size'] || 8;
 
+
       this.fetchProfiles();
     });
   }
 
+  toggleFiltersBanner(): void {
+    this.filtersBannerExpanded = !this.filtersBannerExpanded;
+  }
+
+  toggleSearchBanner(): void {
+    this.searchBannerExpanded = !this.searchBannerExpanded;
+  }
   fetchProfiles(): void {
     this.isLoading = true;
 
@@ -71,5 +83,15 @@ export class SearchResultsComponent implements OnInit {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
     this.fetchProfiles(); // Fetch profiles for the new page
+  }
+
+  @HostListener('window:resize')
+  checkScreenSize(): void {
+    this.isMobile = window.innerWidth <= 768;
+  }
+
+  toggleSidenav(): void {
+    const sidenav = document.querySelector('mat-sidenav') as any;
+    sidenav.toggle();
   }
 }

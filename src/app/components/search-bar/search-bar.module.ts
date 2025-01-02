@@ -22,8 +22,8 @@ import {HttpClientModule} from "@angular/common/http";
     FormsModule,
     MatSelect,
     MatOption,
-    // Import FormsModule to use ngModel for two-way binding
+
   ],
-  exports: [SearchBarComponent]  // Export the SearchBarComponent so it can be used in other modules
+  exports: [SearchBarComponent]
 })
 export class SearchBarModule { }

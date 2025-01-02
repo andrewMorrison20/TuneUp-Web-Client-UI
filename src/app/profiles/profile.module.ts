@@ -4,7 +4,6 @@ import { ProfileComponent } from './profile.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ProfileService } from './profile.service';
 
-// Import necessary Angular Material modules
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -16,13 +15,15 @@ import {RouterLink} from "@angular/router";
 import {SearchResultsComponent} from "./search-results/search-results.component";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatPaginator} from "@angular/material/paginator";
-import {MatButton} from "@angular/material/button";
+import {MatButton, MatIconButton} from "@angular/material/button";
 import { RouterModule, Routes } from '@angular/router';
 import {NavModule} from "../components/nav/nav.module";
 import {SearchBarModule} from "../components/search-bar/search-bar.module";
 import {ReviewCardComponent} from "../review-card/review-card.component";
 import {AuthGuard} from "../authentication/auth-guard";
 import {FooterModule} from "../components/footer/footer.module";
+import {FiltersSideBarModule} from "../components/filters-side-bar/filters-side-bar.module";
+import {MatSidenav, MatSidenavContainer, MatSidenavModule} from "@angular/material/sidenav";
 
 const profileRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent },
@@ -36,25 +37,30 @@ const profileRoutes: Routes = [
     SearchResultsComponent,
     ReviewCardComponent
   ],
-    imports: [
-        CommonModule,
-        HttpClientModule,
-        MatCardModule,
-        MatIconModule,
-        MatListModule,
-        MatProgressBarModule,
-        MatChipsModule,
-        MatDividerModule,
-        MatCardModule,
-        RouterLink,
-        RouterModule.forChild(profileRoutes),
-        MatProgressSpinner,
-        MatPaginator,
-        NavModule,
-        SearchBarModule,
-        MatButton,
-        FooterModule,
-    ],
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    MatCardModule,
+    MatIconModule,
+    MatListModule,
+    MatProgressBarModule,
+    MatChipsModule,
+    MatDividerModule,
+    MatCardModule,
+    MatSidenavModule,
+    RouterLink,
+    RouterModule.forChild(profileRoutes),
+    MatProgressSpinner,
+    MatPaginator,
+    NavModule,
+    SearchBarModule,
+    MatButton,
+    FooterModule,
+    FiltersSideBarModule,
+    MatSidenav,
+    MatSidenavContainer,
+    MatIconButton,
+  ],
   providers: [
     ProfileService
   ],

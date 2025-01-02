@@ -10,7 +10,6 @@
   box-sizing: border-box;
 }
 
-
 .search-bar-container {
   display: flex;
   align-items: center;
@@ -24,22 +23,18 @@
   box-sizing: border-box;
 }
 
-.mat-form-field {
+.mat-form-field,
+.search-input {
   flex: 1;
-  width: 80%;
-  max-width: 100px;
-}
-.dropdown .mat-form-field {
   width: 100%;
 }
 
 .search-input {
-  flex: 2;
-  max-width: 500px;
+  max-width: 500px; /* Limit width in desktop view */
 }
 
 button[mat-raised-button] {
-  background-color: #007BFF;
+  background-color: #007bff;
   color: #fff;
   border-radius: 5px;
   padding: 10px 20px;
@@ -65,7 +60,9 @@ button[mat-raised-button]:active {
   }
 
   .mat-form-field,
+  .search-input,
   button[mat-raised-button] {
     width: 100%;
+    max-width: none;
   }
 }

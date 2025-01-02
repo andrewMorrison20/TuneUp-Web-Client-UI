@@ -1,0 +1,34 @@
+<mat-accordion class="filter-accordion">
+  <!-- Genre Section -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Genres</mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div class="checkbox-list">
+      <mat-checkbox
+        *ngFor="let genre of genres"
+        [(ngModel)]="genre.selected">
+        {{ genre.name }}
+      </mat-checkbox>
+    </div>
+  </mat-expansion-panel>
+
+  <!-- Instrument Section -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Instruments</mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div class="checkbox-list">
+      <mat-checkbox
+        *ngFor="let instrument of instruments"
+        [(ngModel)]="instrument.selected">
+        {{ instrument.name }}
+      </mat-checkbox>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>
+
+
+

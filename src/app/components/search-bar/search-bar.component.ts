@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import {SharedDataService} from "../shared-data-service.component";
 
 export interface Instrument {
   name: string;
@@ -26,23 +27,18 @@ export class SearchBarComponent implements OnInit {
   selectedProfileType: string = "";
   genres: Genre[] = [];
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private sharedDataService: SharedDataService) {}
 
   ngOnInit(): void {
-    this.loadInstruments();
-    this.loadGenres();
-  }
+    this.sharedDataService.instruments$.subscribe((data) => {
+      if (data) this.instruments = data;
+    });
+    this.sharedDataService.genres$.subscribe((data) => {
+      if (data) this.genres = data;
+    });
 
-  loadInstruments(): void {
-    this.http.get<Instrument[]>('http://localhost:8080/api/instruments')
-      .subscribe({
-        next: (data) => {
-          this.instruments = data; // Store full instrument objects
-        },
-        error: (err) => {
-          console.error('Error fetching instruments:', err);
-        }
-      });
+    this.sharedDataService.loadInstruments();
+    this.sharedDataService.loadGenres();
   }
 
   onInstrumentChange(): void {
@@ -73,16 +69,5 @@ export class SearchBarComponent implements OnInit {
     console.log('Selected profileType:', this.selectedProfileType);
   }
 
-  loadGenres(): void {
-    this.http.get<Genre[]>('http://localhost:8080/api/genres')
-      .subscribe({
-        next: (data) => {
-          this.genres = data; // Store full instrument objects
-        },
-        error: (err) => {
-          console.error('Error fetching genres:', err);
-        }
-      });
-  }
 }
 

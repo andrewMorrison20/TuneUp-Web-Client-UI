@@ -1,39 +1,97 @@
-<app-navbar></app-navbar>
-<div><app-search-bar></app-search-bar></div>
+<<app-navbar></app-navbar>
 
-<div class="main-container">
-  <!-- Sidebar (Placeholder) -->
-  <div class="sidebar">
-    <h3>Filters</h3>
-    <div class="filter-placeholder">Instruments</div>
-    <div class="filter-placeholder">Location</div>
-    <div class="filter-placeholder">Rating</div>
-    <div class="filter-placeholder">Price</div>
+<div *ngIf="!isMobile" class="desktop-search-bar">
+  <app-search-bar></app-search-bar>
+</div>
+
+<!-- Search Bar Banner for Mobile -->
+<div *ngIf="isMobile" class="mobile-search-banner">
+  <div class="banner-header" (click)="toggleSearchBanner()">
+    <span>Search</span>
+    <button mat-icon-button>
+      <mat-icon>{{ searchBannerExpanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+    </button>
   </div>
 
-  <!-- Main Content (Profiles) -->
-  <div class="search-results-container">
-    <mat-spinner *ngIf="isLoading"></mat-spinner>
-
-    <div *ngIf="error" class="error-message">
-      {{ error }}
-    </div>
-
-    <div *ngIf="!isLoading && profiles.length > 0" class="profile-cards-grid">
-      <app-profile-card *ngFor="let profile of profiles" [profile]="profile"></app-profile-card>
-    </div>
-
-    <div *ngIf="!isLoading && profiles.length === 0" class="no-results">
-      No profiles found.
-    </div>
-
-    <!-- Pagination Controls -->
-    <mat-paginator
-      [length]="totalElements"
-      [pageSize]="pageSize"
-      [pageIndex]="pageIndex"
-      [pageSizeOptions]="[5, 10, 25, 50]"
-      (page)="onPageChange($event)">
-    </mat-paginator>
+  <div *ngIf="searchBannerExpanded" class="banner-content">
+    <app-search-bar></app-search-bar>
   </div>
+</div>
+
+<!-- Sidebar for Desktop -->
+<mat-sidenav-container class="sidenav-container" *ngIf="!isMobile">
+  <mat-sidenav
+    #sidenav
+    class="sidenav"
+    [mode]="'side'"
+    [opened]="true">
+    <app-filters-side-bar></app-filters-side-bar>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="search-results-container">
+      <mat-spinner *ngIf="isLoading"></mat-spinner>
+
+      <div *ngIf="error" class="error-message">
+        {{ error }}
+      </div>
+
+      <div *ngIf="!isLoading && profiles.length > 0" class="profile-cards-grid">
+        <app-profile-card *ngFor="let profile of profiles" [profile]="profile"></app-profile-card>
+      </div>
+
+      <div *ngIf="!isLoading && profiles.length === 0" class="no-results">
+        No profiles found.
+      </div>
+
+      <!-- Pagination Controls -->
+      <mat-paginator
+        [length]="totalElements"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        [pageSizeOptions]="[5, 10, 25, 50]"
+        (page)="onPageChange($event)">
+      </mat-paginator>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- Collapsible Filters Banner for Mobile -->
+<div *ngIf="isMobile" class="mobile-sidebar-banner">
+  <div class="banner-header" (click)="toggleFiltersBanner()">
+    <span>Filters</span>
+    <button mat-icon-button>
+      <mat-icon>{{ filtersBannerExpanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+    </button>
+  </div>
+
+  <div *ngIf="filtersBannerExpanded" class="banner-content">
+    <app-filters-side-bar></app-filters-side-bar>
+  </div>
+</div>
+
+<!-- Main Content for Mobile -->
+<div *ngIf="isMobile" class="search-results-container">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!isLoading && profiles.length > 0" class="profile-cards-grid">
+    <app-profile-card *ngFor="let profile of profiles" [profile]="profile"></app-profile-card>
+  </div>
+
+  <div *ngIf="!isLoading && profiles.length === 0" class="no-results">
+    No profiles found.
+  </div>
+
+  <!-- Pagination Controls -->
+  <mat-paginator
+    [length]="totalElements"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    [pageSizeOptions]="[5, 10, 25, 50]"
+    (page)="onPageChange($event)">
+  </mat-paginator>
 </div>
