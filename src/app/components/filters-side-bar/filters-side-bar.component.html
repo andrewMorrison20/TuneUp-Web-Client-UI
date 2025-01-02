@@ -14,18 +14,45 @@
     </div>
   </mat-expansion-panel>
 
-  <!-- Instrument Section -->
+ <!-- Instrument Section -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>Instruments</mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <div class="checkbox-list">
+    <mat-checkbox
+      *ngFor="let instrument of instruments"
+      [(ngModel)]="instrument.selected">
+      {{ instrument.name }}
+    </mat-checkbox>
+  </div>
+</mat-expansion-panel>
+
+  <!-- Region Section -->
   <mat-expansion-panel>
     <mat-expansion-panel-header>
-      <mat-panel-title>Instruments</mat-panel-title>
+      <mat-panel-title>Tuition Region</mat-panel-title>
     </mat-expansion-panel-header>
 
-    <div class="checkbox-list">
-      <mat-checkbox
-        *ngFor="let instrument of instruments"
-        [(ngModel)]="instrument.selected">
-        {{ instrument.name }}
-      </mat-checkbox>
+    <div class="search-container">
+      <mat-form-field appearance="outline" class="form-group">
+        <mat-label>Tuition Region</mat-label>
+        <input
+          matInput
+          type="text"
+          [(ngModel)]="regionSearchQuery"
+          (input)="onRegionSearch()"
+          name="tuitionRegion"
+          placeholder="Search for a region"
+        />
+      </mat-form-field>
+      <mat-list *ngIf="regionSuggestions.length > 0">
+        <mat-list-item *ngFor="let region of regionSuggestions" (click)="selectRegion(region)">
+          {{ region.name }}
+        </mat-list-item>
+      </mat-list>
+      <p *ngIf="selectedRegion">Selected: {{ selectedRegion.name }}</p>
     </div>
   </mat-expansion-panel>
 </mat-accordion>

@@ -150,7 +150,6 @@ export class UpdateProfileComponent {
   }
 
   selectRegion(region: any): void {
-
     this.selectedRegion = region;
     this.profile.tuitionRegion = region;
     this.regionSuggestions = [];

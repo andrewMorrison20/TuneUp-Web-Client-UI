@@ -22,7 +22,9 @@ export class SharedDataService {
 
   private instrumentsSubject = new BehaviorSubject<Instrument[] | null>(null);
   private genresSubject = new BehaviorSubject<Genre[] | null>(null);
+  private regionsSubject = new BehaviorSubject<any[]>([]);
 
+  regions$ = this.regionsSubject.asObservable();
   instruments$ = this.instrumentsSubject.asObservable();
   genres$ = this.genresSubject.asObservable();
 
@@ -60,7 +62,7 @@ export class SharedDataService {
     }
   }
 
-  // Manual refresh methods
+
   refreshInstruments(): void {
     this.http
       .get<Instrument[]>('http://localhost:8080/api/instruments')
@@ -84,4 +86,22 @@ export class SharedDataService {
       )
       .subscribe();
   }
+
+  searchRegions(query: string): void {
+    if (query.trim().length > 2) {
+      this.http
+        .get<any[]>(`http://localhost:8080/api/regions?query=${query.trim()}`)
+        .subscribe((data) => {
+          this.regionsSubject.next(data);
+        });
+    } else {
+      this.regionsSubject.next([]);
+    }
+  }
+
+  selectRegion(region: any): void {
+    this.regionsSubject.next([]);
+
+  }
+
 }

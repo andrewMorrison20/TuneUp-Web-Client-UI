@@ -12,6 +12,7 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatExpansionModule } from "@angular/material/expansion";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatList, MatListItem} from "@angular/material/list";
 
 @NgModule({
   declarations: [
@@ -33,6 +34,8 @@ import {MatSidenavModule} from "@angular/material/sidenav";
     MatExpansionModule,
     MatSelect,
     MatOption,
+    MatList,
+    MatListItem,
   ],
   exports: [FiltersSideBarComponent]
 })

@@ -9,7 +9,9 @@ import { SharedDataService, Instrument, Genre } from '../shared-data-service.com
 export class FiltersSideBarComponent implements OnInit {
   instruments: (Instrument & { selected: boolean })[] = [];
   genres: (Genre & { selected: boolean })[] = [];
-
+  regionSuggestions: any[] = [];
+  regionSearchQuery: string = '';
+  selectedRegion: any = null;
 
   constructor(private sharedDataService: SharedDataService) {}
 
@@ -34,6 +36,10 @@ export class FiltersSideBarComponent implements OnInit {
 
     this.sharedDataService.loadInstruments();
     this.sharedDataService.loadGenres();
+
+    this.sharedDataService.regions$.subscribe((data) => {
+      this.regionSuggestions = data;
+    })
   }
 
   getSelectedGenres(): Genre[] {
@@ -43,4 +49,14 @@ export class FiltersSideBarComponent implements OnInit {
   getSelectedInstruments(): Instrument[] {
     return this.instruments.filter((instrument) => instrument.selected);
   }
+
+  onRegionSearch(): void {
+    this.sharedDataService.searchRegions(this.regionSearchQuery);
+  }
+
+  selectRegion(region: any): void {
+    this.selectedRegion = region;
+    this.sharedDataService.selectRegion(region);
+  }
+
 }
