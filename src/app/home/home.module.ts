@@ -12,6 +12,7 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {NavModule} from "../components/nav/nav.module";
 import {FooterModule} from "../components/footer/footer.module";
 import {SearchBarModule} from "../components/search-bar/search-bar.module";
+import {NgIf} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {SearchBarModule} from "../components/search-bar/search-bar.module";
         MatMenuItem,
         NavModule,
         FooterModule,
-        SearchBarModule
+        SearchBarModule,
+        NgIf
     ],
   exports:[HomeComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

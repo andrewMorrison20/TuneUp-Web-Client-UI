@@ -1,6 +1,22 @@
 
 <app-navbar></app-navbar>
-<div><app-search-bar></app-search-bar></div>
+<div *ngIf="!isMobile" class="desktop-search-bar">
+  <app-search-bar></app-search-bar>
+</div>
+
+<!-- Search Bar Banner for Mobile -->
+<div *ngIf="isMobile" class="mobile-search-banner">
+  <div class="banner-header" (click)="toggleSearchBanner()">
+    <span>Search</span>
+    <button mat-icon-button>
+      <mat-icon>{{ searchBannerExpanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+    </button>
+  </div>
+
+  <div *ngIf="searchBannerExpanded" class="banner-content">
+    <app-search-bar></app-search-bar>
+  </div>
+</div>
 
 <!-- Welcome Container -->
 <div class="welcome-container">
@@ -35,6 +51,4 @@
     <img src="./assets/pianoKeyLabelsSide.jpg" alt="Services Image">
   </div>
 </div>
-
-
 <app-footer></app-footer>

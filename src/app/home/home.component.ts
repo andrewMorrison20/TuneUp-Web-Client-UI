@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, HostListener} from '@angular/core';
 
 @Component({
   selector: 'app-details',
@@ -6,7 +6,16 @@ import { Component } from '@angular/core';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+  searchBannerExpanded: boolean = false;
+  isMobile: boolean = false;
 
+  @HostListener('window:resize')
+  checkScreenSize(): void {
+    this.isMobile = window.innerWidth <= 768;
+  }
+  toggleSearchBanner(): void {
+    this.searchBannerExpanded = !this.searchBannerExpanded;
+  }
   onTakeQuiz(){
 
   };
