@@ -59,4 +59,7 @@ export class FiltersSideBarComponent implements OnInit {
     this.sharedDataService.selectRegion(region);
   }
 
+  clearSelection() {
+      this.selectedRegion = null;
+  }
 }

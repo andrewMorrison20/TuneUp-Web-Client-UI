@@ -53,6 +53,7 @@
         </mat-list-item>
       </mat-list>
       <p *ngIf="selectedRegion">Selected: {{ selectedRegion.name }}</p>
+      <button mat-button color="warn" (click)="clearSelection()">Clear Selection</button>
     </div>
   </mat-expansion-panel>
 </mat-accordion>
