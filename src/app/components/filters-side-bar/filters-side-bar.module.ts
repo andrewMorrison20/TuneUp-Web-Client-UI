@@ -13,30 +13,32 @@ import { MatExpansionModule } from "@angular/material/expansion";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatList, MatListItem} from "@angular/material/list";
+import {MatSlider, MatSliderModule} from "@angular/material/slider";
 
 @NgModule({
   declarations: [
     FiltersSideBarComponent
   ],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    MatButtonModule,
-    FormsModule,
-    MatCheckboxModule,
-    MatSidenavModule,
-    MatToolbarModule,
-    MatExpansionModule,
-    MatSelectModule,
-    MatExpansionModule,
-    MatSelect,
-    MatOption,
-    MatList,
-    MatListItem,
-  ],
+    imports: [
+        CommonModule,
+        HttpClientModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatIconModule,
+        MatButtonModule,
+        FormsModule,
+        MatCheckboxModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        MatExpansionModule,
+        MatSelectModule,
+        MatExpansionModule,
+        MatSelect,
+        MatOption,
+        MatList,
+        MatListItem,
+        MatSliderModule,
+    ],
   exports: [FiltersSideBarComponent]
 })
 export class FiltersSideBarModule { }

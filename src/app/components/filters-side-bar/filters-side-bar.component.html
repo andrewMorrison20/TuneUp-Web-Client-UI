@@ -56,6 +56,67 @@
       <button mat-button color="warn" (click)="clearSelection()">Clear Selection</button>
     </div>
   </mat-expansion-panel>
+
+  <!-- Price Section -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Price Range</mat-panel-title>
+    </mat-expansion-panel-header>
+
+      <div class="price-inputs">
+        <mat-form-field appearance="outline">
+          <mat-label>Min Price</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="priceRange.min"
+            [min]="minPrice"
+            [max]="priceRange.max"
+            (change)="onPriceChange()">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Max Price</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="priceRange.max"
+            [min]="priceRange.min"
+            [max]="maxPrice"
+            (change)="onPriceChange()">
+        </mat-form-field>
+      </div>
+  </mat-expansion-panel>
+    <!-- Rating Section -->
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Rating</mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div class="rating-filter">
+        <!-- Display the selected rating -->
+        <div class="selected-rating" *ngIf="selectedRating > 0">
+          <mat-icon *ngFor="let star of getStars(selectedRating)">
+            <mat-panel-title> {{ star }} </mat-panel-title>
+          </mat-icon>
+          ({{ selectedRating }} Star{{ selectedRating > 1 ? 's' : '' }})
+        </div>
+
+        <!-- Rating Options -->
+        <div
+          class="rating-option"
+          *ngFor="let rating of ratings"
+          (click)="selectRating(rating.value)">
+          <mat-icon *ngFor="let star of getStars(rating.value)">
+            {{ star }}
+          </mat-icon>
+          <span>{{ rating.label }}</span>
+        </div>
+      </div>
+
+      <!-- Clear Button -->
+      <button mat-button (click)="clearRating()">Clear</button>
+    </mat-expansion-panel>
+
 </mat-accordion>
 
 
