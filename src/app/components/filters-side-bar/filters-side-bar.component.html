@@ -1,5 +1,6 @@
 <mat-accordion class="filter-accordion">
   <!-- Genre Section -->
+  <br>
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>Genres</mat-panel-title>
@@ -116,7 +117,29 @@
       <!-- Clear Button -->
       <button mat-button (click)="clearRating()">Clear</button>
     </mat-expansion-panel>
+  <!-- Availability Section -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Availability</mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="availability-filter">
+      <mat-form-field appearance="outline">
+        <mat-label>From</mat-label>
+        <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="availability.startDate" placeholder="Select start date">
+        <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #startDatePicker></mat-datepicker>
+      </mat-form-field>
 
+      <mat-form-field appearance="outline">
+        <mat-label>To</mat-label>
+        <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="availability.endDate" placeholder="Select end date">
+        <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #endDatePicker></mat-datepicker>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" (click)="applyAvailabilityFilter()">Apply</button>
+    </div>
+  </mat-expansion-panel>
 </mat-accordion>
 
 

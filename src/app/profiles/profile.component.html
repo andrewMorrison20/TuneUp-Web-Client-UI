@@ -37,6 +37,9 @@
 <br>
       <!-- Additional Profile Details Section -->
       <div class="profile-section">
+        <div class="calendar-container">
+          <full-calendar [options]="calendarOptions"></full-calendar>
+        </div>
         <div class="genres-section">
           <div class="Genre-container">
             <div *ngIf="profile.genres !== undefined; else noData">
@@ -95,11 +98,13 @@
           </div>
         </div>
       </div>
-<br>
+
+      <br>
+
       <!-- Reviews Section -->
       <div class="reviews-section">
         <h2>Reviews</h2>
-        <!-- Render the review card only if reviews exist -->
+        <p *ngIf="profile && profile.averageRating> 0"> Average Rating :  {{profile.averageRating}}/5 </p>
         <app-review-card
           *ngIf="profile && profile.reviews && profile.reviews.length > 0"
           [profile]="{ name: profile.displayName, reviews: profile.reviews }">

@@ -15,9 +15,9 @@ export interface TutorProfile {
   instruments: Instrument[];
   onlineLessons: boolean;
   enrolledStudents: number;
-  rating: number;
   reviews: Review[];
   prices: Price[];
   genres: Genre[];
+  averageRating: number;
   tuitionRegion: TuitionRegion;
 }

@@ -7,6 +7,7 @@ export interface StudentProfile {
   id: number;
   displayName: string;
   bio: string;
+  averageRating:number;
   profileType: string;
   onlineLessons: boolean;
   profilePicture: Image;

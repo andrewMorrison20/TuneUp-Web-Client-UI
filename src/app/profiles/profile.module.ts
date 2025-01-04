@@ -24,6 +24,7 @@ import {AuthGuard} from "../authentication/auth-guard";
 import {FooterModule} from "../components/footer/footer.module";
 import {FiltersSideBarModule} from "../components/filters-side-bar/filters-side-bar.module";
 import {MatSidenav, MatSidenavContainer, MatSidenavModule} from "@angular/material/sidenav";
+import {FullCalendarModule} from "@fullcalendar/angular";
 
 const profileRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent },
@@ -37,30 +38,31 @@ const profileRoutes: Routes = [
     SearchResultsComponent,
     ReviewCardComponent
   ],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    MatCardModule,
-    MatIconModule,
-    MatListModule,
-    MatProgressBarModule,
-    MatChipsModule,
-    MatDividerModule,
-    MatCardModule,
-    MatSidenavModule,
-    RouterLink,
-    RouterModule.forChild(profileRoutes),
-    MatProgressSpinner,
-    MatPaginator,
-    NavModule,
-    SearchBarModule,
-    MatButton,
-    FooterModule,
-    FiltersSideBarModule,
-    MatSidenav,
-    MatSidenavContainer,
-    MatIconButton,
-  ],
+    imports: [
+        CommonModule,
+        HttpClientModule,
+        MatCardModule,
+        MatIconModule,
+        MatListModule,
+        MatProgressBarModule,
+        MatChipsModule,
+        MatDividerModule,
+        MatCardModule,
+        MatSidenavModule,
+        RouterLink,
+        RouterModule.forChild(profileRoutes),
+        MatProgressSpinner,
+        MatPaginator,
+        NavModule,
+        SearchBarModule,
+        MatButton,
+        FooterModule,
+        FiltersSideBarModule,
+        MatSidenav,
+        MatSidenavContainer,
+        MatIconButton,
+        FullCalendarModule,
+    ],
   providers: [
     ProfileService
   ],

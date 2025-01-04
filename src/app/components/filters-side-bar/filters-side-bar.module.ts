@@ -14,31 +14,37 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatList, MatListItem} from "@angular/material/list";
 import {MatSlider, MatSliderModule} from "@angular/material/slider";
+import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
 
 @NgModule({
   declarations: [
     FiltersSideBarComponent
   ],
-    imports: [
-        CommonModule,
-        HttpClientModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatIconModule,
-        MatButtonModule,
-        FormsModule,
-        MatCheckboxModule,
-        MatSidenavModule,
-        MatToolbarModule,
-        MatExpansionModule,
-        MatSelectModule,
-        MatExpansionModule,
-        MatSelect,
-        MatOption,
-        MatList,
-        MatListItem,
-        MatSliderModule,
-    ],
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+    FormsModule,
+    MatCheckboxModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatExpansionModule,
+    MatSelectModule,
+    MatExpansionModule,
+    MatSelect,
+    MatOption,
+    MatList,
+    MatListItem,
+    MatSliderModule,
+    MatDatepickerToggle,
+    MatDatepicker,
+    MatDatepickerInput,
+    MatNativeDateModule,
+  ],
   exports: [FiltersSideBarComponent]
 })
 export class FiltersSideBarModule { }

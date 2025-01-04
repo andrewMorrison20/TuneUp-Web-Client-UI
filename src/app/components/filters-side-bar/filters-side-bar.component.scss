@@ -84,6 +84,20 @@
   .rating-option:hover mat-icon {
     color: #ffb300;
   }
+  .availability-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .availability-filter mat-form-field {
+    width: 100%;
+  }
+
+  .availability-filter button {
+    align-self: flex-end;
+  }
 
 
 }

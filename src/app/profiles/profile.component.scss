@@ -6,6 +6,7 @@ body {
   padding: 0;
 }
 
+/* Profile Page Container */
 .profile-page-container {
   max-width: 1200px;
   margin: 2rem auto;
@@ -16,6 +17,7 @@ body {
   overflow: hidden;
 }
 
+/* Profile Header */
 .profile-header {
   display: flex;
   flex-direction: column;
@@ -66,6 +68,7 @@ body {
   margin-top: 0.5rem;
 }
 
+/* Profile Details Section */
 .profile-details {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -82,106 +85,52 @@ body {
   font-size: 1.2rem;
 }
 
-/* Mobile-first responsiveness */
-@media (max-width: 768px) {
-  .profile-header {
-    padding: 1rem;
-  }
-
-  .profile-picture {
-    width: 100px;
-    height: 100px;
-  }
-
-  .profile-header-details h1 {
-    font-size: 1.5rem;
-  }
-
-  .bio {
-    font-size: 0.875rem;
-    text-align: center;
-  }
-
-  .profile-type-chip {
-    font-size: 0.75rem;
-    padding: 0.25rem 0.75rem;
-  }
-
-  .profile-details {
-    grid-template-columns: 1fr; /* Single column layout on small screens */
-    padding: 1rem 0;
-  }
-
-  .profile-details .mat-card {
-    padding: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .profile-header-details h1 {
-    font-size: 1.25rem;
-  }
-
-  .bio {
-    font-size: 0.75rem;
-  }
-
-  .profile-type-chip {
-    font-size: 0.625rem;
-  }
-  .chat-button-container {
-    margin-top: 2rem;
-    text-align: center;
-  }
-
-  .chat-button {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 10px 20px;
-    font-size: 1.1rem;
-    width: 200px;
-    margin: 0 auto;
-  }
-
-  .chat-button mat-icon {
-    font-size: 1.5rem;
-  }
-
-  @media (max-width: 600px) {
-    .profile-header {
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .chat-button {
-      width: 100%;
-      font-size: 1rem;
-      padding: 12px 16px;
-    }
-  }
-}
-/* Profile Section (General) */
 .profile-section {
-  display: flex;
-  justify-content: space-between;
-  gap: 2rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr; /* Calendar takes 2 parts, Genres/Instruments 1 part, Pricing 1 part */
+  grid-template-rows: auto auto; /* Allow two rows */
+  grid-template-areas:
+    "calendar instruments pricing"
+    "calendar genres pricing"; /* Genres below Instruments */
+  gap: 2rem; /* Add spacing between sections */
   margin-top: 2rem;
+}
+
+/* Calendar Section */
+.calendar-container {
+  grid-area: calendar;
+  max-width: 100%;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Instruments Section */
 .instruments-section {
-  flex: 1;
+  grid-area: instruments;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Genres Section */
+.genres-section {
+  grid-area: genres;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Pricing Section */
+.pricing-section {
+  grid-area: pricing;
 }
 
 .instrument-container p {
   font-size: 1rem;
   margin: 0.5rem 0;
-}
-
-/* Pricing Section */
-.pricing-section {
-  flex: 1;
 }
 
 .pricing-container {
@@ -214,11 +163,120 @@ body {
   color: #00796b;
 }
 
-/* Responsive Design */
+/* Average Rating Section */
+.average-rating-section {
+  margin-top: 16px;
+  padding: 8px 0;
+  border-top: 1px solid #ddd;
+}
+
+.average-rating-section h2 {
+  margin-bottom: 8px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.rating-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rating-text {
+  font-size: 16px;
+  font-weight: bold;
+  color: #444;
+}
+
+.rating-icon {
+  color: #ffc107;
+  font-size: 20px;
+}
+
+/* Calendar Styling */
+.calendar-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.fc {
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+}
+
+.fc-toolbar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.fc-toolbar .fc-button {
+  font-size: 12px;
+  padding: 4px 8px;
+}
+
+.fc-daygrid-day {
+  padding: 4px;
+}
+
+.fc-daygrid-day-top {
+  font-size: 10px;
+  text-align: center;
+}
+
+.fc-daygrid-day-events {
+  font-size: 10px;
+}
+
+.fc-event {
+  font-size: 10px;
+  padding: 2px;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+}
+
+.fc-event:hover {
+  background-color: #0056b3;
+}
+
+.fc-day-today {
+  background-color: #e3f2fd;
+}
+
+/* Responsive Styles */
 @media (max-width: 768px) {
-  .profile-section {
-    flex-direction: column;
-    gap: 1rem;
+  .profile-header {
+    padding: 1rem;
+  }
+
+  .profile-picture {
+    width: 100px;
+    height: 100px;
+  }
+
+  .profile-header-details h1 {
+    font-size: 1.5rem;
+  }
+
+  .bio {
+    font-size: 0.875rem;
+    text-align: center;
+  }
+
+  .profile-type-chip {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+  }
+
+  .profile-details {
+    grid-template-columns: 1fr;
+    padding: 1rem 0;
   }
 
   .pricing-row {
@@ -239,17 +297,54 @@ body {
     margin-top: 0.5rem;
   }
 
-  .back-to-results-container {
-    display: flex;
-    justify-content: start;
-    align-items: center;
+  .calendar-container {
+    grid-area: calendar; /* Ensure it's part of the grid */
+    max-width: 100%; /* Allow full width of its grid cell */
+    margin: 0; /* Remove centering margin */
     padding: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    justify-self: start; /* Align to the start of its grid cell */
   }
 
-  .back-to-results-button {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
+  .fc {
+    font-size: 10px;
   }
+
+  .fc-toolbar .fc-button {
+    font-size: 10px;
+  }
+
+  .fc-daygrid-day {
+    padding: 2px;
+  }
+
+  .fc-daygrid-day-top {
+    font-size: 8px;
+  }
+
+  /* Responsive Design for Mobile */
+  @media (max-width: 768px) {
+    .profile-section {
+      display: grid;
+      grid-template-columns: 1fr; /* Single column layout */
+      grid-template-rows: auto; /* Stack sections vertically */
+      grid-template-areas:
+      "calendar"
+      "instruments"
+      "genres"
+      "pricing"; /* Each section appears vertically */
+      gap: 1rem;
+    }
+
+    /* Adjust each section for mobile */
+    .calendar-container,
+    .instruments-section,
+    .genres-section,
+    .pricing-section {
+      max-width: 100%;
+      margin: 0;
+    }}
 }

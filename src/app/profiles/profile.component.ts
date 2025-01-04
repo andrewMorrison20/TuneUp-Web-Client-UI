@@ -3,8 +3,13 @@ import {ActivatedRoute, Router} from '@angular/router';
 import { ProfileService } from './profile.service';
 import { TutorProfile } from './interfaces/tutor.model';
 import { StudentProfile } from './interfaces/student.model';
+import { CalendarOptions } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
 
 type Profile = TutorProfile | StudentProfile;
+
+
 
 @Component({
   selector: 'app-profile',
@@ -13,7 +18,33 @@ type Profile = TutorProfile | StudentProfile;
 })
 export class ProfileComponent implements OnInit {
   profile: Profile | null = null;
+  calendarOptions: CalendarOptions = {
+    initialView: 'dayGridMonth',
+    selectable: true,
+    plugins: [dayGridPlugin, interactionPlugin],
+    height: 'auto',
+    contentHeight: 600,
+    select: this.onSelect.bind(this),
+    events: [
+      { title: 'Available', start: '2023-01-10', end: '2023-01-12' },
+      { title: 'Unavailable', start: '2023-01-15' },
+    ],
+    eventClick: this.onEventClick.bind(this),
+  };
 
+
+  onSelect(selectionInfo: any): void {
+    console.log('Selected range:', selectionInfo.startStr, 'to', selectionInfo.endStr);
+    alert(`Selected range: ${selectionInfo.startStr} to ${selectionInfo.endStr}`);
+
+  }
+
+
+  onEventClick(info: any): void {
+    console.log('Event clicked:', info.event.title);
+    alert(`Event clicked: ${info.event.title}`);
+
+  }
   constructor(
     private route: ActivatedRoute,
     private router: Router,
