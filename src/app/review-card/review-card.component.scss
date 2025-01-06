@@ -21,7 +21,7 @@
   border: none;
   cursor: pointer;
   padding: 8px;
-  font-size: 1.5rem;
+  font-size: 2rem;
   color: #333;
   display: flex;
   align-items: center;
@@ -46,7 +46,7 @@
 
 .reviewer-name {
   font-weight: bold;
-  font-size: 1.2em;
+  font-size: 2em;
 }
 
 .average-rating {
@@ -61,13 +61,13 @@
 
 .rating-text {
   margin-left: 8px;
-  font-size: 0.9em;
+  font-size: 2em;
   color: #666;
 }
 
 .review-body p {
   margin: 8px 0;
-  line-height: 1.5;
+  line-height: 1.8;
 }
 
 .review-body p.truncated {
@@ -81,6 +81,6 @@
 .see-more-link {
   color: #007bff;
   cursor: pointer;
-  font-size: 0.9em;
+  font-size: 1em;
   text-decoration: underline;
 }

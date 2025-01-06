@@ -16,20 +16,20 @@
   mat-expansion-panel-header {
     height: 60px;
     align-items: center;
-    font-size: 16px;
+    font-size: 18px;
     padding: 0 40px;
     border-bottom: 1px solid #ddd;
   }
   .checkbox-list {
     display: flex;
     flex-direction: column;
-    padding:25px;
-
+    padding: 25px;
+    font-size: 16px;
   }
 
-  mat-checkbox {
+  .checkbox-list .mat-checkbox {
     width: 100%;
-
+    font-size: 22px; /* Increased font size for checkbox text */
   }
 
   .price-inputs {
@@ -41,6 +41,7 @@
 
   .price-inputs mat-form-field {
     flex: 1;
+    font-size: 16px; /* Adjust input font size */
   }
 
   .rating-filter {
@@ -48,6 +49,7 @@
     flex-direction: column;
     gap: 16px;
     padding: 20px 0;
+    font-size: 16px; /* Adjust rating font size */
   }
 
   .search-container {
@@ -55,13 +57,14 @@
     flex-direction: column;
     gap: 16px;
     padding: 20px 0;
+    font-size: 16px; /* Adjust search font size */
   }
 
   .selected-rating {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 18px;
+    font-size: 18px; /* Slightly larger for emphasis */
     color: #444;
   }
 
@@ -73,6 +76,7 @@
     display: flex;
     align-items: center;
     cursor: pointer;
+    font-size: 16px; /* Adjust rating option font size */
   }
 
   .rating-option mat-icon {
@@ -84,20 +88,55 @@
   .rating-option:hover mat-icon {
     color: #ffb300;
   }
+
   .availability-filter {
     display: flex;
     flex-direction: column;
     gap: 16px;
     padding: 16px;
+    font-size: 16px; /* Adjust availability filter font size */
   }
 
   .availability-filter mat-form-field {
     width: 100%;
+    font-size: 16px; /* Adjust input font size */
   }
 
   .availability-filter button {
     align-self: flex-end;
+    font-size: 16px; /* Adjust button font size */
+  }
+  .mat-form-field mat-datepicker-content {
+    transform: scale(4); /* Scale the entire datepicker */
+    transform-origin: top left; /* Align the scaling from the top-left corner */
   }
 
+  .availability-filter mat-form-field mat-calendar {
+    width: 600px; /* Adjust width for better scaling */
+    height: 600px; /* Adjust height for better scaling */
+    font-size: 1.5rem; /* Increase font size for better readability */
+  }
+
+  .availability-filter mat-form-field mat-calendar-header {
+    font-size: 2rem; /* Increase header font size (month/year) */
+  }
+
+  .availability-filter mat-form-field  mat-calendar-table {
+    width: 100%; /* Ensure calendar table fits new size */
+    height: auto; /* Maintain auto height */
+  }
+
+  .availability-filter mat-form-field mat-calendar-body {
+    font-size: 1.2rem; /* Adjust font size for the calendar body */
+  }
+
+  .availability-filter  md-datepicker-input-container {
+    width: 700px;
+  }
+
+  .availability-filter mat-form-field mat-datepicker-content mat-calendar
+  {
+    zoom: 0.85;
+  }
 
 }

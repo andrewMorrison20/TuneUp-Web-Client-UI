@@ -18,7 +18,7 @@ mat-toolbar {
   box-shadow: 8px 4px 8px rgba(0, 0, 0, 0.2);
   background-color: #fff;
   color: #000;
-  height: 110px;
+  height: 130px;
   transition: height 0.3s ease;
 }
 /* Website Title Styling */
@@ -52,7 +52,7 @@ mat-toolbar {
   display: flex;
   justify-content: center; /* Align links to the left */
   gap: 30px; /* Reduced gap for better spacing */
-  font-size: 1.5rem; /* Adjust font size for normal screens */
+  font-size: 1.8rem; /* Adjust font size for normal screens */
   flex: 1; /* Allow links to expand */
   transition: transform 0.3s ease; /* Smooth transition when collapsing/expanding */
 }
@@ -117,12 +117,12 @@ mat-toolbar {
   }
 
   .nav-links a {
-    font-size: 1.6rem; /* Increase font size of links */
+    font-size: 1.8rem; /* Increase font size of links */
     font-weight: 500;  /* Slightly bold to make them stand out more */
     padding: 8px 15px; /* Add padding for clickable area */
     transition: transform 0.3s ease; /* Smooth scaling transition */
   }
-
+  .mat-button{}
   /* Account icon should stay on the right */
   .account-icon {
     position: absolute;

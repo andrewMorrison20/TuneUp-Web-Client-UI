@@ -2,7 +2,15 @@
  mat-icon {
    font-size: 1.4m;
 }
-
+.desktop-search-bar{
+    display: flex;
+    justify-content: center; /* Horizontally center */
+    align-items: center; /* Vertically center */
+    height: 20vh; /* Full height of the viewport or adjust as needed */
+    width: 100%; /* Full width of the container */
+    background-color: #100e0e; /* Optional background for contrast */
+    border-radius:8px
+}
 /* Hover effect for buttons and links */
 mat-button:hover, .logo-matching-toolbar a:hover {
   transform: scale(1.1);     /* Enlarge on hover */

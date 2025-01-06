@@ -45,7 +45,7 @@
           <div class="genre-container">
             <div *ngIf="profile.genres !== undefined; else noData">
               <div *ngIf="profile.genres.length > 0">
-                <h2>Genres</h2>
+                <h1>Genres</h1>
                 <ul>
                   <li *ngFor="let genre of profile.genres">
                     {{ genre.name }}
@@ -58,7 +58,7 @@
 
 
         <div class="instruments-section">
-          <h2>Instruments</h2>
+          <h1>Instruments</h1>
           <div class="instrument-container">
             <!-- Check if instruments are available -->
             <div *ngIf="profile.instruments !== undefined">
@@ -85,7 +85,7 @@
 
         <!-- Pricing Section -->
         <div class="pricing-section" *ngIf="isTutorProfile(profile) && isPricesMapNotEmpty() ">
-        <h2>Pricing</h2>
+        <h1>Pricing</h1>
           <div class="pricing-container">
             <div class="pricing-row" *ngFor="let price of profile.prices">
               <div class="instrument-column">
@@ -103,7 +103,7 @@
 
       <!-- Reviews Section -->
       <div class="reviews-section">
-        <h2>Reviews</h2>
+        <h1>Reviews</h1>
         <p *ngIf="profile && profile.averageRating> 0"> Average Rating :  {{profile.averageRating}}/5 </p>
         <app-review-card
           *ngIf="profile && profile.reviews && profile.reviews.length > 0"

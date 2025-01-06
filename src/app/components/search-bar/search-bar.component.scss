@@ -8,6 +8,7 @@
   padding: 50px;
   background-color: #ffffff;
   box-sizing: border-box;
+  border-radius:8px
 }
 
 .search-bar-container {
@@ -21,12 +22,14 @@
   padding-top: 40px;
   width: 100%;
   box-sizing: border-box;
+  border-radius:8px
 }
 
 .mat-form-field,
 .search-input {
   flex: 1;
   width: 100%;
+  border-radius:8px
 }
 
 .search-input {
@@ -64,5 +67,6 @@ button[mat-raised-button]:active {
   button[mat-raised-button] {
     width: 100%;
     max-width: none;
+    border-radius:8px
   }
 }

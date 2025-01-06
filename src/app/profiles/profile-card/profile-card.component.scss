@@ -1,14 +1,14 @@
 .profile-card {
   width: 100%;
-  max-width: 350px;
+  max-width: 420px;
   margin: 16px;
-  padding: 16px;
+  padding: 14px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
-  height: 600px; /* Maintain card height */
+  height: 720px; /* Maintain card height */
   overflow: hidden;
 }
 
@@ -23,69 +23,82 @@ mat-card-header {
 }
 
 mat-card-title {
-  font-size: 1.5em;
+  font-size: 1.8em;
   font-weight: bold;
 }
 
 mat-card-subtitle {
-  font-size: 1.1em;
+  font-size: 1.2em;
   color: rgba(0, 0, 0, 0.7);
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 mat-card-content {
-  margin-top: 16px;
+  margin-top: 18px;
   flex-grow: 1;
-  overflow-y: auto; /* Allows scrolling if content overflows */
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
 }
 
-.bio, .instruments {
-  margin-bottom: 12px;
-  overflow: hidden; /* Ensures no content overflows */
+.bio, .instruments-section {
+  margin-bottom: 14px;
+  font-size: 1.6em;
+  overflow: hidden;
+}
+
+.bio p {
+  margin-top: 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 20px;
+  line-height: 1.4;
 }
 
 /* Bio Section */
-.bio p {
+.instruments-section p {
+  margin-top: 16px;
   display: -webkit-box;
-  -webkit-line-clamp: 3; /* Limit bio to 3 lines */
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis; /* Add ellipsis if the text overflows */
-  margin-bottom: 16px; /* Space after bio */
+  text-overflow: ellipsis;
+  margin-bottom: 14px;
 }
 
-/* Ensure the Profile Image takes appropriate space */
+
 mat-card img {
   width: 100%;
-  height: 250px; /* Fixed height for image */
-  object-fit: cover; /* Ensure the image covers the space without distortion */
+  height: 250px;
+  object-fit: cover;
   border-radius: 8px;
 }
 
 button {
   background-color: #3f51b5;
   color: white;
-  border-radius: 20px;
-  padding: 8px 16px;
-  font-size: 14px;
+  border-radius: 22px;
+  padding: 10px 18px;
+  font-size: 16px;
   text-transform: none;
-  margin-top: auto; /* Push the button to the bottom of the card */
+  margin-top: auto;
 }
 
 button:hover {
   background-color: #303f9f;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 800px) {
   .profile-card {
     width: 100%;
     margin: 8px;
   }
 }
 mat-card-subtitle {
-  font-size: 1.1em;
+  font-size: 1.3em;
   margin-top: 4px;
   display: flex; /* Arrange profile type and area side by side */
   flex-wrap: wrap; /* Allow wrapping on smaller screens */
@@ -97,13 +110,13 @@ mat-card-subtitle {
 .profile-type {
   font-weight: bold;
   color: #3f51b5; /* Primary color */
-  font-size: 1.2em; /* Slightly larger font */
+  font-size: 1.4em; /* Slightly larger font */
 }
 
 /* Style for Area */
 .profile-area {
   color: rgba(0, 0, 0, 0.7); /* Neutral color for contrast */
-  font-size: 1em; /* Smaller font compared to profile type */
+  font-size: 1.2em; /* Smaller font compared to profile type */
   font-style: italic; /* Differentiate visually */
 }
 

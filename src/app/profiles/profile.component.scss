@@ -8,7 +8,7 @@ body {
 
 /* Profile Page Container */
 .profile-page-container {
-  max-width: 1200px;
+  max-width: 1500px;
   margin: 2rem auto;
   padding: 2rem;
   background-color: white;
@@ -32,8 +32,8 @@ body {
 }
 
 .profile-picture {
-  width: 180px;
-  height: 180px;
+  width: 280px;
+  height: 280px;
   border-radius: 50%;
   object-fit: cover;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -47,20 +47,22 @@ body {
 }
 
 .profile-header-details h1 {
-  margin: 0;
-  font-size: 2rem;
+  margin-bottom: 0.7rem;
+  font-size: 3rem;
   font-weight: 500;
   color: #333;
 }
 
 .bio {
   color: #666;
-  font-size: 1rem;
-  max-width: 600px;
+  font-size: 2rem;
+  margin-top: 0.5rem;
+  max-width: 900px;
+  line-height: 1.4;
 }
 
 .profile-type-chip {
-  font-size: 0.875rem;
+  font-size: 1.5rem;
   padding: 0.5rem 1rem;
   background-color: #e0f7fa;
   color: #00796b;
@@ -71,7 +73,7 @@ body {
 /* Profile Details Section */
 .profile-details {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
   gap: 1.5rem;
   padding: 2rem 0;
 }
@@ -82,7 +84,7 @@ body {
 
 .profile-details mat-card-title {
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
 }
 
 .profile-section {
@@ -92,7 +94,7 @@ body {
   grid-template-areas:
     "calendar instruments pricing"
     "calendar genres pricing"; /* Genres below Instruments */
-  gap: 2rem; /* Add spacing between sections */
+  gap: 1.5rem; /* Add spacing between sections */
   margin-top: 2rem;
 }
 
@@ -128,9 +130,16 @@ body {
   grid-area: pricing;
 }
 
-.instrument-container p {
-  font-size: 1rem;
-  margin: 0.5rem 0;
+.instrument-container li  {
+
+  font-size: 1.7rem;
+  margin: 0.7rem 0;
+}
+
+.genre-container li  {
+
+  font-size: 1.7rem;
+  margin: 0.7rem 0;
 }
 
 .pricing-container {
@@ -153,13 +162,13 @@ body {
   text-align: left;
   flex: 1;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 1.3rem;
 }
 
 .price-column {
   text-align: right;
   flex: 1;
-  font-size: 1rem;
+  font-size: 1.3rem;
   color: #00796b;
 }
 
@@ -172,7 +181,7 @@ body {
 
 .average-rating-section h2 {
   margin-bottom: 8px;
-  font-size: 18px;
+  font-size: 26px;
   font-weight: bold;
 }
 
@@ -183,7 +192,7 @@ body {
 }
 
 .rating-text {
-  font-size: 16px;
+  font-size: 50x;
   font-weight: bold;
   color: #444;
 }
@@ -195,7 +204,7 @@ body {
 
 /* Calendar Styling */
 .calendar-container {
-  max-width: 800px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 16px;
   border: 1px solid #ddd;
@@ -206,7 +215,7 @@ body {
 
 .fc {
   font-family: 'Roboto', sans-serif;
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .fc-toolbar {
@@ -216,7 +225,7 @@ body {
 }
 
 .fc-toolbar .fc-button {
-  font-size: 12px;
+  font-size: 16px;
   padding: 4px 8px;
 }
 
@@ -225,16 +234,16 @@ body {
 }
 
 .fc-daygrid-day-top {
-  font-size: 10px;
+  font-size: 14px;
   text-align: center;
 }
 
 .fc-daygrid-day-events {
-  font-size: 10px;
+  font-size: 14px;
 }
 
 .fc-event {
-  font-size: 10px;
+  font-size: 14px;
   padding: 2px;
   border-radius: 4px;
   background-color: #007bff;
@@ -301,7 +310,7 @@ body {
     grid-area: calendar; /* Ensure it's part of the grid */
     max-width: 100%; /* Allow full width of its grid cell */
     margin: 0; /* Remove centering margin */
-    padding: 16px;
+    padding: 20px;
     border: 1px solid #ddd;
     border-radius: 8px;
     background-color: #fff;
@@ -310,11 +319,11 @@ body {
   }
 
   .fc {
-    font-size: 10px;
+    font-size: 14px;
   }
 
   .fc-toolbar .fc-button {
-    font-size: 10px;
+    font-size: 14px;
   }
 
   .fc-daygrid-day {
@@ -322,7 +331,7 @@ body {
   }
 
   .fc-daygrid-day-top {
-    font-size: 8px;
+    font-size: 10px;
   }
 
   /* Responsive Design for Mobile */
@@ -343,7 +352,8 @@ body {
     .calendar-container,
     .instruments-section,
     .genres-section,
-    .pricing-section {
+    .pricing-section h2{
+      font-size: 2rem;
       max-width: 100%;
       margin: 0;
     }}

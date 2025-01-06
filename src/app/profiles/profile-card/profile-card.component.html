@@ -6,7 +6,7 @@
     <mat-card-title>{{ profile.displayName || 'Unknown' }}</mat-card-title>
     <mat-card-subtitle>
       <span class="profile-type">{{ profile.profileType || 'Not specified' }}</span>
-      <span class="profile-area" *ngIf="profile.tuitionRegion"> : {{ profile.tuitionRegion.name }}</span>
+      <span class="profile-area" *ngIf="profile.tuitionRegion"> <br> Area: {{ profile.tuitionRegion.name }}</span>
     </mat-card-subtitle>
   </mat-card-header>
 
@@ -14,11 +14,13 @@
     <!-- Bio Section -->
     <div class="bio">
       <strong>Bio:</strong>
+      <br>
       <p>{{ profile.bio || 'No bio available' }}</p>
     </div>
 
     <div class="instruments-section">
-      <strong>Instruments</strong>
+      <strong>Instruments:</strong>
+      <br>
       <div class="instrument-container">
         <div *ngIf="profile.instruments !== undefined; else noData">
           <div *ngIf="profile.instruments.length > 0; else noInstruments">

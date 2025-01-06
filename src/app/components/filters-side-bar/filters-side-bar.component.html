@@ -1,19 +1,6 @@
 <mat-accordion class="filter-accordion">
   <!-- Genre Section -->
   <br>
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>Genres</mat-panel-title>
-    </mat-expansion-panel-header>
-
-    <div class="checkbox-list">
-      <mat-checkbox
-        *ngFor="let genre of genres"
-        [(ngModel)]="genre.selected">
-        {{ genre.name }}
-      </mat-checkbox>
-    </div>
-  </mat-expansion-panel>
 
  <!-- Instrument Section -->
 <mat-expansion-panel>
@@ -138,6 +125,19 @@
       </mat-form-field>
 
       <button mat-raised-button color="primary" (click)="applyAvailabilityFilter()">Apply</button>
+    </div>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Genres</mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div class="checkbox-list">
+      <mat-checkbox
+        *ngFor="let genre of genres"
+        [(ngModel)]="genre.selected">
+        {{ genre.name }}
+      </mat-checkbox>
     </div>
   </mat-expansion-panel>
 </mat-accordion>
