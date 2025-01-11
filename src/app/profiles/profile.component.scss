@@ -1,17 +1,17 @@
 /* Global Styles */
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: #f9f9f9;
   margin: 0;
   padding: 0;
+  background-color: #e6dddd;
 }
 
 /* Profile Page Container */
 .profile-page-container {
-  max-width: 1500px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: white;
+  max-width: 2000px;
+  margin: 1.5rem auto;
+  padding: 1.5rem;
+  background-color: #e6dddd;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -209,7 +209,11 @@ body {
   color: #ffc107;
   font-size: 20px;
 }
-
+.reviews-section
+{
+  width: 1000px;
+  height:400px
+}
 /* Calendar Styling */
 .calendar-container {
   max-width: 1400px;
@@ -218,52 +222,7 @@ body {
   border: 1px solid #ddd;
   border-radius: 8px;
   background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.fc {
-  font-family: 'Roboto', sans-serif;
-  font-size: 16px;
-}
-
-.fc-toolbar {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
-}
-
-.fc-toolbar .fc-button {
-  font-size: 16px;
-  padding: 4px 8px;
-}
-
-.fc-daygrid-day {
-  padding: 4px;
-}
-
-.fc-daygrid-day-top {
-  font-size: 14px;
-  text-align: center;
-}
-
-.fc-daygrid-day-events {
-  font-size: 14px;
-}
-
-.fc-event {
-  font-size: 14px;
-  padding: 2px;
-  border-radius: 4px;
-  background-color: #007bff;
-  color: #fff;
-}
-
-.fc-event:hover {
-  background-color: #0056b3;
-}
-
-.fc-day-today {
-  background-color: #e3f2fd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 /* Responsive Styles */
@@ -324,22 +283,6 @@ body {
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     justify-self: start; /* Align to the start of its grid cell */
-  }
-
-  .fc {
-    font-size: 14px;
-  }
-
-  .fc-toolbar .fc-button {
-    font-size: 14px;
-  }
-
-  .fc-daygrid-day {
-    padding: 2px;
-  }
-
-  .fc-daygrid-day-top {
-    font-size: 10px;
   }
 
   /* Responsive Design for Mobile */

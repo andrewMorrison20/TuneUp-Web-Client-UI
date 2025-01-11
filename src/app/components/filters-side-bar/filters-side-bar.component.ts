@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedDataService, Instrument, Genre } from '../shared-data-service.component';
+import {TuitionRegion} from "../../profiles/interfaces/tuition-region.model";
+import {HttpClient} from "@angular/common/http";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-filters-side-bar',
@@ -11,7 +14,7 @@ export class FiltersSideBarComponent implements OnInit {
   genres: (Genre & { selected: boolean })[] = [];
   regionSuggestions: any[] = [];
   regionSearchQuery: string = '';
-  selectedRegion: any = null;
+  selectedRegion: TuitionRegion | null = null;
   minPrice: number = 0;
   maxPrice: number = 1000;
   priceRange = { min: 0, max: 1000 };
@@ -24,6 +27,11 @@ export class FiltersSideBarComponent implements OnInit {
   ];
 
   selectedRating: number = 0;
+  searchQuery: string = '';
+
+  constructor (private http: HttpClient, private router: Router, private sharedDataService: SharedDataService) {
+
+  }
 
   getStars(rating: number): string[] {
     return Array.from({ length: 5 }, (_, i) => (i < rating ? 'star' : 'star_border'));
@@ -38,14 +46,13 @@ export class FiltersSideBarComponent implements OnInit {
   onRatingChange() {
     console.log('Filter profiles by rating:', this.selectedRating);
   }
-  constructor(private sharedDataService: SharedDataService) {}
 
   ngOnInit(): void {
     this.sharedDataService.instruments$.subscribe((data) => {
       if (data) {
         this.instruments = data.map((instrument) => ({
           ...instrument,
-          selected: false, // Initialize selected state
+          selected: false,
         }));
       }
     });
@@ -92,13 +99,33 @@ export class FiltersSideBarComponent implements OnInit {
     // Emit or handle the updated price range here
   }
 
-  formatLabel(value: number): string {
-    return `$${value}`;
-  }
   clearRating() {
     this.selectedRating = 0;
     console.log('Rating filter cleared');
     this.onRatingChange();
   }
 
+  applyFilters(): void {
+    const selectedInstruments = this.instruments
+      .filter((instrument) => instrument.selected)
+      .map((instrument) => instrument.id); // Extract only IDs or relevant values
+
+    const selectedGenres = this.genres
+      .filter((genre) => genre.selected)
+      .map((genre) => genre.id); // Extract only IDs or relevant values
+
+    const queryParams = {
+      keyword: this.searchQuery || null,
+      instruments: selectedInstruments.length > 0 ? selectedInstruments : null,
+      genres: selectedGenres.length > 0 ? selectedGenres : null,
+      rating: this.selectedRating,
+      profileType: null,
+      page: 0,
+      size: 8,
+      sort: 'displayName,asc'
+    };
+
+    // Navigate to the search-results route and pass query parameters
+    this.router.navigate(['/profiles/search'], { queryParams });
+  }
 }

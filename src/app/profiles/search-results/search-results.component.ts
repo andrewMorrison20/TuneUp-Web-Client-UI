@@ -22,6 +22,7 @@ export class SearchResultsComponent implements OnInit {
   pageIndex = 0; // Current page index
 
   // Search criteria
+  rating: number |null = null;
   keyword: string | null = null;
   genres:number[] | null = null;
   instruments: number[] | null = null;
@@ -37,13 +38,12 @@ export class SearchResultsComponent implements OnInit {
     this.checkScreenSize();
     this.route.queryParams.subscribe((params) => {
       this.keyword = params['keyword'] || null;
+      this.rating = params['rating'] || null;
       this.genres = params['genres'] || null;
       this.instruments = params['instruments'] || null;
       this.profileType = params['profileType'] || null;
       this.pageIndex = params['page'] || 0;
       this.pageSize = params['size'] || 8;
-
-
       this.fetchProfiles();
     });
   }
@@ -62,7 +62,8 @@ export class SearchResultsComponent implements OnInit {
       keyword: this.keyword,
       genres:this.genres,
       instruments: this.instruments,
-      profileType: this.profileType
+      profileType: this.profileType,
+      rating:this.rating
     };
 
     this.profileService.getFilteredProfiles(searchParams, this.pageIndex, this.pageSize, 'displayName,asc').subscribe({

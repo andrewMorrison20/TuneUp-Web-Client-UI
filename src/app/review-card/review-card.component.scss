@@ -3,11 +3,12 @@
   border-radius: 8px;
   padding: 16px;
   margin: 16px 0;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center; /* Center vertically */
   justify-content: space-between; /* Space out arrows and content */
   position: relative;
+  background-color: #fff;
 }
 
 .review-header {
@@ -61,13 +62,14 @@
 
 .rating-text {
   margin-left: 8px;
-  font-size: 2em;
+  font-size: 2.4em;
   color: #666;
 }
 
 .review-body p {
   margin: 8px 0;
   line-height: 1.8;
+  font-size: 2.4em;
 }
 
 .review-body p.truncated {
@@ -76,6 +78,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-size: 2.4em;
 }
 
 .see-more-link {

@@ -1,7 +1,7 @@
 <app-navbar></app-navbar>
 
 <!-- Profile Page Container -->
-<div class="profile-page-container mat-elevation-z3">
+<div class="profile-page-container">
   <!-- Back to Results Button -->
   <div class="back-to-results-container">
     <button mat-raised-button color="primary" class="back-to-results-button" (click)="goBackToResults()">
@@ -16,7 +16,7 @@
 
   <!-- Profile Content -->
   <ng-template #profileContent>
-    <div  *ngIf="profile">
+    <div *ngIf="profile">
       <!-- Profile Header -->
       <div class="profile-header">
         <img [src]="profile?.profilePicture?.url || 'https://storage.googleapis.com/download/storage/v1/b/tuneup_profile_images/o/79a88d6b-8196-49cf-9cde-d6d4d3bf10fd-defaultProfilePicture.jpg?generation=1735034744997677&alt=media'" alt="Profile Picture" class="profile-picture">
@@ -105,10 +105,12 @@
       <div class="reviews-section">
         <h1>Reviews</h1>
         <p *ngIf="profile && profile.averageRating> 0"> Average Rating :  {{profile.averageRating}}/5 </p>
+        <div class ="reviews">
         <app-review-card
           *ngIf="profile && profile.reviews && profile.reviews.length > 0"
           [profile]="{ name: profile.displayName, reviews: profile.reviews }">
         </app-review-card>
+        </div>
         <!-- Fallback message -->
         <p *ngIf="profile && profile.reviews && profile.reviews.length === 0" class="no-reviews-message">
           No reviews yet.

@@ -33,11 +33,9 @@ export class SearchBarComponent implements OnInit {
   };
 
   updateSearchCriteria(): void {
-    // Combine search criteria here
     const criteria = {
       startDate: this.availability.startDate,
       endDate: this.availability.endDate,
-      // Add other search parameters like selectedGenreId, etc.
     };
 
     //this.performSearch(criteria);

@@ -10,7 +10,7 @@
   justify-content: space-between;
   background-color: #e6dddd;
   align-items: center; /* Vertically center */
-  padding: 20px; /* Add some padding for spacing */
+  padding: 15px; /* Add some padding for spacing */
   width: 100%; /* Full width of the container */
   height: auto; /* Allow height to adjust automatically based on content */
   min-height: 200px; /* Ensure there's a minimum height for large screens */
@@ -20,38 +20,14 @@ app-search-bar {
   flex: 1; /* Allow the search bar to take up space */
   margin-right: 20px;
 }
-.image-gallery {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Two equal-width columns */
-  grid-auto-rows: auto; /* Adjust rows automatically */
-  gap: 16px; /* Space between items */
-  width: 300px; /* Adjust to desired width */
-}
 
-.image-gallery div:nth-child(odd) {
-  margin-top: 20px; /* Add offset to odd images for staggered effect */
-}
-
-.image-gallery img {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  object-fit: cover;
-}
-
-/* Hide the image gallery on screens smaller than 1024px */
-@media (max-width: 1900px) {
-  .image-gallery {
-    display: none; /* Completely hide the gallery */
-  }}
 .sidenav-container {
   height: 100vh;
 }
 
 .sidenav {
-  width: 275px;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+  width: 265px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
 }
 
 
@@ -69,31 +45,11 @@ app-search-bar {
 /* Profile cards grid */
 .profile-cards-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* Default 5 items per row */
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
   width: 100%;
-  padding: 1rem;
 }
 
-.image-gallery {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Two equal-width columns */
-  grid-auto-rows: auto; /* Adjust rows automatically */
-  gap: 10px; /* Space between items */
-  width: 500px; /* Adjust to desired width */
-}
-
-.image-gallery div:nth-child(odd) {
-  margin-top: 20px; /* Add offset to odd images for staggered effect */
-}
-
-.image-gallery img {
-  width: 100%; /* Images will span the column width */
-  height: auto; /* Maintain aspect ratio */
-  border-radius: 20px; /* Rounded corners */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.8); /* Add depth with shadow */
-  object-fit: cover; /* Prevent distortion */
-}
 /* For medium screens (e.g., tablets) - 3 items per row */
 @media (max-width: 1700px) {
   .profile-cards-grid {
