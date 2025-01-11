@@ -6,8 +6,15 @@
 .mat-icon,
 .logo-matching-toolbar a,
 .logo-matching-toolbar button {
-  color: #000000;
+  color: #100e0e;
   box-sizing: border-box;
+
+
+}
+
+.account-icon .mat-icon {
+  height: 40px;
+  width: 40px;
 }
 
 mat-toolbar {
@@ -17,7 +24,7 @@ mat-toolbar {
   align-items: center;
   box-shadow: 8px 4px 8px rgba(0, 0, 0, 0.2);
   background-color: #fff;
-  color: #000;
+  color: #090606;
   height: 150px;
   transition: height 0.3s ease;
 }
@@ -52,7 +59,7 @@ mat-toolbar {
   display: flex;
   justify-content: center; /* Align links to the left */
   gap: 30px; /* Reduced gap for better spacing */
-  font-size: 1.8rem; /* Adjust font size for normal screens */
+  font-size: 1.6rem; /* Adjust font size for normal screens */
   flex: 1; /* Allow links to expand */
   transition: transform 0.3s ease; /* Smooth transition when collapsing/expanding */
 }
@@ -117,7 +124,7 @@ mat-toolbar {
   }
 
   .nav-links a {
-    font-size: 1.8rem; /* Increase font size of links */
+    font-size: 1.6rem; /* Increase font size of links */
     font-weight: 500;  /* Slightly bold to make them stand out more */
     padding: 8px 15px; /* Add padding for clickable area */
     transition: transform 0.3s ease; /* Smooth scaling transition */
@@ -139,7 +146,7 @@ mat-toolbar {
 }
 
 .nav-links a {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   color: #000;
   text-transform: none
 }
