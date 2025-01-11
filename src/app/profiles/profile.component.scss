@@ -17,6 +17,14 @@ body {
   overflow: hidden;
 }
 
+.tutor-card {
+  background-color: #f3fbfb; /* Color for tutor */
+}
+
+.student-card {
+  background-color: #f8f2f2; /* Color for student */
+}
+
 /* Profile Header */
 .profile-header {
   display: flex;

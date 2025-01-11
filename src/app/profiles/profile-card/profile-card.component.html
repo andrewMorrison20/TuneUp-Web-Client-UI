@@ -1,4 +1,7 @@
-<mat-card class="profile-card" *ngIf="profile">
+<mat-card class="profile-card"  [ngClass]="{
+    'tutor-card': profile.profileType === 'Tutor',
+    'student-card': profile.profileType === 'Student'
+  }" *ngIf="profile">
   <img class="profile-image" [src]= "profile?.profilePicture?.url || 'https://storage.googleapis.com/download/storage/v1/b/tuneup_profile_images/o/79a88d6b-8196-49cf-9cde-d6d4d3bf10fd-defaultProfilePicture.jpg?generation=1735034744997677&alt=media'" alt=
     "{{ profile.displayName }}'s profile picture" />
 

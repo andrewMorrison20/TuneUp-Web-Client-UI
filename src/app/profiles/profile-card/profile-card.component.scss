@@ -3,13 +3,21 @@
   max-width: 420px;
   margin: 16px;
   padding: 14px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   border-radius: 8px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
+  background-color: #f6fafa;
   flex-direction: column;
   height: 720px; /* Maintain card height */
   overflow: hidden;
+}
+.tutor-card {
+  background-color: #f3fbfb; /* Color for tutor */
+}
+
+.student-card {
+  background-color: #f8f2f2; /* Color for student */
 }
 
 .profile-card:hover {
