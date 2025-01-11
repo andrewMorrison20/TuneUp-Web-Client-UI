@@ -22,19 +22,7 @@ export class FiltersSideBarComponent implements OnInit {
     { label: '> 4 Stars', value: 4 },
     { label: '5 Stars Only', value: 5 }
   ];
-  availability = {
-    startDate: null,
-    endDate: null,
-  };
 
-  applyAvailabilityFilter(): void {
-    if (this.availability.startDate && this.availability.endDate) {
-      console.log('Filtering profiles with availability from:', this.availability.startDate, 'to:', this.availability.endDate);
-      // Emit or trigger filtering logic with the selected dates
-    } else {
-      console.error('Please select both start and end dates');
-    }
-  }
   selectedRating: number = 0;
 
   getStars(rating: number): string[] {

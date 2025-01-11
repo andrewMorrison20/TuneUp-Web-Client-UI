@@ -27,6 +27,22 @@ export class SearchBarComponent implements OnInit {
   selectedProfileType: string = "";
   genres: Genre[] = [];
 
+  availability = {
+    startDate: null,
+    endDate: null,
+  };
+
+  updateSearchCriteria(): void {
+    // Combine search criteria here
+    const criteria = {
+      startDate: this.availability.startDate,
+      endDate: this.availability.endDate,
+      // Add other search parameters like selectedGenreId, etc.
+    };
+
+    //this.performSearch(criteria);
+  }
+
   constructor(private http: HttpClient, private router: Router, private sharedDataService: SharedDataService) {}
 
   ngOnInit(): void {

@@ -11,7 +11,34 @@
     </mat-select>
   </mat-form-field>
 
+  <!-- Availability Section -->
+  <div class="availability-container">
+    <mat-form-field appearance="outline" class="availability-filter">
+      <mat-label>From</mat-label>
+      <input
+        matInput
+        [matDatepicker]="startDatePicker"
+        [(ngModel)]="availability.startDate"
+        (ngModelChange)="updateSearchCriteria()"
+        placeholder="Select start date"
+      />
+      <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #startDatePicker></mat-datepicker>
+    </mat-form-field>
 
+    <mat-form-field appearance="outline" class="availability-filter">
+      <mat-label>To</mat-label>
+      <input
+        matInput
+        [matDatepicker]="endDatePicker"
+        [(ngModel)]="availability.endDate"
+        (ngModelChange)="updateSearchCriteria()"
+        placeholder="Select end date"
+      />
+      <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #endDatePicker></mat-datepicker>
+    </mat-form-field>
+  </div>
   <!-- Genre Dropdown -->
   <mat-form-field appearance="outline" class="dropdown">
     <mat-label>Genre</mat-label>

@@ -9,6 +9,8 @@ import { FormsModule } from '@angular/forms';
 import { SearchBarComponent } from './search-bar.component';
 import {MatOption, MatSelect} from "@angular/material/select";
 import {HttpClientModule} from "@angular/common/http";
+import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [SearchBarComponent],
@@ -22,7 +24,10 @@ import {HttpClientModule} from "@angular/common/http";
     FormsModule,
     MatSelect,
     MatOption,
-
+    MatDatepickerInput,
+    MatDatepickerToggle,
+    MatDatepicker,
+    MatNativeDateModule,
   ],
   exports: [SearchBarComponent]
 })
