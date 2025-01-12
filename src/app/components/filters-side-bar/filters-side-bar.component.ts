@@ -119,6 +119,7 @@ export class FiltersSideBarComponent implements OnInit {
       instruments: selectedInstruments.length > 0 ? selectedInstruments : null,
       genres: selectedGenres.length > 0 ? selectedGenres : null,
       rating: this.selectedRating,
+      regionId: this.selectedRegion?.id,
       profileType: null,
       page: 0,
       size: 8,

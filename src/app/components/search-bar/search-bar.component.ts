@@ -22,7 +22,6 @@ export class SearchBarComponent implements OnInit {
   searchQuery: string = '';
   selectedInstrumentId: number[] | null = null;
   selectedGenreId: number[] | null = null;
-
   instruments: Instrument[] = [];
   selectedProfileType: string = "";
   genres: Genre[] = [];
