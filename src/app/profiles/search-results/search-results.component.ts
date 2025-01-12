@@ -59,7 +59,7 @@ export class SearchResultsComponent implements OnInit {
   }
   fetchProfiles(): void {
     this.isLoading = true;
-
+    this.error = null
     const searchParams = {
       keyword: this.keyword,
       genres:this.genres,
