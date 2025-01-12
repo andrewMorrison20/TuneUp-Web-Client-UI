@@ -94,9 +94,15 @@ export class FiltersSideBarComponent implements OnInit {
   clearSelection() {
       this.selectedRegion = null;
   }
+
   onPriceChange() {
-    console.log('Price range updated:', this.priceRange);
-    // Emit or handle the updated price range here
+    if (this.priceRange.min > this.priceRange.max) {
+      console.error('Min price cannot be greater than max price.');
+      this.priceRange.min = Math.min(this.priceRange.min, this.priceRange.max);
+      this.priceRange.max = Math.max(this.priceRange.min, this.priceRange.max);
+    }
+
+    console.log('Updated price range:', this.priceRange);
   }
 
   clearRating() {
@@ -106,6 +112,7 @@ export class FiltersSideBarComponent implements OnInit {
   }
 
   applyFilters(): void {
+    console.log('priceRange',this.priceRange)
     const selectedInstruments = this.instruments
       .filter((instrument) => instrument.selected)
       .map((instrument) => instrument.id); // Extract only IDs or relevant values
@@ -120,6 +127,7 @@ export class FiltersSideBarComponent implements OnInit {
       genres: selectedGenres.length > 0 ? selectedGenres : null,
       rating: this.selectedRating,
       regionId: this.selectedRegion?.id,
+      priceRange: this.priceRange ? [this.priceRange.min, this.priceRange.max] : null,
       profileType: null,
       page: 0,
       size: 8,

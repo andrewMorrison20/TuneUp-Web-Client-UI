@@ -24,6 +24,7 @@ export class SearchResultsComponent implements OnInit {
   // Search criteria
   rating: number |null = null;
   regionId: number | null = null;
+  priceRange: number[] | null = null;
   keyword: string | null = null;
   genres:number[] | null = null;
   instruments: number[] | null = null;
@@ -41,6 +42,7 @@ export class SearchResultsComponent implements OnInit {
       this.keyword = params['keyword'] || null;
       this.rating = params['rating'] || null;
       this.genres = params['genres'] || null;
+      this.priceRange = params['priceRange'] || null;
       this.regionId = params['regionId'] || null;
       this.instruments = params['instruments'] || null;
       this.profileType = params['profileType'] || null;
@@ -48,6 +50,7 @@ export class SearchResultsComponent implements OnInit {
       this.pageSize = params['size'] || 8;
       this.fetchProfiles();
     });
+    console.log(this.priceRange)
   }
 
   toggleFiltersBanner(): void {
@@ -66,6 +69,7 @@ export class SearchResultsComponent implements OnInit {
       regionId: this.regionId,
       instruments: this.instruments ? (Array.isArray(this.instruments) ? this.instruments : [this.instruments]) : null,
       profileType: this.profileType,
+      priceRange:this.priceRange,
       rating:this.rating
     };
 
