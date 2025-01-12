@@ -62,9 +62,9 @@ export class SearchResultsComponent implements OnInit {
     this.error = null
     const searchParams = {
       keyword: this.keyword,
-      genres:this.genres,
+      genres:this.genres ? (Array.isArray(this.genres) ? this.genres : [this.genres]) : null,
       regionId: this.regionId,
-      instruments: this.instruments,
+      instruments: this.instruments ? (Array.isArray(this.instruments) ? this.instruments : [this.instruments]) : null,
       profileType: this.profileType,
       rating:this.rating
     };
