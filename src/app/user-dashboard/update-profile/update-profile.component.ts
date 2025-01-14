@@ -8,6 +8,7 @@ import {StudentProfile} from "../../profiles/interfaces/student.model";
 import {Price} from "../../profiles/interfaces/price";
 import {PeriodMap} from "../../profiles/interfaces/period";
 import { MatSnackBar } from '@angular/material/snack-bar';
+import {Qualification, SharedDataService} from "../../components/shared-data-service.component";
 
 
 @Component({
@@ -19,11 +20,17 @@ export class UpdateProfileComponent {
   profile!: TutorProfile | StudentProfile;
   pricingList: Price[] = [];
   genres: Genre [] = [];
+  qualifications: Qualification [] = [];
   instruments : Instrument [] = [];
   profileTypes = ['Student', 'Tutor', 'Parent'];
   durations: string[] = [];
   rates: number[] = [];
   prices :  number[] = [];
+  newQualification = {
+    qualification: null,
+    instrument: '',
+    description: '',
+  };
 
   newPricing: Price = {
     period: this.durations[0] || '',
@@ -44,17 +51,26 @@ export class UpdateProfileComponent {
   regionSuggestions: any[] = [];
   searchQuery: string = '';
   selectedRegion: any = null;
-  qualifications: { name: string; description: string }[] = [];
-  newQualification = { name: '', description: '' };
   standardPrices: Price[] =[];
+  selectedQualifications: { q: Qualification; i: Instrument; }[] = [];
 
-  constructor(private http: HttpClient, protected profileService: ProfileService,  private snackBar: MatSnackBar) {}
+  constructor(private http: HttpClient, protected profileService: ProfileService,private sharedDataService: SharedDataService, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.loadProfile();
     this.loadInstruments();
     this.loadGenres();
     this.loadPricing();
+
+    this.sharedDataService.qualifications$.subscribe((data) => {
+      if (data) {
+        this.qualifications = data.map((qualification:Qualification) => ({
+          ...qualification,
+          selected: false,
+        }));
+      }
+    });
+    this.sharedDataService.loadQualifications();
   }
   onFileSelected(event: any): void {
     const file = event.target.files[0];
@@ -222,9 +238,9 @@ export class UpdateProfileComponent {
   }
   // Add a qualification to the list
   addQualification(): void {
-    if (this.newQualification.name.trim() && this.newQualification.description.trim()) {
-      this.qualifications.push({ ...this.newQualification });
-      this.newQualification = { name: '', description: '' }; // Reset input fields
+    if (this.newQualification) {
+     // this.selectedQualifications.push({ ...this.newQualification });
+     // this.newQualification = { name: '', instrument: '', description: '' }; // Reset input fields
     } else {
       alert('Both qualification name and description are required.');
     }

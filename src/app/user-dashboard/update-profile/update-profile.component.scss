@@ -116,7 +116,7 @@ mat-card-title {
   background-color: #f0f0f0;
 }
 /* Responsive design for mobile devices */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .update-profile-container {
     flex-direction: column; /* Stack containers vertically */
     gap: 24px; /* Increase gap between stacked containers */
@@ -125,7 +125,6 @@ mat-card-title {
   .sub-container {
     min-width: 100%; /* Full width for each container */
   }
-
 
 
   .btn-save,

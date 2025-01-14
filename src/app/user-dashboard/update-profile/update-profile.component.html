@@ -89,14 +89,14 @@
   </mat-card>
 
   <!-- Sub-container for Achievements and Qualifications -->
-  <mat-card class="sub-container sub-container-3" *ngIf="profile.profileType === 'Student'">
+  <mat-card class="sub-container sub-container-3" >
     <mat-card-title>Achievements and Qualifications</mat-card-title>
     <form (ngSubmit)="onSubmitQualifications()" #qualificationForm="ngForm" class="qualification-form">
       <!-- Qualifications List -->
       <div class="form-group">
         <mat-list>
-          <mat-list-item *ngFor="let qualification of qualifications; let i = index">
-              {{ qualification.name }} - {{ qualification.description }}
+          <mat-list-item *ngFor="let qualification of selectedQualifications; let i = index">
+              {{ qualification }}
             <button mat-icon-button color="warn" (click)="removeQualification(i)">
               <mat-icon>delete</mat-icon>
             </button>
@@ -108,9 +108,16 @@
       <mat-card-subtitle>Add a Qualification</mat-card-subtitle>
       <mat-form-field appearance="outline" class="form-group">
         <mat-label>Qualification Name</mat-label>
-        <input matInput [(ngModel)]="newQualification.name" name="qualificationName" placeholder="Enter qualification name"  maxlength="50"/>
-        <mat-hint align = 'end'>{{newQualification.name.length}}/25</mat-hint>
+        <mat-select [(ngModel)]="newQualification" name="name" required>
+          <mat-option *ngFor="let qualification of qualifications" [value]="qualification">{{ qualification.name }}</mat-option>
+        </mat-select>
       </mat-form-field>
+        <mat-form-field appearance="outline" class="form-group">
+          <mat-label>Instrument</mat-label>
+          <mat-select [(ngModel)]="newQualification.instrument" name="instrument" required>
+            <mat-option *ngFor="let instrument of instruments" [value]="instrument">{{ instrument.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
       <mat-form-field appearance="outline" class="form-group">
         <mat-label>Description</mat-label>
         <textarea
