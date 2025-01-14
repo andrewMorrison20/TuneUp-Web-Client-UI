@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedDataService, Instrument, Genre } from '../shared-data-service.component';
+import {SharedDataService, Instrument, Genre, Qualification} from '../shared-data-service.component';
 import {TuitionRegion} from "../../profiles/interfaces/tuition-region.model";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
@@ -12,6 +12,7 @@ import {Router} from "@angular/router";
 export class FiltersSideBarComponent implements OnInit {
   instruments: (Instrument & { selected: boolean })[] = [];
   genres: (Genre & { selected: boolean })[] = [];
+  qualifications:(Qualification & { selected: boolean })[] = [];
   regionSuggestions: any[] = [];
   regionSearchQuery: string = '';
   selectedRegion: TuitionRegion | null = null;
@@ -66,9 +67,18 @@ export class FiltersSideBarComponent implements OnInit {
       }
     });
 
+    this.sharedDataService.qualifications$.subscribe((data) => {
+      if (data) {
+        this.qualifications = data.map((qualification:Qualification) => ({
+          ...qualification,
+          selected: false,
+        }));
+      }
+    });
+
     this.sharedDataService.loadInstruments();
     this.sharedDataService.loadGenres();
-
+    this.sharedDataService.loadQualifications();
     this.sharedDataService.regions$.subscribe((data) => {
       this.regionSuggestions = data;
     })
@@ -80,6 +90,10 @@ export class FiltersSideBarComponent implements OnInit {
 
   getSelectedInstruments(): Instrument[] {
     return this.instruments.filter((instrument) => instrument.selected);
+  }
+
+  getSelectedQualifications(): Qualification[] {
+    return this.qualifications.filter((qualification) => qualification.selected);
   }
 
   onRegionSearch(): void {
@@ -121,9 +135,12 @@ export class FiltersSideBarComponent implements OnInit {
       .filter((genre) => genre.selected)
       .map((genre) => genre.id); // Extract only IDs or relevant values
 
+    const selectedQualifications = this.getSelectedQualifications();
+
     const queryParams = {
       keyword: this.searchQuery || null,
       instruments: selectedInstruments.length > 0 ? selectedInstruments : null,
+      qualifications: selectedQualifications.length >0 ? selectedQualifications : null,
       genres: selectedGenres.length > 0 ? selectedGenres : null,
       rating: this.selectedRating,
       regionId: this.selectedRegion?.id,

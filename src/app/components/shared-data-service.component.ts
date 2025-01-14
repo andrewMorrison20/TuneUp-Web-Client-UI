@@ -13,20 +13,28 @@ export interface Genre {
   id: number;
 }
 
+export interface Qualification {
+  name: string;
+  id: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class SharedDataService {
   private instrumentsCache: Instrument[] | null = null;
   private genresCache: Genre[] | null = null;
+  private qualificationsCache: Qualification[] | null = null;
 
   private instrumentsSubject = new BehaviorSubject<Instrument[] | null>(null);
   private genresSubject = new BehaviorSubject<Genre[] | null>(null);
   private regionsSubject = new BehaviorSubject<any[]>([]);
+  private qualificationsSubject = new BehaviorSubject<any[]>([]);
 
   regions$ = this.regionsSubject.asObservable();
   instruments$ = this.instrumentsSubject.asObservable();
   genres$ = this.genresSubject.asObservable();
+  qualifications$ = this.qualificationsSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -56,6 +64,29 @@ export class SharedDataService {
           tap((data) => {
             this.genresCache = data;
             this.genresSubject.next(data);
+          })
+        )
+        .subscribe();
+    }
+  }
+
+  loadQualifications(): void {
+    if (this.qualificationsCache) {
+      // Emit the sorted cached data
+      this.qualificationsSubject.next(this.qualificationsCache);
+    } else {
+      this.http
+        .get<Qualification[]>('http://localhost:8080/api/qualifications')
+        .pipe(
+          tap((data) => {
+            // Sort qualifications by name
+            const sortedData = data.sort((a, b) =>
+              a.name.localeCompare(b.name, undefined, { numeric: true })
+            );
+
+            // Cache and emit the sorted data
+            this.qualificationsCache = sortedData;
+            this.qualificationsSubject.next(sortedData);
           })
         )
         .subscribe();

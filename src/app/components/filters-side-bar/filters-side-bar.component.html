@@ -17,6 +17,20 @@
   </div>
 </mat-expansion-panel>
 
+  <!-- Instrument Section -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Qualification</mat-panel-title>
+    </mat-expansion-panel-header>
+  <div class="checkbox-list">
+    <mat-checkbox
+      *ngFor="let qualification of qualifications"
+      [(ngModel)]="qualification.selected">
+      {{ qualification.name }}
+    </mat-checkbox>
+  </div>
+  </mat-expansion-panel>
+
   <!-- Region Section -->
   <mat-expansion-panel>
     <mat-expansion-panel-header>

@@ -24,6 +24,7 @@ export class SearchResultsComponent implements OnInit {
   // Search criteria
   rating: number |null = null;
   regionId: number | null = null;
+  qualifications: number | null = null;
   priceRange: number[] | null = null;
   keyword: string | null = null;
   genres:number[] | null = null;
@@ -42,6 +43,7 @@ export class SearchResultsComponent implements OnInit {
       this.keyword = params['keyword'] || null;
       this.rating = params['rating'] || null;
       this.genres = params['genres'] || null;
+      this.qualifications =params['qualifications'] || null;
       this.priceRange = params['priceRange'] || null;
       this.regionId = params['regionId'] || null;
       this.instruments = params['instruments'] || null;
@@ -66,6 +68,7 @@ export class SearchResultsComponent implements OnInit {
     const searchParams = {
       keyword: this.keyword,
       genres:this.genres ? (Array.isArray(this.genres) ? this.genres : [this.genres]) : null,
+      qualifications: this.qualifications ? (Array.isArray(this.qualifications) ? this.qualifications : [this.qualifications]) : null,
       regionId: this.regionId,
       instruments: this.instruments ? (Array.isArray(this.instruments) ? this.instruments : [this.instruments]) : null,
       profileType: this.profileType,
