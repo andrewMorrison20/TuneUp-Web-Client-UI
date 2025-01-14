@@ -92,8 +92,9 @@ export class FiltersSideBarComponent implements OnInit {
     return this.instruments.filter((instrument) => instrument.selected);
   }
 
-  getSelectedQualifications(): Qualification[] {
-    return this.qualifications.filter((qualification) => qualification.selected);
+  getSelectedQualifications(): number[] {
+    return this.qualifications.filter((qualification) => qualification.selected)
+      .map((qualification) => qualification.id);
   }
 
   onRegionSearch(): void {
@@ -136,6 +137,7 @@ export class FiltersSideBarComponent implements OnInit {
       .map((genre) => genre.id); // Extract only IDs or relevant values
 
     const selectedQualifications = this.getSelectedQualifications();
+    const isPriceRangeDefault = this.priceRange.min === 0 && this.priceRange.max === 1000;
 
     const queryParams = {
       keyword: this.searchQuery || null,
@@ -144,7 +146,7 @@ export class FiltersSideBarComponent implements OnInit {
       genres: selectedGenres.length > 0 ? selectedGenres : null,
       rating: this.selectedRating,
       regionId: this.selectedRegion?.id,
-      priceRange: this.priceRange ? [this.priceRange.min, this.priceRange.max] : null,
+      priceRange: isPriceRangeDefault ? null : [this.priceRange.min, this.priceRange.max],
       profileType: null,
       page: 0,
       size: 8,
