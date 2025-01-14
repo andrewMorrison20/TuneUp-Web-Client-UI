@@ -67,6 +67,12 @@ mat-paginator{
   }
 }
 
+/* For medium screens (e.g., tablets) - 3 items per row */
+@media (max-width: 1400px) {
+  .profile-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 /* For smaller screens (e.g., mobile phones) - 1 item per row */
 @media (max-width: 900px) {
   .profile-cards-grid {
