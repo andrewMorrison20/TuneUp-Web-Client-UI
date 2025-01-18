@@ -7,6 +7,7 @@ import { StudyHubComponent } from './study-hub/study-hub.component';
 import { PaymentsComponent } from './payments/payments.component';
 import { ChatsComponent } from './chats/chats.component';
 import {AccountSettingsComponent} from "../account-settings/account-settings.component";
+import {authGuard} from "../authentication/guards/auth-guard";
 
 const routes: Routes = [
   {
@@ -20,7 +21,7 @@ const routes: Routes = [
       { path: 'chats', component: ChatsComponent },
       { path: 'settings', component: AccountSettingsComponent },
       { path: '', redirectTo: 'update-profile', pathMatch: 'full' } // Default route
-    ]
+    ],canActivate: [authGuard]
   }
 ];
 

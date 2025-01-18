@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {SignupComponent} from "./signup.component";
+import {guestGuard} from "../authentication/guards/guest-guard";
 
 
 const routes: Routes = [
-  { path: '', component: SignupComponent }  // Define the route for the LoginComponent
+  { path: '', component: SignupComponent,canActivate: [guestGuard] }
 ];
 
 @NgModule({

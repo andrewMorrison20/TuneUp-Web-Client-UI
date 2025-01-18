@@ -20,7 +20,7 @@ import { RouterModule, Routes } from '@angular/router';
 import {NavModule} from "../components/nav/nav.module";
 import {SearchBarModule} from "../components/search-bar/search-bar.module";
 import {ReviewCardComponent} from "../review-card/review-card.component";
-import {AuthGuard} from "../authentication/auth-guard";
+import {authGuard} from "../authentication/guards/auth-guard";
 import {FooterModule} from "../components/footer/footer.module";
 import {FiltersSideBarModule} from "../components/filters-side-bar/filters-side-bar.module";
 import {MatSidenav, MatSidenavContainer, MatSidenavModule} from "@angular/material/sidenav";
@@ -28,7 +28,7 @@ import {FullCalendarModule} from "@fullcalendar/angular";
 
 const profileRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent },
-  { path: ':id', component: ProfileComponent, canActivate: [AuthGuard] }
+  { path: ':id', component: ProfileComponent, canActivate: [authGuard] }
 ];
 
 @NgModule({

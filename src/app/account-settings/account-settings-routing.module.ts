@@ -2,13 +2,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AccountSettingsComponent } from './account-settings.component';
-import {AuthGuard} from "../authentication/auth-guard";
+import {authGuard} from "../authentication/guards/auth-guard";
 
 const routes: Routes = [
   {
     path: '',
     component: AccountSettingsComponent,
-    canActivate: [AuthGuard]
+    canActivate: [authGuard]
   },
 ];
 

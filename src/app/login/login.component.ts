@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { AuthenticatedUser } from '../authentication/authenticated-user.class';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,12 +12,14 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   hidePassword = true;
-  errorMessage: string = ''; // For displaying error message
+  errorMessage: string = '';
+  returnUrl: string = '/'; // Store return URL
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute // Inject ActivatedRoute to get query params
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -27,7 +29,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm.reset();
-    this.errorMessage = ''; // Reset error message on init
+    this.errorMessage = '';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home'; // Get return URL from query params
   }
 
   onLogin(): void {
@@ -53,7 +56,7 @@ export class LoginComponent implements OnInit {
       );
   }
 
-  private async completeSaveAndNavigate(token: string, id :number) {
+  private async completeSaveAndNavigate(token: string, id: number) {
     try {
       const decodedToken = JSON.parse(atob(token.split('.')[1])); // Decode the JWT payload
       const authUserObj = AuthenticatedUser.save(
@@ -65,7 +68,8 @@ export class LoginComponent implements OnInit {
       );
       console.log('Authenticated User:', authUserObj);
 
-      const navigationSuccess = await this.router.navigate(['/home']);
+      // Navigate to the original requested page
+      const navigationSuccess = await this.router.navigateByUrl(this.returnUrl);
       console.log('Navigation status:', navigationSuccess);
     } catch (error) {
       console.error('Error during navigation:', error);
@@ -73,7 +77,6 @@ export class LoginComponent implements OnInit {
   }
 
   private handleLoginError(error: HttpErrorResponse): void {
-    // Reset the form and show appropriate error message
     this.loginForm.reset();
     if (error.status === 400) {
       this.errorMessage = 'Invalid email or password.';
@@ -97,3 +100,4 @@ export class LoginComponent implements OnInit {
     console.log('Login with Outlook');
   }
 }
+
