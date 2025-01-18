@@ -96,7 +96,7 @@
       <div class="form-group">
         <mat-list>
           <mat-list-item *ngFor="let qualification of selectedQualifications; let i = index">
-              {{ qualification }}
+              {{ qualification.qualification.name }}-{{qualification.instrument.name}}
             <button mat-icon-button color="warn" (click)="removeQualification(i)">
               <mat-icon>delete</mat-icon>
             </button>
@@ -108,31 +108,20 @@
       <mat-card-subtitle>Add a Qualification</mat-card-subtitle>
       <mat-form-field appearance="outline" class="form-group">
         <mat-label>Qualification Name</mat-label>
-        <mat-select [(ngModel)]="newQualification" name="name" required>
+        <mat-select [(ngModel)]="newQualification.qualification" name="qualification" >
           <mat-option *ngFor="let qualification of qualifications" [value]="qualification">{{ qualification.name }}</mat-option>
         </mat-select>
       </mat-form-field>
         <mat-form-field appearance="outline" class="form-group">
           <mat-label>Instrument</mat-label>
-          <mat-select [(ngModel)]="newQualification.instrument" name="instrument" required>
+          <mat-select [(ngModel)]="newQualification.instrument" name="instrument" >
             <mat-option *ngFor="let instrument of instruments" [value]="instrument">{{ instrument.name }}</mat-option>
           </mat-select>
         </mat-form-field>
-      <mat-form-field appearance="outline" class="form-group">
-        <mat-label>Description</mat-label>
-        <textarea
-          matInput
-          [(ngModel)]="newQualification.description"
-          name="qualificationDescription"
-          placeholder="Enter qualification description"
-          maxlength = 50
-        ></textarea>
-        <mat-hint align = "end">{{ newQualification.description.length}}/150</mat-hint>
-      </mat-form-field>
       <button mat-raised-button color="accent" type="button" (click)="addQualification()">Add Qualification</button>
 
       <!-- Submit Button -->
-      <button mat-raised-button color="primary" type="submit">Save Achievements</button>
+      <button mat-raised-button color="primary" type="submit">Save Qualifications</button>
     </form>
   </mat-card>
 

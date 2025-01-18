@@ -26,10 +26,9 @@ export class UpdateProfileComponent {
   durations: string[] = [];
   rates: number[] = [];
   prices :  number[] = [];
-  newQualification = {
+  newQualification: { qualification: Qualification | null; instrument: Instrument | null} = {
     qualification: null,
-    instrument: '',
-    description: '',
+    instrument: null,
   };
 
   newPricing: Price = {
@@ -52,7 +51,7 @@ export class UpdateProfileComponent {
   searchQuery: string = '';
   selectedRegion: any = null;
   standardPrices: Price[] =[];
-  selectedQualifications: { q: Qualification; i: Instrument; }[] = [];
+  selectedQualifications: { qualification: Qualification; instrument: Instrument; }[] = [];
 
   constructor(private http: HttpClient, protected profileService: ProfileService,private sharedDataService: SharedDataService, private snackBar: MatSnackBar) {}
 
@@ -238,32 +237,52 @@ export class UpdateProfileComponent {
   }
   // Add a qualification to the list
   addQualification(): void {
-    if (this.newQualification) {
-     // this.selectedQualifications.push({ ...this.newQualification });
-     // this.newQualification = { name: '', instrument: '', description: '' }; // Reset input fields
+    console.log(this.newQualification)
+    if (this.newQualification.qualification && this.newQualification.instrument) {
+      const duplicate = this.selectedQualifications.some(
+        qualification => qualification.qualification === this.newQualification.qualification
+        && qualification.instrument === this.newQualification.instrument
+      );
+
+      if(!duplicate) {
+        this.selectedQualifications.push({
+          qualification: this.newQualification.qualification as Qualification,
+          instrument: this.newQualification.instrument as Instrument
+        });
+      }
+      else{
+        alert('This qualification combination already exists.');
+      }
+      // Reset input fields
+      this.newQualification = { qualification: null, instrument: null };
     } else {
-      alert('Both qualification name and description are required.');
+      alert('Both qualification and instrument are required.');
     }
   }
 
+
   // Remove a qualification from the list
   removeQualification(index: number): void {
-    this.qualifications.splice(index, 1);
+    this.selectedQualifications.splice(index, 1);
   }
 
   // Handle form submission for qualifications
   onSubmitQualifications(): void {
-    console.log('Qualifications Submitted:', this.qualifications);
-    // Add your backend API call here
-    /*this.http
-      .post('http://localhost:8080/api/qualifications', {
-        profileId: this.profile.id,
-        qualifications: this.qualifications,
-      })
-      .subscribe({
-        next: (response) => console.log('Qualifications saved successfully:', response),
-        error: (err) => console.error('Error saving qualifications:', err),
-      });*/
+    const qualificationsToSubmit = this.selectedQualifications.map(q => ({
+      qualificationId: q.qualification.id,  // Extract only the ID
+      instrumentId: q.instrument.id         // Extract only the ID
+    }));
+    console.log('Submitting Qualifications:', qualificationsToSubmit);
+    this.profileService.updateProfileQualifications(qualificationsToSubmit, this.profile).subscribe({
+      next: (response) => {
+        this.snackBar.open('Qualifications updated successfully!', 'Close', { duration: 3000 });
+        console.log('Qualification  updated successfully:', response);
+      },
+      error: (err) => {
+        this.snackBar.open('Failed to update Qualifications. Please try again.', 'Close', { duration: 3000 });
+        console.error('Error updating qualifications', err);
+      }
+    });
   }
 
   loadPricing(): void {

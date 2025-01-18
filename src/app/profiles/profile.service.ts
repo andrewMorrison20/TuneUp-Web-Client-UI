@@ -128,6 +128,14 @@ export class ProfileService {
     return this.http.put(url, transformedPriceSet);
   }
 
+  public updateProfileQualifications(
+    qualificationsToSubmit: { qualificationId: number; instrumentId: number }[],
+    profile: Profile
+  ): Observable<any>{
+    const url = `${this.apiUrl}/update/pricing/${profile.id}`;
+    return this.http.put(url, qualificationsToSubmit);
+  }
+
   private mapProfiles(rawProfiles: any[]): Profile[] {
     console.log('Profile : ', rawProfiles)
     return rawProfiles.map(profile => {
@@ -213,5 +221,4 @@ export class ProfileService {
       period: Object.keys(PeriodMap).find(key => PeriodMap[key as keyof typeof PeriodMap] === price.period) || price.period
     };
   }
-
 }
