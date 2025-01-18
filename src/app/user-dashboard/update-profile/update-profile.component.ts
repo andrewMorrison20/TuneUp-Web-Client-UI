@@ -56,10 +56,29 @@ export class UpdateProfileComponent {
   constructor(private http: HttpClient, protected profileService: ProfileService,private sharedDataService: SharedDataService, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
+
     this.loadProfile();
-    this.loadInstruments();
-    this.loadGenres();
     this.loadPricing();
+
+    this.sharedDataService.instruments$.subscribe((data) => {
+      if (data) {
+        this.instruments = data.map((instrument:Instrument) => ({
+          ...instrument,
+          selected: false,
+        }));
+      }
+    });
+    this.sharedDataService.loadInstruments();
+
+    this.sharedDataService.genres$.subscribe((data) => {
+      if (data) {
+        this.genres = data.map((genre:Genre) => ({
+          ...genre,
+          selected: false,
+        }));
+      }
+    });
+    this.sharedDataService.loadGenres();
 
     this.sharedDataService.qualifications$.subscribe((data) => {
       if (data) {
@@ -197,31 +216,6 @@ export class UpdateProfileComponent {
     });
   }
 
-  loadInstruments(): void {
-    this.http.get<Instrument[]>('http://localhost:8080/api/instruments')
-      .subscribe({
-        next: (data) => {
-          this.instruments = data; // Store full instrument objects
-        },
-        error: (err) => {
-          this.snackBar.open('Failed to fetched instruments. Please refresh the page.', 'Close', { duration: 3000 });
-          console.error('Error fetching instruments:', err);
-        }
-      })
-  }
-
-    loadGenres(): void {
-      this.http.get<Genre[]>('http://localhost:8080/api/genres')
-        .subscribe({
-          next: (data) => {
-            this.genres = data; // Store full genre objects
-          },
-          error: (err) => {
-            this.snackBar.open('Failed to fetch genres. Please refresh the page.', 'Close', { duration: 3000 });
-            console.error('Error fetching genres :', err);
-          }
-        })
-  }
 
   private loadProfile() {
     this.profileService.getProfileByAppUserId(AuthenticatedUser.getAuthUserId()) .subscribe({
@@ -235,7 +229,8 @@ export class UpdateProfileComponent {
     })
 
   }
-  // Add a qualification to the list
+
+
   addQualification(): void {
     console.log(this.newQualification)
     if (this.newQualification.qualification && this.newQualification.instrument) {

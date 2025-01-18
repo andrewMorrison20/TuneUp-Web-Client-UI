@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {BehaviorSubject, catchError, Observable} from 'rxjs';
 import { tap } from 'rxjs/operators';
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 export interface Instrument {
   name: string;
@@ -36,7 +37,7 @@ export class SharedDataService {
   genres$ = this.genresSubject.asObservable();
   qualifications$ = this.qualificationsSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private snackBar: MatSnackBar) {}
 
   loadInstruments(): void {
     if (this.instrumentsCache) {
@@ -46,8 +47,13 @@ export class SharedDataService {
         .get<Instrument[]>('http://localhost:8080/api/instruments')
         .pipe(
           tap((data) => {
-            this.instrumentsCache = data; // Cache the data
+            this.instrumentsCache = data;
             this.instrumentsSubject.next(data);
+          }),
+          catchError((err) => {
+            this.snackBar.open('Failed to fetch instruments. Please refresh the page.', 'Close', { duration: 3000 });
+            console.error('Error fetching instruments:', err);
+            return [];
           })
         )
         .subscribe();
@@ -64,6 +70,11 @@ export class SharedDataService {
           tap((data) => {
             this.genresCache = data;
             this.genresSubject.next(data);
+          }),
+          catchError((err) => {
+            this.snackBar.open('Failed to fetch genres. Please refresh the page.', 'Close', { duration: 3000 });
+            console.error('Error fetching genres:', err);
+            return [];
           })
         )
         .subscribe();
@@ -72,21 +83,20 @@ export class SharedDataService {
 
   loadQualifications(): void {
     if (this.qualificationsCache) {
-      // Emit the sorted cached data
       this.qualificationsSubject.next(this.qualificationsCache);
     } else {
       this.http
         .get<Qualification[]>('http://localhost:8080/api/qualifications')
         .pipe(
           tap((data) => {
-            // Sort qualifications by name
-            const sortedData = data.sort((a, b) =>
-              a.name.localeCompare(b.name, undefined, { numeric: true })
-            );
-
-            // Cache and emit the sorted data
+            const sortedData = data.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
             this.qualificationsCache = sortedData;
             this.qualificationsSubject.next(sortedData);
+          }),
+          catchError((err) => {
+            this.snackBar.open('Failed to fetch qualifications. Please refresh the page.', 'Close', { duration: 3000 });
+            console.error('Error fetching qualifications:', err);
+            return [];
           })
         )
         .subscribe();

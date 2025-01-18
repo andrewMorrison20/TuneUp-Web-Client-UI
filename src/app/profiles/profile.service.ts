@@ -132,7 +132,7 @@ export class ProfileService {
     qualificationsToSubmit: { qualificationId: number; instrumentId: number }[],
     profile: Profile
   ): Observable<any>{
-    const url = `${this.apiUrl}/update/pricing/${profile.id}`;
+    const url = `${this.apiUrl}/update/qualifications/${profile.id}`;
     return this.http.put(url, qualificationsToSubmit);
   }
 
