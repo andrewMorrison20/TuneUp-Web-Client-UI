@@ -26,6 +26,8 @@ export class SearchResultsComponent implements OnInit {
   regionId: number | null = null;
   qualifications: number | null = null;
   priceRange: number[] | null = null;
+  startTime: string | null = null;
+  endTime: string | null = null;
   keyword: string | null = null;
   genres:number[] | null = null;
   instruments: number[] | null = null;
@@ -50,6 +52,8 @@ export class SearchResultsComponent implements OnInit {
       this.profileType = params['profileType'] || null;
       this.pageIndex = params['page'] || 0;
       this.pageSize = params['size'] || 8;
+      this.startTime = params['startDate'] || null;
+      this.endTime = params['endDate'] || null;
       this.fetchProfiles();
     });
     console.log(this.priceRange)
@@ -73,7 +77,9 @@ export class SearchResultsComponent implements OnInit {
       instruments: this.instruments ? (Array.isArray(this.instruments) ? this.instruments : [this.instruments]) : null,
       profileType: this.profileType,
       priceRange:this.priceRange,
-      rating:this.rating
+      rating:this.rating,
+      startTime:this.startTime,
+      endTime: this.endTime
     };
 
     this.profileService.getFilteredProfiles(searchParams, this.pageIndex, this.pageSize, 'displayName,asc').subscribe({

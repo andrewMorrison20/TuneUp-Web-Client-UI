@@ -14,12 +14,11 @@
   <!-- Availability Section -->
   <div class="availability-container">
     <mat-form-field appearance="outline" class="availability-filter">
-      <mat-label>From</mat-label>
+      <mat-label>Availability Start Date</mat-label>
       <input
         matInput
         [matDatepicker]="startDatePicker"
         [(ngModel)]="availability.startDate"
-        (ngModelChange)="updateSearchCriteria()"
         placeholder="Select start date"
       />
       <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
@@ -27,12 +26,11 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="availability-filter">
-      <mat-label>To</mat-label>
+      <mat-label>Availability End Date</mat-label>
       <input
         matInput
         [matDatepicker]="endDatePicker"
         [(ngModel)]="availability.endDate"
-        (ngModelChange)="updateSearchCriteria()"
         placeholder="Select end date"
       />
       <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>

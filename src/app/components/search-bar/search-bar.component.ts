@@ -31,15 +31,6 @@ export class SearchBarComponent implements OnInit {
     endDate: null,
   };
 
-  updateSearchCriteria(): void {
-    const criteria = {
-      startDate: this.availability.startDate,
-      endDate: this.availability.endDate,
-    };
-
-    //this.performSearch(criteria);
-  }
-
   constructor(private http: HttpClient, private router: Router, private sharedDataService: SharedDataService) {}
 
   ngOnInit(): void {
@@ -64,15 +55,24 @@ export class SearchBarComponent implements OnInit {
 
   onSearchClick(): void {
     // Construct the query object
+    console.log(
+      'Availability', this.availability.startDate,this.availability.endDate
+    )
     const queryParams = {
       keyword: this.searchQuery || null,
       instruments: this.selectedInstrumentId || null,
       genres: this.selectedGenreId ||null,
       profileType: this.selectedProfileType || null,
+      startDate: this.availability.startDate ? this.formatDate(this.availability.startDate) : null,
+      endDate: this.availability.endDate ? this.formatDate(this.availability.endDate) : null,
       page: 0,
       size: 8,
       sort: 'displayName,asc'
     };
+
+    console.log(
+      'Availability', queryParams['startDate'],queryParams['endDate']
+    )
 
     // Navigate to the search-results route and pass query parameters
     this.router.navigate(['/profiles/search'], { queryParams });
@@ -80,6 +80,11 @@ export class SearchBarComponent implements OnInit {
 
   onProfileTypeChange() {
     console.log('Selected profileType:', this.selectedProfileType);
+  }
+
+  private formatDate(date: Date): string {
+    // Formats as "YYYY-MM-DDTHH:mm:ss
+    return date.toISOString().split('.')[0];
   }
 
 }
