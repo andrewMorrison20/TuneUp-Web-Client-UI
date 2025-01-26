@@ -3,6 +3,16 @@
   <p><strong>Time Slot:</strong></p>
   <p>{{ data.startTime | date: 'MMM d, h:mm a' }} - {{ data.endTime | date: 'h:mm a' }}</p>
 
+  <!-- Instrument Selection -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Select Instrument</mat-label>
+    <mat-select [(ngModel)]="selectedInstrument">
+      <mat-option *ngFor="let instrument of data.instruments" [value]="instrument">
+        {{ instrument.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
   <mat-form-field>
     <mat-label>Lesson Duration</mat-label>
     <mat-select [(ngModel)]="selectedDuration" (selectionChange)="updateEndTime()">

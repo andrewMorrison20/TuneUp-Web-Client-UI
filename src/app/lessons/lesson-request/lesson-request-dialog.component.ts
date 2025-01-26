@@ -10,6 +10,7 @@ export class LessonRequestDialogComponent implements OnInit {
   selectedDuration = 30; // Default duration
   calculatedEndTime!: Date;
   availableDurations: number[] = [];
+  selectedInstrument:any;
 
   constructor(
     public dialogRef: MatDialogRef<LessonRequestDialogComponent>,
@@ -40,7 +41,8 @@ export class LessonRequestDialogComponent implements OnInit {
   onRequest(): void {
     this.dialogRef.close({
       startTime: this.data.startTime,
-      endTime: this.calculatedEndTime
+      endTime: this.calculatedEndTime,
+      instrument: this.selectedInstrument
     });
   }
 
