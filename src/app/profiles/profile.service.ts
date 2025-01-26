@@ -35,6 +35,7 @@ interface ProfileResponse {
 })
 export class ProfileService {
   private apiUrl = 'http://localhost:8080/api/profiles';
+  private baseUrl = 'http://localhost:8080/api';
   public apiReviewUrl = 'http://localhost:8080/api/review';
 
 
@@ -220,5 +221,11 @@ export class ProfileService {
       ...price,
       period: Object.keys(PeriodMap).find(key => PeriodMap[key as keyof typeof PeriodMap] === price.period) || price.period
     };
+  }
+
+  public getPeriodAvailabilityForProfile(profileId: number, start: string, end: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/availability/${profileId}/period`, {
+      params: { start, end }
+    });
   }
 }

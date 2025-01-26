@@ -19,7 +19,8 @@
     <div *ngIf="profile">
       <!-- Profile Header -->
       <div class="profile-header">
-        <img [src]="profile?.profilePicture?.url || 'https://storage.googleapis.com/download/storage/v1/b/tuneup_profile_images/o/79a88d6b-8196-49cf-9cde-d6d4d3bf10fd-defaultProfilePicture.jpg?generation=1735034744997677&alt=media'" alt="Profile Picture" class="profile-picture">
+        <img [src]="profile?.profilePicture?.url || 'https://storage.googleapis.com/download/storage/v1/b/tuneup_profile_images/o/79a88d6b-8196-49cf-9cde-d6d4d3bf10fd-defaultProfilePicture.jpg?generation=1735034744997677&alt=media'"
+             alt="Profile Picture" class="profile-picture">
         <div class="profile-header-details">
           <h1>{{ profile?.displayName }}</h1>
           <p class="bio">{{ profile?.bio }}</p>
@@ -34,89 +35,103 @@
           <mat-icon>chat</mat-icon> Start Chat
         </button>
       </div>
-<br>
-      <!-- Additional Profile Details Section -->
-      <div class="profile-section">
-        <div class="calendar-container">
-          <full-calendar [options]="calendarOptions"></full-calendar>
-        </div>
-
-        <div class="genres-section">
-          <div class="genre-container">
-            <div *ngIf="profile.genres !== undefined; else noData">
-              <div *ngIf="profile.genres.length > 0">
-                <h1>Genres</h1>
-                <ul>
-                  <li *ngFor="let genre of profile.genres">
-                    {{ genre.name }}
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-        <div class="instruments-section">
-          <h1>Instruments</h1>
-          <div class="instrument-container">
-            <!-- Check if instruments are available -->
-            <div *ngIf="profile.instruments !== undefined">
-              <div *ngIf="profile.instruments.length > 0; else noInstruments">
-                <ul>
-                  <li *ngFor="let instrument of profile.instruments">
-                    {{ instrument.name }}
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <!-- Fallback for no instruments listed -->
-          <ng-template #noInstruments>
-            <p>No instruments listed</p>
-          </ng-template>
-
-          <!-- Fallback for undefined instruments -->
-          <ng-template #noData>
-            <p>Instruments: Not available</p>
-          </ng-template>
-        </div>
-
-        <!-- Pricing Section -->
-        <div class="pricing-section" *ngIf="isTutorProfile(profile) && isPricesMapNotEmpty() ">
-        <h1>Pricing</h1>
-          <div class="pricing-container">
-            <div class="pricing-row" *ngFor="let price of profile.prices">
-              <div class="instrument-column">
-                <p>{{ price.standardPricing ? price.period : price.description }}</p>
-              </div>
-              <div class="price-column">
-                <p>£{{ price.rate }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <br>
 
-      <!-- Reviews Section -->
-      <div class="reviews-section">
-        <h1>Reviews</h1>
-        <p *ngIf="profile && profile.averageRating> 0"> Average Rating :  {{profile.averageRating}}/5 </p>
-        <div class ="reviews">
-        <app-review-card
-          *ngIf="profile && profile.reviews && profile.reviews.length > 0"
-          [profile]="{ name: profile.displayName, reviews: profile.reviews }">
-        </app-review-card>
-        </div>
-        <!-- Fallback message -->
-        <p *ngIf="profile && profile.reviews && profile.reviews.length === 0" class="no-reviews-message">
-          No reviews yet.
-        </p>
-      </div>
+      <!-- Two-Column Layout -->
+      <div class="profile-grid">
+
+        <!-- Left Column -->
+        <div class="left-column">
+          <div class="calendar-container">
+            <button *ngIf="isTimeGridView" mat-raised-button color="primary" (click)="switchToMonthView()">
+              Month View
+            </button>
+            <br><br>
+            <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+          </div>
+
+          <!-- Reviews Section -->
+          <div class="reviews-section">
+            <h1><b>Reviews</b></h1>
+            <p *ngIf="profile && profile.averageRating> 0"> Average Rating :  {{profile.averageRating}}/5 </p>
+            <div class="reviews">
+              <app-review-card
+                *ngIf="profile && profile.reviews && profile.reviews.length > 0"
+                [profile]="{ name: profile.displayName, reviews: profile.reviews }">
+              </app-review-card>
+            </div>
+            <!-- Fallback message -->
+            <p *ngIf="profile && profile.reviews && profile.reviews.length === 0" class="no-reviews-message">
+              No reviews yet.
+            </p>
+          </div>
+        </div> <!-- ✅ Correctly closing left-column -->
+
+        <!-- Right Column (Moved Outside Left Column) -->
+        <div class="right-column">
+          <div class="genres-section">
+            <div class="genre-container">
+              <div *ngIf="profile.genres !== undefined; else noData">
+                <div *ngIf="profile.genres.length > 0">
+                  <h1><b>Genres</b></h1>
+                  <ul>
+                    <li *ngFor="let genre of profile.genres">
+                      {{ genre.name }}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="instruments-section">
+            <h1><b>Instruments</b></h1>
+            <div class="instrument-container">
+              <!-- Check if instruments are available -->
+              <div *ngIf="profile.instruments !== undefined">
+                <div *ngIf="profile.instruments.length > 0; else noInstruments">
+                  <ul>
+                    <li *ngFor="let instrument of profile.instruments">
+                      {{ instrument.name }}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fallback for no instruments listed -->
+            <ng-template #noInstruments>
+              <p>No instruments listed</p>
+            </ng-template>
+
+            <!-- Fallback for undefined instruments -->
+            <ng-template #noData>
+              <p>Instruments: Not available</p>
+            </ng-template>
+          </div>
+
+          <!-- Pricing Section -->
+          <div class="pricing-section" *ngIf="isTutorProfile(profile) && isPricesMapNotEmpty()">
+            <h1><b>Pricing</b></h1>
+            <div class="pricing-container">
+              <div class="pricing-row" *ngFor="let price of profile.prices">
+                <div class="instrument-column">
+                  <p>{{ price.standardPricing ? price.period : price.description }}</p>
+                </div>
+                <div class="price-column">
+                  <p>£{{ price.rate }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> <!-- ✅ Correctly closing right-column -->
+
+      </div> <!-- ✅ Correctly closing profile-columns -->
+
     </div>
+    <br>
   </ng-template>
 </div>
+
 <app-footer></app-footer>

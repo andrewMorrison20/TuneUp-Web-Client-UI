@@ -25,6 +25,8 @@ import {FooterModule} from "../components/footer/footer.module";
 import {FiltersSideBarModule} from "../components/filters-side-bar/filters-side-bar.module";
 import {MatSidenav, MatSidenavContainer, MatSidenavModule} from "@angular/material/sidenav";
 import {FullCalendarModule} from "@fullcalendar/angular";
+import {LessonsModule} from "../lessons/lessons.module";
+import {MatLabel} from "@angular/material/form-field";
 
 const profileRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent },
@@ -54,6 +56,7 @@ const profileRoutes: Routes = [
         MatProgressSpinner,
         MatPaginator,
         NavModule,
+        MatLabel,
         SearchBarModule,
         MatButton,
         FooterModule,
@@ -62,6 +65,7 @@ const profileRoutes: Routes = [
         MatSidenavContainer,
         MatIconButton,
         FullCalendarModule,
+        LessonsModule
     ],
   providers: [
     ProfileService

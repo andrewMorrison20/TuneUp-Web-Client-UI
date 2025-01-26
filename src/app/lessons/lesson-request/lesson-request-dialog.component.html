@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>Request Lesson</h2>
+<mat-dialog-content>
+  <p><strong>Time Slot:</strong></p>
+  <p>{{ data.startTime | date: 'MMM d, h:mm a' }} - {{ data.endTime | date: 'h:mm a' }}</p>
+
+  <mat-form-field>
+    <mat-label>Lesson Duration</mat-label>
+    <mat-select [(ngModel)]="selectedDuration" (selectionChange)="updateEndTime()">
+      <mat-option *ngFor="let option of availableDurations" [value]="option">
+        {{ option }} minutes
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <p><strong>Selected End Time:</strong> {{ calculatedEndTime | date: 'h:mm a' }}</p>
+
+  <p *ngIf="data.status === 'BOOKED'" class="text-red-500">This slot is already booked.</p>
+  <p *ngIf="data.status === 'PENDING'" class="text-gray-500">This slot is pending confirmation.</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onRequest()" [disabled]="data.status === 'BOOKED'">
+    Request Lesson
+  </button>
+</mat-dialog-actions>

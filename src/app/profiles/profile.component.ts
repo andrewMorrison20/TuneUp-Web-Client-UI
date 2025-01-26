@@ -1,83 +1,151 @@
-import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from './profile.service';
 import { TutorProfile } from './interfaces/tutor.model';
 import { StudentProfile } from './interfaces/student.model';
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import { FullCalendarComponent } from '@fullcalendar/angular';
+import {MatDialog} from "@angular/material/dialog";
+import {LessonRequestDialogComponent} from "../lessons/lesson-request/lesson-request-dialog.component";
 
 type Profile = TutorProfile | StudentProfile;
-
-
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, AfterViewInit {
+
+  @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
+
   profile: Profile | null = null;
-  calendarOptions: CalendarOptions = {
-    initialView: 'dayGridMonth',
-    selectable: true,
-    plugins: [dayGridPlugin, interactionPlugin],
-    height: 'auto',
-    contentHeight: 600,
-    select: this.onSelect.bind(this),
-    events: [
-      { title: 'Available', start: '2023-01-10', end: '2023-01-12' },
-      { title: 'Unavailable', start: '2023-01-15' },
-    ],
-    eventClick: this.onEventClick.bind(this),
-  };
+  isTimeGridView = false;
+  calendarOptions!: CalendarOptions;
+  availabilitySlots: any[] = []
 
-
-  onSelect(selectionInfo: any): void {
-    console.log('Selected range:', selectionInfo.startStr, 'to', selectionInfo.endStr);
-    alert(`Selected range: ${selectionInfo.startStr} to ${selectionInfo.endStr}`);
-
-  }
-
-
-  onEventClick(info: any): void {
-    console.log('Event clicked:', info.event.title);
-    alert(`Event clicked: ${info.event.title}`);
-
-  }
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    protected profileService: ProfileService
+    private profileService: ProfileService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
-      const id = params.get('id');
-      console.log("Id is :", id);
-      console.log("params are:", params);
-
-      if (id) {
-        this.fetchProfile(id);
-        console.log('profile is :', this.profile);
+    this.initializeCalendar();
+    this.route.paramMap.subscribe(params => {
+      const profileId = params.get('id');
+      if (profileId) {
+        this.fetchProfile(profileId);
       }
     });
   }
-  fetchProfile(id: string): void {
-    this.profileService.getProfileById(id).subscribe(
-      (profile) => {
-        // Assign the fetched profile data to the profile variable
-        this.profile = profile;
-        console.log('Profile is', profile);
-        this.profileService.getProfileReviews(this.profile)// To check the profile data
-      },
-      (error) => {
-        // Handle error
-        console.error('Error fetching profile:', error);
+
+  ngAfterViewInit(): void {
+    if (!this.calendarComponent) {
+      console.error('FullCalendar reference not found.');
+    }
+  }
+
+  /** 🔹 Initialize FullCalendar Configuration */
+  private initializeCalendar(): void {
+    this.calendarOptions = {
+      initialView: 'dayGridMonth',
+      selectable: true,
+      plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
+      height: 'auto',
+      contentHeight: 600,
+      slotMinTime: "06:00:00", // Start time of the day (Adjust based on business hours)
+      slotMaxTime: "23:00:00", // End time
+      slotDuration: "00:15:00", // Smaller slots allow finer adjustments
+      expandRows: true, // Ensures row height expands for long slots
+      events: [],
+      eventClick: this.onEventClick.bind(this),
+      dateClick: this.onDateClick.bind(this),
+      datesSet: this.onMonthChange.bind(this),
+      eventTimeFormat: {
+        hour: '2-digit',
+        minute: '2-digit',
+        meridiem: false
       }
+    };
+  }
+
+  /** 🔹 Fetch Profile Details */
+  private fetchProfile(profileId: string): void {
+    this.profileService.getProfileById(profileId).subscribe(
+      profile => {
+        this.profile = profile;
+        console.log('Profile loaded:', profile);
+        this.profileService.getProfileReviews(this.profile);
+        this.fetchAvailability(new Date());
+      },
+      error => console.error('Error fetching profile:', error)
     );
   }
 
+  private fetchAvailability(date: Date): void {
+    if (!this.profile?.id) return;
+    const start = new Date(date.getFullYear(), date.getMonth(), 1).toISOString();
+    const end = new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString();
+
+    this.profileService.getPeriodAvailabilityForProfile(this.profile.id, start, end)
+      .subscribe(slots => {
+        this.availabilitySlots = slots;
+        this.updateCalendarEvents();
+      });
+  }
+
+  onMonthChange(info: any): void {
+    const newDate = info.start;
+    this.fetchAvailability(newDate);
+  }
+  /** 🔹 Switch to TimeGrid Day View */
+  onDateClick(info: any): void {
+    console.log('Clicked date:', info.dateStr);
+    if (this.calendarComponent?.getApi()) {
+      this.calendarComponent.getApi().changeView('timeGridDay', info.dateStr);
+      this.isTimeGridView = true;
+    }
+  }
+
+  /** 🔹 Switch Back to Month View */
+  switchToMonthView(): void {
+    console.log('Switching back to Month View...');
+    if (this.calendarComponent?.getApi()) {
+      this.calendarComponent.getApi().changeView('dayGridMonth');
+      this.isTimeGridView = false;
+    }
+  }
+
+  /** 🔹 Handle Event Click */
+  onEventClick(info: any): void {
+    console.log('Event clicked:', info.event.title);
+    const dialogRef = this.dialog.open(LessonRequestDialogComponent, {
+      width: '400px',
+      data: {
+        title: info.event.title,
+        startTime: info.event.start.toISOString(),
+        endTime: info.event.end?.toISOString(),
+        status: info.event.title,
+        instruments :this.profile?.instruments,
+
+      }
+    });
+
+    // Handle dialog result
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Lesson requested for:', result);
+        // TODO: Call backend to submit request
+      }
+    });
+  }
+
+  /** 🔹 Profile Type Checkers */
   isStudentProfile(profile: Profile): profile is StudentProfile {
     return (profile as StudentProfile).enrolledCourses !== undefined;
   }
@@ -86,27 +154,35 @@ export class ProfileComponent implements OnInit {
     return (profile as TutorProfile).qualifications !== undefined;
   }
 
-  getProfile(): Profile {
-    if (this.profile === null) {
-      throw new Error("Profile not loaded yet.");
-    }
-    return this.profile;
+  /** 🔹 Check if Profile Has Pricing */
+  isPricesMapNotEmpty(): boolean {
+    return this.isTutorProfile(this.profile!) && this.profile?.prices?.length > 0;
+  }
+
+  /** 🔹 Navigation Methods */
+  goBackToResults(): void {
+    this.router.navigate(['/profiles/search']);
   }
 
   startChat(): void {
     console.log('Starting chat with', this.profile?.displayName);
-
   }
 
-  isPricesMapNotEmpty(): boolean {
-    if (!this.profile) {
-      return false; // Return false if profile is null
-    }
-    return this.isTutorProfile(this.profile) && this.profile.prices?.length > 0;
+  private updateCalendarEvents(): void {
+    this.calendarOptions.events = this.availabilitySlots.map(slot => ({
+      title: slot.status, // Use status as title
+      start: slot.startTime,
+      end: slot.endTime,
+      color: this.getEventColor(slot.status)
+    }));
   }
 
-  goBackToResults(): void {
-      this.router.navigate(['/profiles/search']);
+  private getEventColor(status: string): string {
+    switch (status) {
+      case 'AVAILABLE': return '#4CAF50'; // Green
+      case 'PENDING': return '#9E9E9E';   // Grey
+      case 'BOOKED': return '#FF0000';    // Red
+      default: return '#000000';          // Fallback Black
     }
+  }
 }
-

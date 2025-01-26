@@ -17,14 +17,6 @@ body {
   overflow: hidden;
 }
 
-.tutor-card {
-  background-color: #f3fbfb; /* Color for tutor */
-}
-
-.student-card {
-  background-color: #f8f2f2; /* Color for student */
-}
-
 /* Profile Header */
 .profile-header {
   display: flex;
@@ -78,78 +70,70 @@ body {
   margin-top: 0.5rem;
 }
 
-/* Profile Details Section */
-.profile-details {
+/* Two-Column Layout */
+.profile-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  grid-template-columns: 2fr 1fr; /* Calendar & Reviews take 2 parts, Pricing/Instruments/Genres take 1 */
   gap: 1.5rem;
-  padding: 2rem 0;
-}
-
-.profile-details .mat-card {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.profile-details mat-card-title {
-  font-weight: bold;
-  font-size: 1.5rem;
-}
-
-.profile-section {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr; /* Calendar takes 2 parts, Genres/Instruments 1 part, Pricing 1 part */
-  grid-template-rows: auto auto; /* Allow two rows */
-  grid-template-areas:
-    "calendar instruments pricing"
-    "calendar genres pricing"; /* Genres below Instruments */
-  gap: 1.5rem; /* Add spacing between sections */
   margin-top: 2rem;
+}
+
+/* Left Column (Calendar & Reviews) */
+.left-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Right Column (Pricing, Instruments, Genres) */
+.right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 /* Calendar Section */
 .calendar-container {
-  grid-area: calendar;
-  max-width: 100%;
   padding: 16px;
   border: 1px solid #ddd;
   border-radius: 8px;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-/* Instruments Section */
-.instruments-section {
-  grid-area: instruments;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-/* Genres Section */
-.genres-section {
-  grid-area: genres;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+/* Reviews Section */
+.reviews-section {
+  width: 97%;
+  height: auto;
+  background-color: #ffffff;
+  padding: 16px;
+  border-radius: 8px;
 }
 
 /* Pricing Section */
 .pricing-section {
-  grid-area: pricing;
+  background-color: #fafafa;
+  padding: 16px;
+  border-radius: 8px;
 }
 
-.instrument-container li  {
+/* Instruments & Genres Sections */
+.instruments-section,
+.genres-section {
+  background-color: #ffffff;
+  padding: 16px;
+  border-radius: 8px;
+}
 
+.instrument-container li,
+.genre-container li {
   font-size: 1.7rem;
   margin: 0.7rem 0;
 }
 
-.genre-container li  {
-
-  font-size: 1.7rem;
-  margin: 0.7rem 0;
-}
-
+/* Pricing Table */
 .pricing-container {
   display: flex;
   flex-direction: column;
@@ -180,7 +164,7 @@ body {
   color: #00796b;
 }
 
-/* Average Rating Section */
+/* Rating Section */
 .average-rating-section {
   margin-top: 16px;
   padding: 8px 0;
@@ -200,7 +184,7 @@ body {
 }
 
 .rating-text {
-  font-size: 50x;
+  font-size: 50px;
   font-weight: bold;
   color: #444;
 }
@@ -209,23 +193,122 @@ body {
   color: #ffc107;
   font-size: 20px;
 }
-.reviews-section
-{
-  width: 1000px;
-  height:400px
+/* Shared Card Style for Modern Look */
+.section-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
-/* Calendar Styling */
-.calendar-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 16px;
-  border: 1px solid #ddd;
+
+.section-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+
+.instruments-section {
+  @extend .section-card;
+}
+
+.calendar-container{
+  @extend .section-card;
+}
+.reviews-section{
+  @extend .section-card;
+}
+
+.instrument-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 10px;
+}
+
+.instrument-container li {
+  background: #e0f7fa;
+  color: #00796b;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 1.4rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.instrument-container li::before {
+  content: "🎸"; /* Change this icon if needed */
+  margin-right: 8px;
+}
+
+/* Genres Section */
+.genres-section {
+  @extend .section-card;
+}
+
+.genre-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 10px;
+}
+
+.genre-container li {
+  background: #ffe0b2;
+  color: #bf360c;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 1.4rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.genre-container li::before {
+  content: "🎵";
+  margin-right: 8px;
+}
+
+/* Pricing Section */
+.pricing-section {
+  @extend .section-card;
+}
+
+.pricing-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pricing-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
   border-radius: 8px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  background: #f1f8e9;
+  border-left: 5px solid #558b2f;
+  font-size: 1.4rem;
+}
+
+.instrument-column {
+  font-weight: bold;
+}
+
+.price-column {
+  font-size: 1.4rem;
+  color: #00796b;
+  font-weight: bold;
 }
 
 /* Responsive Styles */
+@media (max-width: 1024px) {
+  .profile-grid {
+    grid-template-columns: 1fr; /* Switch to single column layout */
+  }
+}
+
 @media (max-width: 768px) {
   .profile-header {
     padding: 1rem;
@@ -250,11 +333,6 @@ body {
     padding: 0.25rem 0.75rem;
   }
 
-  .profile-details {
-    grid-template-columns: 1fr;
-    padding: 1rem 0;
-  }
-
   .pricing-row {
     flex-direction: column;
     align-items: flex-start;
@@ -273,39 +351,28 @@ body {
     margin-top: 0.5rem;
   }
 
-  .calendar-container {
-    grid-area: calendar; /* Ensure it's part of the grid */
-    max-width: 100%; /* Allow full width of its grid cell */
-    margin: 0; /* Remove centering margin */
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    justify-self: start; /* Align to the start of its grid cell */
+  /* Adjust layout for smaller screens */
+  .profile-section {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+      "calendar"
+      "reviews"
+      "pricing"
+      "instruments"
+      "genres";
+    gap: 1rem;
   }
 
-  /* Responsive Design for Mobile */
-  @media (max-width: 768px) {
-    .profile-section {
-      display: grid;
-      grid-template-columns: 1fr; /* Single column layout */
-      grid-template-rows: auto; /* Stack sections vertically */
-      grid-template-areas:
-      "calendar"
-      "instruments"
-      "genres"
-      "pricing"; /* Each section appears vertically */
-      gap: 1rem;
-    }
+  /* Adjust sections */
+  .calendar-container,
+  .reviews-section,
+  .pricing-section,
+  .instruments-section,
+  .genres-section {
+    max-width: 100%;
+    margin: 0;
+  }
 
-    /* Adjust each section for mobile */
-    .calendar-container,
-    .instruments-section,
-    .genres-section,
-    .pricing-section h2{
-      font-size: 2rem;
-      max-width: 100%;
-      margin: 0;
-    }}
 }
