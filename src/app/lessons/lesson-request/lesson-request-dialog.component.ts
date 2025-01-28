@@ -7,10 +7,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./lesson-request-dialog.component.scss']
 })
 export class LessonRequestDialogComponent implements OnInit {
-  selectedDuration = 30; // Default duration
-  calculatedEndTime!: Date;
-  availableDurations: number[] = [];
-  selectedInstrument:any;
+  selectedInstrument: any;
+  selectedSlot!: { startTime: Date; endTime: Date };
+  availableSlots: { startTime: Date; endTime: Date }[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<LessonRequestDialogComponent>,
@@ -18,36 +17,41 @@ export class LessonRequestDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.calculateAvailableDurations();
-    this.updateEndTime();
+    this.calculateAvailableSlots();
   }
 
-  private calculateAvailableDurations(): void {
+  /** 🔹 Precompute Available Slots */
+  private calculateAvailableSlots(): void {
     const start = new Date(this.data.startTime);
     const end = new Date(this.data.endTime);
-    let minutesAvailable = (end.getTime() - start.getTime()) / 60000;
+    const increments = [30, 45, 60]; // Lesson duration options in minutes
 
-    // Allow booking in 30-minute increments up to the available time
-    for (let i = 30; i <= minutesAvailable; i += 15) {
-      this.availableDurations.push(i);
+    let current = new Date(start);
+
+    while (current < end) {
+      for (let inc of increments) {
+        let slotEnd = new Date(current.getTime() + inc * 60000);
+        if (slotEnd <= end) {
+          this.availableSlots.push({ startTime: new Date(current), endTime: slotEnd });
+        }
+      }
+      current = new Date(current.getTime() + 15 * 60000); // Move forward in 15-minute increments
     }
+
+    this.selectedSlot = this.availableSlots[0]; // Default first slot
   }
 
-  updateEndTime(): void {
-    const start = new Date(this.data.startTime);
-    this.calculatedEndTime = new Date(start.getTime() + this.selectedDuration * 60000);
-  }
-
+  /** 🔹 Submit Lesson Request */
   onRequest(): void {
     this.dialogRef.close({
-      startTime: this.data.startTime,
-      endTime: this.calculatedEndTime,
+      startTime: this.selectedSlot.startTime,
+      endTime: this.selectedSlot.endTime,
       instrument: this.selectedInstrument
     });
   }
 
+  /** 🔹 Cancel Dialog */
   onCancel(): void {
     this.dialogRef.close();
   }
 }
-
