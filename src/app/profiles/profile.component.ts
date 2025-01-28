@@ -124,12 +124,21 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   /** 🔹 Handle Event Click */
   onEventClick(info: any): void {
     console.log('Event clicked:', info.event.title);
+
+    const availabilityId = info.event.extendedProps.availabilityId;
+
+    if (!availabilityId) {
+      console.error("No availability ID found!");
+      return;
+    }
     const dialogRef = this.dialog.open(LessonRequestDialogComponent, {
       width: '400px',
       data: {
         title: info.event.title,
         startTime: info.event.start.toISOString(),
         endTime: info.event.end?.toISOString(),
+        profileId: this.profile?.id,
+        availabilityId:availabilityId,
         status: info.event.title,
         instruments :this.profile?.instruments,
         refreshCalendar: () => this.fetchAvailability(new Date())
@@ -170,9 +179,10 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
   private updateCalendarEvents(): void {
     this.calendarOptions.events = this.availabilitySlots.map(slot => ({
-      title: slot.status, // Use status as title
+      title: slot.status,
       start: slot.startTime,
       end: slot.endTime,
+      extendedProps: { availabilityId: slot.id },
       color: this.getEventColor(slot.status)
     }));
   }

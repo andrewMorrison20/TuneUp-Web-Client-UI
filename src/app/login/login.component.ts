@@ -45,8 +45,8 @@ export class LoginComponent implements OnInit {
     this.http.post('http://localhost:8080/auth/login', body, { headers })
       .subscribe(
         (response: any) => {
-          console.log('RESPONSE', response)
-          this.completeSaveAndNavigate(response.token, response.userDto.id)
+          console.log('RESPONSE:', response);
+          this.completeSaveAndNavigate(response.token)
             .then(() => console.log('Navigation complete'))
             .catch((error) => console.error('Navigation error:', error));
         },
@@ -56,23 +56,42 @@ export class LoginComponent implements OnInit {
       );
   }
 
-  private async completeSaveAndNavigate(token: string, id: number) {
+  private async completeSaveAndNavigate(token: string) {
     try {
-      const decodedToken = JSON.parse(atob(token.split('.')[1])); // Decode the JWT payload
+      const decodedToken = this.decodeJWT(token);
+
+      if (!decodedToken) {
+        throw new Error('Invalid JWT token');
+      }
+
+      console.log('Decoded JWT:', decodedToken);
+
       const authUserObj = AuthenticatedUser.save(
         decodedToken.username,
         'user',
         token,
         'form',
-        id
+        decodedToken.userId, // User ID
+        decodedToken.profileId // Profile ID
       );
+
       console.log('Authenticated User:', authUserObj);
 
       // Navigate to the original requested page
-      const navigationSuccess = await this.router.navigateByUrl(this.returnUrl);
-      console.log('Navigation status:', navigationSuccess);
+      await this.router.navigateByUrl(this.returnUrl);
+      console.log('Navigation successful:', this.returnUrl);
+
     } catch (error) {
-      console.error('Error during navigation:', error);
+      console.error('Error during login process:', error);
+    }
+  }
+
+  private decodeJWT(token: string): any | null {
+    try {
+      return JSON.parse(atob(token.split('.')[1]));
+    } catch (error) {
+      console.error('Error decoding JWT:', error);
+      return null;
     }
   }
 

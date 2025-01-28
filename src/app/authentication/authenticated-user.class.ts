@@ -12,13 +12,15 @@ export class AuthenticatedUser implements BaseAuthenticatedUser {
   public token: string;
   public authType: string;
   public id: number
+  public profileId: number;
 
-  constructor(user: string, _console: string, token: string, authType: string, id: number) {
+  constructor(user: string, _console: string, token: string, authType: string, id: number, profileId:number) {
     this.user = user;
     this.console = _console;
     this.token = token;
     this.authType = authType;
     this.id = id;
+    this.profileId = profileId;
   }
 
   toString() {
@@ -80,8 +82,8 @@ export class AuthenticatedUser implements BaseAuthenticatedUser {
     return this.getAuthenticatedUser() !== null;
   }
 
-  static save(user: string, _console: string, token: string, authType: string,id: number): AuthenticatedUser {
-    const objToSave = new AuthenticatedUser(user, _console, token, authType,id);
+  static save(user: string, _console: string, token: string, authType: string,id: number, profileId:number): AuthenticatedUser {
+    const objToSave = new AuthenticatedUser(user, _console, token, authType,id, profileId);
     sessionStorage.setItem(this.key, objToSave.toString());
     return objToSave;
   }
@@ -92,7 +94,7 @@ export class AuthenticatedUser implements BaseAuthenticatedUser {
 
   static fromString(json: string): AuthenticatedUser {
     const obj = JSON.parse(json);
-    return new AuthenticatedUser(obj.user, obj.console, obj.token, obj.authType,obj.id);
+    return new AuthenticatedUser(obj.user, obj.console, obj.token, obj.authType,obj.id,obj.profileId);
   }
 
   static key = 'authenticatedUser';

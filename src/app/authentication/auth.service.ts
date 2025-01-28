@@ -12,8 +12,8 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  public login(user: string, _console: string, token: string, refreshToken: string, authType: string, id: number) {
-    const authenticatedUser = new AuthenticatedUser(user, _console, token, authType, id);
+  public login(user: string, _console: string, token: string, refreshToken: string, authType: string, id: number,profileId:number) {
+    const authenticatedUser = new AuthenticatedUser(user, _console, token, authType, id,profileId);
     sessionStorage.setItem(AuthenticatedUser.key, authenticatedUser.toString());
     this.startTokenRefreshCycle(authenticatedUser);
   }

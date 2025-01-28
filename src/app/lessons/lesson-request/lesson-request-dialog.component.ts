@@ -45,11 +45,24 @@ export class LessonRequestDialogComponent implements OnInit {
   }
 
   /** 🔹 Submit Lesson Request */
+  /** 🔹 Convert Date to Local ISO String */
+  private toLocalISOString(date: Date): string {
+    const tzOffset = date.getTimezoneOffset() * 60000; // Get timezone offset in milliseconds
+    const localTime = new Date(date.getTime() - tzOffset); // Adjust time to local timezone
+    return localTime.toISOString().slice(0, -1); // Remove trailing 'Z' (UTC indicator)
+  }
+
+  /** 🔹 Submit Lesson Request */
   onRequest(): void {
+    const startTimeLocal = this.toLocalISOString(this.selectedSlot.startTime);
+    const endTimeLocal = this.toLocalISOString(this.selectedSlot.endTime);
+
+    console.log("Sending request with times:", startTimeLocal, endTimeLocal); // Debugging
+
     this.availabilityService.sendAvailabilityRequest(
-      this.selectedSlot.startTime.toISOString(),
-      this.selectedSlot.endTime.toISOString(),
-      this.data.studentId,
+      startTimeLocal,
+      endTimeLocal,
+      7,
       this.data.profileId,
       this.data.availabilityId
     ).pipe(
@@ -62,10 +75,10 @@ export class LessonRequestDialogComponent implements OnInit {
       error: (err) => {
         console.error("Error sending lesson request", err);
         alert("Failed to send request: " + (err.error?.message || "Please try again."));
-        this.dialogRef.close();
       }
     });
   }
+
 
 
   /** 🔹 Cancel Dialog */
