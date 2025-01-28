@@ -6,6 +6,8 @@ import { LessonRequestDialogComponent } from './lesson-request/lesson-request-di
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {FormsModule} from "@angular/forms";
+import {HttpClientModule} from "@angular/common/http";
+import {AvailabilityService} from "./availability.service";
 
 @NgModule({
   declarations: [LessonRequestDialogComponent],
@@ -13,12 +15,14 @@ import {FormsModule} from "@angular/forms";
     CommonModule,
     MatDialogModule,
     MatButtonModule,
+    HttpClientModule,
     MatFormField,
     MatLabel,
     MatSelect,
     FormsModule,
     MatOption
   ],
+  providers:[AvailabilityService],
   exports: [LessonRequestDialogComponent]
 })
 export class LessonsModule {}

@@ -49,6 +49,11 @@ export class AuthenticatedUser implements BaseAuthenticatedUser {
     return userObj ? userObj.id : 0;
   }
 
+  static getAuthUserProfileId(): number {
+    const userObj = this.getAuthenticatedUser();
+    return userObj ? userObj.profileId : 0;
+  }
+
   static getAuthenticatedUser(): AuthenticatedUser | null {
     const json = sessionStorage.getItem(this.key) ?? localStorage.getItem(this.key);
     return json ? this.fromString(json) : null;

@@ -141,22 +141,15 @@ export class ProfileComponent implements OnInit, AfterViewInit {
         availabilityId:availabilityId,
         status: info.event.title,
         instruments :this.profile?.instruments,
-        refreshCalendar: () => this.fetchAvailability(new Date())
       }
     });
 
     // Handle dialog result
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('Lesson requested for:', result);
-        // TODO: Call backend to submit request
+      if (result=== true) {
+        this.fetchAvailability(new Date());
       }
     });
-  }
-
-  /** 🔹 Profile Type Checkers */
-  isStudentProfile(profile: Profile): profile is StudentProfile {
-    return (profile as StudentProfile).enrolledCourses !== undefined;
   }
 
   isTutorProfile(profile: Profile): profile is TutorProfile {

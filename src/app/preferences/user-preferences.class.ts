@@ -6,7 +6,7 @@ export class UserPreferencesService {
     public static SESSION_KEY: "TUNEUP_UserPref";
     public static userPreferences: UserPreferences | null = null;
 
-    consructor(){
+    constructor(){
         UserPreferencesService.userPreferences = UserPreferences.loadFromSession();
     }
 

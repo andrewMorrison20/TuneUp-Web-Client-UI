@@ -6,7 +6,7 @@ import {Observable} from "rxjs";
   providedIn: 'root'
 })
 export class AvailabilityService {
-  private baseUrl = 'http://localhost:8080/api';
+  private baseUrl = 'http://localhost:8080/api/lessonRequest';
 
   constructor(private http: HttpClient) {
 
@@ -22,8 +22,9 @@ export class AvailabilityService {
     const requestBody = {
       requestedStartTime: startTime,
       requestedEndTime: endTime,
-      studentId: studentId,
-      tutorId: tutorId,
+      studentProfileId: studentId,
+      tutorProfileId: tutorId,
+      status:"PENDNIG",
       availabilityId: availabilityId
     };
 

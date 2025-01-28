@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {switchMap} from "rxjs";
 import {AvailabilityService} from "../availability.service";
+import {AuthenticatedUser} from "../../authentication/authenticated-user.class";
 
 @Component({
   selector: 'app-lesson-request-dialog',
@@ -27,7 +28,7 @@ export class LessonRequestDialogComponent implements OnInit {
   private calculateAvailableSlots(): void {
     const start = new Date(this.data.startTime);
     const end = new Date(this.data.endTime);
-    const increments = [30, 45, 60]; // Lesson duration options in minutes
+    const increments = [15,30, 45, 60]; // Lesson duration options in minutes
 
     let current = new Date(start);
 
@@ -44,8 +45,7 @@ export class LessonRequestDialogComponent implements OnInit {
     this.selectedSlot = this.availableSlots[0]; // Default first slot
   }
 
-  /** 🔹 Submit Lesson Request */
-  /** 🔹 Convert Date to Local ISO String */
+
   private toLocalISOString(date: Date): string {
     const tzOffset = date.getTimezoneOffset() * 60000; // Get timezone offset in milliseconds
     const localTime = new Date(date.getTime() - tzOffset); // Adjust time to local timezone
@@ -62,19 +62,18 @@ export class LessonRequestDialogComponent implements OnInit {
     this.availabilityService.sendAvailabilityRequest(
       startTimeLocal,
       endTimeLocal,
-      7,
+      AuthenticatedUser.getAuthUserProfileId(),
       this.data.profileId,
       this.data.availabilityId
-    ).pipe(
-      switchMap(() => this.data.refreshCalendar()) // Refresh only on success
     ).subscribe({
       next: () => {
         console.log("Lesson request sent and calendar refreshed.");
-        this.dialogRef.close();
+        this.dialogRef.close(true);
       },
       error: (err) => {
         console.error("Error sending lesson request", err);
         alert("Failed to send request: " + (err.error?.message || "Please try again."));
+        this.dialogRef.close(false);
       }
     });
   }
