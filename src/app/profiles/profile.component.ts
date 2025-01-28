@@ -132,7 +132,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
         endTime: info.event.end?.toISOString(),
         status: info.event.title,
         instruments :this.profile?.instruments,
-
+        refreshCalendar: () => this.fetchAvailability(new Date())
       }
     });
 

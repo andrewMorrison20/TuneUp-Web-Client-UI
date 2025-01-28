@@ -1,5 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {switchMap} from "rxjs";
+import {AvailabilityService} from "../availability.service";
 
 @Component({
   selector: 'app-lesson-request-dialog',
@@ -13,6 +15,7 @@ export class LessonRequestDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<LessonRequestDialogComponent>,
+    private availabilityService: AvailabilityService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
@@ -43,12 +46,26 @@ export class LessonRequestDialogComponent implements OnInit {
 
   /** 🔹 Submit Lesson Request */
   onRequest(): void {
-    this.dialogRef.close({
-      startTime: this.selectedSlot.startTime,
-      endTime: this.selectedSlot.endTime,
-      instrument: this.selectedInstrument
+    this.availabilityService.sendAvailabilityRequest(
+      this.selectedSlot.startTime.toISOString(),
+      this.selectedSlot.endTime.toISOString(),
+      this.data.studentId,
+      this.data.profileId,
+      this.data.availabilityId
+    ).pipe(
+      switchMap(() => this.data.refreshCalendar()) // Refresh only on success
+    ).subscribe({
+      next: () => {
+        console.log("Lesson request sent and calendar refreshed.");
+        this.dialogRef.close();
+      },
+      error: (err) => {
+        console.error("Error sending lesson request", err);
+        this.dialogRef.close(); // ✅ Close even if request fails
+      }
     });
   }
+
 
   /** 🔹 Cancel Dialog */
   onCancel(): void {
