@@ -61,7 +61,8 @@ export class LessonRequestDialogComponent implements OnInit {
       },
       error: (err) => {
         console.error("Error sending lesson request", err);
-        this.dialogRef.close(); // ✅ Close even if request fails
+        alert("Failed to send request: " + (err.error?.message || "Please try again."));
+        this.dialogRef.close();
       }
     });
   }
