@@ -147,7 +147,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     // Handle dialog result
     dialogRef.afterClosed().subscribe(result => {
       if (result=== true) {
-        this.fetchAvailability(new Date());
+        this.fetchAvailability(this.calendarComponent.getApi().getDate());
       }
     });
   }
