@@ -24,7 +24,7 @@ export class AvailabilityService {
       requestedEndTime: endTime,
       studentProfileId: studentId,
       tutorProfileId: tutorId,
-      status:"PENDNIG",
+      status:"PENDING",
       availabilityId: availabilityId
     };
 

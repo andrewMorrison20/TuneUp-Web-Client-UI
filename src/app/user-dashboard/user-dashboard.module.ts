@@ -23,22 +23,27 @@ import {UserDashboardComponent} from "./user-dashboard.component";
 import {AccountSettingsModule} from "../account-settings/account-settings.module";
 import {FooterModule} from "../components/footer/footer.module";
 import {MatCard, MatCardSubtitle, MatCardTitle} from "@angular/material/card";
+import {MatTab, MatTabGroup} from "@angular/material/tabs";
+import {LessonRequestsComponent} from "./my-tuitions/lesson-requests.component";
+import {ActiveTuitionsComponent} from "./my-tuitions/active-tuitions.component";
+import {PreviousTuitionsComponent} from "./my-tuitions/previous-tuitions.component";
+import {MyTuitionsModule} from "./my-tuitions/my-tuitions.module";
 
 @NgModule({
   declarations: [
     UserDashboardComponent,
     UpdateProfileComponent,
     SidebarComponent,
-    MyTuitionsComponent,
     StudyHubComponent,
     PaymentsComponent,
-    ChatsComponent
+    ChatsComponent,
   ],
   exports: [
     SidebarComponent
   ],
   imports: [
     CommonModule,
+    MyTuitionsModule,
     UserDashboardRoutingModule,
     AccountSettingsModule,
     HttpClientModule,
@@ -58,7 +63,9 @@ import {MatCard, MatCardSubtitle, MatCardTitle} from "@angular/material/card";
     FooterModule,
     MatCardSubtitle,
     MatCardTitle,
-    MatCard
+    MatCard,
+    MatTabGroup,
+    MatTab
   ]
 })
 export class UserDashboardModule { }
