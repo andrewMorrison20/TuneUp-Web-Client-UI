@@ -1,8 +1,8 @@
 .profile-card {
   display: flex;
   align-items: center;
-  max-width: 90%;
-  width: 100%;
+  max-width: 85%;
+  width: 600px;
   padding: 15px;
   border: 1px solid #ddd;
   border-radius: 10px;
@@ -31,7 +31,7 @@
   align-items: center;
 }
 
-/* ✅ Makes the image adjust in mobile view */
+
 .profile-image {
   width: 120px;
   height: 120px;
@@ -53,7 +53,7 @@
   align-items: center;
   width: 100%;
 
-  /* ✅ Mobile: Stack text and button */
+
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: center;
@@ -62,14 +62,13 @@
   }
 }
 
-/* ✅ Ensure text adjusts */
 .profile-name {
   font-size: 18px;
   font-weight: 600;
   color: #333;
 }
 
-/* ✅ Adjust subtitle and spacing */
+
 .profile-details {
   display: block;
   font-size: 14px;
@@ -80,7 +79,7 @@
 /* ✅ Buttons should be full width on mobile */
 button {
   @media (max-width: 768px) {
-    width: 100%;
+    width: 90%;
   }
 }
 
@@ -89,4 +88,40 @@ mat-paginator {
   display: flex;
   justify-content: center;
   margin-top: 30px;
+}
+
+.no-profiles-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.no-profiles-icon {
+    font-size: 80px;
+    color: #757575;
+    margin-bottom: 10px;
+  }
+
+
+.no-profiles-container h2 {
+  color: #333;
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.no-profiles-container p {
+  color: #555;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.no-profiles-container button {
+  margin-top: 10px;
+}
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }

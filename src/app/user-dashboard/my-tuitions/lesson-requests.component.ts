@@ -18,6 +18,7 @@ export class LessonRequestsComponent implements OnInit {
   totalElements = 0;
   pageSize = 10;
   pageIndex = 0;
+  isLoading = true;
 
   constructor(private availabilityService: AvailabilityService,private dialog: MatDialog) {}
 
@@ -26,13 +27,16 @@ export class LessonRequestsComponent implements OnInit {
   }
 
   fetchLessonRequestProfiles() {
+    this.isLoading=true;
     const tutorId = AuthenticatedUser.getAuthUserProfileId();
     this.availabilityService.fetchRequestProfiles(tutorId, this.pageIndex, this.pageSize)
       .subscribe(response => {
         this.profiles = response.content;
         this.totalElements = response.totalElements;
+        this.isLoading = false;
       }, error => {
         console.error('Error fetching profiles:', error);
+        this.isLoading = false;
       });
   }
 
@@ -42,9 +46,13 @@ export class LessonRequestsComponent implements OnInit {
     this.fetchLessonRequestProfiles();
   }
 
-    openLessonRequestsDialog(profileId: number) {
-      this.dialog.open(ProfileLessonRequestsDialogComponent, {
-        data: { profileId }
-      });
+  openLessonRequestsDialog(profileId: number) {
+    const dialogRef = this.dialog.open(ProfileLessonRequestsDialogComponent, {
+      data: { profileId }
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.fetchLessonRequestProfiles();
+    });
   }
 }

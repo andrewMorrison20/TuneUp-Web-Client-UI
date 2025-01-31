@@ -53,6 +53,13 @@ export class AvailabilityService {
     };
     return this.http.get(`${this.baseUrl}/students/${profileId}`, {params});
   }
+
+  updateLessonRequestStatus(requestId: number, status: 'CONFIRMED' | 'DECLINED'): Observable<any> {
+    const authToken = AuthenticatedUser.getAuthUserToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${authToken}`);
+
+    return this.http.patch(`${this.baseUrl}/status/${requestId}`, { status }, { headers });
+  }
 }
 
 

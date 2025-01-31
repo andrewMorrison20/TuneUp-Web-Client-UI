@@ -1,4 +1,10 @@
 <mat-card class="lesson-requests-container">
+
+  <!-- Show Spinner While Loading -->
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+    <p>Loading lesson requests...</p>
+  </div>
   <!-- Profile Cards List -->
   <ng-container *ngIf="profiles.length > 0; else noProfiles">
     <div *ngFor="let profile of profiles" class="profile-card">
@@ -27,6 +33,15 @@
 
   <!-- No Profiles Message -->
   <ng-template #noProfiles>
-    <p>No lesson requests found.</p>
+    <div class="no-profiles-container">
+      <br>
+      <h1>😕</h1>
+      <h2>No lesson requests yet</h2>
+      <p>It looks like there are no students who have sent lesson requests at the moment.</p>
+      <p>Check back later or try refreshing the page.</p>
+      <button mat-raised-button color="primary" (click)="fetchLessonRequestProfiles()">
+        Refresh
+      </button>
+    </div>
   </ng-template>
 </mat-card>

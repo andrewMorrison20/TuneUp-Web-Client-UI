@@ -14,6 +14,7 @@ import {ProfileLessonRequestsDialogComponent} from "./profile-lesson-requests-di
 import {MatDialogActions, MatDialogContent} from "@angular/material/dialog";
 import {MatList, MatListItem} from "@angular/material/list";
 import {MatIcon} from "@angular/material/icon";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {MatIcon} from "@angular/material/icon";
     MatList,
     MatListItem,
     MatDialogActions,
-    MatIcon
+    MatIcon,
+    MatProgressSpinner
   ],
   providers:[AvailabilityService],
   exports: [MyTuitionsComponent,ProfileLessonRequestsDialogComponent]

@@ -43,13 +43,34 @@ export class ProfileLessonRequestsDialogComponent implements OnInit {
 
   confirmRequest(requestId: number) {
     console.log(`Confirming request: ${requestId}`);
-    // Call API to confirm request here
+    this.availabilityService.updateLessonRequestStatus(requestId, "CONFIRMED")
+      .subscribe({
+        next: () => {
+          console.log(`Request ${requestId} confirmed`);
+          this.fetchLessonRequests();
+        },
+        error: (err) => {
+          alert("Failed to send request: " + (err.error?.message || "Please try again."));
+          console.error(`Error confirming request ${requestId}:`, err);
+        }
+      });
   }
 
   denyRequest(requestId: number) {
     console.log(`Denying request: ${requestId}`);
-    // Call API to deny request here
+    this.availabilityService.updateLessonRequestStatus(requestId, "DECLINED")
+      .subscribe({
+        next: () => {
+          console.log(`Request ${requestId} denied`);
+          this.fetchLessonRequests();
+        },
+        error: (err) => {
+          alert("Failed to send request: " + (err.error?.message || "Please try again."));
+          console.error(`Error denying request ${requestId}:`, err);
+        }
+      });
   }
+
 
   closeDialog(): void {
     this.dialogRef.close();
