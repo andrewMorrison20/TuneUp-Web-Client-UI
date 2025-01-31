@@ -24,11 +24,24 @@ export class AvailabilityService {
       requestedEndTime: endTime,
       studentProfileId: studentId,
       tutorProfileId: tutorId,
-      status:"PENDING",
+      status: "PENDING",
       availabilityId: availabilityId
     };
 
     return this.http.post(`${this.baseUrl}`, requestBody);
   }
 
+  getLessonRequestsByIds(studentId: number, tutorId: number): Observable<any> {
+    const params = {studentId: studentId.toString(), tutorId: tutorId.toString()};
+    return this.http.get(`${this.baseUrl}`, {params});
+  }
+
+  fetchRequestProfiles(profileId: number, page: number = 0, size: number = 10): Observable<any> {
+    const params = {
+      page: page.toString(),
+      size: size.toString(),
+    };
+    return this.http.get(`${this.baseUrl}/students/${profileId}`, { params });
+  }
 }
+
