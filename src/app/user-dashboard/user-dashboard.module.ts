@@ -46,7 +46,6 @@ import {MyTuitionsModule} from "./my-tuitions/my-tuitions.module";
     MyTuitionsModule,
     UserDashboardRoutingModule,
     AccountSettingsModule,
-    HttpClientModule,
     MatSidenavModule,
     MatToolbarModule,
     MatListModule,

@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {AuthenticatedUser} from "../authentication/authenticated-user.class";
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +33,8 @@ export class AvailabilityService {
   }
 
   getLessonRequestsByIds(studentId: number, tutorId: number, page: number = 0, size: number = 10): Observable<any> {
+    const authToken = AuthenticatedUser.getAuthUserToken() // Manually get token, this SHOULDNT be required, but interceptor seems to be bypassing this request
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${authToken}`);
     const params = {
       studentId: studentId.toString(),
       tutorId: tutorId.toString(),
@@ -39,7 +42,7 @@ export class AvailabilityService {
       size: size.toString()
     };
 
-    return this.http.get(`${this.baseUrl}`, {params});
+    return this.http.get(`${this.baseUrl}`, { params, headers });
   }
 
 

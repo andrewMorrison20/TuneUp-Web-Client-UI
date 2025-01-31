@@ -1,32 +1,46 @@
-<mat-dialog-content>
-  <h2>Lesson Requests</h2>
+<mat-dialog-content class="dialog-content">
+  <h2 class="dialog-title">Pending Lesson Requests</h2>
 
   <ng-container *ngIf="lessonRequests.length > 0; else noRequests">
-    <mat-list>
-      <mat-list-item *ngFor="let request of lessonRequests">
+    <div *ngFor="let request of lessonRequests" class="request-item">
+
+      <!-- Stack Time Info and Actions Vertically -->
+      <div class="request-container">
         <div class="request-info">
-          <p><strong>Student:</strong> {{ request.student.displayName }}</p>
-          <p><strong>Time:</strong> {{ request.requestedStartTime }} - {{ request.requestedEndTime }}</p>
+          <mat-icon class="time-icon">schedule</mat-icon>
+          <p class="request-time">
+            <strong>Time:</strong> <p class="request-time">
+          {{ request.requestedStartTime | date: 'MMMM d, yyyy' }} at {{ request.requestedStartTime | date: 'HH:mm' }}
+          -
+          {{ request.requestedEndTime | date: 'MMMM d, yyyy' }} at {{ request.requestedEndTime | date: 'HH:mm' }}
+        </p>
         </div>
+
         <div class="request-actions">
-          <button mat-raised-button color="primary" (click)="confirmRequest(request.id)">Confirm</button>
-          <button mat-raised-button color="warn" (click)="denyRequest(request.id)">Deny</button>
+          <button mat-raised-button color="primary" class="confirm-btn" (click)="confirmRequest(request.id)">
+            <mat-icon>check</mat-icon> Confirm
+          </button>
+          <button mat-raised-button color="warn" class="deny-btn" (click)="denyRequest(request.id)">
+            <mat-icon>close</mat-icon> Deny
+          </button>
         </div>
-      </mat-list-item>
-    </mat-list>
+      </div>
+      <br>
+    </div> <!-- ✅ Properly close the div for *ngFor -->
 
     <!-- Pagination -->
-    <mat-paginator [length]="totalElements" [pageSize]="pageSize"
+    <mat-paginator class="paginator"
+                   [length]="totalElements" [pageSize]="pageSize"
                    [pageSizeOptions]="[5, 10, 20]"
                    (page)="onPageChange($event)">
     </mat-paginator>
   </ng-container>
 
   <ng-template #noRequests>
-    <p>No lesson requests found.</p>
+    <p class="no-requests">No lesson requests found.</p>
   </ng-template>
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
-  <button mat-button (click)="closeDialog()">Close</button>
+<mat-dialog-actions class="dialog-actions">
+  <button mat-button class="close-btn" (click)="closeDialog()">Close</button>
 </mat-dialog-actions>

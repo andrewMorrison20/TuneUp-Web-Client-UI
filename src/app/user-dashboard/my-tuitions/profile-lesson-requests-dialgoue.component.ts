@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AvailabilityService } from '../../lessons/availability.service';
 import { PageEvent } from '@angular/material/paginator';
+import {AuthenticatedUser} from "../../authentication/authenticated-user.class";
 
 @Component({
   selector: 'app-lesson-requests-dialog',
@@ -25,7 +26,7 @@ export class ProfileLessonRequestsDialogComponent implements OnInit {
   }
 
   fetchLessonRequests() {
-    this.availabilityService.getLessonRequestsByIds(this.data.profileId, this.pageIndex, this.pageSize)
+    this.availabilityService.getLessonRequestsByIds(this.data.profileId, AuthenticatedUser.getAuthUserProfileId(), this.pageIndex, this.pageSize)
       .subscribe(response => {
         this.lessonRequests = response.content;
         this.totalElements = response.totalElements;

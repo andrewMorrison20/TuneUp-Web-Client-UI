@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import {switchMap} from "rxjs";
 import {AvailabilityService} from "../availability.service";
 import {AuthenticatedUser} from "../../authentication/authenticated-user.class";
 

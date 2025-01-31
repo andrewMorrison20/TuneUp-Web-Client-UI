@@ -44,7 +44,6 @@ export class LessonRequestsComponent implements OnInit {
 
     openLessonRequestsDialog(profileId: number) {
       this.dialog.open(ProfileLessonRequestsDialogComponent, {
-        width: '500px',
         data: { profileId }
       });
   }

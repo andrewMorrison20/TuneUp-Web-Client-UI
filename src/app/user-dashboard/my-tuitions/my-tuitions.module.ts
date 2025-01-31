@@ -13,6 +13,7 @@ import {MatButton} from "@angular/material/button";
 import {ProfileLessonRequestsDialogComponent} from "./profile-lesson-requests-dialgoue.component";
 import {MatDialogActions, MatDialogContent} from "@angular/material/dialog";
 import {MatList, MatListItem} from "@angular/material/list";
+import {MatIcon} from "@angular/material/icon";
 
 @NgModule({
   declarations: [
@@ -27,14 +28,14 @@ import {MatList, MatListItem} from "@angular/material/list";
     MatTabsModule,
     MatCardModule,
     MatPaginator,
-    HttpClientModule,
     MatButton,
     MatDialogContent,
     MatList,
     MatListItem,
-    MatDialogActions
+    MatDialogActions,
+    MatIcon
   ],
   providers:[AvailabilityService],
-  exports: [MyTuitionsComponent]
+  exports: [MyTuitionsComponent,ProfileLessonRequestsDialogComponent]
 })
 export class MyTuitionsModule {}
