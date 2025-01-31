@@ -4,6 +4,8 @@ import {AuthenticatedUser} from "../../authentication/authenticated-user.class";
 import {PageEvent} from "@angular/material/paginator";
 import {TutorProfile} from "../../profiles/interfaces/tutor.model";
 import {StudentProfile} from "../../profiles/interfaces/student.model";
+import {MatDialog} from "@angular/material/dialog";
+import {ProfileLessonRequestsDialogComponent} from "./profile-lesson-requests-dialgoue.component";
 type Profile = TutorProfile | StudentProfile;
 
 @Component({
@@ -17,7 +19,7 @@ export class LessonRequestsComponent implements OnInit {
   pageSize = 10;
   pageIndex = 0;
 
-  constructor(private availabilityService: AvailabilityService) {}
+  constructor(private availabilityService: AvailabilityService,private dialog: MatDialog) {}
 
   ngOnInit() {
     this.fetchLessonRequestProfiles();
@@ -38,5 +40,12 @@ export class LessonRequestsComponent implements OnInit {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
     this.fetchLessonRequestProfiles();
+  }
+
+    openLessonRequestsDialog(profileId: number) {
+      this.dialog.open(ProfileLessonRequestsDialogComponent, {
+        width: '500px',
+        data: { profileId }
+      });
   }
 }

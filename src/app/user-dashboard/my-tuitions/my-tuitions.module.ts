@@ -10,6 +10,9 @@ import {MatPaginator} from "@angular/material/paginator";
 import {HttpClientModule} from "@angular/common/http";
 import {AvailabilityService} from "../../lessons/availability.service";
 import {MatButton} from "@angular/material/button";
+import {ProfileLessonRequestsDialogComponent} from "./profile-lesson-requests-dialgoue.component";
+import {MatDialogActions, MatDialogContent} from "@angular/material/dialog";
+import {MatList, MatListItem} from "@angular/material/list";
 
 @NgModule({
   declarations: [
@@ -17,6 +20,7 @@ import {MatButton} from "@angular/material/button";
     LessonRequestsComponent,
     ActiveTuitionsComponent,
     PreviousTuitionsComponent,
+    ProfileLessonRequestsDialogComponent
   ],
   imports: [
     CommonModule,
@@ -24,7 +28,11 @@ import {MatButton} from "@angular/material/button";
     MatCardModule,
     MatPaginator,
     HttpClientModule,
-    MatButton
+    MatButton,
+    MatDialogContent,
+    MatList,
+    MatListItem,
+    MatDialogActions
   ],
   providers:[AvailabilityService],
   exports: [MyTuitionsComponent]

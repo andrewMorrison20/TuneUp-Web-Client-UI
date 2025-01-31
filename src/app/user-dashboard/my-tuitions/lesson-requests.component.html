@@ -1,17 +1,20 @@
 <mat-card class="lesson-requests-container">
-
   <!-- Profile Cards List -->
   <ng-container *ngIf="profiles.length > 0; else noProfiles">
     <div *ngFor="let profile of profiles" class="profile-card">
-      <img class="profile-image" [src]= "profile?.profilePicture?.url || 'https://storage.googleapis.com/download/storage/v1/b/tuneup_profile_images/o/79a88d6b-8196-49cf-9cde-d6d4d3bf10fd-defaultProfilePicture.jpg?generation=1735034744997677&alt=media'" alt=
-        "{{ profile.displayName }}'s profile picture" />
+      <img class="profile-image"
+           [src]="profile?.profilePicture?.url || 'https://storage.googleapis.com/download/storage/v1/b/tuneup_profile_images/o/79a88d6b-8196-49cf-9cde-d6d4d3bf10fd-defaultProfilePicture.jpg?generation=1735034744997677&alt=media'"
+           alt="{{ profile.displayName }}'s profile picture" />
+
       <div class="profile-info">
-        <h3>{{ profile.displayName }}</h3>
-          <mat-card-subtitle>
-            <span class="profile-type">{{ profile.profileType || 'Not specified' }}</span>
-            <span class="profile-area" *ngIf="profile.tuitionRegion"> <br> Area: {{ profile.tuitionRegion.name }}</span>
-          </mat-card-subtitle>
-        <button mat-raised-button color="accent">View Requests</button>
+        <h3 class="profile-name">{{ profile.displayName }}</h3>
+        <mat-card-subtitle class="profile-details">
+          <span class="profile-type">{{ profile.profileType || 'Not specified' }}</span>
+          <span class="profile-area" *ngIf="profile.tuitionRegion">
+            <br> Area: {{ profile.tuitionRegion.name }}
+          </span>
+        </mat-card-subtitle>
+        <button mat-raised-button color="accent" (click)="openLessonRequestsDialog(profile.id)">View Requests</button>
       </div>
     </div>
 

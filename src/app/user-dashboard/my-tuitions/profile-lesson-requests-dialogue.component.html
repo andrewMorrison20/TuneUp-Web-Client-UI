@@ -1,0 +1,32 @@
+<mat-dialog-content>
+  <h2>Lesson Requests</h2>
+
+  <ng-container *ngIf="lessonRequests.length > 0; else noRequests">
+    <mat-list>
+      <mat-list-item *ngFor="let request of lessonRequests">
+        <div class="request-info">
+          <p><strong>Student:</strong> {{ request.student.displayName }}</p>
+          <p><strong>Time:</strong> {{ request.requestedStartTime }} - {{ request.requestedEndTime }}</p>
+        </div>
+        <div class="request-actions">
+          <button mat-raised-button color="primary" (click)="confirmRequest(request.id)">Confirm</button>
+          <button mat-raised-button color="warn" (click)="denyRequest(request.id)">Deny</button>
+        </div>
+      </mat-list-item>
+    </mat-list>
+
+    <!-- Pagination -->
+    <mat-paginator [length]="totalElements" [pageSize]="pageSize"
+                   [pageSizeOptions]="[5, 10, 20]"
+                   (page)="onPageChange($event)">
+    </mat-paginator>
+  </ng-container>
+
+  <ng-template #noRequests>
+    <p>No lesson requests found.</p>
+  </ng-template>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="closeDialog()">Close</button>
+</mat-dialog-actions>
