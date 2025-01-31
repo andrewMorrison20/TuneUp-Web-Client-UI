@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-previous-tuitions',
-  template: `<p>Previous tuitions will be displayed here.</p>`
+  templateUrl: './previous-tuitions.component.html',
+  styleUrl: './previous-tuitions.component.scss'
 })
 export class PreviousTuitionsComponent {}

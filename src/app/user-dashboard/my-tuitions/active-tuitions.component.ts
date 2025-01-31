@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-active-tuitions',
-  template: `<p>Active tuitions will be displayed here.</p>`
+  templateUrl: './active-tuitions.component.html',
+  styleUrl: './active-tuitions.component.scss'
 })
 export class ActiveTuitionsComponent {}
