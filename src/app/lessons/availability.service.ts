@@ -8,6 +8,7 @@ import {AuthenticatedUser} from "../authentication/authenticated-user.class";
 })
 export class AvailabilityService {
   private baseUrl = 'http://localhost:8080/api/lessonRequest';
+  private baseTuitionUrl = 'http://localhost:8080/api/tuitions';
 
   constructor(private http: HttpClient) {
 
@@ -59,6 +60,15 @@ export class AvailabilityService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${authToken}`);
 
     return this.http.patch(`${this.baseUrl}/status/${requestId}`, { status }, { headers });
+  }
+
+  fetchActiveTuitions(profileId: number, page: number = 0, size: number = 10) :Observable<any> {
+
+    const params = {
+      page: page.toString(),
+      size: size.toString(),
+    };
+    return this.http.get(`${this.baseTuitionUrl}/activeTuitions/${profileId}`, {params});
   }
 }
 
