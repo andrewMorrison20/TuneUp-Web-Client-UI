@@ -57,7 +57,7 @@ mat-card-title {
   border-radius: 8px;
   text-align: center;
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: #555;
 }
 
@@ -137,7 +137,8 @@ mat-card-title {
   }
 
   .calendar-placeholder, .calendar-container {
-    width: 100%;
+    width: 90%;
+    font-size: 0.8rem;
     padding: 20px;
   }
 }
