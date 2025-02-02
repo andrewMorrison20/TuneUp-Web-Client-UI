@@ -6,6 +6,7 @@ import {PageEvent} from "@angular/material/paginator";
 import {ProfileLessonRequestsDialogComponent} from "./profile-lesson-requests-dialgoue.component";
 import {TutorProfile} from "../../profiles/interfaces/tutor.model";
 import {StudentProfile} from "../../profiles/interfaces/student.model";
+import {Router} from "@angular/router";
 type Profile = TutorProfile | StudentProfile;
 @Component({
   selector: 'app-active-tuitions',
@@ -19,7 +20,7 @@ export class ActiveTuitionsComponent implements OnInit {
   pageIndex = 0;
   isLoading = true;
 
-  constructor(private availabilityService: AvailabilityService,private dialog: MatDialog) {}
+  constructor(private availabilityService: AvailabilityService,private dialog: MatDialog, private router :Router) {}
 
   ngOnInit() {
     this.fetchActiveTuitions();
@@ -54,6 +55,10 @@ export class ActiveTuitionsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       this.fetchActiveTuitions();
     });
+  }
+
+  viewTuitionSummary(profileId: number) {
+    this.router.navigate(['/user-dashboard/tuition-summary', profileId]);
   }
 }
 

@@ -15,6 +15,9 @@ import {MatDialogActions, MatDialogContent} from "@angular/material/dialog";
 import {MatList, MatListItem} from "@angular/material/list";
 import {MatIcon} from "@angular/material/icon";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {TuitionSummaryComponent} from "./tuition-summary.component";
+import {RouterLink} from "@angular/router";
+import {FullCalendarModule} from "@fullcalendar/angular";
 
 @NgModule({
   declarations: [
@@ -22,7 +25,8 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     LessonRequestsComponent,
     ActiveTuitionsComponent,
     PreviousTuitionsComponent,
-    ProfileLessonRequestsDialogComponent
+    ProfileLessonRequestsDialogComponent,
+    TuitionSummaryComponent
   ],
   imports: [
     CommonModule,
@@ -35,7 +39,9 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     MatListItem,
     MatDialogActions,
     MatIcon,
-    MatProgressSpinner
+    MatProgressSpinner,
+    RouterLink,
+    FullCalendarModule
   ],
   providers:[AvailabilityService],
   exports: [MyTuitionsComponent,ProfileLessonRequestsDialogComponent]

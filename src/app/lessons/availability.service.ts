@@ -71,6 +71,14 @@ export class AvailabilityService {
     return this.http.get(`${this.baseTuitionUrl}/tuitionsByProfile/${profileId}`, { params });
   }
 
+  getTuitionSummary(studentProfileId: number, tutorProfileId: number): Observable<any> {
+    const params = {
+      studentProfileId: studentProfileId.toString(),
+      tutorProfileId: tutorProfileId.toString(),
+    };
+    return this.http.get(`${this.baseTuitionUrl}/byStudentAndTutor`, { params });
+  }
+
 }
 
 

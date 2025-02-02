@@ -8,6 +8,7 @@ import { PaymentsComponent } from './payments/payments.component';
 import { ChatsComponent } from './chats/chats.component';
 import {AccountSettingsComponent} from "../account-settings/account-settings.component";
 import {authGuard} from "../authentication/guards/auth-guard";
+import {TuitionSummaryComponent} from "./my-tuitions/tuition-summary.component";
 
 const routes: Routes = [
   {
@@ -20,6 +21,7 @@ const routes: Routes = [
       { path: 'payments', component: PaymentsComponent },
       { path: 'chats', component: ChatsComponent },
       { path: 'settings', component: AccountSettingsComponent },
+      { path: 'tuition-summary/:id', component: TuitionSummaryComponent},
       { path: '', redirectTo: 'update-profile', pathMatch: 'full' } // Default route
     ],canActivate: [authGuard]
   }

@@ -1,0 +1,55 @@
+<mat-card class="tuition-summary-container">
+  <mat-card-title>Tuition Summary</mat-card-title>
+
+  <div class="tuition-details">
+    <span class="profile-type-chip mat-chip mat-chip-outline"> Tuition Start Date : {{ tuitionDetails.startDate }}</span>
+    <br>
+    <br>
+    <span class="profile-type-chip mat-chip mat-chip-outline" > Next Lesson:  {{ tuitionDetails.nextLessonDate }}</span>
+    <br>
+    <br>
+    <span class="profile-type-chip mat-chip mat-chip-outline" > Active </span>
+  </div>
+
+  <!-- Calendar Placeholder -->
+  <div class="calendar-placeholder">
+    <mat-card-title>Lesson Schedule</mat-card-title>
+        <button *ngIf="isTimeGridView" mat-raised-button color="primary" (click)="switchToMonthView()">
+          Month View
+        </button>
+        <br><br>
+        <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+  </div>
+
+  <!-- Links -->
+  <div class="tuition-links">
+    <button mat-raised-button color="primary" routerLink="/payments">Go to Payments</button>
+    <button mat-raised-button color="accent" routerLink="/chat">Go to Chat</button>
+  </div>
+
+  <!-- Profile Summaries -->
+  <div class="profiles-container">
+    <!-- Student Profile Card -->
+    <mat-card class="profile-card">
+      <img [src]="studentProfile.profilePicture" alt="Student Profile Picture">
+      <h3>{{ studentProfile.name }}</h3>
+      <p>Region: {{ studentProfile.tuitionRegion }}</p>
+      <p>Email: {{ studentProfile.email }}</p>
+      <button mat-raised-button color="primary" routerLink="/profile/student">View Profile</button>
+    </mat-card>
+
+    <!-- Tutor Profile Card -->
+    <mat-card class="profile-card">
+      <img [src]="tutorProfile.profilePicture" alt="Tutor Profile Picture">
+      <h3>{{ tutorProfile.name }}</h3>
+      <p>Region: {{ tutorProfile.tuitionRegion }}</p>
+      <p>Email: {{ tutorProfile.email }}</p>
+      <button mat-raised-button color="primary" routerLink="/profile/tutor">View Profile</button>
+    </mat-card>
+  </div>
+  <br>
+  <div class="back-button-container">
+
+    <button mat-raised-button color="warn" (click)="goBackToTuitions()"> <mat-icon>arrow_back</mat-icon> Back to All Tuitions</button>
+  </div>
+</mat-card>
