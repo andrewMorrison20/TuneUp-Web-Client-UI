@@ -29,7 +29,7 @@ export class ActiveTuitionsComponent implements OnInit {
 
     this.isLoading=true;
     const profileId = AuthenticatedUser.getAuthUserProfileId();
-    this.availabilityService.fetchActiveTuitions(profileId, this.pageIndex, this.pageSize)
+    this.availabilityService.fetchTuitions(profileId,true,this.pageIndex, this.pageSize)
       .subscribe(response => {
         this.profiles = response.content;
         this.totalElements = response.totalElements;

@@ -62,14 +62,15 @@ export class AvailabilityService {
     return this.http.patch(`${this.baseUrl}/status/${requestId}`, { status }, { headers });
   }
 
-  fetchActiveTuitions(profileId: number, page: number = 0, size: number = 10) :Observable<any> {
-
+  fetchTuitions(profileId: number, active: boolean = true, page: number = 0, size: number = 10): Observable<any> {
     const params = {
       page: page.toString(),
       size: size.toString(),
+      active: active.toString()
     };
-    return this.http.get(`${this.baseTuitionUrl}/activeTuitions/${profileId}`, {params});
+    return this.http.get(`${this.baseTuitionUrl}/tuitionsByProfile/${profileId}`, { params });
   }
+
 }
 
 
