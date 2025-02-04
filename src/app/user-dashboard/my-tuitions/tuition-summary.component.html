@@ -34,7 +34,7 @@
       <img [src]="profile?.profilePicture?.url || 'https://storage.googleapis.com/download/storage/v1/b/tuneup_profile_images/o/79a88d6b-8196-49cf-9cde-d6d4d3bf10fd-defaultProfilePicture.jpg?generation=1735034744997677&alt=media'"
            alt="Profile Picture" class="profile-picture">
       <h3>{{ profile.displayName }}</h3>
-      <p>Region: {{ profile.tuitionRegion.name }}</p>
+      <p *ngIf="profile.tuitionRegion?.name">Region: {{ profile.tuitionRegion.name }}</p>
       <button mat-raised-button color="primary" routerLink="/profile/student">View Profile</button>
     </mat-card>
 
@@ -43,7 +43,7 @@
       <img [src]="userProfile?.profilePicture?.url || 'https://storage.googleapis.com/download/storage/v1/b/tuneup_profile_images/o/79a88d6b-8196-49cf-9cde-d6d4d3bf10fd-defaultProfilePicture.jpg?generation=1735034744997677&alt=media'"
            alt="Profile Picture" class="profile-picture">
       <h3>{{ userProfile.displayName }}</h3>
-      <p>Region: {{ userProfile.tuitionRegion.name }}</p>
+      <p *ngIf="userProfile.tuitionRegion?.name">Region: {{ userProfile.tuitionRegion.name }}</p>
       <button mat-raised-button color="primary" routerLink="/profile/tutor">View Profile</button>
     </mat-card>
   </div>

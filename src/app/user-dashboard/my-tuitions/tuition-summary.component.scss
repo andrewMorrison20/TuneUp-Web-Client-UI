@@ -91,6 +91,9 @@ mat-card-title {
   border-radius: 12px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers content horizontally */
 
   &:hover {
     transform: scale(1.05);
@@ -101,7 +104,8 @@ mat-card-title {
     height: 120px;
     border-radius: 50%;
     margin-bottom: 15px;
-    margin-left: 70px;
+    object-fit: cover; /* Ensures the image doesn't get distorted */
+    display: block;
   }
 
   h3 {
@@ -131,6 +135,8 @@ mat-card-title {
     width: 100%;
     max-width: 350px;
   }
+}
+
 
   .tuition-links {
     flex-direction: column;
@@ -142,4 +148,4 @@ mat-card-title {
     font-size: 0.8rem;
     padding: 20px;
   }
-}
+
