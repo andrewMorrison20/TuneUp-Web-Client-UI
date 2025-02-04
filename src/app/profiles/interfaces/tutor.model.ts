@@ -3,6 +3,7 @@ import {Genre, Instrument} from "../../components/search-bar/search-bar.componen
 import {TuitionRegion} from "./tuition-region.model";
 import {Image} from "./image.model";
 import {Price} from "./price";
+import {Qualification} from "../../components/shared-data-service.component";
 
 export interface TutorProfile {
   id: number;
@@ -11,7 +12,7 @@ export interface TutorProfile {
   profileType: string;
   appUserId: number;
   profilePicture: Image;
-  qualifications: string;
+  qualifications: Qualification[];
   instruments: Instrument[];
   onlineLessons: boolean;
   enrolledStudents: number;

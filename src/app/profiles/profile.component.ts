@@ -153,13 +153,14 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   }
 
   isTutorProfile(profile: Profile): profile is TutorProfile {
-    return (profile as TutorProfile).qualifications !== undefined;
+    return profile.profileType === 'Tutor';
   }
 
   /** 🔹 Check if Profile Has Pricing */
   isPricesMapNotEmpty(): boolean {
-    return this.isTutorProfile(this.profile!) && this.profile?.prices?.length > 0;
+    return this.isTutorProfile(this.profile!) && (this.profile as TutorProfile).prices.length > 0;
   }
+
 
   /** 🔹 Navigation Methods */
   goBackToResults(): void {

@@ -111,6 +111,19 @@
             </ng-template>
           </div>
 
+
+          <div class="genres-section" *ngIf="profile.qualifications && profile.qualifications.length > 0">
+            <div class="genre-container">
+              <h1><b>Qualifications/Lesson-Type</b></h1>
+              <ul>
+                <li *ngFor="let qualification of profile.qualifications">
+                  {{ qualification.name }}
+                </li>
+              </ul>
+            </div>
+          </div>
+
+
           <!-- Pricing Section -->
           <div class="pricing-section" *ngIf="isTutorProfile(profile) && isPricesMapNotEmpty()">
             <h1><b>Pricing</b></h1>
@@ -125,9 +138,9 @@
               </div>
             </div>
           </div>
-        </div> <!-- ✅ Correctly closing right-column -->
+        </div>
 
-      </div> <!-- ✅ Correctly closing profile-columns -->
+      </div>
 
     </div>
     <br>

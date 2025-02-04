@@ -164,7 +164,7 @@ export class ProfileService {
     return {
       enrolledStudents: 0,
       profilePicture: profile.profilePicture,
-      qualifications: "",
+      qualifications: profile.qualifications,
       averageRating: profile.averageRating,
       reviews:[],
       id: profile.id,
@@ -182,7 +182,7 @@ export class ProfileService {
 
   private mapToStudentProfile(profile: any): StudentProfile {
     return {
-      achievements: [],
+      qualifications: [],
       completedCourses: [],
       grades: [],
       averageRating: profile.averageRating,

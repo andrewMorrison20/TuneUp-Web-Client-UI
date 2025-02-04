@@ -54,6 +54,13 @@ mat-card-content {
   font-size: 1.1em;
   overflow: hidden;
 }
+/* Increase text size for calendar event titles */
+.fc-event-title {
+  font-size: 1.6rem !important; /* Adjust size as needed */
+  font-weight: bold;
+  white-space: normal; /* Ensures long text wraps */
+}
+
 
 .bio p {
   margin-top: 12px;
