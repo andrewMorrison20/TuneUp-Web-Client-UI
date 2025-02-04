@@ -122,20 +122,20 @@ mat-card-title {
     margin-top: 10px;
     font-size: 1rem;
   }
-}
 
-/* Responsive Design for Mobile */
-@media (max-width: 768px) {
-  .profiles-container {
-    flex-direction: column;
-    align-items: center;
-  }
 
-  .profile-card {
-    width: 100%;
-    max-width: 350px;
+  /* Responsive Design for Mobile */
+  @media (max-width: 768px) {
+    .profiles-container {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .profile-card {
+      width: 100%;
+      max-width: 350px;
+    }
   }
-}
 
 
   .tuition-links {
@@ -149,3 +149,4 @@ mat-card-title {
     padding: 20px;
   }
 
+}
