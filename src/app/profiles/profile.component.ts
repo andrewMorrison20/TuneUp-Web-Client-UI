@@ -39,7 +39,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     this.route.paramMap.subscribe(params => {
       const profileId = params.get('id');
       if (profileId) {
-        this.fetchProfile(profileId);
+        this.fetchProfile(Number(profileId));
       }
     });
   }
@@ -75,7 +75,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   }
 
   /** 🔹 Fetch Profile Details */
-  private fetchProfile(profileId: string): void {
+  private fetchProfile(profileId: number): void {
     this.profileService.getProfileById(profileId).subscribe(
       profile => {
         this.profile = profile;

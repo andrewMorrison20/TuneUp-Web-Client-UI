@@ -88,7 +88,7 @@ export class ProfileService {
     );
   }
 
-  getProfileById(id: string) {
+  getProfileById(id: number) {
     const url = `${this.apiUrl}/${id}`;
     const params = new HttpParams().set('id', id);
 

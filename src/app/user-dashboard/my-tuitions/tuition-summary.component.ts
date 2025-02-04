@@ -7,6 +7,10 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import {CalendarOptions} from "@fullcalendar/core";
 import {FullCalendarComponent} from "@fullcalendar/angular";
+import {ProfileService} from "../../profiles/profile.service";
+import {TutorProfile} from "../../profiles/interfaces/tutor.model";
+import {StudentProfile} from "../../profiles/interfaces/student.model";
+import {Observable} from "rxjs";
 
 
 @Component({
@@ -22,30 +26,23 @@ export class TuitionSummaryComponent implements OnInit {
   isTimeGridView = false;
   profileId!: number;
   tuitionSummary: any;
-  studentProfile = {
-    name: "John Doe",
-    profilePicture: "https://via.placeholder.com/150",
-    tuitionRegion: "New York",
-    email: "john.doe@example.com"
-  };
 
-  tutorProfile = {
-    name: "Jane Smith",
-    profilePicture: "https://via.placeholder.com/150",
-    tuitionRegion: "Los Angeles",
-    email: "jane.smith@example.com"
-  };
+  userProfile!: TutorProfile | StudentProfile;
+  profile!: TutorProfile | StudentProfile;
+
 
   tuitionDetails = {
     startDate: "2024-02-01",
     nextLessonDate: "2024-02-05"
   };
-  constructor(private route: ActivatedRoute, private availabilityService: AvailabilityService, private router: Router) {}
+  // @ts-ignore
+  constructor(private route: ActivatedRoute, private availabilityService: AvailabilityService, private profileService: ProfileService, private router: Router) {}
 
   ngOnInit() {
     this.profileId = Number(this.route.snapshot.paramMap.get('id')); // ✅ Get profile ID from URL
     this.fetchTuitionSummary();
     this.initializeCalendar();
+    this.fetchProfiles();
   }
 
   //this needs generalised for both profile types i.e args need switch
@@ -152,4 +149,19 @@ export class TuitionSummaryComponent implements OnInit {
   goBackToTuitions() {
     this.router.navigate(['/user-dashboard/my-tuitions'])
   }
+
+
+
+  fetchProfiles() {
+    this.profileService.getProfileById(AuthenticatedUser.getAuthUserProfileId()).subscribe(profile => {
+      console.log('Current user Profile:', profile);
+      this.userProfile = profile;
+    });
+
+    this.profileService.getProfileById(this.profileId).subscribe(profile => {
+      console.log('Tuition Profile:', profile);
+      this.profile = profile;
+    });
+  }
+
 }

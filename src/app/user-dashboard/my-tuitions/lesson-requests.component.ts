@@ -28,8 +28,8 @@ export class LessonRequestsComponent implements OnInit {
 
   fetchLessonRequestProfiles() {
     this.isLoading=true;
-    const tutorId = AuthenticatedUser.getAuthUserProfileId();
-    this.availabilityService.fetchRequestProfiles(tutorId, this.pageIndex, this.pageSize)
+    const userProfileId = AuthenticatedUser.getAuthUserProfileId();
+    this.availabilityService.fetchRequestProfiles(userProfileId, this.pageIndex, this.pageSize)
       .subscribe(response => {
         this.profiles = response.content;
         this.totalElements = response.totalElements;

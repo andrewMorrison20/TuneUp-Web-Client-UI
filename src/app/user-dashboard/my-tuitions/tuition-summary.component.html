@@ -1,5 +1,5 @@
 <mat-card class="tuition-summary-container">
-  <mat-card-title>Tuition Summary</mat-card-title>
+  <mat-card-title>Tuition Summary For {{profile.displayName}}</mat-card-title>
 
   <div class="tuition-details">
     <span class="profile-type-chip mat-chip mat-chip-outline"> Tuition Start Date : {{ tuitionDetails.startDate }}</span>
@@ -31,19 +31,19 @@
   <div class="profiles-container">
     <!-- Student Profile Card -->
     <mat-card class="profile-card">
-      <img [src]="studentProfile.profilePicture" alt="Student Profile Picture">
-      <h3>{{ studentProfile.name }}</h3>
-      <p>Region: {{ studentProfile.tuitionRegion }}</p>
-      <p>Email: {{ studentProfile.email }}</p>
+      <img [src]="profile?.profilePicture?.url || 'https://storage.googleapis.com/download/storage/v1/b/tuneup_profile_images/o/79a88d6b-8196-49cf-9cde-d6d4d3bf10fd-defaultProfilePicture.jpg?generation=1735034744997677&alt=media'"
+           alt="Profile Picture" class="profile-picture">
+      <h3>{{ profile.displayName }}</h3>
+      <p>Region: {{ profile.tuitionRegion.name }}</p>
       <button mat-raised-button color="primary" routerLink="/profile/student">View Profile</button>
     </mat-card>
 
     <!-- Tutor Profile Card -->
     <mat-card class="profile-card">
-      <img [src]="tutorProfile.profilePicture" alt="Tutor Profile Picture">
-      <h3>{{ tutorProfile.name }}</h3>
-      <p>Region: {{ tutorProfile.tuitionRegion }}</p>
-      <p>Email: {{ tutorProfile.email }}</p>
+      <img [src]="userProfile?.profilePicture?.url || 'https://storage.googleapis.com/download/storage/v1/b/tuneup_profile_images/o/79a88d6b-8196-49cf-9cde-d6d4d3bf10fd-defaultProfilePicture.jpg?generation=1735034744997677&alt=media'"
+           alt="Profile Picture" class="profile-picture">
+      <h3>{{ userProfile.displayName }}</h3>
+      <p>Region: {{ userProfile.tuitionRegion.name }}</p>
       <button mat-raised-button color="primary" routerLink="/profile/tutor">View Profile</button>
     </mat-card>
   </div>
