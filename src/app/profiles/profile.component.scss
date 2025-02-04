@@ -73,7 +73,7 @@ body {
 /* Two-Column Layout */
 .profile-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr; /* Calendar & Reviews take 2 parts, Pricing/Instruments/Genres take 1 */
+  grid-template-columns: 2.3fr 0.7fr;
   gap: 1.5rem;
   margin-top: 2rem;
 }
