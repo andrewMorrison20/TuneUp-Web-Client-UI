@@ -10,6 +10,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import { FullCalendarComponent } from '@fullcalendar/angular';
 import {MatDialog} from "@angular/material/dialog";
 import {LessonRequestDialogComponent} from "../lessons/lesson-request/lesson-request-dialog.component";
+import {AuthenticatedUser} from "../authentication/authenticated-user.class";
 
 type Profile = TutorProfile | StudentProfile;
 
@@ -40,6 +41,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       const profileId = params.get('id');
       if (profileId) {
         this.fetchProfile(Number(profileId));
+        this.fetchProfileQualifications();
       }
     });
   }
@@ -188,5 +190,10 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       case 'BOOKED': return '#FF0000';    // Red
       default: return '#000000';          // Fallback Black
     }
+  }
+
+  private fetchProfileQualifications() {
+    this.profileService.getProfileQualificationsById(AuthenticatedUser.getAuthUserProfileId())
+      .subscribe();
   }
 }

@@ -228,4 +228,9 @@ export class ProfileService {
       params: { start, end }
     });
   }
+
+  public getProfileQualificationsById(profileId: number) {
+    return this.http.get<any[]>(`${this.baseUrl}/instrumentQualifications/${profileId}`);
+
+  }
 }
