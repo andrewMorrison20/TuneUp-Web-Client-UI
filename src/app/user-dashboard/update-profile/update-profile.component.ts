@@ -45,6 +45,8 @@ export class UpdateProfileComponent {
     description:''
   };
 
+  lessonTypes = ['Online', 'In Person', 'Online & In-Person'];
+
   profilePicturePreview: string | null = null;
 
   regionSuggestions: any[] = [];

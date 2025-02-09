@@ -25,6 +25,14 @@
         <mat-hint align="end">{{ profile.displayName.length }} / 50</mat-hint>
       </mat-form-field>
 
+      <!-- Lesson Type Dropdown -->
+      <mat-form-field appearance="outline" class="form-group">
+        <mat-label>Lesson Type</mat-label>
+        <mat-select [(ngModel)]="profile.lessonType" name="lessonType">
+          <mat-option *ngFor="let type of lessonTypes" [value]="type">{{ type }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
 
       <!-- Genre Dropdown -->
       <mat-form-field appearance="outline" class="form-group">

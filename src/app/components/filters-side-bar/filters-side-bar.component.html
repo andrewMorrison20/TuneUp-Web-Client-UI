@@ -131,6 +131,20 @@
       </mat-checkbox>
     </div>
   </mat-expansion-panel>
+
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Lesson Type</mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="checkbox-list">
+      <mat-checkbox
+        *ngFor="let lessonType of lessonTypes"
+        [(ngModel)]="lessonType.selected">
+        {{ lessonType.name }}
+      </mat-checkbox>
+    </div>
+  </mat-expansion-panel>
+
   <!-- Apply Filters Button -->
   <div class="apply-filters-container" style="text-align: center; margin-top: 20px;">
     <button mat-raised-button color="primary" (click)="applyFilters()">Apply Filters</button>

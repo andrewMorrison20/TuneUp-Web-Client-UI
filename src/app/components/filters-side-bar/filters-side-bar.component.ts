@@ -30,9 +30,13 @@ export class FiltersSideBarComponent implements OnInit {
   selectedRating: number = 0;
   searchQuery: string = '';
 
-  constructor (private http: HttpClient, private router: Router, private sharedDataService: SharedDataService) {
+  lessonTypes = [
+    { id: 'Online', name: 'Online only', selected: false },
+    { id: 'In Person', name: 'In person only ', selected: false },
+    { id: 'Online & In-Person', name: 'Online And Inperson', selected: false }
+  ];
 
-  }
+  constructor (private http: HttpClient, private router: Router, private sharedDataService: SharedDataService) {}
 
   getStars(rating: number): string[] {
     return Array.from({ length: 5 }, (_, i) => (i < rating ? 'star' : 'star_border'));
@@ -97,6 +101,11 @@ export class FiltersSideBarComponent implements OnInit {
       .map((qualification) => qualification.id);
   }
 
+  getSelectedLessonTypes(): string[] {
+    return this.lessonTypes.filter((lessonType) => lessonType.selected)
+      .map((lessonType) => lessonType.id);
+  }
+
   onRegionSearch(): void {
     this.sharedDataService.searchRegions(this.regionSearchQuery);
   }
@@ -107,7 +116,7 @@ export class FiltersSideBarComponent implements OnInit {
   }
 
   clearSelection() {
-      this.selectedRegion = null;
+    this.selectedRegion = null;
   }
 
   onPriceChange() {
@@ -116,7 +125,6 @@ export class FiltersSideBarComponent implements OnInit {
       this.priceRange.min = Math.min(this.priceRange.min, this.priceRange.max);
       this.priceRange.max = Math.max(this.priceRange.min, this.priceRange.max);
     }
-
     console.log('Updated price range:', this.priceRange);
   }
 
@@ -127,23 +135,19 @@ export class FiltersSideBarComponent implements OnInit {
   }
 
   applyFilters(): void {
-    console.log('priceRange',this.priceRange)
-    const selectedInstruments = this.instruments
-      .filter((instrument) => instrument.selected)
-      .map((instrument) => instrument.id); // Extract only IDs or relevant values
-
-    const selectedGenres = this.genres
-      .filter((genre) => genre.selected)
-      .map((genre) => genre.id); // Extract only IDs or relevant values
-
+    console.log('priceRange', this.priceRange);
+    const selectedInstruments = this.getSelectedInstruments().map(instrument => instrument.id);
+    const selectedGenres = this.getSelectedGenres().map(genre => genre.id);
     const selectedQualifications = this.getSelectedQualifications();
+    const selectedLessonTypes = this.getSelectedLessonTypes();
     const isPriceRangeDefault = this.priceRange.min === 0 && this.priceRange.max === 1000;
 
     const queryParams = {
       keyword: this.searchQuery || null,
       instruments: selectedInstruments.length > 0 ? selectedInstruments : null,
-      qualifications: selectedQualifications.length >0 ? selectedQualifications : null,
+      qualifications: selectedQualifications.length > 0 ? selectedQualifications : null,
       genres: selectedGenres.length > 0 ? selectedGenres : null,
+      lessonType: selectedLessonTypes.length > 0 ? selectedLessonTypes : null,
       rating: this.selectedRating,
       regionId: this.selectedRegion?.id,
       priceRange: isPriceRangeDefault ? null : [this.priceRange.min, this.priceRange.max],
@@ -153,7 +157,6 @@ export class FiltersSideBarComponent implements OnInit {
       sort: 'displayName,asc'
     };
 
-    // Navigate to the search-results route and pass query parameters
     this.router.navigate(['/profiles/search'], { queryParams });
   }
 }

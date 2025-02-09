@@ -35,6 +35,7 @@ export class SearchResultsComponent implements OnInit {
   isMobile: boolean = false;
   filtersBannerExpanded: boolean = false;
   searchBannerExpanded: boolean = false;
+  lessonType: string[] | null = null;
 
   constructor(private profileService: ProfileService, private route: ActivatedRoute) {}
 
@@ -54,6 +55,7 @@ export class SearchResultsComponent implements OnInit {
       this.pageSize = params['size'] || 8;
       this.startTime = params['startDate'] || null;
       this.endTime = params['endDate'] || null;
+      this.lessonType = params['lessonType'];
       this.fetchProfiles();
     });
     console.log(this.priceRange)
@@ -77,6 +79,7 @@ export class SearchResultsComponent implements OnInit {
       instruments: this.instruments ? (Array.isArray(this.instruments) ? this.instruments : [this.instruments]) : null,
       profileType: this.profileType,
       priceRange:this.priceRange,
+      lessonType: this.lessonType,
       rating:this.rating,
       startTime:this.startTime,
       endTime: this.endTime
