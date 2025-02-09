@@ -10,7 +10,7 @@ import {FullCalendarComponent} from "@fullcalendar/angular";
 import {ProfileService} from "../../profiles/profile.service";
 import {TutorProfile} from "../../profiles/interfaces/tutor.model";
 import {StudentProfile} from "../../profiles/interfaces/student.model";
-import {Observable} from "rxjs";
+
 
 
 @Component({
@@ -32,8 +32,7 @@ export class TuitionSummaryComponent implements OnInit {
 
 
   tuitionDetails = {
-    startDate: "2024-02-01",
-    nextLessonDate: "2024-02-05"
+    startDate: null,
   };
   // @ts-ignore
   constructor(private route: ActivatedRoute, private availabilityService: AvailabilityService, private profileService: ProfileService, private router: Router) {}
@@ -43,6 +42,7 @@ export class TuitionSummaryComponent implements OnInit {
     this.fetchTuitionSummary();
     this.initializeCalendar();
     this.fetchProfiles();
+    this.tuitionDetails.startDate = this.tuitionSummary.startDate;
   }
 
   //this needs generalised for both profile types i.e args need switch
@@ -64,7 +64,6 @@ export class TuitionSummaryComponent implements OnInit {
       slotDuration: "00:15:00", // Smaller slots allow finer adjustments
       expandRows: true, // Ensures row height expands for long slots
       events: [],
-      eventClick: this.onEventClick.bind(this),
       dateClick: this.onDateClick.bind(this),
       datesSet: this.onMonthChange.bind(this),
       eventTimeFormat: {
@@ -75,23 +74,36 @@ export class TuitionSummaryComponent implements OnInit {
     }
   }
 
-  /*private fetchAvailability(date: Date): void {
+  private fetchAvailability(date: Date): void {
     if (!this.profile?.id) return;
     const start = new Date(date.getFullYear(), date.getMonth(), 1).toISOString();
     const end = new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString();
 
-    this.profileService.getPeriodAvailabilityForProfile(this.profile.id, start, end)
+    this.availabilityService.getTuitionLessonSummary(this.tuitionSummary.id, start, end)
       .subscribe(slots => {
         this.availabilitySlots = slots;
         this.updateCalendarEvents();
       });
   }
 
-  onMonthChange(info: any): void {
-    const newDate = info.start;
-    this.fetchAvailability(newDate);
-  }*/
+  private updateCalendarEvents(): void {
+    this.calendarOptions.events = this.availabilitySlots.map(slot => ({
+      title: slot.lessonStatus,
+      start: slot.availabilityDto.startTime,
+      end: slot.availabilityDto.endTime,
+      extendedProps: { lessonId: slot.id },
+      color: this.getEventColor(slot.lessonStatus)
+    }));
+  }
 
+  private getEventColor(lessonStatus: string): string {
+    switch (lessonStatus.toUpperCase()) {
+      case 'CONFIRMED': return '#4CAF50';
+      case 'COMPLETED': return '#9E9E9E';
+      case 'CANCELLED': return '#FF0000';
+      default: return '#000000';
+    }
+  }
   /** 🔹 Switch to TimeGrid Day View */
   onDateClick(info: any): void {
     console.log('Clicked date:', info.dateStr);
@@ -110,40 +122,9 @@ export class TuitionSummaryComponent implements OnInit {
     }
   }
 
-  /** 🔹 Handle Event Click */
-  onEventClick(info: any): void {
-    console.log('Event clicked:', info.event.title);
-
-    const availabilityId = info.event.extendedProps.availabilityId;
-
-    if (!availabilityId) {
-      console.error("No availability ID found!");
-      return;
-    }
-    /*const dialogRef = this.dialog.open(LessonRequestDialogComponent, {
-      width: '400px',
-      data: {
-        title: info.event.title,
-        startTime: info.event.start.toISOString(),
-        endTime: info.event.end?.toISOString(),
-        profileId: this.profile?.id,
-        availabilityId:availabilityId,
-        status: info.event.title,
-        instruments :this.profile?.instruments,
-      }
-    });*/
-
-    // Handle dialog result
-   // dialogRef.afterClosed().subscribe(result => {
-      //if (result=== true) {
-       // this.fetchAvailability(this.calendarComponent.getApi().getDate());
-    //  }
-  //  });
- }
-
   onMonthChange(info: any): void {
     const newDate = info.start;
-    //this.fetchAvailability(newDate);
+    this.fetchAvailability(newDate);
   }
 
   goBackToTuitions() {

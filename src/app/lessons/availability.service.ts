@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {AuthenticatedUser} from "../authentication/authenticated-user.class";
+import {tap} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,7 @@ import {AuthenticatedUser} from "../authentication/authenticated-user.class";
 export class AvailabilityService {
   private baseUrl = 'http://localhost:8080/api/lessonRequest';
   private baseTuitionUrl = 'http://localhost:8080/api/tuitions';
+  private url = 'http://localhost:8080/api';
 
   constructor(private http: HttpClient) {
 
@@ -89,6 +91,22 @@ export class AvailabilityService {
     return this.http.get(`${this.baseTuitionUrl}/byStudentAndTutor`, { params });
   }
 
+
+  public getTuitionLessonSummary(tuitionId: number, start: string, end: string): Observable<any[]> {
+    const url = `${this.url}/lessons/${tuitionId}`;
+    const token = AuthenticatedUser.getAuthUserToken();
+
+    let headers = new HttpHeaders();
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    }
+
+    console.log('📡 Sending Request with Headers:', headers.keys());
+
+    return this.http.get<any[]>(url, { params: { start, end }, headers }).pipe(
+      tap(() => console.log('✅ Request Sent Successfully'))
+    );
+  }
 }
 
 
