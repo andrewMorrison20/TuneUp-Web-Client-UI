@@ -147,7 +147,7 @@ export class TuitionSummaryComponent implements OnInit {
   }
 
   goBackToTuitions() {
-    this.router.navigate(['/user-dashboard/my-tuitions'])
+    this.router.navigate(['/user-dashboard/my-tuitions'], { queryParams: { tab: 1 } });
   }
 
 

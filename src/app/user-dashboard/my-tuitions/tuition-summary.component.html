@@ -40,7 +40,7 @@
            alt="Profile Picture" class="profile-picture">
       <h3>{{ profile.displayName }}</h3>
       <p *ngIf="profile.tuitionRegion?.name">Region: {{ profile.tuitionRegion.name }}</p>
-      <button mat-raised-button color="primary" routerLink="/profile/student">View Profile</button>
+      <button mat-raised-button color="primary" routerLink="/profiles/{{profile.id}}">View Profile</button>
     </mat-card>
 
     <!-- Tutor Profile Card -->
@@ -54,7 +54,7 @@
            alt="Profile Picture" class="profile-picture">
       <h3>{{ userProfile.displayName }}</h3>
       <p *ngIf="userProfile.tuitionRegion?.name">Region: {{ userProfile.tuitionRegion.name }}</p>
-      <button mat-raised-button color="primary" routerLink="/profile/tutor">View Profile</button>
+      <button mat-raised-button color="primary" routerLink="/profiles/{{userProfile.id}}">View Profile</button>
     </mat-card>
   </div>
   <br>
