@@ -24,9 +24,6 @@ import {AccountSettingsModule} from "../account-settings/account-settings.module
 import {FooterModule} from "../components/footer/footer.module";
 import {MatCard, MatCardSubtitle, MatCardTitle} from "@angular/material/card";
 import {MatTab, MatTabGroup} from "@angular/material/tabs";
-import {LessonRequestsComponent} from "./my-tuitions/lesson-requests.component";
-import {ActiveTuitionsComponent} from "./my-tuitions/active-tuitions.component";
-import {PreviousTuitionsComponent} from "./my-tuitions/previous-tuitions.component";
 import {MyTuitionsModule} from "./my-tuitions/my-tuitions.module";
 
 @NgModule({

@@ -55,12 +55,22 @@ export class AvailabilityService {
     return this.http.get(`${this.baseUrl}/students/${profileId}`, {params});
   }
 
-  updateLessonRequestStatus(requestId: number, status: 'CONFIRMED' | 'DECLINED'): Observable<any> {
+  updateLessonRequestStatus(
+    requestId: number,
+    status: 'CONFIRMED' | 'DECLINED',
+    autoDeclineConflicts = false
+  ): Observable<any> {
     const authToken = AuthenticatedUser.getAuthUserToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${authToken}`);
 
-    return this.http.patch(`${this.baseUrl}/status/${requestId}`, { status }, { headers });
+    const requestBody = {
+      status,
+      autoDeclineConflicts,
+    };
+
+    return this.http.patch(`${this.baseUrl}/status/${requestId}`, requestBody, { headers });
   }
+
 
   fetchTuitions(profileId: number, active: boolean = true, page: number = 0, size: number = 10): Observable<any> {
     const params = {

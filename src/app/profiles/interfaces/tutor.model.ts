@@ -14,7 +14,7 @@ export interface TutorProfile {
   profilePicture: Image;
   qualifications: Qualification[];
   instruments: Instrument[];
-  onlineLessons: boolean;
+  lessonType: string;
   enrolledStudents: number;
   reviews: Review[];
   prices: Price[];

@@ -14,6 +14,7 @@ export class ProfileLessonRequestsDialogComponent implements OnInit {
   totalElements = 0;
   pageSize = 5;
   pageIndex = 0;
+  autoDeclineConflicts =  false;
 
   constructor(
     public dialogRef: MatDialogRef<ProfileLessonRequestsDialogComponent>,
@@ -43,7 +44,7 @@ export class ProfileLessonRequestsDialogComponent implements OnInit {
 
   confirmRequest(requestId: number) {
     console.log(`Confirming request: ${requestId}`);
-    this.availabilityService.updateLessonRequestStatus(requestId, "CONFIRMED")
+    this.availabilityService.updateLessonRequestStatus(requestId, "CONFIRMED",this.autoDeclineConflicts)
       .subscribe({
         next: () => {
           console.log(`Request ${requestId} confirmed`);

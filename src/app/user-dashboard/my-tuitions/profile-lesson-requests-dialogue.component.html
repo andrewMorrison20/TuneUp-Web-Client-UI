@@ -26,7 +26,11 @@
         </div>
       </div>
       <br>
-    </div> <!-- ✅ Properly close the div for *ngFor -->
+    </div>
+
+    <mat-checkbox [(ngModel)]="autoDeclineConflicts">
+      Automatically decline other conflicting requests
+    </mat-checkbox>
 
     <!-- Pagination -->
     <mat-paginator class="paginator"
@@ -40,6 +44,7 @@
     <p class="no-requests">No lesson requests found.</p>
   </ng-template>
 </mat-dialog-content>
+
 
 <mat-dialog-actions class="dialog-actions">
   <button mat-button class="close-btn" (click)="closeDialog()">Close</button>

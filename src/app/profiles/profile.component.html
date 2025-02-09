@@ -26,7 +26,7 @@
           <p class="bio">{{ profile?.bio }}</p>
           <span class="profile-type-chip mat-chip mat-chip-outline">{{ profile?.profileType | titlecase }}</span>
           <span class="profile-type-chip mat-chip mat-chip-outline" *ngIf="profile.tuitionRegion">  {{ profile.tuitionRegion.name | titlecase}}</span>
-          <span class="profile-type-chip mat-chip mat-chip-outline" *ngIf="profile.onlineLessons">  Offers Online Lessons </span>
+          <span class="profile-type-chip mat-chip mat-chip-outline" *ngIf="profile.lessonType">  {{profile.lessonType}} </span>
         </div>
       </div>
 

@@ -10,7 +10,7 @@ export interface StudentProfile {
   bio: string;
   averageRating:number;
   profileType: string;
-  onlineLessons: boolean;
+  lessonType: string;
   profilePicture: Image;
   enrolledCourses: string[];
   completedCourses: string[];

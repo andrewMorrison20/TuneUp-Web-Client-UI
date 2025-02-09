@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {AvailabilityService} from "../../lessons/availability.service";
-import {AuthenticatedUser} from "../../authentication/authenticated-user.class";
+import {AvailabilityService} from "../../../lessons/availability.service";
+import {AuthenticatedUser} from "../../../authentication/authenticated-user.class";
 import {PageEvent} from "@angular/material/paginator";
-import {TutorProfile} from "../../profiles/interfaces/tutor.model";
-import {StudentProfile} from "../../profiles/interfaces/student.model";
+import {TutorProfile} from "../../../profiles/interfaces/tutor.model";
+import {StudentProfile} from "../../../profiles/interfaces/student.model";
 import {MatDialog} from "@angular/material/dialog";
-import {ProfileLessonRequestsDialogComponent} from "./profile-lesson-requests-dialgoue.component";
+import {ProfileLessonRequestsDialogComponent} from "../profile-lesson-requests-dialgoue.component";
 type Profile = TutorProfile | StudentProfile;
 
 @Component({

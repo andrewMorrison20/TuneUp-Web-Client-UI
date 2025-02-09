@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MyTuitionsComponent } from './my-tuitions.component';
-import { LessonRequestsComponent } from './lesson-requests.component';
-import { ActiveTuitionsComponent } from './active-tuitions.component';
-import { PreviousTuitionsComponent } from './previous-tuitions.component';
+import { LessonRequestsComponent } from './lesson-requests/lesson-requests.component';
+import { ActiveTuitionsComponent } from './active-tuitions/active-tuitions.component';
+import { PreviousTuitionsComponent } from './previous-tuitions/previous-tuitions.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import {MatPaginator} from "@angular/material/paginator";
@@ -18,6 +18,8 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {TuitionSummaryComponent} from "./tuition-summary.component";
 import {RouterLink} from "@angular/router";
 import {FullCalendarModule} from "@fullcalendar/angular";
+import {MatCheckbox} from "@angular/material/checkbox";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import {FullCalendarModule} from "@fullcalendar/angular";
     MatIcon,
     MatProgressSpinner,
     RouterLink,
-    FullCalendarModule
+    FullCalendarModule,
+    MatCheckbox,
+    FormsModule
   ],
   providers:[AvailabilityService],
   exports: [MyTuitionsComponent,ProfileLessonRequestsDialogComponent]
