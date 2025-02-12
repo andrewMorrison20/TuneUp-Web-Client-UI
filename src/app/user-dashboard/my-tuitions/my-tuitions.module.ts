@@ -20,6 +20,7 @@ import {RouterLink} from "@angular/router";
 import {FullCalendarModule} from "@fullcalendar/angular";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {FormsModule} from "@angular/forms";
+import {LessonSummaryDialogComponent} from "./tuition-summary/lesson-summary-dialgoue.component";
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import {FormsModule} from "@angular/forms";
     ActiveTuitionsComponent,
     PreviousTuitionsComponent,
     ProfileLessonRequestsDialogComponent,
-    TuitionSummaryComponent
+    TuitionSummaryComponent,
+    LessonSummaryDialogComponent
   ],
   imports: [
     CommonModule,

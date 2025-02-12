@@ -1,0 +1,27 @@
+<mat-dialog-content class="dialog-content">
+  <h2 class="dialog-title">Lesson Summary</h2>
+
+  <div class="lesson-details">
+    <p><strong>Start Time:</strong>
+      {{ data.lesson.availability.startTime | date: 'HH:mm' }}
+    </p>
+    <p><strong>End Time:</strong>
+      {{ data.lesson.availability.endTime | date: 'HH:mm' }}
+    </p>
+    <p><strong>Lesson Type:</strong> {{ data.lesson.lessonType || 'Not specified' }}</p>
+  </div>
+
+  <div class="lesson-actions">
+    <button mat-raised-button color="primary" (click)="redirectToStudyHub()">
+      <mat-icon>book</mat-icon> Go To Study Hub
+    </button>
+    <button mat-raised-button color="warn" (click)="cancelLesson()">
+      <mat-icon>close</mat-icon> Cancel
+    </button>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions class="dialog-actions">
+  <button mat-button (click)="closeDialog()">Close</button>
+</mat-dialog-actions>
+

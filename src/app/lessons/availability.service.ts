@@ -103,11 +103,13 @@ export class AvailabilityService {
       headers = headers.set('Authorization', `Bearer ${token}`);
     }
 
-    console.log('📡 Sending Request with Headers:', headers.keys());
-
     return this.http.get<any[]>(url, { params: { start, end }, headers }).pipe(
-      tap(() => console.log('✅ Request Sent Successfully'))
+      tap(() => console.log('Request Sent Successfully'))
     );
+  }
+
+  cancelLesson(lessonId: number) {
+
   }
 }
 

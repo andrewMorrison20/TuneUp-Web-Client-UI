@@ -10,6 +10,9 @@ import {FullCalendarComponent} from "@fullcalendar/angular";
 import {ProfileService} from "../../profiles/profile.service";
 import {TutorProfile} from "../../profiles/interfaces/tutor.model";
 import {StudentProfile} from "../../profiles/interfaces/student.model";
+import {MatDialog} from "@angular/material/dialog";
+import {LessonSummaryDialogComponent} from "./tuition-summary/lesson-summary-dialgoue.component";
+import {LessonSummary} from "./tuition-summary/lesson-summary.model";
 
 
 
@@ -35,7 +38,12 @@ export class TuitionSummaryComponent implements OnInit {
     startDate: null,
   };
   // @ts-ignore
-  constructor(private route: ActivatedRoute, private availabilityService: AvailabilityService, private profileService: ProfileService, private router: Router) {}
+  constructor(private route: ActivatedRoute,
+              private availabilityService: AvailabilityService,
+              private profileService: ProfileService,
+              private router: Router,
+              private dialog:MatDialog
+  ) {}
 
   ngOnInit() {
     this.profileId = Number(this.route.snapshot.paramMap.get('id')); // ✅ Get profile ID from URL
@@ -74,26 +82,56 @@ export class TuitionSummaryComponent implements OnInit {
     }
   }
 
-  private fetchAvailability(date: Date): void {
+  private fetchLessons(date: Date): void {
     if (!this.profile?.id) return;
     const start = new Date(date.getFullYear(), date.getMonth(), 1).toISOString();
     const end = new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString();
 
     this.availabilityService.getTuitionLessonSummary(this.tuitionSummary.id, start, end)
-      .subscribe(slots => {
-        this.availabilitySlots = slots;
+      .subscribe(response => {
+        this.availabilitySlots = response.map((lesson: any) => ({
+          id: lesson.id,
+          tuitionId: lesson.tuitionId,
+          availability: {
+            id: lesson.availabilityDto.id,
+            profileId: lesson.availabilityDto.profileId,
+            startTime: lesson.availabilityDto.startTime,
+            endTime: lesson.availabilityDto.endTime,
+            status: lesson.availabilityDto.status
+          },
+          lessonStatus: lesson.lessonStatus,
+          lessonType: lesson.lessonType
+        }));
+
         this.updateCalendarEvents();
       });
   }
 
+
   private updateCalendarEvents(): void {
-    this.calendarOptions.events = this.availabilitySlots.map(slot => ({
-      title: slot.lessonStatus,
-      start: slot.availabilityDto.startTime,
-      end: slot.availabilityDto.endTime,
-      extendedProps: { lessonId: slot.id },
-      color: this.getEventColor(slot.lessonStatus)
+    this.calendarOptions.events = this.availabilitySlots.map((lesson: LessonSummary) => ({
+      title: lesson.lessonStatus,
+      start: lesson.availability.startTime,
+      end: lesson.availability.endTime,
+      extendedProps: { lesson },
+      color: this.getEventColor(lesson.lessonStatus)
     }));
+
+    this.calendarOptions.eventClick = this.onLessonClick.bind(this);
+  }
+
+  onLessonClick(info: any): void {
+    const lesson: LessonSummary = info.event.extendedProps.lesson;
+
+    const dialogRef = this.dialog.open(LessonSummaryDialogComponent, {
+      data: { lesson }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'cancelled') {
+        this.fetchLessons(new Date());
+      }
+    });
   }
 
   private getEventColor(lessonStatus: string): string {
@@ -124,13 +162,12 @@ export class TuitionSummaryComponent implements OnInit {
 
   onMonthChange(info: any): void {
     const newDate = info.start;
-    this.fetchAvailability(newDate);
+    this.fetchLessons(newDate);
   }
 
   goBackToTuitions() {
     this.router.navigate(['/user-dashboard/my-tuitions'], { queryParams: { tab: 1 } });
   }
-
 
 
   fetchProfiles() {
