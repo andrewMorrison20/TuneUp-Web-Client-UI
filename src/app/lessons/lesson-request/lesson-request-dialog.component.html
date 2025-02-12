@@ -12,16 +12,18 @@
     </mat-select>
   </mat-form-field>
 
-  <!-- Instrument Selection -->
+  <!-- Lesson Type Selection -->
   <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Select Instrument</mat-label>
-    <mat-select [(ngModel)]="selectedInstrument">
-      <mat-option *ngFor="let instrument of data.instruments" [value]="instrument">
-        {{ instrument.name }}
+    <mat-label>Select Lesson Type</mat-label>
+    <mat-select [(ngModel)]="selectedLessonType">
+      <mat-option *ngFor="let lessonType of lessonTypes" [value]="lessonType">
+        {{ lessonType }}
       </mat-option>
     </mat-select>
   </mat-form-field>
 </mat-dialog-content>
+
+
 
 <mat-dialog-actions align="end">
   <button mat-button (click)="onCancel()">Cancel</button>

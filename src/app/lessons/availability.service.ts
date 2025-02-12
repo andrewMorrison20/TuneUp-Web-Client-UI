@@ -21,7 +21,8 @@ export class AvailabilityService {
     endTime: string,
     studentId: number,
     tutorId: number,
-    availabilityId: number
+    availabilityId: number,
+    lessonType: string | null
   ): Observable<any> {
     const requestBody = {
       requestedStartTime: startTime,
@@ -29,7 +30,8 @@ export class AvailabilityService {
       studentProfileId: studentId,
       tutorProfileId: tutorId,
       status: "PENDING",
-      availabilityId: availabilityId
+      availabilityId: availabilityId,
+      lessonType:lessonType
     };
 
     return this.http.post(`${this.baseUrl}`, requestBody);

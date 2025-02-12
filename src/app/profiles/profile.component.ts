@@ -143,6 +143,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
         availabilityId:availabilityId,
         status: info.event.title,
         instruments :this.profile?.instruments,
+        lessonType: this.profile?.lessonType
       }
     });
 

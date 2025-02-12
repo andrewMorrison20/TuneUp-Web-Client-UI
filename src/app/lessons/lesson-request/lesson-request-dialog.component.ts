@@ -9,9 +9,10 @@ import {AuthenticatedUser} from "../../authentication/authenticated-user.class";
   styleUrls: ['./lesson-request-dialog.component.scss']
 })
 export class LessonRequestDialogComponent implements OnInit {
-  selectedInstrument: any;
+  selectedLessonType: string | null = null;
   selectedSlot!: { startTime: Date; endTime: Date };
   availableSlots: { startTime: Date; endTime: Date }[] = [];
+  lessonTypes: string[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<LessonRequestDialogComponent>,
@@ -21,6 +22,7 @@ export class LessonRequestDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.calculateAvailableSlots();
+    this.lessonTypes = this.getLessonTypes();
   }
 
   /** 🔹 Precompute Available Slots */
@@ -63,7 +65,9 @@ export class LessonRequestDialogComponent implements OnInit {
       endTimeLocal,
       AuthenticatedUser.getAuthUserProfileId(),
       this.data.profileId,
-      this.data.availabilityId
+      this.data.availabilityId,
+      this.selectedLessonType
+
     ).subscribe({
       next: () => {
         console.log("Lesson request sent and calendar refreshed.");
@@ -77,6 +81,15 @@ export class LessonRequestDialogComponent implements OnInit {
     });
   }
 
+  getLessonTypes(): string[] {
+    const lessonMap: Record<string, string[]> = {
+      "online & in-person": ["Online", "In Person"],
+      "online": ["Online"],
+      "in person": ["In Person"]
+    };
+
+    return lessonMap[this.data.lessonType.toLowerCase()] || [];
+  }
 
 
   /** 🔹 Cancel Dialog */

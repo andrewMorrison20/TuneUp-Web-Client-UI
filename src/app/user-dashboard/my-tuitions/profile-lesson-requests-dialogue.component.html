@@ -15,7 +15,7 @@
           {{ request.requestedEndTime | date: 'MMMM d, yyyy' }} at {{ request.requestedEndTime | date: 'HH:mm' }}
         </p>
         </div>
-
+        <div>{{request.lessonType}}</div>
         <div class="request-actions">
           <button mat-raised-button color="primary" class="confirm-btn" (click)="confirmRequest(request.id)">
             <mat-icon>check</mat-icon> Confirm

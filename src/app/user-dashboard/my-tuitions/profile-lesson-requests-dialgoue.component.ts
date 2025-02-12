@@ -34,6 +34,7 @@ export class ProfileLessonRequestsDialogComponent implements OnInit {
       }, error => {
         console.error('Error fetching lesson requests:', error);
       });
+    console.log(this.lessonRequests)
   }
 
   onPageChange(event: PageEvent) {
