@@ -7,7 +7,6 @@ import { PreviousTuitionsComponent } from './previous-tuitions/previous-tuitions
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import {MatPaginator} from "@angular/material/paginator";
-import {HttpClientModule} from "@angular/common/http";
 import {AvailabilityService} from "../../lessons/availability.service";
 import {MatButton} from "@angular/material/button";
 import {ProfileLessonRequestsDialogComponent} from "./profile-lesson-requests-dialgoue.component";
@@ -21,6 +20,9 @@ import {FullCalendarModule} from "@fullcalendar/angular";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {FormsModule} from "@angular/forms";
 import {LessonSummaryDialogComponent} from "./tuition-summary/lesson-summary-dialgoue.component";
+import {AddressService} from "../update-profile/address/address-service.component";
+import {HttpClientModule} from "@angular/common/http";
+import {GoogleMap, MapMarker} from "@angular/google-maps";
 
 @NgModule({
   declarations: [
@@ -34,6 +36,7 @@ import {LessonSummaryDialogComponent} from "./tuition-summary/lesson-summary-dia
   ],
   imports: [
     CommonModule,
+    HttpClientModule,
     MatTabsModule,
     MatCardModule,
     MatPaginator,
@@ -47,9 +50,11 @@ import {LessonSummaryDialogComponent} from "./tuition-summary/lesson-summary-dia
     RouterLink,
     FullCalendarModule,
     MatCheckbox,
-    FormsModule
+    FormsModule,
+    GoogleMap,
+    MapMarker
   ],
-  providers:[AvailabilityService],
+  providers:[AvailabilityService,AddressService,GoogleMap],
   exports: [MyTuitionsComponent,ProfileLessonRequestsDialogComponent]
 })
 export class MyTuitionsModule {}

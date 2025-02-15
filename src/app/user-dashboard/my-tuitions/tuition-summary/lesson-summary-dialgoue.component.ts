@@ -1,15 +1,16 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import {AddressDto, AddressService} from '../../update-profile/address/address-service.component';
-
-import { Observable } from 'rxjs';
+import { AddressDto, AddressService } from '../../update-profile/address/address-service.component';
 
 @Component({
   selector: 'app-lesson-summary-dialogue',
   templateUrl: './lesson-summary-dialogue.component.html',
 })
 export class LessonSummaryDialogComponent implements OnInit {
-  googleMapUrl: string | null = null;
+  latitude!: number;
+  longitude!: number;
+  zoom: number = 15;
+  showMap: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<LessonSummaryDialogComponent>,
@@ -19,30 +20,29 @@ export class LessonSummaryDialogComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data.lesson.lessonType === 'In Person') {
-      this.fetchLessonLocation(this.data.lesson.tuitionId).subscribe(
-        (address) => {
-          if (address?.latitude && address?.longitude) {
-            this.data.address = address;
-            this.setGoogleMapUrl(address.latitude, address.longitude);
-          }
-        },
-        (error) => console.error('Error fetching lesson location:', error)
-      );
+      this.fetchLessonLocation(this.data.lesson.tuitionId);
     } else if (this.data.address?.latitude && this.data.address?.longitude) {
-      this.setGoogleMapUrl(this.data.address.latitude, this.data.address.longitude);
+      this.setMapCoordinates(this.data.address.latitude, this.data.address.longitude);
     }
   }
 
   /** Fetch lesson tutor's address if lesson type is in-person */
-  private fetchLessonLocation(tuitionId: number): Observable<AddressDto> {
-    return this.addressService.getLessonTutorLocation(tuitionId);
+  private fetchLessonLocation(tuitionId: number): void {
+    this.addressService.getLessonTutorLocation(tuitionId).subscribe(
+      (address) => {
+        if (address?.latitude && address?.longitude) {
+          this.setMapCoordinates(address.latitude, address.longitude);
+        }
+      },
+      (error) => console.error('Error fetching lesson location:', error)
+    );
   }
 
-  /** Set Google Maps URL for embedding */
-  private setGoogleMapUrl(latitude: number, longitude: number): void {
-    if (latitude && longitude) {
-      this.googleMapUrl = `https://www.google.com/maps/embed/v1/place?key=YOUR_GOOGLE_MAPS_API_KEY&q=${latitude},${longitude}`;
-    }
+
+  private setMapCoordinates(latitude: number, longitude: number): void {
+    this.latitude = latitude;
+    this.longitude = longitude;
+    this.showMap = true;
   }
 
   cancelLesson(): void {

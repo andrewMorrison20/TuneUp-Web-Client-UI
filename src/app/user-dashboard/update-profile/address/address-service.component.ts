@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {AuthenticatedUser} from "../../../authentication/authenticated-user.class";
 
 export interface AddressDto {
   id: number;
@@ -17,7 +18,7 @@ export interface AddressDto {
   providedIn: 'root'
 })
 export class AddressService {
-  private apiUrl = 'http://localhost:8080/api/addresses'; // Backend API Base URL
+  private apiUrl = 'http://localhost:8080/api/addresses';
 
   constructor(private http: HttpClient) {}
 
@@ -38,7 +39,12 @@ export class AddressService {
   }
 
   /** Fetch tutor's location for a given tuition ID */
+  //Again issues with Angulars interceptor, this has no reason to bypass the interceptor, but it does (yet other reqs
+  // in this class do no. Auth attached manually, until this is resolved.
   getLessonTutorLocation(tuitionId: number): Observable<AddressDto> {
-    return this.http.get<AddressDto>(`${this.apiUrl}/lesson/${tuitionId}/location`);
+    const authToken = AuthenticatedUser.getAuthUserToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${authToken}`);
+
+    return this.http.get<AddressDto>(`${this.apiUrl}/lesson/${tuitionId}/location`, { headers });
   }
 }
