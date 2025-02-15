@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AccountResponse, AccountSettingsService } from './account-settings.service';
 import { AuthenticatedUser } from '../authentication/authenticated-user.class';
+import {AddressService} from "../user-dashboard/update-profile/address/address-service.component";
+
 
 @Component({
   selector: 'app-account-settings',
@@ -16,8 +18,11 @@ export class AccountSettingsComponent {
   accountDetails: AccountResponse | null = null;
   feedbackMessage: string | null = null;
   feedbackType: 'success' | 'error' | null = null;
+  selectedAddress: string | null= null;
+  addressSuggestions: any;
+  searchQuery: any;
 
-  constructor(private fb: FormBuilder, private accountService: AccountSettingsService) {
+  constructor(private fb: FormBuilder, private accountService: AccountSettingsService, private addressService: AddressService) {
     this.nameForm = this.fb.group({
       name: ['', [Validators.required]],
     });
@@ -32,6 +37,8 @@ export class AccountSettingsComponent {
       addressLine2: [''],
       city: ['', [Validators.required]],
       country: ['', [Validators.required]],
+      latitude: [null],
+      longitude: [null]
     });
 
     this.passwordForm = this.fb.group({
@@ -135,4 +142,34 @@ export class AccountSettingsComponent {
       this.setFeedback('Please ensure all password fields are valid.', 'error');
     }
   }
+
+  onAddressSearch() {
+    const postcode = this.addressForm.get('postcode')?.value;
+    const streetName = this.addressForm.get('addressLine1')?.value;
+
+    if (postcode && streetName) {
+      this.addressService.getAddressSuggestions(postcode, streetName).subscribe(
+        (addresses) => {
+          this.addressSuggestions = addresses;
+       },
+       (error) => {
+         console.error('Error fetching address suggestions:', error);
+        }
+     );
+    }
+  }
+
+  selectAddress(address: any) {
+    this.selectedAddress = address;
+    this.addressForm.patchValue({
+      addressLine1: address.addressLine1,
+      addressLine2: address.addressLine2,
+      city: address.city,
+      postcode: address.postcode,
+      country: address.country,
+      latitude: address.latitude,
+      longitude:address.longitude
+    });
+  }
+
 }

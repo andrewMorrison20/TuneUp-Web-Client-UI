@@ -25,6 +25,8 @@ import {FooterModule} from "../components/footer/footer.module";
 import {MatCard, MatCardSubtitle, MatCardTitle} from "@angular/material/card";
 import {MatTab, MatTabGroup} from "@angular/material/tabs";
 import {MyTuitionsModule} from "./my-tuitions/my-tuitions.module";
+import {AddressService} from "./update-profile/address/address-service.component";
+
 
 @NgModule({
   declarations: [
@@ -62,6 +64,7 @@ import {MyTuitionsModule} from "./my-tuitions/my-tuitions.module";
     MatCard,
     MatTabGroup,
     MatTab
-  ]
+  ],
+  providers:[AddressService]
 })
 export class UserDashboardModule { }

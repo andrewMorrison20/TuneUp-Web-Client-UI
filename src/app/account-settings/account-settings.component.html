@@ -56,31 +56,62 @@
         </form>
 
         <!-- Update Address Section -->
+
+        <!-- Update Address Section -->
         <form [formGroup]="addressForm" (ngSubmit)="onSubmitAddress()" class="form-section">
+
+          <!-- Postcode Input -->
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Postcode</mat-label>
-            <input matInput placeholder="Enter your postcode" formControlName="postcode" />
+            <input
+              matInput
+              placeholder="Enter your postcode"
+              formControlName="postcode"
+              (input)="onAddressSearch()"
+            />
           </mat-form-field>
+
+          <!-- Address Line 1 Input -->
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Address Line 1</mat-label>
-            <input matInput placeholder="Enter address line 1" formControlName="addressLine1" />
+            <input
+              matInput
+              placeholder="Enter street name or house number"
+              formControlName="addressLine1"
+              (input)="onAddressSearch()"
+            />
           </mat-form-field>
+
+          <!-- Address Suggestions List -->
+          <mat-list *ngIf="addressSuggestions?.length > 0">
+            <mat-list-item *ngFor="let address of addressSuggestions" (click)="selectAddress(address)">
+              {{ address.addressLine1 }}, {{ address.city }}, {{ address.postcode }}
+            </mat-list-item>
+          </mat-list>
+
+          <!-- Address Line 2 Input -->
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Address Line 2</mat-label>
             <input matInput placeholder="Enter address line 2 (optional)" formControlName="addressLine2" />
           </mat-form-field>
+
+          <!-- City Input -->
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>City</mat-label>
             <input matInput placeholder="Enter your city" formControlName="city" />
           </mat-form-field>
+
+          <!-- Country Input -->
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Country</mat-label>
             <input matInput placeholder="Enter your country" formControlName="country" />
           </mat-form-field>
+
           <button mat-raised-button color="primary" type="submit" [disabled]="!addressForm.valid">
             Update Address
           </button>
         </form>
+
 
         <!-- Change Password Section -->
         <form [formGroup]="passwordForm" (ngSubmit)="onSubmitPassword()" class="form-section">
