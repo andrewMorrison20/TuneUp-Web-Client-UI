@@ -34,7 +34,8 @@ export class LessonSummaryDialogComponent implements OnInit {
           this.setMapCoordinates(address.latitude, address.longitude);
         }
       },
-      (error) => console.error('Error fetching lesson location:', error)
+      (error) => {console.error('Error fetching lesson location:', error);
+      this.showAlert('Error retrieving lesson location. Refresh the page.');}
     );
   }
 
@@ -56,5 +57,8 @@ export class LessonSummaryDialogComponent implements OnInit {
 
   closeDialog(): void {
     this.dialogRef.close();
+  }
+  private showAlert(message: string): void {
+    window.alert(message);
   }
 }
