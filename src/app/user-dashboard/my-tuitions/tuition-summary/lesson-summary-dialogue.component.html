@@ -11,6 +11,18 @@
     <p><strong>Lesson Type:</strong> {{ data.lesson.lessonType || 'Not specified' }}</p>
   </div>
 
+  <!-- Display Google Map for In-Person Lessons -->
+  <div *ngIf="data.lesson.lessonType === 'In Person' && googleMapUrl" class="map-container">
+    <iframe
+      width="100%"
+      height="300"
+      [src]="googleMapUrl"
+      frameborder="0"
+      style="border:0"
+      allowfullscreen>
+    </iframe>
+  </div>
+
   <div class="lesson-actions">
     <button mat-raised-button color="primary" (click)="redirectToStudyHub()">
       <mat-icon>book</mat-icon> Go To Study Hub
@@ -20,6 +32,11 @@
     </button>
   </div>
 </mat-dialog-content>
+
+<mat-dialog-actions class="dialog-actions">
+  <button mat-button (click)="closeDialog()">Close</button>
+</mat-dialog-actions>
+
 
 <mat-dialog-actions class="dialog-actions">
   <button mat-button (click)="closeDialog()">Close</button>

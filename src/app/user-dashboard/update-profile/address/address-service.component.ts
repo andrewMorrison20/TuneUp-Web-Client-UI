@@ -36,4 +36,9 @@ export class AddressService {
 
     return this.http.get<AddressDto[]>(`${this.apiUrl}/lookup`, { params });
   }
+
+  /** Fetch tutor's location for a given tuition ID */
+  getLessonTutorLocation(tuitionId: number): Observable<AddressDto> {
+    return this.http.get<AddressDto>(`${this.apiUrl}/lesson/${tuitionId}/location`);
+  }
 }

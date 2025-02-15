@@ -123,6 +123,7 @@ export class TuitionSummaryComponent implements OnInit {
   onLessonClick(info: any): void {
     const lesson: LessonSummary = info.event.extendedProps.lesson;
 
+
     const dialogRef = this.dialog.open(LessonSummaryDialogComponent, {
       data: { lesson }
     });
