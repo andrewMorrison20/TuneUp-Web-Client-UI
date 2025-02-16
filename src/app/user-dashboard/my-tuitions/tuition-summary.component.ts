@@ -48,15 +48,16 @@ export class TuitionSummaryComponent implements OnInit {
   ngOnInit() {
     this.profileId = Number(this.route.snapshot.paramMap.get('id')); // ✅ Get profile ID from URL
     this.fetchTuitionSummary();
-    this.initializeCalendar();
     this.fetchProfiles();
-    this.tuitionDetails.startDate = this.tuitionSummary.startDate;
   }
 
   //this needs generalised for both profile types i.e args need switch
   fetchTuitionSummary() {
     this.availabilityService.getTuitionSummary(this.profileId,AuthenticatedUser.getAuthUserProfileId()).subscribe(response => {
       this.tuitionSummary = response;
+      this.tuitionDetails.startDate = this.tuitionSummary.startDate;
+      this.initializeCalendar()
+      this.fetchLessons(new Date());
     });
   }
 
