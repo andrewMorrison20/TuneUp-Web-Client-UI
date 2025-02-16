@@ -46,9 +46,9 @@ export class LessonRequestsComponent implements OnInit {
     this.fetchLessonRequestProfiles();
   }
 
-  openLessonRequestsDialog(profileId: number) {
+  openLessonRequestsDialog(profileId: number, profileType: string) {
     const dialogRef = this.dialog.open(ProfileLessonRequestsDialogComponent, {
-      data: { profileId }
+      data: { profileId,profileType }
     });
 
     dialogRef.afterClosed().subscribe(() => {

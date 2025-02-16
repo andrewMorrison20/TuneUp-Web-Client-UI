@@ -7,7 +7,7 @@ import {AuthenticatedUser} from "../../authentication/authenticated-user.class";
 @Component({
   selector: 'app-lesson-requests-dialog',
   templateUrl: './profile-lesson-requests-dialogue.component.html',
-  //styleUrls: ['./lesson-requests-dialog.component.scss']
+  styleUrl: './profile-lesson-request-dialogue.component.scss'
 })
 export class ProfileLessonRequestsDialogComponent implements OnInit {
   lessonRequests: any[] = [];
@@ -19,7 +19,7 @@ export class ProfileLessonRequestsDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<ProfileLessonRequestsDialogComponent>,
     private availabilityService: AvailabilityService,
-    @Inject(MAT_DIALOG_DATA) public data: { profileId: number }
+    @Inject(MAT_DIALOG_DATA) public data: { profileId: number,profileType:string }
   ) {}
 
   ngOnInit() {

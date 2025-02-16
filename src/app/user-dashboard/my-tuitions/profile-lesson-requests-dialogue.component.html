@@ -17,12 +17,20 @@
         </div>
         <div>{{request.lessonType}}</div>
         <div class="request-actions">
+          <ng-container *ngIf="data.profileType== 'Student'">
           <button mat-raised-button color="primary" class="confirm-btn" (click)="confirmRequest(request.id)">
             <mat-icon>check</mat-icon> Confirm
           </button>
+
           <button mat-raised-button color="warn" class="deny-btn" (click)="denyRequest(request.id)">
             <mat-icon>close</mat-icon> Decline
           </button>
+          </ng-container>
+          <ng-container *ngIf="data.profileType== 'Tutor'">
+            <button mat-raised-button color="warn" class="deny-btn" (click)="denyRequest(request.id)">
+              <mat-icon>close</mat-icon> Cancel
+            </button>
+          </ng-container>
         </div>
       </div>
       <br>

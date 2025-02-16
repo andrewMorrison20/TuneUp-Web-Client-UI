@@ -5,6 +5,7 @@ import { AddressDto, AddressService } from '../../update-profile/address/address
 @Component({
   selector: 'app-lesson-summary-dialogue',
   templateUrl: './lesson-summary-dialogue.component.html',
+  styleUrl: './lesson-summary-dialogue.component.scss'
 })
 export class LessonSummaryDialogComponent implements OnInit {
   latitude!: number;
