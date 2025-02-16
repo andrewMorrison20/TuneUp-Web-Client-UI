@@ -46,7 +46,7 @@ export class TuitionSummaryComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.profileId = Number(this.route.snapshot.paramMap.get('id')); // ✅ Get profile ID from URL
+    this.profileId = Number(this.route.snapshot.paramMap.get('id'));
     this.fetchTuitionSummary();
     this.fetchProfiles();
   }
@@ -58,10 +58,10 @@ export class TuitionSummaryComponent implements OnInit {
       this.tuitionSummary = response;
       this.tuitionDetails.startDate = this.tuitionSummary.startDate;
 
-      this.initializeCalendar(); // ✅ Now initializes only when data is available
-      this.fetchLessons(new Date()); // ✅ Fetch lessons after initialization
+      this.initializeCalendar();
+      this.fetchLessons(new Date());
 
-      this.loading = false; // ✅ Data is fully loaded
+      this.loading = false;
     });
   }
 
