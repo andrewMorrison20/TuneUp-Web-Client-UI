@@ -15,7 +15,9 @@
           Month View
         </button>
         <br><br>
-        <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+    <div *ngIf="!loading">
+      <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+    </div>
   </div>
 
   <!-- Links -->

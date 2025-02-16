@@ -32,7 +32,7 @@ export class TuitionSummaryComponent implements OnInit {
 
   userProfile!: TutorProfile | StudentProfile;
   profile!: TutorProfile | StudentProfile;
-
+  loading: boolean = true;
 
   tuitionDetails = {
     startDate: null,
@@ -52,12 +52,16 @@ export class TuitionSummaryComponent implements OnInit {
   }
 
   //this needs generalised for both profile types i.e args need switch
+
   fetchTuitionSummary() {
-    this.availabilityService.getTuitionSummary(this.profileId,AuthenticatedUser.getAuthUserProfileId()).subscribe(response => {
+    this.availabilityService.getTuitionSummary(this.profileId, AuthenticatedUser.getAuthUserProfileId()).subscribe(response => {
       this.tuitionSummary = response;
       this.tuitionDetails.startDate = this.tuitionSummary.startDate;
-      this.initializeCalendar()
-      this.fetchLessons(new Date());
+
+      this.initializeCalendar(); // ✅ Now initializes only when data is available
+      this.fetchLessons(new Date()); // ✅ Fetch lessons after initialization
+
+      this.loading = false; // ✅ Data is fully loaded
     });
   }
 
