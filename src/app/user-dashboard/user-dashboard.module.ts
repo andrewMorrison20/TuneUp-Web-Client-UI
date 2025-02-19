@@ -22,12 +22,20 @@ import {UpdateProfileComponent} from "./update-profile/update-profile.component"
 import {UserDashboardComponent} from "./user-dashboard.component";
 import {AccountSettingsModule} from "../account-settings/account-settings.module";
 import {FooterModule} from "../components/footer/footer.module";
-import {MatCard, MatCardSubtitle, MatCardTitle} from "@angular/material/card";
+import {
+  MatCard,
+  MatCardContent,
+  MatCardFooter,
+  MatCardHeader,
+  MatCardSubtitle,
+  MatCardTitle
+} from "@angular/material/card";
 import {MatTab, MatTabGroup} from "@angular/material/tabs";
 import {MyTuitionsModule} from "./my-tuitions/my-tuitions.module";
 import {AddressService} from "./update-profile/address/address-service.component";
 import {ScheduleComponent} from "./schedule/schedule.component";
 import {FullCalendarModule} from "@fullcalendar/angular";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 
 @NgModule({
@@ -67,7 +75,11 @@ import {FullCalendarModule} from "@fullcalendar/angular";
     MatCardTitle,
     MatCard,
     MatTabGroup,
-    MatTab
+    MatTab,
+    MatProgressSpinner,
+    MatCardFooter,
+    MatCardContent,
+    MatCardHeader
   ],
   providers:[AddressService]
 })

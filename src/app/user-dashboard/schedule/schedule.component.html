@@ -1,15 +1,30 @@
+<div class="calendar-container">
+  <mat-card class="calendar-card">
+    <mat-card-header>
+      <mat-card-title>
+        <h2>📅 Upcoming Lesson Schedule</h2>
+      </mat-card-title>
+      <br>
+      <mat-card-subtitle>
+        Manage your upcoming lessons and set your availability.Click on a time slot for more information.
+      </mat-card-subtitle>
+    </mat-card-header>
+  <br>
+    <mat-card-content>
+      <button *ngIf="isTimeGridView" mat-raised-button color="primary" (click)="switchToMonthView()">
+        Month View
+      </button>
+      <br>
 
-  <!-- Calendar Placeholder -->
-  <div class="calendar-placeholder">
-    <mat-card-title>Lesson Schedule</mat-card-title>
-    <button *ngIf="isTimeGridView" mat-raised-button color="primary" (click)="switchToMonthView()">
-      Month View
-    </button>
-    <br><br>
-    <div *ngIf="!loading">
-      <full-calendar #calendar [options]="calendarOptions"></full-calendar>
-    </div>
-  </div>
+      <div *ngIf="loading" class="loading-container">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+        <p>Loading your lessons...</p>
+      </div>
 
+      <div *ngIf="!loading" class="calendar-wrapper">
+        <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
 
-<p>To set your availbility click on a time slot on the calendar and adjust period.</p>
