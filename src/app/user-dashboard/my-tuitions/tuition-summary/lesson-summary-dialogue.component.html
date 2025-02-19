@@ -3,10 +3,10 @@
 
   <div class="lesson-details">
     <p><strong>Start Time:</strong>
-      {{ data.lesson.availability.startTime | date: 'HH:mm' }}
+      {{ data.lesson.availabilityDto.startTime | date: 'HH:mm' }}
     </p>
     <p><strong>End Time:</strong>
-      {{ data.lesson.availability.endTime | date: 'HH:mm' }}
+      {{ data.lesson.availabilityDto.endTime | date: 'HH:mm' }}
     </p>
     <p><strong>Lesson Type:</strong> {{ data.lesson.lessonType || 'Not specified' }}</p>
   </div>

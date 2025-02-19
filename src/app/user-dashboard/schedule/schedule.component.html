@@ -1,0 +1,15 @@
+
+  <!-- Calendar Placeholder -->
+  <div class="calendar-placeholder">
+    <mat-card-title>Lesson Schedule</mat-card-title>
+    <button *ngIf="isTimeGridView" mat-raised-button color="primary" (click)="switchToMonthView()">
+      Month View
+    </button>
+    <br><br>
+    <div *ngIf="!loading">
+      <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+    </div>
+  </div>
+
+
+<p>To set your availbility click on a time slot on the calendar and adjust period.</p>

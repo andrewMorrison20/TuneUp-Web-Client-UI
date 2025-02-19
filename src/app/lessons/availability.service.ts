@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {AuthenticatedUser} from "../authentication/authenticated-user.class";
 import {tap} from "rxjs/operators";
@@ -110,6 +110,14 @@ export class AvailabilityService {
 
   cancelLesson(lessonId: number) {
 
+  }
+
+  getAllLessons(profileId: number, start: string, end: string): Observable<any> {
+    const params = new HttpParams()
+      .set('start', start)
+      .set('end', end);
+
+    return this.http.get(`${this.url}/lessons/profileLessons/${profileId}`, { params });
   }
 }
 

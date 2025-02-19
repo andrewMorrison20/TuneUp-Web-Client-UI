@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AddressDto, AddressService } from '../../update-profile/address/address-service.component';
+import {LessonSummary} from "./lesson-summary.model";
 
 @Component({
   selector: 'app-lesson-summary-dialogue',
@@ -15,7 +16,7 @@ export class LessonSummaryDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<LessonSummaryDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { lesson: any, address: AddressDto | null },
+    @Inject(MAT_DIALOG_DATA) public data: { lesson: LessonSummary, address: AddressDto | null },
     private addressService: AddressService
   ) {}
 

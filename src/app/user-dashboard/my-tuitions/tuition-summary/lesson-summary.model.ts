@@ -1,7 +1,7 @@
 export interface LessonSummary {
   id: number;
   tuitionId: number;
-  availability: {
+  availabilityDto: {
     id: number;
     profileId: number;
     startTime: string;

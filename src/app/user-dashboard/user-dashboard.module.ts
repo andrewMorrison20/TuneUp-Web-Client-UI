@@ -26,6 +26,8 @@ import {MatCard, MatCardSubtitle, MatCardTitle} from "@angular/material/card";
 import {MatTab, MatTabGroup} from "@angular/material/tabs";
 import {MyTuitionsModule} from "./my-tuitions/my-tuitions.module";
 import {AddressService} from "./update-profile/address/address-service.component";
+import {ScheduleComponent} from "./schedule/schedule.component";
+import {FullCalendarModule} from "@fullcalendar/angular";
 
 
 @NgModule({
@@ -36,6 +38,7 @@ import {AddressService} from "./update-profile/address/address-service.component
     StudyHubComponent,
     PaymentsComponent,
     ChatsComponent,
+    ScheduleComponent
   ],
   exports: [
     SidebarComponent
@@ -45,6 +48,7 @@ import {AddressService} from "./update-profile/address/address-service.component
     MyTuitionsModule,
     UserDashboardRoutingModule,
     AccountSettingsModule,
+    FullCalendarModule,
     MatSidenavModule,
     MatToolbarModule,
     MatListModule,

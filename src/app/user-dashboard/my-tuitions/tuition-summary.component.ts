@@ -46,7 +46,7 @@ export class TuitionSummaryComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.profileId = Number(this.route.snapshot.paramMap.get('id'));
+    this.profileId = Number(this.route.snapshot.paramMap.get('id')); // ✅ Get profile ID from URL
     this.fetchTuitionSummary();
     this.fetchProfiles();
   }
@@ -61,7 +61,7 @@ export class TuitionSummaryComponent implements OnInit {
       this.initializeCalendar();
       this.fetchLessons(new Date());
 
-      this.loading = false;
+      this.loading = false; // ✅ Data is fully loaded
     });
   }
 
@@ -94,20 +94,7 @@ export class TuitionSummaryComponent implements OnInit {
 
     this.availabilityService.getTuitionLessonSummary(this.tuitionSummary.id, start, end)
       .subscribe(response => {
-        this.availabilitySlots = response.map((lesson: any) => ({
-          id: lesson.id,
-          tuitionId: lesson.tuitionId,
-          availability: {
-            id: lesson.availabilityDto.id,
-            profileId: lesson.availabilityDto.profileId,
-            startTime: lesson.availabilityDto.startTime,
-            endTime: lesson.availabilityDto.endTime,
-            status: lesson.availabilityDto.status
-          },
-          lessonStatus: lesson.lessonStatus,
-          lessonType: lesson.lessonType
-        }));
-
+        this.availabilitySlots = response.map((lesson: LessonSummary) => lesson);
         this.updateCalendarEvents();
       });
   }
@@ -116,8 +103,8 @@ export class TuitionSummaryComponent implements OnInit {
   private updateCalendarEvents(): void {
     this.calendarOptions.events = this.availabilitySlots.map((lesson: LessonSummary) => ({
       title: lesson.lessonStatus,
-      start: lesson.availability.startTime,
-      end: lesson.availability.endTime,
+      start: lesson.availabilityDto.startTime,
+      end: lesson.availabilityDto.endTime,
       extendedProps: { lesson },
       color: this.getEventColor(lesson.lessonStatus)
     }));
