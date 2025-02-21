@@ -4,7 +4,7 @@ import { AvailabilityService } from "../../lessons/availability.service";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { CalendarOptions } from "@fullcalendar/core";
+import { CalendarOptions, DateSelectArg } from "@fullcalendar/core";
 import { FullCalendarComponent } from "@fullcalendar/angular";
 import { MatDialog } from "@angular/material/dialog";
 import { LessonSummary } from "../my-tuitions/tuition-summary/lesson-summary.model";
@@ -53,6 +53,8 @@ export class ScheduleComponent implements OnInit {
     this.calendarOptions = {
       initialView: 'dayGridMonth',
       selectable: true,
+      selectMirror: true,
+      selectOverlap: false,
       plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       height: 'auto',
       contentHeight: 600,
@@ -63,12 +65,37 @@ export class ScheduleComponent implements OnInit {
       events: [],
       dateClick: this.onDateClick.bind(this),
       datesSet: this.onMonthChange.bind(this),
+      select: this.onMultiSlotSelect.bind(this), // 💡 Added multi-slot select
       eventTimeFormat: {
         hour: '2-digit',
         minute: '2-digit',
         meridiem: false
       }
     };
+  }
+
+  private onMultiSlotSelect(selectInfo: DateSelectArg): void {
+    const isOverlap = this.availabilitySlots.some(slot =>
+      (new Date(selectInfo.start).getTime() < new Date(slot.availabilityDto.endTime).getTime()) &&
+      (new Date(selectInfo.end).getTime() > new Date(slot.availabilityDto.startTime).getTime())
+    );
+
+    if (isOverlap) {
+      alert('⚠️ Selected slot overlaps with existing availability.');
+      this.calendarComponent.getApi().unselect();
+    } else {
+      const startTime = selectInfo.startStr;
+      const endTime = selectInfo.endStr;
+
+      this.availabilityService.createAvailability(
+        AuthenticatedUser.getAuthUserProfileId(),
+        startTime,
+        endTime
+      ).subscribe({
+        next: () => this.fetchAllLessons(new Date(selectInfo.start)),
+        error: (err) => console.error('Failed to create availability:', err)
+      });
+    }
   }
 
   private updateCalendarEvents(): void {

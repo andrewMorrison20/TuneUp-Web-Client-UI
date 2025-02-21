@@ -16,6 +16,12 @@ export class AvailabilityService {
 
   }
 
+  createAvailability(profileId:number, startTime:string,endTime: string) {
+
+    const availability = { profileId, startTime, endTime };
+    return this.http.post(`${this.url}/availability/${profileId}`, availability);
+  }
+
   sendAvailabilityRequest(
     startTime: string,
     endTime: string,
@@ -119,6 +125,8 @@ export class AvailabilityService {
 
     return this.http.get(`${this.url}/lessons/profileLessons/${profileId}`, { params });
   }
+
+
 }
 
 
