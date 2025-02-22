@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AvailabilityService } from '../../lessons/availability.service';
+import { AvailabilityService } from '../../../../lessons/availability.service';
 import { PageEvent } from '@angular/material/paginator';
-import {AuthenticatedUser} from "../../authentication/authenticated-user.class";
+import {AuthenticatedUser} from "../../../../authentication/authenticated-user.class";
 
 @Component({
   selector: 'app-lesson-requests-dialog',

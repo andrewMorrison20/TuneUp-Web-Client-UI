@@ -1,0 +1,81 @@
+.block-book-form {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 24px; /* Increased spacing between components */
+  align-items: flex-start;
+  padding: 16px;
+}
+
+.block-book-card {
+  margin-top: 30px; /* More space above the block book section */
+  padding: 24px;
+}
+
+mat-form-field {
+  width: 100%;
+  max-width: 350px; /* Increased width for better visibility */
+}
+
+mat-checkbox {
+  margin-top: 10px;
+}
+
+button[mat-raised-button], button[mat-stroked-button] {
+  margin-top: 24px;
+}
+
+.block-book-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.form-section {
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 16px;
+  transition: box-shadow 0.4s ease;
+}
+
+.checkbox-section {
+  margin-top: 12px;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  width: 100%;
+  margin-top: 24px;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 0;
+}
+
+.calendar-wrapper {
+  margin-top: 32px;
+}
+
+@media (min-width: 768px) {
+  .block-book-form {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  mat-form-field {
+    width: calc(50% - 12px);
+  }
+}

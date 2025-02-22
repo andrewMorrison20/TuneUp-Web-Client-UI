@@ -5,7 +5,7 @@ import {PageEvent} from "@angular/material/paginator";
 import {TutorProfile} from "../../../profiles/interfaces/tutor.model";
 import {StudentProfile} from "../../../profiles/interfaces/student.model";
 import {MatDialog} from "@angular/material/dialog";
-import {ProfileLessonRequestsDialogComponent} from "../profile-lesson-requests-dialgoue.component";
+import {ProfileLessonRequestsDialogComponent} from "./profile-lesson-request/profile-lesson-requests-dialgoue.component";
 type Profile = TutorProfile | StudentProfile;
 
 @Component({

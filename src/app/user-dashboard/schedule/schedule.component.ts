@@ -7,13 +7,15 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { CalendarOptions, DateSelectArg } from "@fullcalendar/core";
 import { FullCalendarComponent } from "@fullcalendar/angular";
 import { MatDialog } from "@angular/material/dialog";
-import { LessonSummary } from "../my-tuitions/tuition-summary/lesson-summary.model";
-import { LessonSummaryDialogComponent } from "../my-tuitions/tuition-summary/lesson-summary-dialgoue.component";
+import { LessonSummary } from "../my-tuitions/tuition-summary/lesson-summary/lesson-summary.model";
+import { LessonSummaryDialogComponent } from "../my-tuitions/tuition-summary/lesson-summary/lesson-summary-dialgoue.component";
 import { AuthenticatedUser } from "../../authentication/authenticated-user.class";
+import {ScheduleAdjustmentDialogComponent} from "./schedule-adjustment-dialogue.component";
 
 @Component({
   selector: 'app-schedule',
   templateUrl: './schedule.component.html',
+  styleUrl:'./schedule.component.scss'
 })
 export class ScheduleComponent implements OnInit {
 
@@ -84,17 +86,7 @@ export class ScheduleComponent implements OnInit {
       alert('⚠️ Selected slot overlaps with existing availability.');
       this.calendarComponent.getApi().unselect();
     } else {
-      const startTime = selectInfo.startStr;
-      const endTime = selectInfo.endStr;
-
-      this.availabilityService.createAvailability(
-        AuthenticatedUser.getAuthUserProfileId(),
-        startTime,
-        endTime
-      ).subscribe({
-        next: () => this.fetchAllLessons(new Date(selectInfo.start)),
-        error: (err) => console.error('Failed to create availability:', err)
-      });
+      this.openAvailabilityDialog(selectInfo.startStr, selectInfo.endStr, false);
     }
   }
 
@@ -150,4 +142,99 @@ export class ScheduleComponent implements OnInit {
       }
     });
   }
+
+  private openAvailabilityDialog(startTime: string, endTime: string, isEditMode: boolean, availabilityId?: number): void {
+    const dialogRef = this.dialog.open(ScheduleAdjustmentDialogComponent, {
+      width: '400px',
+      data: { startTime, endTime, isEditMode }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result?.action === 'create') {
+        this.availabilityService.createAvailability(
+          AuthenticatedUser.getAuthUserProfileId(),
+          result.startTime,
+          result.endTime
+        ).subscribe(() => this.fetchAllLessons(new Date(result.startTime)));
+      } else if (result?.action === 'update' && availabilityId) {
+       // this.availabilityService.updateAvailability(
+      //    availabilityId, result.startTime, result.endTime
+      //  ).subscribe(() => this.fetchAllLessons(new Date(result.startTime)));
+    //  } else if (result?.action === 'delete' && availabilityId) {
+      //  this.availabilityService.deleteAvailability(availabilityId)
+      //    .subscribe(() => this.fetchAllLessons(new Date(result.startTime)));
+      }
+    })
+  }
+
+  private onAvailabilityClick(info: any): void {
+    const availability = info.event;
+    this.openAvailabilityDialog(
+      availability.startStr,
+      availability.endStr,
+      true,
+      availability.id
+    );
+  }
+
+  blockBookData = {
+    startDate: '',
+    endDate: '',
+    startTime: '09:00',
+    endTime: '17:00',
+    allDay: false,
+    repeatWeekly: false,
+    repeatUntil: ''
+  };
+
+  onBlockBookSubmit(): void {
+    if (!this.blockBookData.startDate || !this.blockBookData.endDate) return;
+
+    const startBase = this.blockBookData.startDate;
+    const endBase = this.blockBookData.endDate;
+    const startTime = this.blockBookData.allDay ? '00:00' : this.blockBookData.startTime;
+    const endTime = this.blockBookData.allDay ? '23:59' : this.blockBookData.endTime;
+
+    let datesToBlock: { start: string; end: string }[] = [];
+
+    let currentDate = new Date(startBase);
+    const endDate = new Date(endBase);
+    while (currentDate <= endDate) {
+      const dateStr = currentDate.toISOString().split('T')[0];
+      datesToBlock.push({
+        start: `${dateStr}T${startTime}`,
+        end: `${dateStr}T${endTime}`
+      });
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    if (this.blockBookData.repeatWeekly && this.blockBookData.repeatUntil) {
+      const repeatEnd = new Date(this.blockBookData.repeatUntil);
+      const additionalWeeks: { start: string; end: string }[] = [];
+      datesToBlock.forEach((slot) => {
+        let repeatDate = new Date(slot.start);
+        while (repeatDate <= repeatEnd) {
+          repeatDate.setDate(repeatDate.getDate() + 7);
+          const repeatStr = repeatDate.toISOString().split('T')[0];
+          additionalWeeks.push({
+            start: `${repeatStr}T${startTime}`,
+            end: `${repeatStr}T${endTime}`
+          });
+        }
+      });
+      datesToBlock = [...datesToBlock, ...additionalWeeks];
+    }
+
+    datesToBlock.forEach((slot) => {
+      this.availabilityService.createAvailability(
+        AuthenticatedUser.getAuthUserProfileId(),
+        slot.start,
+        slot.end
+      ).subscribe({
+        next: () => this.fetchAllLessons(new Date(slot.start)),
+        error: (err) => console.error('Failed to block book availability:', err)
+      });
+    });
+  }
+
 }

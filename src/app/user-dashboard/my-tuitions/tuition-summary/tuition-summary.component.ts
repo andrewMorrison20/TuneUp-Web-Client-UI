@@ -1,18 +1,18 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AvailabilityService} from "../../lessons/availability.service";
-import {AuthenticatedUser} from "../../authentication/authenticated-user.class";
+import {AvailabilityService} from "../../../lessons/availability.service";
+import {AuthenticatedUser} from "../../../authentication/authenticated-user.class";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import {CalendarOptions} from "@fullcalendar/core";
 import {FullCalendarComponent} from "@fullcalendar/angular";
-import {ProfileService} from "../../profiles/profile.service";
-import {TutorProfile} from "../../profiles/interfaces/tutor.model";
-import {StudentProfile} from "../../profiles/interfaces/student.model";
+import {ProfileService} from "../../../profiles/profile.service";
+import {TutorProfile} from "../../../profiles/interfaces/tutor.model";
+import {StudentProfile} from "../../../profiles/interfaces/student.model";
 import {MatDialog} from "@angular/material/dialog";
-import {LessonSummaryDialogComponent} from "./tuition-summary/lesson-summary-dialgoue.component";
-import {LessonSummary} from "./tuition-summary/lesson-summary.model";
+import {LessonSummaryDialogComponent} from "./lesson-summary/lesson-summary-dialgoue.component";
+import {LessonSummary} from "./lesson-summary/lesson-summary.model";
 
 
 

@@ -8,7 +8,7 @@ import { PaymentsComponent } from './payments/payments.component';
 import { ChatsComponent } from './chats/chats.component';
 import {AccountSettingsComponent} from "../account-settings/account-settings.component";
 import {authGuard} from "../authentication/guards/auth-guard";
-import {TuitionSummaryComponent} from "./my-tuitions/tuition-summary.component";
+import {TuitionSummaryComponent} from "./my-tuitions/tuition-summary/tuition-summary.component";
 import {ScheduleComponent} from "./schedule/schedule.component";
 
 

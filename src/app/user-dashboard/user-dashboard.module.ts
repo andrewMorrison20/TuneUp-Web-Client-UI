@@ -36,12 +36,17 @@ import {AddressService} from "./update-profile/address/address-service.component
 import {ScheduleComponent} from "./schedule/schedule.component";
 import {FullCalendarModule} from "@fullcalendar/angular";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {ScheduleAdjustmentDialogComponent} from "./schedule/schedule-adjustment-dialogue.component";
+import {MatDialogActions, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
+import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
+import {MatCheckbox} from "@angular/material/checkbox";
 
 
 @NgModule({
   declarations: [
     UserDashboardComponent,
     UpdateProfileComponent,
+    ScheduleAdjustmentDialogComponent,
     SidebarComponent,
     StudyHubComponent,
     PaymentsComponent,
@@ -79,7 +84,14 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     MatProgressSpinner,
     MatCardFooter,
     MatCardContent,
-    MatCardHeader
+    MatCardHeader,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogTitle,
+    MatDatepickerToggle,
+    MatDatepicker,
+    MatCheckbox,
+    MatDatepickerInput
   ],
   providers:[AddressService]
 })

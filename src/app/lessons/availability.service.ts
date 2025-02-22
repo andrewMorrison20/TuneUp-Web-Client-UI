@@ -127,6 +127,13 @@ export class AvailabilityService {
   }
 
 
+  updateAvailability(availabilityId: number, startTime:string, endTime:string) {
+
+  }
+
+  deleteAvailability(availabilityId: number) {
+
+  }
 }
 
 

@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AddressDto, AddressService } from '../../update-profile/address/address-service.component';
+import { AddressDto, AddressService } from '../../../update-profile/address/address-service.component';
 import {LessonSummary} from "./lesson-summary.model";
 
 @Component({
