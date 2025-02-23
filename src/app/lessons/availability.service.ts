@@ -127,12 +127,29 @@ export class AvailabilityService {
   }
 
 
-  updateAvailability(availabilityId: number, startTime:string, endTime:string) {
+  updateAvailability(availabilityId: number, startTime: string, endTime: string) {
+    const body = {
+      id: availabilityId,
+      startTime: startTime,
+      endTime: endTime
+    };
 
+    const profileId = AuthenticatedUser.getAuthUserProfileId();
+    return this.http.patch(`${this.url}/availability/update/${profileId}`, body);
   }
 
-  deleteAvailability(availabilityId: number) {
 
+  deleteAvailability(availabilityId: number) {
+    const params = new HttpParams().set('availabilityId', availabilityId.toString());
+    const profileId = AuthenticatedUser.getAuthUserProfileId();
+    return this.http.delete(`${this.url}/availability/delete/${profileId}`, { params });
+  }
+
+
+  getPeriodAvailabilityForProfile(profileId: number, start: string, end: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/availability/${profileId}/period`, {
+      params: { start, end }
+    });
   }
 }
 

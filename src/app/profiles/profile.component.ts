@@ -11,6 +11,7 @@ import { FullCalendarComponent } from '@fullcalendar/angular';
 import {MatDialog} from "@angular/material/dialog";
 import {LessonRequestDialogComponent} from "../lessons/lesson-request/lesson-request-dialog.component";
 import {AuthenticatedUser} from "../authentication/authenticated-user.class";
+import {AvailabilityService} from "../lessons/availability.service";
 
 type Profile = TutorProfile | StudentProfile;
 
@@ -32,6 +33,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private router: Router,
     private profileService: ProfileService,
+    private availabilityService: AvailabilityService,
     private dialog: MatDialog
   ) {}
 
@@ -94,7 +96,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     const start = new Date(date.getFullYear(), date.getMonth(), 1).toISOString();
     const end = new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString();
 
-    this.profileService.getPeriodAvailabilityForProfile(this.profile.id, start, end)
+    this.availabilityService.getPeriodAvailabilityForProfile(this.profile.id, start, end)
       .subscribe(slots => {
         this.availabilitySlots = slots;
         this.updateCalendarEvents();

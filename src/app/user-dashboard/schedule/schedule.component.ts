@@ -25,6 +25,16 @@ export class ScheduleComponent implements OnInit {
   isTimeGridView = false;
   loading: boolean = true;
 
+  blockBookData = {
+    startDate: '',
+    endDate: '',
+    startTime: '09:00',
+    endTime: '17:00',
+    allDay: false,
+    repeatWeekly: false,
+    repeatUntil: ''
+  };
+
   constructor(
     private route: ActivatedRoute,
     private availabilityService: AvailabilityService,
@@ -33,22 +43,22 @@ export class ScheduleComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.fetchAllLessons(new Date());
+    this.fetchAllAvailability(new Date());
+    this.initializeCalendar();
+    this.updateCalendarEvents();
+
   }
 
-  fetchAllLessons(date: Date) {
+  fetchAllAvailability(date: Date) {
     const start = new Date(date.getFullYear(), date.getMonth(), 1).toISOString();
     const end = new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString();
-
-    this.availabilityService.getAllLessons(AuthenticatedUser.getAuthUserProfileId(), start, end)
+    console.log(start ,end + 'IN FETCH')
+    this.availabilityService.getPeriodAvailabilityForProfile(AuthenticatedUser.getAuthUserProfileId(), start, end)
       .subscribe(response => {
         this.availabilitySlots = response;
         this.updateCalendarEvents();
         this.loading = false;
       });
-
-    this.initializeCalendar();
-    this.updateCalendarEvents();
   }
 
   private initializeCalendar(): void {
@@ -67,7 +77,7 @@ export class ScheduleComponent implements OnInit {
       events: [],
       dateClick: this.onDateClick.bind(this),
       datesSet: this.onMonthChange.bind(this),
-      select: this.onMultiSlotSelect.bind(this), // 💡 Added multi-slot select
+      select: this.onMultiSlotSelect.bind(this),
       eventTimeFormat: {
         hour: '2-digit',
         minute: '2-digit',
@@ -78,8 +88,8 @@ export class ScheduleComponent implements OnInit {
 
   private onMultiSlotSelect(selectInfo: DateSelectArg): void {
     const isOverlap = this.availabilitySlots.some(slot =>
-      (new Date(selectInfo.start).getTime() < new Date(slot.availabilityDto.endTime).getTime()) &&
-      (new Date(selectInfo.end).getTime() > new Date(slot.availabilityDto.startTime).getTime())
+      (new Date(selectInfo.start).getTime() < new Date(slot.endTime).getTime()) &&
+      (new Date(selectInfo.end).getTime() > new Date(slot.startTime).getTime())
     );
 
     if (isOverlap) {
@@ -91,15 +101,16 @@ export class ScheduleComponent implements OnInit {
   }
 
   private updateCalendarEvents(): void {
-    this.calendarOptions.events = this.availabilitySlots.map((lesson: LessonSummary) => ({
-      title: lesson.lessonStatus,
-      start: lesson.availabilityDto.startTime,
-      end: lesson.availabilityDto.endTime,
-      extendedProps: { lesson },
-      color: this.getEventColor(lesson.lessonStatus)
+    this.calendarOptions.events = this.availabilitySlots.map((slot: any) => ({
+      title: slot.status,
+      start: slot.startTime,
+      id: slot.id,
+      end: slot.endTime,
+      extendedProps: { slot },
+      color: this.getEventColor(slot.status)
     }));
 
-    this.calendarOptions.eventClick = this.onLessonClick.bind(this);
+    this.calendarOptions.eventClick = this.onAvailabilityClick.bind(this);
   }
 
   onDateClick(info: any): void {
@@ -116,16 +127,31 @@ export class ScheduleComponent implements OnInit {
     }
   }
 
-  onMonthChange(info: any): void {
-    const newDate = info.start;
-    this.fetchAllLessons(newDate);
+  //Full calendar is proving to be inconsistent, this should be switched out for mat calendar.
+  //inconsistency in how info.start is generated, have raised this with angular support - known issue.
+  private onMonthChange(info: any): void {
+    if (!this.calendarComponent || !this.calendarComponent.getApi) {
+      console.warn(' calendarComponent not initialized yet.');
+      return;
+    }
+
+    const currentDate = this.calendarComponent.getApi().getDate();
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    const start = new Date(year, month, 1).toISOString();
+    const end = new Date(year, month + 1, 0).toISOString();
+
+    console.log(`📅 Fetching for month: ${start} to ${end}`);
+    this.fetchAllAvailability(new Date(start));
   }
 
-  private getEventColor(lessonStatus: string): string {
-    switch (lessonStatus.toUpperCase()) {
-      case 'CONFIRMED': return '#4CAF50';
-      case 'COMPLETED': return '#9E9E9E';
-      case 'CANCELLED': return '#FF0000';
+
+
+  private getEventColor(status: string): string {
+    switch (status?.toUpperCase()) {
+      case 'AVAILABLE': return '#4CAF50';
+      case 'PENDING': return '#9E9E9E';
+      case 'BOOKED': return '#FF0000';
       default: return '#000000';
     }
   }
@@ -138,7 +164,7 @@ export class ScheduleComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'cancelled') {
-        this.fetchAllLessons(new Date());
+        this.fetchAllAvailability(new Date());
       }
     });
   }
@@ -146,7 +172,7 @@ export class ScheduleComponent implements OnInit {
   private openAvailabilityDialog(startTime: string, endTime: string, isEditMode: boolean, availabilityId?: number): void {
     const dialogRef = this.dialog.open(ScheduleAdjustmentDialogComponent, {
       width: '400px',
-      data: { startTime, endTime, isEditMode }
+      data: { startTime, endTime, isEditMode, availabilityId }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -155,16 +181,17 @@ export class ScheduleComponent implements OnInit {
           AuthenticatedUser.getAuthUserProfileId(),
           result.startTime,
           result.endTime
-        ).subscribe(() => this.fetchAllLessons(new Date(result.startTime)));
+        ).subscribe(() => this.fetchAllAvailability(new Date(result.startTime)));
       } else if (result?.action === 'update' && availabilityId) {
-       // this.availabilityService.updateAvailability(
-      //    availabilityId, result.startTime, result.endTime
-      //  ).subscribe(() => this.fetchAllLessons(new Date(result.startTime)));
-    //  } else if (result?.action === 'delete' && availabilityId) {
-      //  this.availabilityService.deleteAvailability(availabilityId)
-      //    .subscribe(() => this.fetchAllLessons(new Date(result.startTime)));
+       this.availabilityService.updateAvailability(
+          availabilityId, result.startTime, result.endTime
+       ).subscribe(() => this.fetchAllAvailability(new Date(result.startTime)));
+     } else if (result?.action === 'delete' && availabilityId) {
+        this.availabilityService.deleteAvailability(availabilityId)
+        .subscribe(() => this.fetchAllAvailability(new Date()));
       }
     })
+    this.updateCalendarEvents();
   }
 
   private onAvailabilityClick(info: any): void {
@@ -176,16 +203,6 @@ export class ScheduleComponent implements OnInit {
       availability.id
     );
   }
-
-  blockBookData = {
-    startDate: '',
-    endDate: '',
-    startTime: '09:00',
-    endTime: '17:00',
-    allDay: false,
-    repeatWeekly: false,
-    repeatUntil: ''
-  };
 
   onBlockBookSubmit(): void {
     if (!this.blockBookData.startDate || !this.blockBookData.endDate) return;
@@ -231,7 +248,7 @@ export class ScheduleComponent implements OnInit {
         slot.start,
         slot.end
       ).subscribe({
-        next: () => this.fetchAllLessons(new Date(slot.start)),
+        next: () => this.fetchAllAvailability(new Date(slot.start)),
         error: (err) => console.error('Failed to block book availability:', err)
       });
     });
