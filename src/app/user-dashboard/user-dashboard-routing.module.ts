@@ -10,6 +10,7 @@ import {AccountSettingsComponent} from "../account-settings/account-settings.com
 import {authGuard} from "../authentication/guards/auth-guard";
 import {TuitionSummaryComponent} from "./my-tuitions/tuition-summary/tuition-summary.component";
 import {ScheduleComponent} from "./schedule/schedule.component";
+import {profileTypeGuard} from "../authentication/guards/profile-type-guard";
 
 
 const routes: Routes = [
@@ -24,7 +25,8 @@ const routes: Routes = [
       { path: 'chats', component: ChatsComponent },
       { path: 'settings', component: AccountSettingsComponent },
       { path: 'tuition-summary/:id', component: TuitionSummaryComponent},
-      { path: 'schedule', component: ScheduleComponent},
+      { path: 'schedule', component: ScheduleComponent,
+        canActivate: [profileTypeGuard], data: { expectedProfileType: 'Tutor' }},
       { path: '', redirectTo: 'my-tuitions', pathMatch: 'full' } // Default route
     ],canActivate: [authGuard]
   }

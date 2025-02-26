@@ -37,7 +37,13 @@
         <span>Chats</span>
       </a>
       <br>
-      <a mat-list-item routerLink="/user-dashboard/schedule" routerLinkActive="active">
+
+      <a
+        mat-list-item
+        routerLink="/user-dashboard/schedule"
+        routerLinkActive="active"
+        *ngIf="isTutorProfile()"
+      >
        <mat-icon>schedule</mat-icon>
         <span>Schedule</span>
       </a>

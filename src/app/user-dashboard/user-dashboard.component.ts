@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import {AuthenticatedUser} from "../authentication/authenticated-user.class";
 
 @Component({
   selector: 'app-user-dashboard',
@@ -7,6 +8,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 })
 export class UserDashboardComponent implements OnInit {
   isDesktopView: boolean = true;
+
 
   ngOnInit(): void {
     this.updateView();
@@ -23,5 +25,12 @@ export class UserDashboardComponent implements OnInit {
 
   toggleSidenav(sidenav: any): void {
     sidenav.toggle(); // Toggles sidebar visibility
+  }
+
+  isTutorProfile(){
+    const type = AuthenticatedUser.getAuthUserProfileType();
+    console.log('type',type)
+    return type.toLowerCase() ==='tutor'
+
   }
 }

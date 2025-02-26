@@ -72,7 +72,8 @@ export class LoginComponent implements OnInit {
         token,
         'form',
         decodedToken.userId, // User ID
-        decodedToken.profileId // Profile ID
+        decodedToken.profileId,
+        decodedToken.profileType// Profile ID
       );
 
       console.log('Authenticated User:', authUserObj);
