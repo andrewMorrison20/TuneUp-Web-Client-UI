@@ -13,28 +13,31 @@ import {SignupComponent} from "./signup.component";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {HttpClientModule} from "@angular/common/http";
 import {NavModule} from "../components/nav/nav.module";
+import {MatOption, MatSelect} from "@angular/material/select";
 
 
 @NgModule({
   declarations: [SignupComponent],
-    imports: [
-        CommonModule,
-        HttpClientModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatIconModule,
-        MatButtonModule,
-        SignupRoutingModule,
-        MatCardContent,
-        MatCardTitle,
-        MatCard,
-        MatCardActions,
-        MatCardFooter,
-        MatCheckbox,
-        MatProgressSpinner,
-        NavModule
-    ]
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+    SignupRoutingModule,
+    MatCardContent,
+    MatCardTitle,
+    MatCard,
+    MatCardActions,
+    MatCardFooter,
+    MatCheckbox,
+    MatProgressSpinner,
+    NavModule,
+    MatSelect,
+    MatOption
+  ]
 })
 
 export class SignupModule { }

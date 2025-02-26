@@ -22,7 +22,7 @@
           rows="1"
           maxlength="50"
         ></textarea>
-        <mat-hint align="end">{{ profile.displayName.length }} / 50</mat-hint>
+        <mat-hint align="end">{{ profile.displayName?.length || 0 }} / 50</mat-hint>
       </mat-form-field>
 
       <!-- Lesson Type Dropdown -->
@@ -67,7 +67,7 @@
                   maxlength="250"
         >
         </textarea>
-        <mat-hint align="end">{{ profile.bio.length }} / 250</mat-hint>
+        <mat-hint align="end">{{ profile.bio?.length || 0 }} / 250</mat-hint>
       </mat-form-field>
 
       <!-- Tuition Region -->

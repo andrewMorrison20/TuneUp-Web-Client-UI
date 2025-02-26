@@ -3,106 +3,129 @@
 <form [formGroup]="signupForm" class="login-form">
   <mat-card class="login-card double-width-card">
     <div class="left-side">
-    <mat-card-title>Sign Up</mat-card-title>
+      <mat-card-title>Sign Up</mat-card-title>
 
-    <!-- Feedback Messages -->
-    <div *ngIf="successMessage" class="success-message">
-      <mat-icon color="primary">check_circle</mat-icon> {{ successMessage }}
-    </div>
-    <div *ngIf="errorMessage" class="error-message">
-      <mat-icon color="warn">error</mat-icon> {{ errorMessage }}
-    </div>
+      <!-- Feedback Messages -->
+      <div *ngIf="successMessage" class="success-message">
+        <mat-icon color="primary">check_circle</mat-icon> {{ successMessage }}
+      </div>
+      <div *ngIf="errorMessage" class="error-message">
+        <mat-icon color="warn">error</mat-icon> {{ errorMessage }}
+      </div>
 
-    <mat-card-content>
-      <!-- Email Field -->
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-icon matPrefix>person</mat-icon>
-        <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email" required />
-        <mat-error *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched">
-          Please enter a valid email
-        </mat-error>
-      </mat-form-field>
+      <mat-card-content>
+        <!--  Name Field -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-icon matPrefix>badge</mat-icon>
+          <mat-label>Full Name</mat-label>
+          <input matInput type="text" formControlName="name" required />
+          <mat-error *ngIf="signupForm.get('name')?.invalid && signupForm.get('name')?.touched">
+            Full name is required
+          </mat-error>
+        </mat-form-field>
 
-      <!-- Password Field -->
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-icon matPrefix>lock</mat-icon>
-        <mat-label>Password</mat-label>
-        <input
-          matInput
-          [type]="hidePassword ? 'password' : 'text'"
-          formControlName="password"
-          required
-        />
+        <!--  Account Type Dropdown -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-icon matPrefix>account_circle</mat-icon>
+          <mat-label>Account Type</mat-label>
+          <mat-select formControlName="accountType" required>
+            <mat-option value="student">Student</mat-option>
+            <mat-option value="tutor">Tutor</mat-option>
+          </mat-select>
+          <mat-error *ngIf="signupForm.get('accountType')?.invalid && signupForm.get('accountType')?.touched">
+            Please select an account type
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Email Field -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-icon matPrefix>person</mat-icon>
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" required />
+          <mat-error *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched">
+            Please enter a valid email
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Password Field -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-icon matPrefix>lock</mat-icon>
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            [type]="hidePassword ? 'password' : 'text'"
+            formControlName="password"
+            required
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hidePassword = !hidePassword"
+            [attr.aria-label]="'Toggle password visibility'"
+          >
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched">
+            Password is required
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Confirm Password Field -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-icon matPrefix>lock</mat-icon>
+          <mat-label>Confirm Password</mat-label>
+          <input
+            matInput
+            [type]="hideConfirmPassword ? 'password' : 'text'"
+            formControlName="confirmPassword"
+            required
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hideConfirmPassword = !hideConfirmPassword"
+            [attr.aria-label]="'Toggle password visibility'"
+          >
+            <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched">
+            Confirm password is required
+          </mat-error>
+          <mat-error
+            *ngIf="
+              signupForm.get('confirmPassword')?.value !== signupForm.get('password')?.value &&
+              signupForm.get('confirmPassword')?.touched
+            "
+          >
+            Passwords do not match
+          </mat-error>
+        </mat-form-field>
+      </mat-card-content>
+
+      <mat-card-actions class="button-actions">
         <button
-          mat-icon-button
-          matSuffix
-          type="button"
-          (click)="hidePassword = !hidePassword"
-          [attr.aria-label]="'Toggle password visibility'"
+          mat-raised-button
+          color="primary"
+          (click)="onSignup()"
+          [disabled]="!signupForm.valid || isLoading"
         >
-          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          <mat-spinner
+            *ngIf="isLoading"
+            diameter="20"
+            color="accent"
+            [style.margin-right.px]="8"
+          ></mat-spinner>
+          <span *ngIf="!isLoading">Sign Up</span>
+          <span *ngIf="isLoading">Signing Up...</span>
         </button>
-        <mat-error *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched">
-          Password is required
-        </mat-error>
-      </mat-form-field>
+      </mat-card-actions>
 
-      <!-- Confirm Password Field -->
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-icon matPrefix>lock</mat-icon>
-        <mat-label>Confirm Password</mat-label>
-        <input
-          matInput
-          [type]="hideConfirmPassword ? 'password' : 'text'"
-          formControlName="confirmPassword"
-          required
-        />
-        <button
-          mat-icon-button
-          matSuffix
-          type="button"
-          (click)="hideConfirmPassword = !hideConfirmPassword"
-          [attr.aria-label]="'Toggle password visibility'"
-        >
-          <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-        </button>
-        <mat-error *ngIf="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched">
-          Confirm password is required
-        </mat-error>
-        <mat-error
-          *ngIf="
-            signupForm.get('confirmPassword')?.value !== signupForm.get('password')?.value &&
-            signupForm.get('confirmPassword')?.touched
-          "
-        >
-          Passwords do not match
-        </mat-error>
-      </mat-form-field>
-    </mat-card-content>
-
-    <mat-card-actions class="button-actions">
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="onSignup()"
-        [disabled]="!signupForm.valid || isLoading"
-      >
-        <mat-spinner
-          *ngIf="isLoading"
-          diameter="20"
-          color="accent"
-          [style.margin-right.px]="8"
-        ></mat-spinner>
-        <span *ngIf="!isLoading">Sign Up</span>
-        <span *ngIf="isLoading">Signing Up...</span>
-      </button>
-    </mat-card-actions>
-
-    <mat-card-footer class="signup-footer">
-      <span>Already have an account?</span>
-      <a routerLink="/login" class="signup-link">Sign in</a>
-    </mat-card-footer>
+      <mat-card-footer class="signup-footer">
+        <span>Already have an account?</span>
+        <a routerLink="/login" class="signup-link">Sign in</a>
+      </mat-card-footer>
     </div>
 
     <!-- Right side: Image -->
@@ -110,6 +133,5 @@
       <img src="./assets/pexels-pavel-danilyuk-7521284.jpg" alt="Login Image" class="login-image" />
     </div>
   </mat-card>
-
 </form>
 
