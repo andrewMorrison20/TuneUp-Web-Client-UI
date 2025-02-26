@@ -151,6 +151,10 @@ export class AvailabilityService {
       params: { start, end }
     });
   }
+
+  fetchLessonSummaryByAvailabilityId(availabilityId:number) {
+    return this.http.get<any[]>(`${this.url}/lessons/byAvailability/${availabilityId}`);
+  }
 }
 
 

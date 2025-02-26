@@ -1,6 +1,8 @@
 <mat-dialog-content class="dialog-content">
   <h2 class="dialog-title">Lesson Summary</h2>
-
+  <div *ngIf="data.lesson.displayName">
+    <h3>With: {{ data.lesson.displayName}}</h3>
+  </div>
   <div class="lesson-details">
     <p><strong>Start Time:</strong>
       {{ data.lesson.availabilityDto.startTime | date: 'HH:mm' }}

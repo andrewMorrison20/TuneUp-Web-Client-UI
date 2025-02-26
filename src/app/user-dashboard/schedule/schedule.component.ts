@@ -157,17 +157,39 @@ export class ScheduleComponent implements OnInit {
   }
 
   onLessonClick(info: any): void {
-    const lesson: LessonSummary = info.event.extendedProps.lesson;
-    const dialogRef = this.dialog.open(LessonSummaryDialogComponent, {
-      data: { lesson }
-    });
+    const availability = info.event.extendedProps.slot;
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 'cancelled') {
-        this.fetchAllAvailability(new Date());
-      }
-    });
+    this.availabilityService.fetchLessonSummaryByAvailabilityId(availability.id)
+      .subscribe({
+        next: (lessonSummaryFromApi: any) => {
+          const combinedLessonSummary: LessonSummary = {
+            ...lessonSummaryFromApi,
+            availabilityDto: {
+              id: availability.id,
+              profileId: availability.profileId,
+              startTime: availability.startTime,
+              endTime: availability.endTime,
+              status: availability.status
+            }
+          };
+
+          const dialogRef = this.dialog.open(LessonSummaryDialogComponent, {
+            data: { lesson: combinedLessonSummary, address: null }
+          });
+
+          dialogRef.afterClosed().subscribe(result => {
+            if (result === 'cancelled') {
+              this.fetchAllAvailability(new Date());
+            }
+          });
+        },
+        error: (err) => {
+          console.error('Failed to fetch lesson summary:', err);
+          alert('Failed to load lesson details. Please try again later.');
+        }
+      });
   }
+
 
   private openAvailabilityDialog(startTime: string, endTime: string, isEditMode: boolean, availabilityId?: number): void {
     const dialogRef = this.dialog.open(ScheduleAdjustmentDialogComponent, {
@@ -195,14 +217,20 @@ export class ScheduleComponent implements OnInit {
   }
 
   private onAvailabilityClick(info: any): void {
-    const availability = info.event;
-    this.openAvailabilityDialog(
-      availability.startStr,
-      availability.endStr,
-      true,
-      availability.id
-    );
+    const availability = info.event.extendedProps.slot;
+
+    if (availability.status === 'BOOKED') {
+      this.onLessonClick(info);
+    } else {
+      this.openAvailabilityDialog(
+        availability.startTime,
+        availability.endTime,
+        true,
+        availability.id
+      );
+    }
   }
+
 
   onBlockBookSubmit(): void {
     if (!this.blockBookData.startDate || !this.blockBookData.endDate) return;

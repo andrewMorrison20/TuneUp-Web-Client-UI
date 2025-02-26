@@ -1,6 +1,7 @@
 export interface LessonSummary {
   id: number;
   tuitionId: number;
+  displayName: string | null
   availabilityDto: {
     id: number;
     profileId: number;
