@@ -114,9 +114,6 @@ export class AvailabilityService {
     );
   }
 
-  cancelLesson(lessonId: number) {
-
-  }
 
   getAllLessons(profileId: number, start: string, end: string): Observable<any> {
     const params = new HttpParams()
@@ -154,6 +151,13 @@ export class AvailabilityService {
 
   fetchLessonSummaryByAvailabilityId(availabilityId:number) {
     return this.http.get<any[]>(`${this.url}/lessons/byAvailability/${availabilityId}`);
+  }
+
+  //Again a single method in this class bypassing interceptor, this is incredibly flakey.
+  cancelLessonById(id: number, resetAvailability: boolean) {
+    const authToken = AuthenticatedUser.getAuthUserToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${authToken}`);
+    return this.http.delete<any>(`${this.url}/lessons/cancel/${id}`,{headers});
   }
 }
 

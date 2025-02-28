@@ -25,12 +25,16 @@
     <button mat-raised-button color="primary" (click)="redirectToStudyHub()">
       <mat-icon>book</mat-icon> Go To Study Hub
     </button>
-    <button mat-raised-button color="warn" (click)="cancelLesson()">
-      <mat-icon>close</mat-icon> Cancel
-    </button>
+    <div class="cancel-container">
+      <mat-checkbox [(ngModel)]="resetAvailability" name="resetAvailability">
+        Automatically set availability to available
+      </mat-checkbox>
+      <button mat-raised-button color="warn" (click)="cancelLesson()">
+        <mat-icon>close</mat-icon> Cancel
+      </button>
+    </div>
   </div>
 </mat-dialog-content>
-
 <mat-dialog-actions class="dialog-actions">
   <button mat-button (click)="closeDialog()">Close</button>
 </mat-dialog-actions>

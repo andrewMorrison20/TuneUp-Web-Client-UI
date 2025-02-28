@@ -23,6 +23,7 @@ import {LessonSummaryDialogComponent} from "./tuition-summary/lesson-summary/les
 import {AddressService} from "../update-profile/address/address-service.component";
 import {HttpClientModule} from "@angular/common/http";
 import {GoogleMap, MapMarker} from "@angular/google-maps";
+import {TuitionsService} from "./tuitions.service";
 
 @NgModule({
   declarations: [
@@ -54,7 +55,7 @@ import {GoogleMap, MapMarker} from "@angular/google-maps";
     GoogleMap,
     MapMarker
   ],
-  providers:[AvailabilityService,AddressService,GoogleMap],
+  providers:[AvailabilityService,AddressService,TuitionsService,GoogleMap],
   exports: [MyTuitionsComponent,ProfileLessonRequestsDialogComponent]
 })
 export class MyTuitionsModule {}

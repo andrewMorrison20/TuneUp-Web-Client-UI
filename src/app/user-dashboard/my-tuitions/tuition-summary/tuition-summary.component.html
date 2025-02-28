@@ -24,6 +24,7 @@
   <div class="tuition-links">
     <button mat-raised-button color="primary" routerLink="/payments">Go to Payments</button>
     <button mat-raised-button color="accent" routerLink="/chat">Go to Chat</button>
+    <button mat-raised-button color="warn" (click)="deactivateTuition()">Deactivate Tuition</button>
   </div>
 
   <!-- Profile Summaries -->
@@ -58,7 +59,6 @@
   </div>
   <br>
   <div class="back-button-container">
-
     <button mat-raised-button color="warn" (click)="goBackToTuitions()"> <mat-icon>arrow_back</mat-icon> Back to All Tuitions</button>
   </div>
 </mat-card>

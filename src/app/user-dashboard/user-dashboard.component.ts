@@ -29,7 +29,6 @@ export class UserDashboardComponent implements OnInit {
 
   isTutorProfile(){
     const type = AuthenticatedUser.getAuthUserProfileType();
-    console.log('type',type)
     return type.toLowerCase() ==='tutor'
 
   }

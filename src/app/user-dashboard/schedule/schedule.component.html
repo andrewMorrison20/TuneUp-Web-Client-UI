@@ -9,7 +9,9 @@
         Click on an entire day to adjust its availability, or switch to daily view to adjust intra-day.
       </mat-card-subtitle>
     </mat-card-header>
-
+    <br>
+    <mat-divider></mat-divider>
+    <br>
     <mat-card-content>
       <button *ngIf="isTimeGridView" mat-raised-button color="primary" (click)="switchToMonthView()">
         Month View
@@ -26,61 +28,58 @@
     </mat-card-content>
   </mat-card>
 
-  <!-- 🌟 Improved Block Book Section -->
+  <!-- Block Book Section (No mat-datepicker) -->
   <mat-card class="block-book-card">
     <mat-card-header>
-      <mat-card-title> Block Create Availability</mat-card-title>
+      <mat-card-title>Block Create Availability</mat-card-title>
       <mat-card-subtitle>Set repeated or all-day availability.</mat-card-subtitle>
     </mat-card-header>
 <br>
     <mat-divider></mat-divider>
-  <br>
+
     <mat-card-content>
+      <br>
       <form (ngSubmit)="onBlockBookSubmit()" #blockBookForm="ngForm">
         <div class="form-section">
           <h3>📅 Date Selection</h3>
+
           <mat-form-field appearance="outline">
             <mat-label>Start Date</mat-label>
-            <input matInput [matDatepicker]="startPicker" [(ngModel)]="blockBookData.startDate" name="startDate" required>
-            <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-            <mat-datepicker #startPicker></mat-datepicker>
+            <input matInput type="date" [(ngModel)]="blockBookData.startDate" name="startDate" required>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>End Date</mat-label>
-            <input matInput [matDatepicker]="endPicker" [(ngModel)]="blockBookData.endDate" name="endDate" required>
-            <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-            <mat-datepicker #endPicker></mat-datepicker>
+            <input matInput type="date" [(ngModel)]="blockBookData.endDate" name="endDate" required>
           </mat-form-field>
         </div>
-        <br>
-        <mat-checkbox [(ngModel)]="blockBookData.allDay" name="allDay" class="checkbox-section">
-          All Day
-        </mat-checkbox>
 
         <div class="form-section" *ngIf="!blockBookData.allDay">
+          <br>
           <h3>⏰ Time Selection</h3>
           <mat-form-field appearance="outline">
             <mat-label>Start Time</mat-label>
-            <input matInput [(ngModel)]="blockBookData.startTime" name="startTime" type="time" required>
+            <input matInput type="time" [(ngModel)]="blockBookData.startTime" name="startTime" required>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>End Time</mat-label>
-            <input matInput [(ngModel)]="blockBookData.endTime" name="endTime" type="time" required>
+            <input matInput type="time" [(ngModel)]="blockBookData.endTime" name="endTime" required>
           </mat-form-field>
         </div>
 
-        <mat-checkbox [(ngModel)]="blockBookData.repeatWeekly" name="repeatWeekly" class="checkbox-section">
-          Repeat Every Week
+        <mat-checkbox [(ngModel)]="blockBookData.allDay" name="allDay" class="checkbox-section">
+          All Day
         </mat-checkbox>
 
+        <mat-checkbox [(ngModel)]="blockBookData.repeatWeekly" name="repeatWeekly" class="checkbox-section">
+          Repeat Every Week
+          <br>
+        </mat-checkbox>
         <div class="form-section" *ngIf="blockBookData.repeatWeekly">
           <mat-form-field appearance="outline">
             <mat-label>Repeat Until</mat-label>
-            <input matInput [matDatepicker]="repeatUntilPicker" [(ngModel)]="blockBookData.repeatUntil" name="repeatUntil">
-            <mat-datepicker-toggle matSuffix [for]="repeatUntilPicker"></mat-datepicker-toggle>
-            <mat-datepicker #repeatUntilPicker></mat-datepicker>
+            <input matInput type="date" [(ngModel)]="blockBookData.repeatUntil" name="repeatUntil">
           </mat-form-field>
         </div>
 

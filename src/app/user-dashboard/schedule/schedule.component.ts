@@ -127,8 +127,6 @@ export class ScheduleComponent implements OnInit {
     }
   }
 
-  //Full calendar is proving to be inconsistent, this should be switched out for mat calendar.
-  //inconsistency in how info.start is generated, have raised this with angular support - known issue.
   private onMonthChange(info: any): void {
     if (!this.calendarComponent || !this.calendarComponent.getApi) {
       console.warn(' calendarComponent not initialized yet.');
@@ -235,8 +233,8 @@ export class ScheduleComponent implements OnInit {
   onBlockBookSubmit(): void {
     if (!this.blockBookData.startDate || !this.blockBookData.endDate) return;
 
-    const startBase = this.blockBookData.startDate;
-    const endBase = this.blockBookData.endDate;
+    const startBase = new Date(this.blockBookData.startDate);
+    const endBase = new Date(this.blockBookData.endDate);
     const startTime = this.blockBookData.allDay ? '00:00' : this.blockBookData.startTime;
     const endTime = this.blockBookData.allDay ? '23:59' : this.blockBookData.endTime;
 
@@ -245,7 +243,7 @@ export class ScheduleComponent implements OnInit {
     let currentDate = new Date(startBase);
     const endDate = new Date(endBase);
     while (currentDate <= endDate) {
-      const dateStr = currentDate.toISOString().split('T')[0];
+      const dateStr = currentDate.toISOString().split('T')[0]; // Keeps YYYY-MM-DD
       datesToBlock.push({
         start: `${dateStr}T${startTime}`,
         end: `${dateStr}T${endTime}`
@@ -256,17 +254,21 @@ export class ScheduleComponent implements OnInit {
     if (this.blockBookData.repeatWeekly && this.blockBookData.repeatUntil) {
       const repeatEnd = new Date(this.blockBookData.repeatUntil);
       const additionalWeeks: { start: string; end: string }[] = [];
+
       datesToBlock.forEach((slot) => {
         let repeatDate = new Date(slot.start);
+        repeatDate.setDate(repeatDate.getDate() + 7);
+
         while (repeatDate <= repeatEnd) {
-          repeatDate.setDate(repeatDate.getDate() + 7);
           const repeatStr = repeatDate.toISOString().split('T')[0];
           additionalWeeks.push({
             start: `${repeatStr}T${startTime}`,
             end: `${repeatStr}T${endTime}`
           });
+          repeatDate.setDate(repeatDate.getDate() + 7);
         }
       });
+
       datesToBlock = [...datesToBlock, ...additionalWeeks];
     }
 

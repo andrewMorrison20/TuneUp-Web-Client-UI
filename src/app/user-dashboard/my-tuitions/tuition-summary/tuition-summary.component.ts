@@ -13,6 +13,8 @@ import {StudentProfile} from "../../../profiles/interfaces/student.model";
 import {MatDialog} from "@angular/material/dialog";
 import {LessonSummaryDialogComponent} from "./lesson-summary/lesson-summary-dialgoue.component";
 import {LessonSummary} from "./lesson-summary/lesson-summary.model";
+import { TuitionsService } from '../tuitions.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 
@@ -37,16 +39,19 @@ export class TuitionSummaryComponent implements OnInit {
   tuitionDetails = {
     startDate: null,
   };
-  // @ts-ignore
+
+
   constructor(private route: ActivatedRoute,
               private availabilityService: AvailabilityService,
               private profileService: ProfileService,
               private router: Router,
-              private dialog:MatDialog
+              private dialog:MatDialog,
+              private tuitionsService: TuitionsService,
+              private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
-    this.profileId = Number(this.route.snapshot.paramMap.get('id')); // ✅ Get profile ID from URL
+    this.profileId = Number(this.route.snapshot.paramMap.get('id'));
     this.fetchTuitionSummary();
     this.fetchProfiles();
   }
@@ -61,7 +66,7 @@ export class TuitionSummaryComponent implements OnInit {
       this.initializeCalendar();
       this.fetchLessons(new Date());
 
-      this.loading = false; // ✅ Data is fully loaded
+      this.loading = false;
     });
   }
 
@@ -175,4 +180,21 @@ export class TuitionSummaryComponent implements OnInit {
     });
   }
 
+  deactivateTuition(): void {
+    const confirmed = window.confirm('Are you sure you want to deactivate this tuition?');
+
+    if (!confirmed) {
+      return;
+    }
+
+    this.tuitionsService.deactivateTuition(this.tuitionSummary.id).subscribe({
+      next: () => {
+        this.snackBar.open('Tuition successfully deactivated.', 'OK', { duration: 3000 }); // ✅ Success message
+      },
+      error: (err) => {
+        console.error('Failed to deactivate tuition:', err);
+        this.snackBar.open('Error deactivating tuition. Please try again.', 'Close', { duration: 4000 });
+      }
+    });
+  }
 }

@@ -60,5 +60,6 @@ export class ActiveTuitionsComponent implements OnInit {
   viewTuitionSummary(profileId: number) {
     this.router.navigate(['/user-dashboard/tuition-summary', profileId]);
   }
+
 }
 
