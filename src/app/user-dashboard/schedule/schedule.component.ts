@@ -11,6 +11,7 @@ import { LessonSummary } from "../my-tuitions/tuition-summary/lesson-summary/les
 import { LessonSummaryDialogComponent } from "../my-tuitions/tuition-summary/lesson-summary/lesson-summary-dialgoue.component";
 import { AuthenticatedUser } from "../../authentication/authenticated-user.class";
 import {ScheduleAdjustmentDialogComponent} from "./schedule-adjustment-dialogue.component";
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-schedule',
@@ -230,62 +231,117 @@ export class ScheduleComponent implements OnInit {
   }
 
 
-  onBlockBookSubmit(): void {
-    if (!this.blockBookData.startDate || !this.blockBookData.endDate) return;
 
-    const startBase = new Date(this.blockBookData.startDate);
-    const endBase = new Date(this.blockBookData.endDate);
-    const startTime = this.blockBookData.allDay ? '00:00' : this.blockBookData.startTime;
-    const endTime = this.blockBookData.allDay ? '23:59' : this.blockBookData.endTime;
 
-    let datesToBlock: { start: string; end: string }[] = [];
+onBlockBookSubmit(): void {
+  if (!this.isValidInput()) return;
 
-    let currentDate = new Date(startBase);
-    const endDate = new Date(endBase);
-    while (currentDate <= endDate) {
-      const dateStr = currentDate.toISOString().split('T')[0];
-      datesToBlock.push({
-        start: `${dateStr}T${startTime}`,
-        end: `${dateStr}T${endTime}`
-      });
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
+const datesToBlock = this.generateDatesToBlock();
 
-    if (this.blockBookData.repeatWeekly && this.blockBookData.repeatUntil) {
-      const repeatEnd = new Date(this.blockBookData.repeatUntil);
-      const additionalWeeks: { start: string; end: string }[] = [];
+if (datesToBlock.length === 0) {
+  alert('⚠️ No valid availability slots found.');
+  return;
+}
 
-      datesToBlock.forEach((slot) => {
-        let repeatDate = new Date(slot.start);
-        repeatDate.setDate(repeatDate.getDate() + 7);
+this.submitAvailabilitySlots(datesToBlock);
+}
 
-        while (repeatDate <= repeatEnd) {
-          const repeatStr = repeatDate.toISOString().split('T')[0];
-          additionalWeeks.push({
-            start: `${repeatStr}T${startTime}`,
-            end: `${repeatStr}T${endTime}`
-          });
-          repeatDate.setDate(repeatDate.getDate() + 7);
-        }
-      });
-
-      datesToBlock = [...datesToBlock, ...additionalWeeks];
-    }
-
-    datesToBlock.forEach((slot) => {
-      this.availabilityService.createAvailability(
-        AuthenticatedUser.getAuthUserProfileId(),
-        slot.start,
-        slot.end
-      ).subscribe({
-        next: () => this.fetchAllAvailability(new Date(slot.start)),
-        error: (err) => {
-          console.error('Failed to block book availability:', err);
-          alert('⚠️ Failed to update availability. Check for existing slots and try again.');
-        }
-      });
-    });
-
+/**
+ * ✅ Validates input before processing
+ */
+private isValidInput(): boolean {
+  if (!this.blockBookData.startDate || !this.blockBookData.endDate) {
+    alert('⚠️ Please select a valid start and end date.');
+    return false;
   }
 
+  const startDate = new Date(this.blockBookData.startDate);
+  const endDate = new Date(this.blockBookData.endDate);
+
+  if (startDate > endDate) {
+    alert('⚠️ Start date cannot be after end date.');
+    return false;
+  }
+
+  if (!this.blockBookData.allDay) {
+    if (!this.blockBookData.startTime || !this.blockBookData.endTime) {
+      alert('⚠️ Please select a start and end time.');
+      return false;
+    }
+    if (this.blockBookData.startTime >= this.blockBookData.endTime) {
+      alert('⚠️ Start time must be before end time.');
+      return false;
+    }
+  }
+
+  return true;
+}
+
+/**
+ * ✅ Generates the list of dates to block
+ */
+private generateDatesToBlock(): { start: string; end: string, profileId:number }[] {
+  const profileId = AuthenticatedUser.getAuthUserProfileId();
+  const startBase = new Date(this.blockBookData.startDate);
+  const endBase = new Date(this.blockBookData.endDate);
+  const startTime = this.blockBookData.allDay ? '00:00' : this.blockBookData.startTime;
+  const endTime = this.blockBookData.allDay ? '23:59' : this.blockBookData.endTime;
+
+  let datesToBlock: { start: string; end: string, profileId:number }[] = [];
+
+  let currentDate = new Date(startBase);
+  while (currentDate <= endBase) {
+    const dateStr = currentDate.toISOString().split('T')[0];
+    datesToBlock.push({
+      start: `${dateStr}T${startTime}`,
+      end: `${dateStr}T${endTime}`,
+      profileId
+    });
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  if (this.blockBookData.repeatWeekly && this.blockBookData.repeatUntil) {
+    const repeatEnd = new Date(this.blockBookData.repeatUntil);
+    let additionalWeeks: { start: string; end: string, profileId: number}[] = [];
+
+    datesToBlock.forEach((slot) => {
+      let repeatDate = new Date(slot.start);
+      repeatDate.setDate(repeatDate.getDate() + 7);
+
+      while (repeatDate <= repeatEnd) {
+        const repeatStr = repeatDate.toISOString().split('T')[0];
+        additionalWeeks.push({
+          start: `${repeatStr}T${startTime}`,
+          end: `${repeatStr}T${endTime}`,
+          profileId
+        });
+        repeatDate.setDate(repeatDate.getDate() + 7);
+      }
+    });
+
+    datesToBlock = [...datesToBlock, ...additionalWeeks];
+  }
+
+  return datesToBlock;
+}
+
+  /**
+   * Batch create the availabilility slots to prevent inconsistent state / partial creates
+   * @param datesToBlock the set of slots to create availability for
+   * @private
+   */
+  private submitAvailabilitySlots(datesToBlock: { start: string; end: string; profileId:number }[]): void {
+    const profileId = AuthenticatedUser.getAuthUserProfileId();
+
+    this.availabilityService.batchCreateAvailability(profileId, datesToBlock).subscribe({
+      next: () => {
+        this.fetchAllAvailability(new Date(datesToBlock[0].start));
+        alert('All availability slots successfully created!');
+      },
+      error: (err) => {
+        console.error('Failed to block book availability:', err);
+        alert(' Failed to update availability. Check for existing slots and try again.');
+      }
+    });
+  }
 }

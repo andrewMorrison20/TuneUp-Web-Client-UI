@@ -159,6 +159,10 @@ export class AvailabilityService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${authToken}`);
     return this.http.delete<any>(`${this.url}/lessons/cancel/${id}`,{headers});
   }
+
+  batchCreateAvailability(profileId: number, slots: { start: string, end: string }[]) {
+    return this.http.post(`${this.url}/availability/${profileId}/batchCreate`, slots);
+  }
 }
 
 
