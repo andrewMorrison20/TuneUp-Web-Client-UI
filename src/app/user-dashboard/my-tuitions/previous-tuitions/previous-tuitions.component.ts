@@ -5,6 +5,9 @@ import {AuthenticatedUser} from "../../../authentication/authenticated-user.clas
 import {PageEvent} from "@angular/material/paginator";
 import {StudentProfile} from "../../../profiles/interfaces/student.model";
 import {TutorProfile} from "../../../profiles/interfaces/tutor.model";
+import {Router} from "@angular/router";
+import {tap} from "rxjs/operators";
+import {catchError, of} from "rxjs";
 type Profile = TutorProfile | StudentProfile ;
 
 @Component({
@@ -19,30 +22,39 @@ export class PreviousTuitionsComponent implements OnInit {
   pageIndex = 0;
   isLoading = true;
 
-  constructor(private availabilityService: AvailabilityService,private dialog: MatDialog) {}
+  constructor(private availabilityService: AvailabilityService,private dialog: MatDialog, private router :Router) {}
 
   ngOnInit() {
     this.fetchInActiveTuitions();
   }
 
-  fetchInActiveTuitions() {
-
-    this.isLoading=true;
+  fetchInActiveTuitions(): void {
+    this.isLoading = true;
     const profileId = AuthenticatedUser.getAuthUserProfileId();
-    this.availabilityService.fetchTuitions(profileId,false,this.pageIndex, this.pageSize)
-      .subscribe(response => {
-        this.profiles = response.content;
-        this.totalElements = response.totalElements;
-        this.isLoading = false;
-      }, error => {
-        console.error('Error fetching profiles:', error);
-        this.isLoading = false;
-      });
+
+    this.availabilityService.fetchTuitions(profileId, false, this.pageIndex, this.pageSize)
+      .pipe(
+        tap(response => {
+          this.profiles = response.content;
+          this.totalElements = response.totalElements;
+          this.isLoading = false;
+        }),
+        catchError(error => {
+          console.error('Error fetching profiles:', error);
+          this.isLoading = false;
+          return of([]);
+        })
+      )
+      .subscribe();
   }
 
   onPageChange(event: PageEvent) {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
     this.fetchInActiveTuitions();
+  }
+
+  viewTuitionSummary(profileId: number) {
+    this.router.navigate(['/user-dashboard/tuition-summary', profileId]);
   }
 }

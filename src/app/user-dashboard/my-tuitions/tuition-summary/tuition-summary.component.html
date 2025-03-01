@@ -2,11 +2,27 @@
   <mat-card-title>Tuition Summary For {{profile.displayName}}</mat-card-title>
 
   <div class="tuition-details">
-    <span class="profile-type-chip mat-chip mat-chip-outline"> Tuition Start Date : {{ tuitionSummary?.startDate }}</span>
+  <span class="profile-type-chip mat-chip mat-chip-outline">
+    Tuition Start Date : {{ tuitionSummary?.startDate }}
+  </span>
     <br>
     <br>
-    <span class="profile-type-chip mat-chip mat-chip-outline" > Active </span>
+
+    <!-- Show End Date ONLY if tuition is inactive -->
+    <span
+      *ngIf="!tuitionSummary?.activeTuition"
+      class="profile-type-chip mat-chip mat-chip-outline">
+    Tuition End Date : {{ tuitionSummary?.endDate }}
+  </span>
+    <br>
+    <br>
+
+    <!-- Display Active/Inactive Status -->
+    <span class="profile-type-chip mat-chip mat-chip-outline">
+    {{ tuitionSummary?.activeTuition ? 'Active' : 'Inactive' }}
+  </span>
   </div>
+
 
   <!-- Calendar Placeholder -->
   <div class="calendar-placeholder">
@@ -24,8 +40,17 @@
   <div class="tuition-links">
     <button mat-raised-button color="primary" routerLink="/payments">Go to Payments</button>
     <button mat-raised-button color="accent" routerLink="/chat">Go to Chat</button>
-    <button mat-raised-button color="warn" (click)="deactivateTuition()">Deactivate Tuition</button>
+
+    <!-- Show Deactivate Tuition button  if tuition is active -->
+    <button
+      *ngIf="tuitionSummary?.activeTuition"
+      mat-raised-button
+      color="warn"
+      (click)="deactivateTuition()">
+      Deactivate Tuition
+    </button>
   </div>
+
 
   <!-- Profile Summaries -->
   <div class="profiles-container">
@@ -41,6 +66,14 @@
       <h3>{{ profile.displayName }}</h3>
       <p *ngIf="profile.tuitionRegion?.name">Region: {{ profile.tuitionRegion.name }}</p>
       <button mat-raised-button color="primary" routerLink="/profiles/{{profile.id}}">View Profile</button>
+      <button
+        *ngIf="profile.profileType === 'Tutor' && userProfile.profileType ==='Student'"
+        mat-raised-button
+        color="accent"
+        class = "yellow-button"
+        (click)="leaveReview(profile.displayName)">
+        Leave a Review
+      </button>
     </mat-card>
 
     <!-- Tutor Profile Card -->

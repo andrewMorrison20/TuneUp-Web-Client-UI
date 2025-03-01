@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {catchError, Observable} from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { TutorProfile } from './interfaces/tutor.model';
@@ -205,6 +205,7 @@ export class ProfileService {
     return {
       comment: review.comment,
       rating: review.rating,
+      title:review.title,
       reviewer: review.reviewerName
     }
   }
@@ -232,5 +233,22 @@ export class ProfileService {
   public getProfileQualificationsById(profileId: number) {
     return this.http.get<any[]>(`${this.baseUrl}/instrumentQualifications/${profileId}`);
 
+  }
+
+  createReview(reviewDto: {
+    reviewerProfileId: number;
+    reviewerName: string;
+    profileId: number;
+    rating: number;
+    tuitionId:number
+    comment: string;
+    title: string;
+  }): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/review`, reviewDto).pipe(
+      catchError((error) => {
+        console.error('Error creating review:', error);
+        throw error;
+      })
+    );
   }
 }

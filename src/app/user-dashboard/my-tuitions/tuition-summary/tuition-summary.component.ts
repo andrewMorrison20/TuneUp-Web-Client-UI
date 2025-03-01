@@ -15,6 +15,7 @@ import {LessonSummaryDialogComponent} from "./lesson-summary/lesson-summary-dial
 import {LessonSummary} from "./lesson-summary/lesson-summary.model";
 import { TuitionsService } from '../tuitions.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import {ReviewDialogueComponent} from "../reviews/review-dialogue.component";
 
 
 
@@ -45,10 +46,11 @@ export class TuitionSummaryComponent implements OnInit {
               private availabilityService: AvailabilityService,
               private profileService: ProfileService,
               private router: Router,
-              private dialog:MatDialog,
+              private dialog: MatDialog,
               private tuitionsService: TuitionsService,
               private snackBar: MatSnackBar
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.profileId = Number(this.route.snapshot.paramMap.get('id'));
@@ -110,7 +112,7 @@ export class TuitionSummaryComponent implements OnInit {
       title: lesson.lessonStatus,
       start: lesson.availabilityDto.startTime,
       end: lesson.availabilityDto.endTime,
-      extendedProps: { lesson },
+      extendedProps: {lesson},
       color: this.getEventColor(lesson.lessonStatus)
     }));
 
@@ -122,7 +124,7 @@ export class TuitionSummaryComponent implements OnInit {
 
 
     const dialogRef = this.dialog.open(LessonSummaryDialogComponent, {
-      data: { lesson }
+      data: {lesson}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -134,12 +136,17 @@ export class TuitionSummaryComponent implements OnInit {
 
   private getEventColor(lessonStatus: string): string {
     switch (lessonStatus.toUpperCase()) {
-      case 'CONFIRMED': return '#4CAF50';
-      case 'COMPLETED': return '#9E9E9E';
-      case 'CANCELLED': return '#FF0000';
-      default: return '#000000';
+      case 'CONFIRMED':
+        return '#4CAF50';
+      case 'COMPLETED':
+        return '#9E9E9E';
+      case 'CANCELLED':
+        return '#FF0000';
+      default:
+        return '#000000';
     }
   }
+
   /** 🔹 Switch to TimeGrid Day View */
   onDateClick(info: any): void {
     console.log('Clicked date:', info.dateStr);
@@ -164,7 +171,7 @@ export class TuitionSummaryComponent implements OnInit {
   }
 
   goBackToTuitions() {
-    this.router.navigate(['/user-dashboard/my-tuitions'], { queryParams: { tab: 1 } });
+    this.router.navigate(['/user-dashboard/my-tuitions'], {queryParams: {tab: 1}});
   }
 
 
@@ -189,12 +196,52 @@ export class TuitionSummaryComponent implements OnInit {
 
     this.tuitionsService.deactivateTuition(this.tuitionSummary.id).subscribe({
       next: () => {
-        this.snackBar.open('Tuition successfully deactivated.', 'OK', { duration: 3000 }); // ✅ Success message
+        this.snackBar.open('Tuition successfully deactivated.', 'OK', {duration: 3000}); // ✅ Success message
       },
       error: (err) => {
         console.error('Failed to deactivate tuition:', err);
-        this.snackBar.open('Error deactivating tuition. Please try again.', 'Close', { duration: 4000 });
+        this.snackBar.open('Error deactivating tuition. Please try again.', 'Close', {duration: 4000});
       }
     });
   }
+
+  leaveReview(tutorName: string): void {
+    const dialogRef = this.dialog.open(ReviewDialogueComponent, {
+      width: '600px',
+      data: {tutorName}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Review Submitted:', result);
+
+        this.submitReview(result);
+      }
+    });
+  }
+
+  submitReview(reviewData: { rating: number, title: string, content: string }): void {
+    console.log('Sending review to server:', reviewData);
+
+    const reviewDto = {
+      profileId: this.profile.id,
+      title: reviewData.title,
+      comment: reviewData.content,
+      rating: reviewData.rating,
+      tuitionId: this.tuitionSummary.id,
+      reviewerProfileId: AuthenticatedUser.getAuthUserProfileId(),
+      reviewerName: this.userProfile.displayName
+    };
+
+    this.profileService.createReview(reviewDto).subscribe({
+      next: () => {
+        alert('Review submitted successfully!');
+      },
+      error: (err) => {
+        console.error('Failed to submit review:', err);
+        alert('Error submitting review. Please try again.');
+      }
+    });
+  }
+
 }

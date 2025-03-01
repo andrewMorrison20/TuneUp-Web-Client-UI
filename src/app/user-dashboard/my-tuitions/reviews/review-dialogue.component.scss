@@ -1,0 +1,75 @@
+.review-dialog {
+  text-align: center;
+  padding: 20px;
+  border-radius: 15px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.review-dialog h2 {
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.star-rating {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 15px 0;
+  flex-wrap: nowrap;
+}
+
+.star-rating mat-icon {
+  font-size: 44px;
+  cursor: pointer;
+  color: #d3d3d3;
+  transition: transform 0.2s ease-in-out, color 0.3s ease-in-out;
+  padding: 20px;
+}
+
+
+.star-rating mat-icon:hover,
+.star-rating mat-icon.selected-star {
+  color: #FFD700 !important;
+  transform: scale(1.2);
+}
+
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+mat-form-field input,
+mat-form-field textarea {
+  font-size: 16px;
+  color: #333;
+}
+
+mat-dialog-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+mat-dialog-actions button {
+  width: 48%;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+
+.submit-btn {
+  background-color: #4CAF50 !important;
+  color: white !important;
+}
+
+.cancel-btn {
+  background-color: #f44336 !important;
+  color: white !important;
+}

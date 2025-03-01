@@ -24,6 +24,10 @@ import {AddressService} from "../update-profile/address/address-service.componen
 import {HttpClientModule} from "@angular/common/http";
 import {GoogleMap, MapMarker} from "@angular/google-maps";
 import {TuitionsService} from "./tuitions.service";
+import {ReviewDialogueComponent} from "./reviews/review-dialogue.component";
+import {MatFormField, MatHint, MatLabel} from "@angular/material/form-field";
+import {MatInput} from "@angular/material/input";
+import {MatDivider} from "@angular/material/divider";
 
 @NgModule({
   declarations: [
@@ -33,7 +37,8 @@ import {TuitionsService} from "./tuitions.service";
     PreviousTuitionsComponent,
     ProfileLessonRequestsDialogComponent,
     TuitionSummaryComponent,
-    LessonSummaryDialogComponent
+    LessonSummaryDialogComponent,
+    ReviewDialogueComponent
   ],
   imports: [
     CommonModule,
@@ -43,6 +48,7 @@ import {TuitionsService} from "./tuitions.service";
     MatPaginator,
     MatButton,
     MatDialogContent,
+    MatLabel,
     MatList,
     MatListItem,
     MatDialogActions,
@@ -53,7 +59,11 @@ import {TuitionsService} from "./tuitions.service";
     MatCheckbox,
     FormsModule,
     GoogleMap,
-    MapMarker
+    MapMarker,
+    MatHint,
+    MatFormField,
+    MatInput,
+    MatDivider
   ],
   providers:[AvailabilityService,AddressService,TuitionsService,GoogleMap],
   exports: [MyTuitionsComponent,ProfileLessonRequestsDialogComponent]

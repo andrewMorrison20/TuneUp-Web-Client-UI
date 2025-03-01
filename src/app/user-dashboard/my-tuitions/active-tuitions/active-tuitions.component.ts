@@ -47,16 +47,6 @@ export class ActiveTuitionsComponent implements OnInit {
     this.fetchActiveTuitions();
   }
 
-  openLessonRequestsDialog(profileId: number) {
-    const dialogRef = this.dialog.open(ProfileLessonRequestsDialogComponent, {
-      data: { profileId }
-    });
-
-    dialogRef.afterClosed().subscribe(() => {
-      this.fetchActiveTuitions();
-    });
-  }
-
   viewTuitionSummary(profileId: number) {
     this.router.navigate(['/user-dashboard/tuition-summary', profileId]);
   }
