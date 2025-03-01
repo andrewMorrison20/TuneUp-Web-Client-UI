@@ -14,7 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import {HttpClientModule} from "@angular/common/http";
 import {NavModule} from "../components/nav/nav.module";
 import {ChatsComponent} from "./chats/chats.component";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatFormField, MatHint, MatLabel} from "@angular/material/form-field";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {MatInput} from "@angular/material/input";
@@ -40,6 +40,17 @@ import {ScheduleAdjustmentDialogComponent} from "./schedule/schedule-adjustment-
 import {MatDialogActions, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
 import {MatCheckbox} from "@angular/material/checkbox";
+import {MatPaginator} from "@angular/material/paginator";
+import {
+  MatCell,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell, MatHeaderCellDef,
+  MatHeaderRow, MatHeaderRowDef,
+  MatRow,
+  MatRowDef, MatTable
+} from "@angular/material/table";
+import {MatSort} from "@angular/material/sort";
 
 
 @NgModule({
@@ -51,6 +62,7 @@ import {MatCheckbox} from "@angular/material/checkbox";
     StudyHubComponent,
     PaymentsComponent,
     ChatsComponent,
+    PaymentsComponent,
     ScheduleComponent
   ],
   exports: [
@@ -91,7 +103,20 @@ import {MatCheckbox} from "@angular/material/checkbox";
     MatDatepickerToggle,
     MatDatepicker,
     MatCheckbox,
-    MatDatepickerInput
+    MatDatepickerInput,
+    MatPaginator,
+    MatHeaderRow,
+    MatRow,
+    MatHeaderCell,
+    MatColumnDef,
+    MatCell,
+    MatCellDef,
+    MatRowDef,
+    MatHeaderRowDef,
+    MatHeaderCellDef,
+    MatTable,
+    MatSort,
+    ReactiveFormsModule
   ],
   providers:[AddressService]
 })

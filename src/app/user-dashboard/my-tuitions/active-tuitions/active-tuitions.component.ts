@@ -3,10 +3,12 @@ import {AvailabilityService} from "../../../lessons/availability.service";
 import {MatDialog} from "@angular/material/dialog";
 import {AuthenticatedUser} from "../../../authentication/authenticated-user.class";
 import {PageEvent} from "@angular/material/paginator";
-import {ProfileLessonRequestsDialogComponent} from "../lesson-requests/profile-lesson-request/profile-lesson-requests-dialgoue.component";
 import {TutorProfile} from "../../../profiles/interfaces/tutor.model";
 import {StudentProfile} from "../../../profiles/interfaces/student.model";
 import {Router} from "@angular/router";
+import {TuitionsService} from "../tuitions.service";
+import {tap} from "rxjs/operators";
+import {catchError, EMPTY} from "rxjs";
 type Profile = TutorProfile | StudentProfile;
 @Component({
   selector: 'app-active-tuitions',
@@ -20,25 +22,29 @@ export class ActiveTuitionsComponent implements OnInit {
   pageIndex = 0;
   isLoading = true;
 
-  constructor(private availabilityService: AvailabilityService,private dialog: MatDialog, private router :Router) {}
+  constructor(private availabilityService: AvailabilityService,private tuitionsService: TuitionsService,private dialog: MatDialog, private router :Router) {}
 
   ngOnInit() {
     this.fetchActiveTuitions();
   }
 
   fetchActiveTuitions() {
-
-    this.isLoading=true;
+    this.isLoading = true;
     const profileId = AuthenticatedUser.getAuthUserProfileId();
-    this.availabilityService.fetchTuitions(profileId,true,this.pageIndex, this.pageSize)
-      .subscribe(response => {
-        this.profiles = response.content;
-        this.totalElements = response.totalElements;
-        this.isLoading = false;
-      }, error => {
-        console.error('Error fetching profiles:', error);
-        this.isLoading = false;
-      });
+    this.tuitionsService.fetchTuitions(profileId, true, this.pageIndex, this.pageSize)
+      .pipe(
+        tap(response => {
+          this.profiles = response.content;
+          this.totalElements = response.totalElements;
+          this.isLoading = false;
+        }),
+        catchError(error => {
+          console.error('Error fetching profiles:', error);
+          this.isLoading = false;
+          return EMPTY;
+        })
+      )
+      .subscribe();
   }
 
   onPageChange(event: PageEvent) {

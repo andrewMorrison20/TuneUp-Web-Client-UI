@@ -130,9 +130,14 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     console.log('Event clicked:', info.event.title);
 
     const availabilityId = info.event.extendedProps.availabilityId;
-
+    console.log(this.profile?.profileType)
+    console.log(AuthenticatedUser.getAuthUserProfileType())
     if (!availabilityId) {
       console.error("No availability ID found!");
+      return;
+    }  // Ensure only students can send lesson requests
+    if (this.profile?.profileType === 'Student' || AuthenticatedUser.getAuthUserProfileType()!== 'STUDENT') {
+      console.warn("Only students can send lesson requests.");
       return;
     }
     const dialogRef = this.dialog.open(LessonRequestDialogComponent, {
