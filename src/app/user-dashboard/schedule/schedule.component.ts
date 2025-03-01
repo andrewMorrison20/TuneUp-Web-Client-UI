@@ -243,7 +243,7 @@ export class ScheduleComponent implements OnInit {
     let currentDate = new Date(startBase);
     const endDate = new Date(endBase);
     while (currentDate <= endDate) {
-      const dateStr = currentDate.toISOString().split('T')[0]; // Keeps YYYY-MM-DD
+      const dateStr = currentDate.toISOString().split('T')[0];
       datesToBlock.push({
         start: `${dateStr}T${startTime}`,
         end: `${dateStr}T${endTime}`
@@ -279,9 +279,13 @@ export class ScheduleComponent implements OnInit {
         slot.end
       ).subscribe({
         next: () => this.fetchAllAvailability(new Date(slot.start)),
-        error: (err) => console.error('Failed to block book availability:', err)
+        error: (err) => {
+          console.error('Failed to block book availability:', err);
+          alert('⚠️ Failed to update availability. Check for existing slots and try again.');
+        }
       });
     });
+
   }
 
 }

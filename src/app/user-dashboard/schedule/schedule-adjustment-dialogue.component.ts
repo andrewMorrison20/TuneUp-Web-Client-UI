@@ -1,4 +1,3 @@
-// availability-dialog.component.ts
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
@@ -15,8 +14,8 @@ export class ScheduleAdjustmentDialogComponent {
     public dialogRef: MatDialogRef<ScheduleAdjustmentDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.selectedStartTime =  this.formatDateForInput(data.startTime);
-    this.selectedEndTime =  this.formatDateForInput(data.endTime);
+    this.selectedStartTime = this.formatDateForInput(data.startTime);
+    this.selectedEndTime = this.formatDateForInput(data.endTime);
     this.isEditMode = data.isEditMode;
   }
 
@@ -25,6 +24,11 @@ export class ScheduleAdjustmentDialogComponent {
   }
 
   onSave(): void {
+    if (!this.isValidTimeSelection()) {
+      alert(" Start time must be before End time.");
+      return;
+    }
+
     this.dialogRef.close({
       startTime: this.selectedStartTime,
       endTime: this.selectedEndTime,
@@ -43,4 +47,10 @@ export class ScheduleAdjustmentDialogComponent {
     return adjustedDate.toISOString().slice(0, 16); // Correct format: yyyy-MM-ddTHH:mm
   }
 
+  isValidTimeSelection(): boolean {
+    const start = new Date(this.selectedStartTime);
+    const end = new Date(this.selectedEndTime);
+
+    return start < end; // Returns true if start is before end, false otherwise
+  }
 }
