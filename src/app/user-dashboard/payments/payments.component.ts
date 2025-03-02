@@ -96,10 +96,14 @@ export class PaymentsComponent implements OnInit {
   }
 
   submitPayment(): void {
-    if (this.paymentForm.invalid) {
-      return;
-    }
-    console.log('Submitting payment:', this.paymentForm.value);
+    if (this.paymentForm.invalid) return;
+
+    this.paymentsService.createPayment(this.paymentForm.value)
+      .pipe(take(1)) // Automatically unsubscribe
+      .subscribe(() => {
+        console.log('Payment created');
+        this.fetchPayments();
+      });
   }
 
   toggleRow(payment: Payment): void {
@@ -129,8 +133,14 @@ export class PaymentsComponent implements OnInit {
 
   markAsPaid(): void {
     if (!this.selectedPayments.length) return;
-    console.log('Marking payments as paid:', this.selectedPayments);
-    // TODO: Implement API call to update payments as paid
+
+    const paymentIds = this.selectedPayments.map(p => p.id);
+    this.paymentsService.markPaymentsAsPaid(paymentIds)
+      .pipe(take(1))
+      .subscribe(() => {
+        console.log('Payments marked as paid');
+        this.fetchPayments();
+      });
   }
 
   fetchPayments(): void {
