@@ -1,4 +1,11 @@
 <div class="container">
+  <mat-card class="disclaimer-card">
+    <mat-icon class="warning-icon">warning</mat-icon>
+    <p>
+      <strong>Important:</strong> Payment cannot be deleted once created, as the other party may retain it for records.
+      See our <a href="/terms-and-conditions" target="_blank">full terms and conditions</a> regarding data retention.
+    </p>
+  </mat-card>
   <mat-card class="create-payment-container">
     <div class="create-payment-form">
       <h2>Create a Payment</h2>
@@ -29,8 +36,10 @@
           <input matInput type="date" formControlName="dueDate" />
         </mat-form-field>
 
+        <h3><strong>Add an Invoice</strong></h3>
         <input type="file" formControlName="invoice" />
-
+        <br>
+        <br>
         <button mat-raised-button color="primary" type="submit">Submit Payment</button>
       </form>
     </div>
