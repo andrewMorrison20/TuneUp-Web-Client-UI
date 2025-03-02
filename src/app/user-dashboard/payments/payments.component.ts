@@ -6,11 +6,12 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { TuitionsService } from '../my-tuitions/tuitions.service';
 import { AuthenticatedUser } from '../../authentication/authenticated-user.class';
-import { tap, catchError } from 'rxjs/operators';
+import {tap, catchError, take} from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
 import { TutorProfile } from '../../profiles/interfaces/tutor.model';
 import { StudentProfile } from '../../profiles/interfaces/student.model';
 import { LessonSummary } from '../my-tuitions/tuition-summary/lesson-summary/lesson-summary.model';
+import {PaymentsService} from "./payments.service";
 
 interface Payment {
   id: any;
@@ -48,7 +49,7 @@ export class PaymentsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private fb: FormBuilder, private dialog: MatDialog, private tuitionsService: TuitionsService) {
+  constructor(private fb: FormBuilder, private dialog: MatDialog, private tuitionsService: TuitionsService, private paymentsService: PaymentsService) {
     this.paymentForm = this.fb.group({
       tuition: ['', Validators.required],
       lesson: ['', Validators.required],
@@ -133,15 +134,16 @@ export class PaymentsComponent implements OnInit {
   }
 
   fetchPayments(): void {
-    this.payments = [
-      { id:1, name: 'John Doe', lessonDate: '2024-02-25', amount: '$100', status: 'Due', dueDate: '2024-03-01' },
-      { id: 2, name: 'Jane Smith', lessonDate: '2024-02-20', amount: '$120', status: 'Paid', dueDate: '2024-02-22', paidOn: '2024-02-22' },
-      { id:3, name: 'Alice Brown', lessonDate: '2024-02-10', amount: '$80', status: 'Overdue', dueDate: '2024-02-15' }
-    ];
-    this.dataSource = new MatTableDataSource<Payment>(this.payments);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.paymentsService.getPayments()
+      .pipe(take(1)) // Auto-unsubscribes after first value
+      .subscribe(payments => {
+        this.dataSource = new MatTableDataSource<Payment>(payments);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      });
   }
+
+
 
   applyFilter(): void {
     if (this.selectedStatus === 'All') {

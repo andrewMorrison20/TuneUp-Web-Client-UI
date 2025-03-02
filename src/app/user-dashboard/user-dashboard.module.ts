@@ -51,6 +51,7 @@ import {
   MatRowDef, MatTable
 } from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
+import {PaymentsService} from "./payments/payments.service";
 
 
 @NgModule({
@@ -118,6 +119,6 @@ import {MatSort} from "@angular/material/sort";
     MatSort,
     ReactiveFormsModule
   ],
-  providers:[AddressService]
+  providers:[AddressService,PaymentsService]
 })
 export class UserDashboardModule { }
