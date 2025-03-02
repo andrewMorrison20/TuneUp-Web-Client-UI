@@ -38,8 +38,19 @@
         </mat-form-field>
 
         <h3><strong>Add an Invoice</strong></h3>
-        <input type="file" formControlName="invoice" />
+        <input type="file" #fileInput (change)="onFileSelect($event)" accept=".pdf, .jpg, .jpeg, .png" />
+        <p *ngIf="paymentForm.controls['invoice'].errors?.['invalidFileType']" class="error-text">
+          Only PDF, JPG, and PNG files are allowed.
+        </p>
+        <p *ngIf="paymentForm.controls['invoice'].errors?.['fileTooLarge']" class="error-text">
+          File size must be less than 5MB.
+        </p>
         <br><br>
+        <p *ngIf="selectedFileName">
+          Selected File: {{ selectedFileName }}
+          <button mat-button color="warn" (click)="removeSelectedFile(fileInput)">Remove File</button>
+        </p>
+
         <button mat-raised-button color="primary" type="submit">Submit Payment</button>
       </form>
     </div>

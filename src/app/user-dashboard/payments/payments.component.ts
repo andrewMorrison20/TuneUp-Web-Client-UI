@@ -43,6 +43,7 @@ export class PaymentsComponent implements OnInit {
   pageIndex = 0;
   isLoading = true;
   selectedPayments: Payment[] = [];
+  selectedFileName: string | null = null;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -52,7 +53,7 @@ export class PaymentsComponent implements OnInit {
       tuition: ['', Validators.required],
       lesson: ['', Validators.required],
       amount: ['', [Validators.required, Validators.min(1)]],
-      invoice: [null],
+      invoice: [null, [this.fileValidator]],
       dueDate: ['', [Validators.required, this.futureDateValidator]]
     });
   }
@@ -72,6 +73,27 @@ export class PaymentsComponent implements OnInit {
     return selectedDate >= today ? null : { pastDate: true };
   }
 
+  fileValidator(control: any) {
+    if (!control.value) {
+      return null;
+    }
+
+    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+    const maxSize = 5 * 1024 * 1024; // 5MB
+
+    const file = control.value;
+
+    if (!allowedTypes.includes(file.type)) {
+      return { invalidFileType: true };
+    }
+
+    if (file.size > maxSize) {
+      return { fileTooLarge: true };
+    }
+
+    return null;
+  }
+
   submitPayment(): void {
     if (this.paymentForm.invalid) {
       return;
@@ -86,6 +108,14 @@ export class PaymentsComponent implements OnInit {
     } else {
       this.selectedPayments.push(payment);
     }
+  }
+
+  removeSelectedFile(fileInput: HTMLInputElement): void {
+    this.paymentForm.patchValue({ invoice: null });
+    this.paymentForm.get('invoice')?.updateValueAndValidity();
+    this.paymentForm.patchValue({ invoice: null });
+    this.selectedFileName = null;
+    fileInput.value = '';
   }
 
   toggleAllRows(): void {
@@ -169,6 +199,17 @@ export class PaymentsComponent implements OnInit {
       )
       .subscribe();
   }
+
+  onFileSelect(event: any) {
+    const file = event.target.files[0];
+
+    if (file) {
+      this.paymentForm.patchValue({ invoice: file });
+      this.paymentForm.get('invoice')?.updateValueAndValidity();
+      this.selectedFileName = file.name;
+    }
+  }
+
 }
 
 @Component({
