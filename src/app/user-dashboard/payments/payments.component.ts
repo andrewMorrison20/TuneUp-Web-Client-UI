@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -49,17 +49,34 @@ export class PaymentsComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private dialog: MatDialog, private tuitionsService: TuitionsService) {
     this.paymentForm = this.fb.group({
-      tuition: [''],
-      lesson: [''],
-      amount: [''],
+      tuition: ['', Validators.required],
+      lesson: ['', Validators.required],
+      amount: ['', [Validators.required, Validators.min(1)]],
       invoice: [null],
-      dueDate: ['']
+      dueDate: ['', [Validators.required, this.futureDateValidator]]
     });
   }
 
   ngOnInit(): void {
     this.fetchPayments();
     this.fetchTuitions();
+  }
+
+  futureDateValidator(control: any) {
+    if (!control.value) {
+      return null;
+    }
+    const selectedDate = new Date(control.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return selectedDate >= today ? null : { pastDate: true };
+  }
+
+  submitPayment(): void {
+    if (this.paymentForm.invalid) {
+      return;
+    }
+    console.log('Submitting payment:', this.paymentForm.value);
   }
 
   toggleRow(payment: Payment): void {
@@ -104,9 +121,6 @@ export class PaymentsComponent implements OnInit {
     }
   }
 
-  submitPayment(): void {
-    console.log('Submitting payment:', this.paymentForm.value);
-  }
 
   viewInvoice(payment: Payment): void {
     this.dialog.open(InvoiceDialogComponent, {
