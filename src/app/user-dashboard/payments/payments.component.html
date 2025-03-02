@@ -109,12 +109,11 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
     </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
     <div class="paid-button-container">
       <button mat-raised-button color="accent" class="paid-button" (click)="markAsPaid()" [disabled]="!selectedPayments.length">
         Mark as Paid
       </button>
     </div>
-
-    <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
   </mat-card>
 </div>
