@@ -6,6 +6,7 @@
       See our <a href="/terms-and-conditions" target="_blank">full terms and conditions</a> regarding data retention.
     </p>
   </mat-card>
+
   <mat-card class="create-payment-container">
     <div class="create-payment-form">
       <h2>Create a Payment</h2>
@@ -16,13 +17,13 @@
             <mat-option *ngFor="let profile of profiles" [value]="profile.id">{{ profile.displayName }}</mat-option>
           </mat-select>
         </mat-form-field>
+
         <mat-form-field appearance="outline">
           <mat-label>Select Lesson</mat-label>
           <mat-select formControlName="lesson">
-            <mat-option *ngFor="let lesson of lessons"[value]="lesson">
+            <mat-option *ngFor="let lesson of lessons" [value]="lesson.id">
               {{ lesson.availabilityDto.startTime | date:'dd-MM-yyyy HH:mm' }} - {{ lesson.availabilityDto.endTime | date:'dd-MM-yyyy HH:mm' }}
             </mat-option>
-
           </mat-select>
         </mat-form-field>
 
@@ -38,8 +39,7 @@
 
         <h3><strong>Add an Invoice</strong></h3>
         <input type="file" formControlName="invoice" />
-        <br>
-        <br>
+        <br><br>
         <button mat-raised-button color="primary" type="submit">Submit Payment</button>
       </form>
     </div>
@@ -57,48 +57,63 @@
       <mat-tab label="Paid" (click)="selectedStatus='Paid'"></mat-tab>
       <mat-tab label="Overdue" (click)="selectedStatus='Overdue'"></mat-tab>
     </mat-tab-group>
+    <div class="table-container">
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? toggleAllRows() : null"></mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let payment">
+            <mat-checkbox (change)="$event ? toggleRow(payment) : null" [checked]="selectedPayments.includes(payment)"></mat-checkbox>
+          </td>
+        </ng-container>
 
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-        <td mat-cell *matCellDef="let payment">{{ payment.name }}</td>
-      </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let payment">{{ payment.name }}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="lessonDate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Lesson Date</th>
-        <td mat-cell *matCellDef="let payment">{{ payment.lessonDate }}</td>
-      </ng-container>
+        <ng-container matColumnDef="lessonDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Lesson Date</th>
+          <td mat-cell *matCellDef="let payment">{{ payment.lessonDate }}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="amount">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
-        <td mat-cell *matCellDef="let payment">{{ payment.amount }}</td>
-      </ng-container>
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
+          <td mat-cell *matCellDef="let payment">{{ payment.amount }}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-        <td mat-cell *matCellDef="let payment">{{ payment.status }}</td>
-      </ng-container>
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+          <td mat-cell *matCellDef="let payment">{{ payment.status }}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="dueDate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Due/Paid Date</th>
-        <td mat-cell *matCellDef="let payment">
-          {{ payment.status === 'Paid' ? payment.paidOn : payment.dueDate }}
-        </td>
-      </ng-container>
+        <ng-container matColumnDef="dueDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Due/Paid Date</th>
+          <td mat-cell *matCellDef="let payment">
+            {{ payment.status === 'Paid' ? payment.paidOn : payment.dueDate }}
+          </td>
+        </ng-container>
 
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Actions</th>
-        <td mat-cell *matCellDef="let payment">
-          <button mat-button color="accent" (click)="viewInvoice(payment)">View Invoice</button>
-          <button mat-button color="warn" *ngIf="payment.status !== 'Paid'" (click)="sendReminder(payment)">
-            Send Reminder
-          </button>
-        </td>
-      </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let payment">
+            <button mat-button color="accent" (click)="viewInvoice(payment)">View Invoice</button>
+            <button mat-button color="warn" *ngIf="payment.status !== 'Paid'" (click)="sendReminder(payment)">
+              Send Reminder
+            </button>
+          </td>
+        </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+    <div class="paid-button-container">
+      <button mat-raised-button color="accent" class="paid-button" (click)="markAsPaid()" [disabled]="!selectedPayments.length">
+        Mark as Paid
+      </button>
+    </div>
 
     <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
   </mat-card>

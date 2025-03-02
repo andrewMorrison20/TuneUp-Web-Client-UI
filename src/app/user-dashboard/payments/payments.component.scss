@@ -47,6 +47,11 @@
     display: none;
   }
 }
+  @media (max-width: 768px) {
+    .table-container {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }}
 
 mat-card {
   padding: 20px;
@@ -108,3 +113,15 @@ button.mat-button[color="accent"] {
   background-color: #ffa500;
   color: white;
 }
+
+.paid-button-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 0;
+}
+
+.paid-button {
+  width: auto;
+  min-width: 150px;
+}
+
