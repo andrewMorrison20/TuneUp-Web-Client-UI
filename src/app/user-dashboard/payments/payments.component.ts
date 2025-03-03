@@ -14,13 +14,14 @@ import { LessonSummary } from '../my-tuitions/tuition-summary/lesson-summary/les
 import {PaymentsService} from "./payments.service";
 
 interface Payment {
-  id: any;
-  name: string;
+  id?: any;
+  name?: string;
   lessonDate: string;
   amount: string;
-  status: 'Due' | 'Paid' | 'Overdue';
+  status?: 'Due' | 'Paid' | 'Overdue';
   dueDate: string;
   paidOn?: string;
+  invoiceUrl?: string;
 }
 
 type Profile = TutorProfile | StudentProfile;
@@ -98,12 +99,48 @@ export class PaymentsComponent implements OnInit {
   submitPayment(): void {
     if (this.paymentForm.invalid) return;
 
-    this.paymentsService.createPayment(this.paymentForm.value)
-      .pipe(take(1)) // Automatically unsubscribe
-      .subscribe(() => {
-        console.log('Payment created');
-        this.fetchPayments();
-      });
+    const paymentData: Payment = {
+      amount: this.paymentForm.value.amount,
+      dueDate: this.paymentForm.value.dueDate,
+      lessonDate: this.paymentForm.value.lesson,
+      name: this.paymentForm.value.tuition
+    };
+
+    const invoiceFile = this.paymentForm.value.invoice;
+
+    if (invoiceFile) {
+      // Upload invoice first since we need url for payment creation
+      this.paymentsService.uploadInvoice(invoiceFile)
+        .pipe(take(1))
+        .subscribe({
+          next: (invoiceUrl) => {
+            paymentData.invoiceUrl = invoiceUrl;
+
+            // Create payment with invoice URL
+            this.paymentsService.createPayment(paymentData)
+              .pipe(take(1))
+              .subscribe({
+                next: () => {
+                  console.log('Payment created with invoice');
+                  this.fetchPayments();
+                },
+                error: (err) => console.error('Error creating payment:', err)
+              });
+          },
+          error: (err) => console.error('Invoice upload failed:', err)
+        });
+    } else {
+      // No invoice, create payment directly
+      this.paymentsService.createPayment(paymentData)
+        .pipe(take(1))
+        .subscribe({
+          next: () => {
+            console.log('Payment created without invoice');
+            this.fetchPayments();
+          },
+          error: (err) => console.error('Error creating payment:', err)
+        });
+    }
   }
 
   toggleRow(payment: Payment): void {
