@@ -58,7 +58,8 @@ export class PaymentsComponent implements OnInit {
       amount: ['', [Validators.required, Validators.min(1)]],
       invoice: [null, [this.fileValidator]],
       dueDate: ['', [Validators.required, this.futureDateValidator]],
-      tuitionId:['',[Validators.required, Validators.min(1)]]
+      tuitionId:['',[Validators.required, Validators.min(1)]],
+      lessonDate: ['', Validators.required],
     });
   }
 
@@ -78,17 +79,19 @@ export class PaymentsComponent implements OnInit {
   }
 
   onLessonChange(lessonId: number): void {
-    console.log(lessonId)
     const selectedLesson = this.lessons.find(lesson => lesson.id === lessonId);
 
-    console.log('lesson',selectedLesson)
     if (selectedLesson) {
-      console.log(selectedLesson.tuitionId)
-      this.paymentForm.patchValue({ tuitionId: selectedLesson.tuitionId });
+      this.paymentForm.patchValue({
+        tuitionId: selectedLesson.tuitionId,
+        lessonDate: selectedLesson.availabilityDto.startTime
+      });
     }
 
+    console.log('Lesson Date:', this.paymentForm.get('lessonDate')?.value);
     console.log('TUITION ID:', this.paymentForm.get('tuitionId')?.value);
   }
+
 
   fileValidator(control: any) {
     if (!control.value) {
