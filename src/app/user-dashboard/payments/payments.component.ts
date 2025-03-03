@@ -15,7 +15,7 @@ import {PaymentsService} from "./payments.service";
 
 interface Payment {
   id?: any;
-  name?: string;
+  displayName?: string;
   lessonDate: string;
   tuitionId:number,
   amount: string;
@@ -37,7 +37,7 @@ export class PaymentsComponent implements OnInit {
   statuses = ['All', 'Due', 'Paid', 'Overdue'];
   selectedStatus = 'All';
   payments: Payment[] = [];
-  displayedColumns: string[] = ['select', 'name', 'lessonDate', 'amount', 'status', 'dueDate', 'actions'];
+  displayedColumns: string[] = ['select', 'displayName', 'lessonDate', 'amount', 'status', 'dueDate', 'actions'];
   dataSource = new MatTableDataSource<Payment>(this.payments);
   profiles: Profile[] = [];
   lessons:LessonSummary[] = [];
@@ -196,14 +196,20 @@ export class PaymentsComponent implements OnInit {
   }
 
   fetchPayments(): void {
-    this.paymentsService.getPayments()
-      .pipe(take(1)) // Auto-unsubscribes after first value
-      .subscribe(payments => {
-        this.dataSource = new MatTableDataSource<Payment>(payments);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+    this.paymentsService.getPayments(AuthenticatedUser.getAuthUserProfileId())
+      .pipe(take(1))
+      .subscribe((payments: Payment[]) => {
+        this.payments = payments.map(payment => ({
+          ...payment,
+          displayName: payment.displayName ?? 'Unknown'
+        }));
+
+        console.log('Processed Payments:', this.payments);
+        this.dataSource.data = this.payments;
+        this.dataSource._updateChangeSubscription();
       });
   }
+
 
 
 
@@ -281,7 +287,7 @@ export class PaymentsComponent implements OnInit {
   template: `
     <h1 mat-dialog-title>Invoice</h1>
     <div mat-dialog-content>
-      <p>Invoice details for {{data.payment.name}}</p>
+      <p>Invoice details for {{data.payment.displayName}}</p>
       <p>Amount: {{data.payment.amount}}</p>
       <p>Status: {{data.payment.status}}</p>
     </div>

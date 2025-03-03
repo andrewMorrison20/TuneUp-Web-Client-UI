@@ -10,9 +10,12 @@ export class PaymentsService {
 
   constructor(private http: HttpClient) {}
 
-  getPayments(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}`);
+  getPayments(profileId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}`, {
+      params: { profileId: profileId.toString() }
+    });
   }
+
   createPayment(paymentData: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}`, paymentData);
   }
