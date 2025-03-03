@@ -22,12 +22,17 @@ export class PaymentsService {
     return this.http.patch<any>(`${this.apiUrl}/mark-paid`, { paymentIds });
   }
 
-  uploadInvoice(file: File): Observable<any> {
+  uploadInvoice(file: File): Observable<string> {
     const formData = new FormData();
     formData.append('file', file);
 
-    return this.http.post<any>(`${this.apiUrl}/upload-invoice`, formData);
+    return this.http.post(`${this.apiUrl}/upload-invoice`, formData, {
+      responseType: 'text' as 'text'
+    });
   }
+
+
+
 
   deletePayment(paymentId: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${paymentId}`);

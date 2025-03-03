@@ -17,6 +17,7 @@ interface Payment {
   id?: any;
   name?: string;
   lessonDate: string;
+  tuitionId:number,
   amount: string;
   status?: 'Due' | 'Paid' | 'Overdue';
   dueDate: string;
@@ -39,7 +40,7 @@ export class PaymentsComponent implements OnInit {
   displayedColumns: string[] = ['select', 'name', 'lessonDate', 'amount', 'status', 'dueDate', 'actions'];
   dataSource = new MatTableDataSource<Payment>(this.payments);
   profiles: Profile[] = [];
-  lessons: any[] = [];
+  lessons:LessonSummary[] = [];
   totalElements = 0;
   pageSize = 10;
   pageIndex = 0;
@@ -56,7 +57,8 @@ export class PaymentsComponent implements OnInit {
       lesson: ['', Validators.required],
       amount: ['', [Validators.required, Validators.min(1)]],
       invoice: [null, [this.fileValidator]],
-      dueDate: ['', [Validators.required, this.futureDateValidator]]
+      dueDate: ['', [Validators.required, this.futureDateValidator]],
+      tuitionId:['',[Validators.required, Validators.min(1)]]
     });
   }
 
@@ -73,6 +75,19 @@ export class PaymentsComponent implements OnInit {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     return selectedDate >= today ? null : { pastDate: true };
+  }
+
+  onLessonChange(lessonId: number): void {
+    console.log(lessonId)
+    const selectedLesson = this.lessons.find(lesson => lesson.id === lessonId);
+
+    console.log('lesson',selectedLesson)
+    if (selectedLesson) {
+      console.log(selectedLesson.tuitionId)
+      this.paymentForm.patchValue({ tuitionId: selectedLesson.tuitionId });
+    }
+
+    console.log('TUITION ID:', this.paymentForm.get('tuitionId')?.value);
   }
 
   fileValidator(control: any) {
@@ -103,7 +118,7 @@ export class PaymentsComponent implements OnInit {
       amount: this.paymentForm.value.amount,
       dueDate: this.paymentForm.value.dueDate,
       lessonDate: this.paymentForm.value.lesson,
-      name: this.paymentForm.value.tuition
+      tuitionId: this.paymentForm.value.tuitionId
     };
 
     const invoiceFile = this.paymentForm.value.invoice;

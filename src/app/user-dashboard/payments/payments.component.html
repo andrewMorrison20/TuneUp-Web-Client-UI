@@ -20,7 +20,7 @@
 
         <mat-form-field appearance="outline">
           <mat-label>Select Lesson</mat-label>
-          <mat-select formControlName="lesson">
+          <mat-select formControlName="lesson" (selectionChange)="onLessonChange($event.value)">
             <mat-option *ngFor="let lesson of lessons" [value]="lesson.id">
               {{ lesson.availabilityDto.startTime | date:'dd-MM-yyyy HH:mm' }} - {{ lesson.availabilityDto.endTime | date:'dd-MM-yyyy HH:mm' }}
             </mat-option>
