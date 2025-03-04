@@ -94,7 +94,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   private fetchAvailability(date: Date): void {
     if (!this.profile?.id) return;
     const start = new Date(date.getFullYear(), date.getMonth(), 1).toISOString();
-    const end = new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString();
+    const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59, 999);
+    const end = `${endDate.getFullYear()}-${(endDate.getMonth() + 1).toString().padStart(2, '0')}-${endDate.getDate().toString().padStart(2, '0')}T23:59:59.999`;
 
     this.availabilityService.getPeriodAvailabilityForProfile(this.profile.id, start, end)
       .subscribe(slots => {

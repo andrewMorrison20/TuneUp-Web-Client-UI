@@ -54,9 +54,9 @@ export class TuitionSummaryComponent implements OnInit {
 
   ngOnInit() {
     this.profileId = Number(this.route.snapshot.paramMap.get('id'));
+    this.initializeCalendar();
     this.fetchTuitionSummary(new Date());
     this.fetchProfiles();
-    this.initializeCalendar();
     this.updateCalendarEvents();
   }
 
@@ -98,7 +98,8 @@ export class TuitionSummaryComponent implements OnInit {
   private fetchLessons(date: Date): void {
     if (!this.profile?.id) return;
     const start = new Date(date.getFullYear(), date.getMonth(), 1).toISOString();
-    const end = new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString();
+    const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59, 999);
+    const end = `${endDate.getFullYear()}-${(endDate.getMonth() + 1).toString().padStart(2, '0')}-${endDate.getDate().toString().padStart(2, '0')}T23:59:59.999`;
 
     this.availabilityService.getTuitionLessonSummary(this.tuitionSummary.id, start, end)
       .subscribe(response => {
