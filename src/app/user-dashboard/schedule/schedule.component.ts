@@ -52,7 +52,8 @@ export class ScheduleComponent implements OnInit {
 
   fetchAllAvailability(date: Date) {
     const start = new Date(date.getFullYear(), date.getMonth(), 1).toISOString();
-    const end = new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString();
+    const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59, 999);
+    const end = `${endDate.getFullYear()}-${(endDate.getMonth() + 1).toString().padStart(2, '0')}-${endDate.getDate().toString().padStart(2, '0')}T23:59:59.999`;
     console.log(start ,end + 'IN FETCH')
     this.availabilityService.getPeriodAvailabilityForProfile(AuthenticatedUser.getAuthUserProfileId(), start, end)
       .subscribe(response => {
@@ -141,7 +142,7 @@ export class ScheduleComponent implements OnInit {
     const end = new Date(year, month + 1, 0).toISOString();
 
     console.log(` Fetching for month: ${start} to ${end}`);
-    this.fetchAllAvailability(new Date(start));
+    this.fetchAvailabilityForCurrentMonth();
   }
 
 
@@ -178,7 +179,7 @@ export class ScheduleComponent implements OnInit {
 
           dialogRef.afterClosed().subscribe(result => {
             if (result === 'cancelled') {
-              this.fetchAllAvailability(new Date());
+              this.fetchAvailabilityForCurrentMonth();
             }
           });
         },
@@ -202,14 +203,14 @@ export class ScheduleComponent implements OnInit {
           AuthenticatedUser.getAuthUserProfileId(),
           result.startTime,
           result.endTime
-        ).subscribe(() => this.fetchAllAvailability(new Date(result.startTime)));
+        ).subscribe(() => this.fetchAvailabilityForCurrentMonth());
       } else if (result?.action === 'update' && availabilityId) {
        this.availabilityService.updateAvailability(
           availabilityId, result.startTime, result.endTime
-       ).subscribe(() => this.fetchAllAvailability(new Date(result.startTime)));
+       ).subscribe(() => this.fetchAvailabilityForCurrentMonth());
      } else if (result?.action === 'delete' && availabilityId) {
         this.availabilityService.deleteAvailability(availabilityId)
-        .subscribe(() => this.fetchAllAvailability(new Date()));
+        .subscribe(() => this.fetchAvailabilityForCurrentMonth());
       }
     })
     this.updateCalendarEvents();
@@ -335,7 +336,7 @@ private generateDatesToBlock(): { start: string; end: string, profileId:number }
 
     this.availabilityService.batchCreateAvailability(profileId, datesToBlock).subscribe({
       next: () => {
-        this.fetchAllAvailability(new Date(datesToBlock[0].start));
+        this.fetchAvailabilityForCurrentMonth();
         alert('All availability slots successfully created!');
       },
       error: (err) => {
@@ -344,4 +345,22 @@ private generateDatesToBlock(): { start: string; end: string, profileId:number }
       }
     });
   }
+
+  fetchAvailabilityForCurrentMonth(): void {
+    if (!this.calendarComponent) {
+      console.warn("⚠️ Calendar component is not initialized yet.");
+      return;
+    }
+
+    const calendarApi = this.calendarComponent.getApi();
+    if (!calendarApi) {
+      console.error("❌ FullCalendar API is unavailable.");
+      return;
+    }
+
+    const currentDate = new Date(calendarApi.getDate());
+    console.log('Current date is',currentDate)
+    this.fetchAllAvailability(currentDate);
+  }
+
 }
