@@ -103,11 +103,23 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       });
   }
 
-  onMonthChange(info: any): void {
-    const newDate = info.start;
-    this.fetchAvailability(newDate);
+  private onMonthChange(info: any): void {
+    if (!this.calendarComponent || !this.calendarComponent.getApi) {
+      console.warn(' calendarComponent not initialized yet.');
+      return;
+    }
+
+    const currentDate = this.calendarComponent.getApi().getDate();
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    const start = new Date(year, month, 1).toISOString();
+    const end = new Date(year, month + 1, 0).toISOString();
+
+    console.log(`📅 Fetching for month: ${start} to ${end}`);
+    this.fetchAvailability(new Date(start));
   }
-  /** 🔹 Switch to TimeGrid Day View */
+
+  /**  Switch to TimeGrid Day View */
   onDateClick(info: any): void {
     console.log('Clicked date:', info.dateStr);
     if (this.calendarComponent?.getApi()) {
@@ -116,7 +128,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     }
   }
 
-  /** 🔹 Switch Back to Month View */
+  /**  Switch Back to Month View */
   switchToMonthView(): void {
     console.log('Switching back to Month View...');
     if (this.calendarComponent?.getApi()) {
@@ -125,7 +137,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     }
   }
 
-  /** 🔹 Handle Event Click */
+  /**  Handle Event Click */
   onEventClick(info: any): void {
     console.log('Event clicked:', info.event.title);
 

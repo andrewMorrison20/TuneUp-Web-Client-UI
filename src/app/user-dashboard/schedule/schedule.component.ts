@@ -140,7 +140,7 @@ export class ScheduleComponent implements OnInit {
     const start = new Date(year, month, 1).toISOString();
     const end = new Date(year, month + 1, 0).toISOString();
 
-    console.log(`📅 Fetching for month: ${start} to ${end}`);
+    console.log(` Fetching for month: ${start} to ${end}`);
     this.fetchAllAvailability(new Date(start));
   }
 
@@ -239,7 +239,7 @@ onBlockBookSubmit(): void {
 const datesToBlock = this.generateDatesToBlock();
 
 if (datesToBlock.length === 0) {
-  alert('⚠️ No valid availability slots found.');
+  alert('No valid availability slots found.');
   return;
 }
 
@@ -247,11 +247,11 @@ this.submitAvailabilitySlots(datesToBlock);
 }
 
 /**
- * ✅ Validates input before processing
+ *  Validates input before processing
  */
 private isValidInput(): boolean {
   if (!this.blockBookData.startDate || !this.blockBookData.endDate) {
-    alert('⚠️ Please select a valid start and end date.');
+    alert(' Please select a valid start and end date.');
     return false;
   }
 
@@ -259,13 +259,13 @@ private isValidInput(): boolean {
   const endDate = new Date(this.blockBookData.endDate);
 
   if (startDate > endDate) {
-    alert('⚠️ Start date cannot be after end date.');
+    alert(' Start date cannot be after end date.');
     return false;
   }
 
   if (!this.blockBookData.allDay) {
     if (!this.blockBookData.startTime || !this.blockBookData.endTime) {
-      alert('⚠️ Please select a start and end time.');
+      alert(' Please select a start and end time.');
       return false;
     }
     if (this.blockBookData.startTime >= this.blockBookData.endTime) {
@@ -278,7 +278,7 @@ private isValidInput(): boolean {
 }
 
 /**
- * ✅ Generates the list of dates to block
+ *  Generates the list of dates to block
  */
 private generateDatesToBlock(): { start: string; end: string, profileId:number }[] {
   const profileId = AuthenticatedUser.getAuthUserProfileId();

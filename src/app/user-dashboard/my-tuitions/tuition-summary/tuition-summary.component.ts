@@ -54,18 +54,19 @@ export class TuitionSummaryComponent implements OnInit {
 
   ngOnInit() {
     this.profileId = Number(this.route.snapshot.paramMap.get('id'));
-    this.fetchTuitionSummary();
+    this.fetchTuitionSummary(new Date());
     this.fetchProfiles();
+    this.initializeCalendar();
+    this.updateCalendarEvents();
   }
 
   //this needs generalised for both profile types i.e args need switch
 
-  fetchTuitionSummary() {
+  fetchTuitionSummary(date: Date) {
     this.availabilityService.getTuitionSummary(this.profileId, AuthenticatedUser.getAuthUserProfileId()).subscribe(response => {
       this.tuitionSummary = response;
       this.tuitionDetails.startDate = this.tuitionSummary.startDate;
 
-      this.initializeCalendar();
       this.fetchLessons(new Date());
 
       this.loading = false;
@@ -79,10 +80,10 @@ export class TuitionSummaryComponent implements OnInit {
       plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       height: 'auto',
       contentHeight: 600,
-      slotMinTime: "06:00:00", // Start time of the day (Adjust based on business hours)
-      slotMaxTime: "23:00:00", // End time
-      slotDuration: "00:15:00", // Smaller slots allow finer adjustments
-      expandRows: true, // Ensures row height expands for long slots
+      slotMinTime: "06:00:00",
+      slotMaxTime: "23:00:00",
+      slotDuration: "00:15:00",
+      expandRows: true,
       events: [],
       dateClick: this.onDateClick.bind(this),
       datesSet: this.onMonthChange.bind(this),
@@ -165,9 +166,20 @@ export class TuitionSummaryComponent implements OnInit {
     }
   }
 
-  onMonthChange(info: any): void {
-    const newDate = info.start;
-    this.fetchLessons(newDate);
+  private onMonthChange(info: any): void {
+    if (!this.calendarComponent || !this.calendarComponent.getApi) {
+      console.warn(' calendarComponent not initialized yet.');
+      return;
+    }
+
+    const currentDate = this.calendarComponent.getApi().getDate();
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    const start = new Date(year, month, 1).toISOString();
+    const end = new Date(year, month + 1, 0).toISOString();
+
+    console.log(` Fetching for month: ${start} to ${end}`);
+    this.fetchLessons(new Date(start));
   }
 
   goBackToTuitions() {
