@@ -157,8 +157,12 @@ export class AvailabilityService {
   cancelLessonById(id: number, resetAvailability: boolean) {
     const authToken = AuthenticatedUser.getAuthUserToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${authToken}`);
-    return this.http.delete<any>(`${this.url}/lessons/cancel/${id}`,{headers});
+
+    const params = new HttpParams().set('resetAvailability', String(resetAvailability));
+
+    return this.http.delete<any>(`${this.url}/lessons/cancel/${id}`, { headers, params });
   }
+
 
   batchCreateAvailability(profileId: number, slots: { start: string, end: string }[]) {
     return this.http.post(`${this.url}/availability/${profileId}/batchCreate`, slots);

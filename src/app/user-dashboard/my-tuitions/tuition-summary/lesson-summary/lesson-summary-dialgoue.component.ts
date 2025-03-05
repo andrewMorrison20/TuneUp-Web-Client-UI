@@ -56,8 +56,6 @@ export class LessonSummaryDialogComponent implements OnInit {
 
   cancelLesson(): void {
     console.log('Cancelling Lesson ID:', this.data.lesson.id);
-    console.log('reset in cancel' , this.resetAvailability)
-
     this.availabilityService.cancelLessonById(this.data.lesson.id, this.resetAvailability).pipe(
       tap(() => {
         console.log(`Lesson cancelled. Reset availability: ${this.resetAvailability}`);
