@@ -47,6 +47,7 @@ export class PaymentsComponent implements OnInit {
   pageIndex = 0;
   isLoading = true;
   selectedPayments: Payment[] = [];
+  reminderSentOn: string | null =null;
   selectedFileName: string | null = null;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -119,12 +120,20 @@ export class PaymentsComponent implements OnInit {
     return null;
   }
 
+  formatDateToISO(dateString: string): string {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toISOString().slice(0, 19); // Trim timezone (Z) if backend doesn't support it
+  }
+
   submitPayment(): void {
     if (this.paymentForm.invalid) return;
 
+    const formattedDueDate = this.formatDateToISO(this.paymentForm.value.dueDate);
+
     const paymentData: Payment = {
       amount: this.paymentForm.value.amount,
-      dueDate: this.paymentForm.value.dueDate,
+      dueDate: formattedDueDate,
       lessonId: this.paymentForm.value.lesson,
       lessonDate: this.paymentForm.value.lessonDate,
       tuitionId: this.paymentForm.value.tuitionId
