@@ -104,9 +104,11 @@
         <ng-container matColumnDef="dueDate">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Due/Paid Date</th>
           <td mat-cell *matCellDef="let payment">
-            {{ payment.status === 'Paid' ? payment.paidOn : payment.dueDate }}
+            {{ payment.status === 'Paid' && payment.paidOn ? (payment.paidOn | date:'dd-MM-yyyy ') :
+            (payment.dueDate ? (payment.dueDate | date:'dd-MM-yyyy ') : 'N/A') }}
           </td>
         </ng-container>
+        >
 
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef>Actions</th>
