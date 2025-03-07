@@ -27,7 +27,25 @@ import {ReviewDialogueComponent} from "../reviews/review-dialogue.component";
 export class TuitionSummaryComponent implements OnInit {
 
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
-  calendarOptions!: CalendarOptions;
+  calendarOptions: CalendarOptions =  {
+    initialView: 'dayGridMonth',
+    selectable: true,
+    plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
+    height: 'auto',
+    contentHeight: 600,
+    slotMinTime: "06:00:00",
+    slotMaxTime: "23:00:00",
+    slotDuration: "00:15:00",
+    expandRows: true,
+    events: [],
+    dateClick: this.onDateClick.bind(this),
+    datesSet: this.onMonthChange.bind(this),
+    eventTimeFormat: {
+      hour: '2-digit',
+      minute: '2-digit',
+      meridiem: false
+    }
+  }
   availabilitySlots: any[] = []
   isTimeGridView = false;
   profileId!: number;
@@ -54,45 +72,18 @@ export class TuitionSummaryComponent implements OnInit {
 
   ngOnInit() {
     this.profileId = Number(this.route.snapshot.paramMap.get('id'));
-    this.initializeCalendar();
-    this.fetchTuitionSummary(new Date());
+    this.fetchTuitionSummary();
     this.fetchProfiles();
+    this.fetchLessons(new Date());
     this.updateCalendarEvents();
+    this.loading = false;
   }
 
-  //this needs generalised for both profile types i.e args need switch
-
-  fetchTuitionSummary(date: Date) {
+  fetchTuitionSummary() {
     this.availabilityService.getTuitionSummary(this.profileId, AuthenticatedUser.getAuthUserProfileId()).subscribe(response => {
       this.tuitionSummary = response;
       this.tuitionDetails.startDate = this.tuitionSummary.startDate;
-
-      this.fetchLessons(new Date());
-
-      this.loading = false;
     });
-  }
-
-  private initializeCalendar(): void {
-    this.calendarOptions = {
-      initialView: 'dayGridMonth',
-      selectable: true,
-      plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
-      height: 'auto',
-      contentHeight: 600,
-      slotMinTime: "06:00:00",
-      slotMaxTime: "23:00:00",
-      slotDuration: "00:15:00",
-      expandRows: true,
-      events: [],
-      dateClick: this.onDateClick.bind(this),
-      datesSet: this.onMonthChange.bind(this),
-      eventTimeFormat: {
-        hour: '2-digit',
-        minute: '2-digit',
-        meridiem: false
-      }
-    }
   }
 
   private fetchLessons(date: Date): void {
@@ -110,6 +101,9 @@ export class TuitionSummaryComponent implements OnInit {
 
 
   private updateCalendarEvents(): void {
+    if(!this.availabilitySlots){
+      return
+    }
     this.calendarOptions.events = this.availabilitySlots.map((lesson: LessonSummary) => ({
       title: lesson.lessonStatus,
       start: lesson.availabilityDto.startTime,
@@ -158,7 +152,7 @@ export class TuitionSummaryComponent implements OnInit {
     }
   }
 
-  /** 🔹 Switch Back to Month View */
+  /** Switch Back to Month View */
   switchToMonthView(): void {
     console.log('Switching back to Month View...');
     if (this.calendarComponent?.getApi()) {

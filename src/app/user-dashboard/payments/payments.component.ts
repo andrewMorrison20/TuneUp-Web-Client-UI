@@ -23,6 +23,7 @@ interface Payment {
   dueDate: string;
   paidOn?: string;
   invoiceUrl?: string;
+  lessonId:number;
 }
 
 type Profile = TutorProfile | StudentProfile;
@@ -85,7 +86,11 @@ export class PaymentsComponent implements OnInit {
       this.paymentForm.patchValue({
         tuitionId: selectedLesson.tuitionId,
         lessonDate: selectedLesson.availabilityDto.startTime
+
       });
+
+      console.log(selectedLesson)
+
     }
 
     console.log('Lesson Date:', this.paymentForm.get('lessonDate')?.value);
@@ -120,7 +125,8 @@ export class PaymentsComponent implements OnInit {
     const paymentData: Payment = {
       amount: this.paymentForm.value.amount,
       dueDate: this.paymentForm.value.dueDate,
-      lessonDate: this.paymentForm.value.lesson,
+      lessonId: this.paymentForm.value.lesson,
+      lessonDate: this.paymentForm.value.lessonDate,
       tuitionId: this.paymentForm.value.tuitionId
     };
 
@@ -212,8 +218,6 @@ export class PaymentsComponent implements OnInit {
         this.dataSource._updateChangeSubscription();
       });
   }
-
-
 
 
   applyFilter(): void {

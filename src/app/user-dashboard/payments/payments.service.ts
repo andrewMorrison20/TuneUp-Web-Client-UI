@@ -22,7 +22,7 @@ export class PaymentsService {
 
 
   markPaymentsAsPaid(paymentIds: number[]): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/mark-paid`, { paymentIds });
+    return this.http.patch<any>(`${this.apiUrl}/mark-paid`,  paymentIds );
   }
 
   uploadInvoice(file: File): Observable<string> {
