@@ -1,3 +1,15 @@
-.lesson-actions button {
-  margin-right: 5px;
+.lesson-actions {
+  display: flex;
+  flex-wrap: wrap; /* Allows wrapping on small screens */
+  gap: 10px; /* Adds spacing between buttons */
+
+  @media (max-width: 600px) {
+    flex-direction: column; /* Stack buttons on small screens */
+    align-items: center; /* Center buttons when stacked */
+
+    button {
+      width: 100%; /* Full-width buttons for better touchability */
+    }
+  }
 }
+

@@ -29,6 +29,12 @@
       <button mat-raised-button color="warn" (click)="cancelLesson()">
         <mat-icon>close</mat-icon> Cancel
       </button>
+
+
+    <button mat-raised-button color="accent" (click)="updateLessonStatus('COMPLETED',data.lesson.id)">
+      <mat-icon>task_alt</mat-icon>
+      Mark Complete
+    </button>
       <mat-checkbox [(ngModel)]="resetAvailability" name="resetAvailability">
         Automatically set availability to available
       </mat-checkbox>

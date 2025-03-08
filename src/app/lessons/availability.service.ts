@@ -167,6 +167,15 @@ export class AvailabilityService {
   batchCreateAvailability(profileId: number, slots: { start: string, end: string }[]) {
     return this.http.post(`${this.url}/availability/${profileId}/batchCreate`, slots);
   }
+
+  updateLessonStatus(lessonStatus: string, lessonId: number) {
+    const authToken = AuthenticatedUser.getAuthUserToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${authToken}`);
+    const params = new HttpParams().set('lessonStatus', lessonStatus); // No need to wrap in String()
+
+    return this.http.patch(`${this.url}/lessons/updateStatus/${lessonId}`, {}, { headers, params });
+  }
+
 }
 
 
