@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import {Component, HostListener, Inject, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -35,6 +35,7 @@ type Profile = TutorProfile | StudentProfile;
   styleUrls: ['./payments.component.scss']
 })
 export class PaymentsComponent implements OnInit {
+  dropdownOpen = false;
   paymentForm: FormGroup;
   statuses = ['All', 'Due', 'Paid', 'Overdue'];
   selectedStatus = 'All';
@@ -50,6 +51,13 @@ export class PaymentsComponent implements OnInit {
   selectedPayments: Payment[] = [];
   reminderSentOn: string | null =null;
   selectedFileName: string | null = null;
+  filters = {
+    sortByName: false,
+    sortByLessonDate: false,
+    sortByAmount: false
+  };
+  selectedProfileId: number | null = null
+
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -75,7 +83,51 @@ export class PaymentsComponent implements OnInit {
     this.fetchTuitions();
   }
 
-  futureDateValidator(control: any) {
+
+  toggleDropdown(): void {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  //client side sorting since intial tab fetches all data and this is static until user updates on this page which refreshes page anyway - avoids redundant db hit.
+  applySorting(): void {
+    let sortedData = [...this.payments];
+
+    if (this.filters.sortByName) {
+      sortedData.sort((a, b) => (a.displayName || '').localeCompare(b.displayName || ''));
+    }
+    if (this.filters.sortByLessonDate) {
+      sortedData.sort((a, b) => new Date(a.lessonDate).getTime() - new Date(b.lessonDate).getTime());
+    }
+    if (this.filters.sortByAmount) {
+      sortedData.sort((a, b) => parseFloat(a.amount) - parseFloat(b.amount));
+    }
+
+    this.dataSource.data = sortedData;
+  }
+
+
+  @HostListener('document:click', ['$event'])
+  closeDropdownOnOutsideClick(event: Event): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.sort-filter-container')) {
+      this.dropdownOpen = false;
+    }
+  }
+  applyProfileFilter(): void {
+    if (this.selectedProfileId) {
+      this.dataSource.data = this.payments.filter(payment => payment.tuitionId === this.selectedProfileId);
+    } else {
+      this.dataSource.data = this.payments;
+    }
+  }
+
+  resetFilters(): void {
+      this.filters = { sortByName: false, sortByLessonDate: false, sortByAmount: false };
+      this.selectedProfileId = null;
+      this.fetchPayments(); // Reload payments with original data
+    }
+
+    futureDateValidator(control: any) {
     if (!control.value) {
       return null;
     }

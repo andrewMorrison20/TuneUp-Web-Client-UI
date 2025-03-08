@@ -68,6 +68,36 @@
       <mat-tab label="Paid" (click)="selectedStatus='Paid'"></mat-tab>
       <mat-tab label="Overdue" (click)="selectedStatus='Overdue'"></mat-tab>
     </mat-tab-group>
+
+    <div class="sort-filter-container">
+      <button mat-button class="sort-filter-button" (click)="toggleDropdown()">
+        <mat-icon>sort</mat-icon> Sort & Filter
+      </button>
+
+      <div *ngIf="dropdownOpen" class="custom-dropdown">
+        <div class="dropdown-content">
+          <p><strong>Sort by:</strong></p>
+          <label><input type="checkbox" [(ngModel)]="filters.sortByName" (change)="applySorting()"> Name</label>
+          <label><input type="checkbox" [(ngModel)]="filters.sortByLessonDate" (change)="applySorting()"> Lesson Date</label>
+          <label><input type="checkbox" [(ngModel)]="filters.sortByAmount" (change)="applySorting()"> Amount</label>
+
+          <hr>
+
+          <p><strong>Filter by Profile:</strong></p>
+          <select [(ngModel)]="selectedProfileId" (change)="applyProfileFilter()" class="profile-dropdown">
+            <option [value]="null">All Profiles</option>
+            <option *ngFor="let profile of profiles" [value]="profile.id">
+              {{ profile.displayName }}
+            </option>
+          </select>
+
+          <button class="reset-filters-button" (click)="resetFilters()">Reset Filters</button>
+        </div>
+      </div>
+    </div>
+
+
+
     <div class="table-container">
       <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

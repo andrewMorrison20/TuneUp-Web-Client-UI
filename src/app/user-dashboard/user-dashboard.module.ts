@@ -52,6 +52,7 @@ import {
 } from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
 import {PaymentsService} from "./payments/payments.service";
+import {MatMenu, MatMenuTrigger} from "@angular/material/menu";
 
 
 @NgModule({
@@ -117,7 +118,9 @@ import {PaymentsService} from "./payments/payments.service";
     MatHeaderCellDef,
     MatTable,
     MatSort,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatMenu,
+    MatMenuTrigger
   ],
   providers:[AddressService,PaymentsService]
 })
