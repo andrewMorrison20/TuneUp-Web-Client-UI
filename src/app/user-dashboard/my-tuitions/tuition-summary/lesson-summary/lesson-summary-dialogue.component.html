@@ -26,16 +26,22 @@
       <mat-icon>book</mat-icon> Go To Study Hub
     </button>
 
-      <button mat-raised-button color="warn" (click)="cancelLesson()">
-        <mat-icon>close</mat-icon> Cancel
-      </button>
-
-
-    <button mat-raised-button color="accent" (click)="updateLessonStatus('COMPLETED',data.lesson.id)">
-      <mat-icon>task_alt</mat-icon>
-      Mark Complete
+    <!-- Show "Cancel" button ONLY if lesson is NOT completed -->
+    <button *ngIf="data.lesson.lessonStatus !== 'completed'" mat-raised-button color="warn" (click)="cancelLesson()">
+      <mat-icon>close</mat-icon> Cancel
     </button>
-      <mat-checkbox [(ngModel)]="resetAvailability" name="resetAvailability">
+
+    <!-- Show "Mark Complete" button if lesson is NOT completed -->
+    <button *ngIf="data.lesson.lessonStatus !== 'completed'" mat-raised-button color="accent" (click)="updateLessonStatus('COMPLETED', data.lesson.id)">
+      <mat-icon>task_alt</mat-icon> Mark Complete
+    </button>
+
+    <!-- Show "Go to Payments" button ONLY if lesson is completed -->
+    <button *ngIf="data.lesson.lessonStatus === 'completed'" mat-raised-button color="accent" (click)="goToPayments()">
+      <mat-icon>payment</mat-icon> Go to Payments
+    </button>
+
+      <mat-checkbox *ngIf="data.lesson.lessonStatus !== 'completed'" [(ngModel)]="resetAvailability" name="resetAvailability">
         Automatically set availability to available
       </mat-checkbox>
   </div>

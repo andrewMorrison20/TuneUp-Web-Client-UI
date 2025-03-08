@@ -172,7 +172,7 @@ export class ScheduleComponent implements OnInit {
               status: availability.status
             }
           };
-
+          console.log(combinedLessonSummary)
           const dialogRef = this.dialog.open(LessonSummaryDialogComponent, {
             data: { lesson: combinedLessonSummary, address: null }
           });
@@ -270,7 +270,7 @@ private isValidInput(): boolean {
       return false;
     }
     if (this.blockBookData.startTime >= this.blockBookData.endTime) {
-      alert('⚠️ Start time must be before end time.');
+      alert(' Start time must be before end time.');
       return false;
     }
   }
@@ -348,7 +348,7 @@ private generateDatesToBlock(): { start: string; end: string, profileId:number }
 
   fetchAvailabilityForCurrentMonth(): void {
     if (!this.calendarComponent) {
-      console.warn("⚠️ Calendar component is not initialized yet.");
+      console.warn(" Calendar component is not initialized yet.");
       return;
     }
 

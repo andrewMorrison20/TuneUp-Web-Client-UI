@@ -5,6 +5,7 @@ import {LessonSummary} from "./lesson-summary.model";
 import {catchError, of, pipe} from "rxjs";
 import {tap} from "rxjs/operators";
 import {AvailabilityService} from "../../../../lessons/availability.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-lesson-summary-dialogue',
@@ -22,11 +23,13 @@ export class LessonSummaryDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<LessonSummaryDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { lesson: LessonSummary, address: AddressDto | null },
     private addressService: AddressService,
-    private availabilityService: AvailabilityService
+    private availabilityService: AvailabilityService,
+    private router : Router
   ) {}
 
   ngOnInit(): void {
     console.log('reset : ' ,this.resetAvailability)
+    console.log(this.data.lesson)
     if (this.data.lesson.lessonType === 'In Person') {
       this.fetchLessonLocation(this.data.lesson.tuitionId);
     } else if (this.data.address?.latitude && this.data.address?.longitude) {
@@ -82,13 +85,20 @@ export class LessonSummaryDialogComponent implements OnInit {
   updateLessonStatus(lessonStatus : string, lessonId: number) {
       this.availabilityService.updateLessonStatus(lessonStatus,lessonId).pipe(
       tap(() => {
-        console.log(`Lesson cancelled. Reset availability: ${this.resetAvailability}`);
-        this.dialogRef.close('cancelled');
+        console.log(`Lesson status updated`);
+        this.dialogRef.close('updated');
+        this.showAlert('Lesson successfully marked as completed')
       }),
       catchError(error => {
         console.error('Failed to cancel lesson:', error);
+        this.showAlert('Unable to update lesson status, please try again.')
         return of(null); // Prevents observable from crashing the app
       })
     ).subscribe();
+  }
+
+  goToPayments(): void {
+    this.router.navigate(['/user-dashboard/payments']);
+    this.dialogRef.close();
   }
 }
