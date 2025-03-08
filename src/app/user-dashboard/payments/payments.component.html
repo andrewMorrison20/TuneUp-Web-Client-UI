@@ -159,7 +159,14 @@
         </ng-container>
       </table>
     </div>
-    <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+    <mat-paginator
+      [length]="totalElements"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[5, 10, 25]"
+      showFirstLastButtons
+      (page)="onPageChange($event)">
+    </mat-paginator>
+
     <div class="paid-button-container">
       <button mat-raised-button color="accent" class="paid-button"
               (click)="markAsPaid()"

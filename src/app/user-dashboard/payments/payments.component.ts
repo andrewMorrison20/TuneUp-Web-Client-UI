@@ -2,7 +2,7 @@ import {Component, HostListener, Inject, OnInit, ViewChild} from '@angular/core'
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { TuitionsService } from '../my-tuitions/tuitions.service';
 import { AuthenticatedUser } from '../../authentication/authenticated-user.class';
@@ -43,13 +43,13 @@ export class PaymentsComponent implements OnInit {
   displayedColumns: string[] = ['select', 'displayName', 'lessonDate', 'amount', 'status', 'dueDate', 'actions'];
   dataSource = new MatTableDataSource<Payment>(this.payments);
   profiles: Profile[] = [];
-  lessons:LessonSummary[] = [];
+  lessons: LessonSummary[] = [];
   totalElements = 0;
   pageSize = 10;
   pageIndex = 0;
   isLoading = true;
   selectedPayments: Payment[] = [];
-  reminderSentOn: string | null =null;
+  reminderSentOn: string | null = null;
   selectedFileName: string | null = null;
   filters = {
     sortByName: false,
@@ -66,14 +66,14 @@ export class PaymentsComponent implements OnInit {
               private dialog: MatDialog,
               private tuitionsService: TuitionsService,
               private paymentsService: PaymentsService,
-              private snackBar : MatSnackBar) {
+              private snackBar: MatSnackBar) {
     this.paymentForm = this.fb.group({
       tuition: ['', Validators.required],
       lessonId: ['', Validators.required],
       amount: ['', [Validators.required, Validators.min(1)]],
       invoice: [null, [this.fileValidator]],
       dueDate: ['', [Validators.required, this.futureDateValidator]],
-      tuitionId:['',[Validators.required, Validators.min(1)]],
+      tuitionId: ['', [Validators.required, Validators.min(1)]],
       lessonDate: ['', Validators.required],
     });
   }
@@ -113,6 +113,7 @@ export class PaymentsComponent implements OnInit {
       this.dropdownOpen = false;
     }
   }
+
   applyProfileFilter(): void {
     if (this.selectedProfileId) {
       this.dataSource.data = this.payments.filter(payment => payment.tuitionId === this.selectedProfileId);
@@ -122,19 +123,19 @@ export class PaymentsComponent implements OnInit {
   }
 
   resetFilters(): void {
-      this.filters = { sortByName: false, sortByLessonDate: false, sortByAmount: false };
-      this.selectedProfileId = null;
-      this.fetchPayments(); // Reload payments with original data
-    }
+    this.filters = {sortByName: false, sortByLessonDate: false, sortByAmount: false};
+    this.selectedProfileId = null;
+    this.fetchPayments(); // Reload payments with original data
+  }
 
-    futureDateValidator(control: any) {
+  futureDateValidator(control: any) {
     if (!control.value) {
       return null;
     }
     const selectedDate = new Date(control.value);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    return selectedDate >= today ? null : { pastDate: true };
+    return selectedDate >= today ? null : {pastDate: true};
   }
 
   onLessonChange(lessonId: number): void {
@@ -170,11 +171,11 @@ export class PaymentsComponent implements OnInit {
     const file = control.value;
 
     if (!allowedTypes.includes(file.type)) {
-      return { invalidFileType: true };
+      return {invalidFileType: true};
     }
 
     if (file.size > maxSize) {
-      return { fileTooLarge: true };
+      return {fileTooLarge: true};
     }
 
     return null;
@@ -230,7 +231,7 @@ export class PaymentsComponent implements OnInit {
           next: () => {
             console.log('Payment created without invoice');
             this.fetchPayments();
-            this.snackBar.open('Payment successfully created!', 'OK', { duration: 3000 });
+            this.snackBar.open('Payment successfully created!', 'OK', {duration: 3000});
             setTimeout(() => {
               window.location.reload();
             }, 1000)
@@ -250,9 +251,9 @@ export class PaymentsComponent implements OnInit {
   }
 
   removeSelectedFile(fileInput: HTMLInputElement): void {
-    this.paymentForm.patchValue({ invoice: null });
+    this.paymentForm.patchValue({invoice: null});
     this.paymentForm.get('invoice')?.updateValueAndValidity();
-    this.paymentForm.patchValue({ invoice: null });
+    this.paymentForm.patchValue({invoice: null});
     this.selectedFileName = null;
     fileInput.value = '';
   }
@@ -281,31 +282,28 @@ export class PaymentsComponent implements OnInit {
     this.isLoading = true; // Show loading state
     const profileId = AuthenticatedUser.getAuthUserProfileId();
 
-    // Convert "All" to null to fetch all payments (since backend expects null)
     const statusParam = status === 'All' ? null : status;
 
-    this.paymentsService.getPayments(profileId, statusParam)
+    this.paymentsService.getPayments(profileId, this.selectedStatus, this.pageIndex, this.pageSize)
       .pipe(take(1))
-      .subscribe((payments: Payment[]) => {
-        this.payments = payments.map(payment => ({
-          ...payment,
-          displayName: payment.displayName ?? 'Unknown'
-        }));
-
-        console.log('Fetched Payments:', this.payments);
-        this.dataSource.data = this.payments;
-        this.dataSource._updateChangeSubscription();
-        this.isLoading = false; // Hide loading state
-      }, error => {
-        console.error('Error fetching payments:', error);
-        this.isLoading = false;
+      .subscribe({
+        next: (response) => {
+          this.payments = response.content;
+          this.totalElements = response.totalElements;
+          this.dataSource.data = this.payments;
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Error fetching payments:', error);
+          this.isLoading = false;
+        }
       });
   }
 
 
   viewInvoice(payment: Payment): void {
     this.dialog.open(InvoiceDialogComponent, {
-      data: { payment }
+      data: {payment}
     });
   }
 
@@ -316,12 +314,12 @@ export class PaymentsComponent implements OnInit {
       .pipe(take(1))
       .subscribe({
         next: () => {
-          this.snackBar.open('Reminder sent successfully!', 'OK', { duration: 3000 });
+          this.snackBar.open('Reminder sent successfully!', 'OK', {duration: 3000});
           this.fetchPayments();
         },
         error: (err) => {
           console.error('Error sending reminder:', err);
-          this.snackBar.open('Failed to send reminder. Try again later.', 'Close', { duration: 3000 });
+          this.snackBar.open('Failed to send reminder. Try again later.', 'Close', {duration: 3000});
         }
       });
   }
@@ -369,7 +367,7 @@ export class PaymentsComponent implements OnInit {
     const file = event.target.files[0];
 
     if (file) {
-      this.paymentForm.patchValue({ invoice: file });
+      this.paymentForm.patchValue({invoice: file});
       this.paymentForm.get('invoice')?.updateValueAndValidity();
       this.selectedFileName = file.name;
     }
@@ -380,8 +378,14 @@ export class PaymentsComponent implements OnInit {
   }
 
   protected readonly AuthenticatedUser = AuthenticatedUser;
-}
 
+
+  onPageChange(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.fetchPayments(this.selectedStatus);
+  }
+}
 @Component({
   selector: 'app-invoice-dialog',
   template: `

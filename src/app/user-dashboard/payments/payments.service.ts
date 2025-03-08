@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 
@@ -11,15 +11,20 @@ export class PaymentsService {
 
   constructor(private http: HttpClient) {}
 
-  getPayments(profileId: number, statusParam: null | string): Observable<any> {
-    let params: any = { profileId: profileId.toString() };
+  getPayments(profileId: number, statusParam: string | null, pageIndex: number, pageSize: number): Observable<any> {
+    let params = new HttpParams()
+      .set("profileId", profileId.toString())
+      .set("page", pageIndex.toString())
+      .set("size", pageSize.toString());
 
-    if (statusParam) {
-      params.status = statusParam.toUpperCase();
+    if (statusParam && statusParam.toUpperCase() !== 'ALL') {
+      params = params.set("status", statusParam.toUpperCase());
     }
 
     return this.http.get<any>(`${this.apiUrl}`, { params });
   }
+
+
 
 
   createPayment(paymentData: any): Observable<any> {
