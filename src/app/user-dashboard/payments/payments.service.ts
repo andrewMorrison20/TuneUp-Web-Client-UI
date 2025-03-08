@@ -50,8 +50,10 @@ export class PaymentsService {
     });
   }
 
-  deletePayment(paymentId: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${paymentId}`);
+  deletePayments(paymentIds: any[]): Observable<any> {
+    return this.http.request<any>('DELETE', `${this.apiUrl}/delete`, {
+      body: paymentIds
+    });
   }
 
   sendRemindForPayment(paymentId: number) {

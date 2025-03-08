@@ -371,6 +371,18 @@ export class PaymentsComponent implements OnInit {
     this.pageIndex = 0;
     this.fetchPayments();
   }
+
+  deletePayments() {
+    if (!this.selectedPayments.length) return;
+
+    const paymentIds = this.selectedPayments.map(p => p.id);
+    this.paymentsService.deletePayments(paymentIds)
+      .pipe(take(1))
+      .subscribe(() => {
+        console.log('Payments deleted');
+        this.fetchPayments();
+      });
+  }
 }
 @Component({
   selector: 'app-invoice-dialog',
