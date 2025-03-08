@@ -11,19 +11,24 @@ export class PaymentsService {
 
   constructor(private http: HttpClient) {}
 
-  getPayments(profileId: number, statusParam: string | null, pageIndex: number, pageSize: number): Observable<any> {
-    let params = new HttpParams()
-      .set("profileId", profileId.toString())
-      .set("page", pageIndex.toString())
-      .set("size", pageSize.toString());
+  getPayments(profileId: number, statusParam: string | null, profileFilterId: number | null, pageIndex: number, pageSize: number, sortField: string, sortDirection: string) {
+    let params: any = {
+      profileId: profileId.toString(),
+      page: pageIndex.toString(),
+      size: pageSize.toString(),
+      sort: `${sortField},${sortDirection}`
+    };
 
-    if (statusParam && statusParam.toUpperCase() !== 'ALL') {
-      params = params.set("status", statusParam.toUpperCase());
+    if (statusParam) {
+      params.status = statusParam.toUpperCase();
+    }
+
+    if (profileFilterId) {
+      params.profileFilterId = profileFilterId.toString();
     }
 
     return this.http.get<any>(`${this.apiUrl}`, { params });
   }
-
 
 
 

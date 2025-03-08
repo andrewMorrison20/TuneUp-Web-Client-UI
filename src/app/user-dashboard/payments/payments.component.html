@@ -77,9 +77,9 @@
       <div *ngIf="dropdownOpen" class="custom-dropdown">
         <div class="dropdown-content">
           <p><strong>Sort by:</strong></p>
-          <label><input type="checkbox" [(ngModel)]="filters.sortByName" (change)="applySorting()"> Name</label>
-          <label><input type="checkbox" [(ngModel)]="filters.sortByLessonDate" (change)="applySorting()"> Lesson Date</label>
-          <label><input type="checkbox" [(ngModel)]="filters.sortByAmount" (change)="applySorting()"> Amount</label>
+          <label><input type="radio" name="sort" (change)="applySorting('dueDate')" /> Due Date</label>
+          <label><input type="radio" name="sort" (change)="applySorting('reminderSentOn')" /> Reminder date</label>
+          <label><input type="radio" name="sort" (change)="applySorting('amount')" /> Amount</label>
 
           <hr>
 
@@ -90,7 +90,6 @@
               {{ profile.displayName }}
             </option>
           </select>
-
           <button class="reset-filters-button" (click)="resetFilters()">Reset Filters</button>
         </div>
       </div>

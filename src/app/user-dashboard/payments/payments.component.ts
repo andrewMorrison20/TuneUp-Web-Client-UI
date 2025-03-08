@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import {MatSort, Sort} from '@angular/material/sort';
 import { TuitionsService } from '../my-tuitions/tuitions.service';
 import { AuthenticatedUser } from '../../authentication/authenticated-user.class';
 import {tap, catchError, take} from 'rxjs/operators';
@@ -51,11 +51,9 @@ export class PaymentsComponent implements OnInit {
   selectedPayments: Payment[] = [];
   reminderSentOn: string | null = null;
   selectedFileName: string | null = null;
-  filters = {
-    sortByName: false,
-    sortByLessonDate: false,
-    sortByAmount: false
-  };
+  sortField: string = 'dueDate';
+  sortDirection: 'asc' | 'desc' = 'desc'
+
   selectedProfileId: number | null = null
 
 
@@ -88,22 +86,6 @@ export class PaymentsComponent implements OnInit {
     this.dropdownOpen = !this.dropdownOpen;
   }
 
-  //client side sorting since intial tab fetches all data and this is static until user updates on this page which refreshes page anyway - avoids redundant db hit.
-  applySorting(): void {
-    let sortedData = [...this.payments];
-
-    if (this.filters.sortByName) {
-      sortedData.sort((a, b) => (a.displayName || '').localeCompare(b.displayName || ''));
-    }
-    if (this.filters.sortByLessonDate) {
-      sortedData.sort((a, b) => new Date(a.lessonDate).getTime() - new Date(b.lessonDate).getTime());
-    }
-    if (this.filters.sortByAmount) {
-      sortedData.sort((a, b) => parseFloat(a.amount) - parseFloat(b.amount));
-    }
-
-    this.dataSource.data = sortedData;
-  }
 
 
   @HostListener('document:click', ['$event'])
@@ -112,20 +94,6 @@ export class PaymentsComponent implements OnInit {
     if (!target.closest('.sort-filter-container')) {
       this.dropdownOpen = false;
     }
-  }
-
-  applyProfileFilter(): void {
-    if (this.selectedProfileId) {
-      this.dataSource.data = this.payments.filter(payment => payment.tuitionId === this.selectedProfileId);
-    } else {
-      this.dataSource.data = this.payments;
-    }
-  }
-
-  resetFilters(): void {
-    this.filters = {sortByName: false, sortByLessonDate: false, sortByAmount: false};
-    this.selectedProfileId = null;
-    this.fetchPayments(); // Reload payments with original data
   }
 
   futureDateValidator(control: any) {
@@ -154,9 +122,9 @@ export class PaymentsComponent implements OnInit {
   }
 
   onTabChange(event: any): void {
-    this.selectedStatus = this.statuses[event.index]; // Get selected status
-    console.log('Switched to:', this.selectedStatus);
-    this.fetchPayments(this.selectedStatus); // Refresh payments with the selected status
+    this.selectedStatus = this.statuses[event.index];
+    this.pageIndex = 0;
+    this.fetchPayments();
   }
 
 
@@ -278,13 +246,12 @@ export class PaymentsComponent implements OnInit {
       });
   }
 
-  fetchPayments(status: string = 'All'): void {
-    this.isLoading = true; // Show loading state
+  fetchPayments(): void {
+    this.isLoading = true;
     const profileId = AuthenticatedUser.getAuthUserProfileId();
+    const statusParam = this.selectedStatus === 'All' ? null : this.selectedStatus;
 
-    const statusParam = status === 'All' ? null : status;
-
-    this.paymentsService.getPayments(profileId, this.selectedStatus, this.pageIndex, this.pageSize)
+    this.paymentsService.getPayments(profileId, statusParam, this.selectedProfileId, this.pageIndex, this.pageSize, this.sortField, this.sortDirection)
       .pipe(take(1))
       .subscribe({
         next: (response) => {
@@ -299,6 +266,7 @@ export class PaymentsComponent implements OnInit {
         }
       });
   }
+
 
 
   viewInvoice(payment: Payment): void {
@@ -383,7 +351,25 @@ export class PaymentsComponent implements OnInit {
   onPageChange(event: PageEvent) {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
-    this.fetchPayments(this.selectedStatus);
+    this.fetchPayments();
+  }
+
+  applySorting(sortField: string): void {
+    this.sortField = sortField;
+    this.sortDirection = 'asc';
+    this.fetchPayments();
+  }
+
+
+  applyProfileFilter(): void {
+    this.pageIndex = 0;
+    this.fetchPayments();
+  }
+
+  resetFilters(): void {
+    this.selectedProfileId = null;
+    this.pageIndex = 0;
+    this.fetchPayments();
   }
 }
 @Component({
