@@ -11,11 +11,16 @@ export class PaymentsService {
 
   constructor(private http: HttpClient) {}
 
-  getPayments(profileId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}`, {
-      params: { profileId: profileId.toString() }
-    });
+  getPayments(profileId: number, statusParam: null | string): Observable<any> {
+    let params: any = { profileId: profileId.toString() };
+
+    if (statusParam) {
+      params.status = statusParam.toUpperCase();
+    }
+
+    return this.http.get<any>(`${this.apiUrl}`, { params });
   }
+
 
   createPayment(paymentData: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}`, paymentData);

@@ -7,7 +7,7 @@
     </p>
   </mat-card>
 
-  <mat-card class="create-payment-container">
+  <mat-card *ngIf="AuthenticatedUser.getAuthUserProfileType() === 'TUTOR'" class="create-payment-container">
     <div class="create-payment-form">
       <h2>Create a Payment</h2>
       <form [formGroup]="paymentForm" (ngSubmit)="submitPayment()">
@@ -62,7 +62,7 @@
 
   <mat-card>
     <h2>Payments</h2>
-    <mat-tab-group (selectedTabChange)="applyFilter()">
+    <mat-tab-group (selectedTabChange)="onTabChange($event)">
       <mat-tab label="All" (click)="selectedStatus='All'"></mat-tab>
       <mat-tab label="Due" (click)="selectedStatus='Due'"></mat-tab>
       <mat-tab label="Paid" (click)="selectedStatus='Paid'"></mat-tab>
@@ -116,7 +116,7 @@
             <button mat-button color="accent" (click)="viewInvoice(payment)">View Invoice</button>
 
             <!-- Show disabled button with sent date if reminder was sent -->
-            <button mat-button color="warn" disabled *ngIf="payment.reminderSentOn">
+            <button mat-button color="warn" disabled *ngIf="payment.reminderSentOn || AuthenticatedUser.getAuthUserProfileType() !== 'TUTOR'">
               Sent on {{ payment.reminderSentOn | date:'dd/MM/yyyy' }}
             </button>
 

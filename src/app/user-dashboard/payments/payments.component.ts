@@ -61,7 +61,7 @@ export class PaymentsComponent implements OnInit {
               private snackBar : MatSnackBar) {
     this.paymentForm = this.fb.group({
       tuition: ['', Validators.required],
-      lesson: ['', Validators.required],
+      lessonId: ['', Validators.required],
       amount: ['', [Validators.required, Validators.min(1)]],
       invoice: [null, [this.fileValidator]],
       dueDate: ['', [Validators.required, this.futureDateValidator]],
@@ -91,13 +91,19 @@ export class PaymentsComponent implements OnInit {
     if (selectedLesson) {
       this.paymentForm.patchValue({
         tuitionId: selectedLesson.tuitionId,
-        lessonDate: selectedLesson.availabilityDto.startTime
-
+        lessonDate: selectedLesson.availabilityDto.startTime,
+        lessonId: selectedLesson.id
       });
 
       console.log(selectedLesson)
 
     }
+  }
+
+  onTabChange(event: any): void {
+    this.selectedStatus = this.statuses[event.index]; // Get selected status
+    console.log('Switched to:', this.selectedStatus);
+    this.fetchPayments(this.selectedStatus); // Refresh payments with the selected status
   }
 
 
@@ -136,7 +142,7 @@ export class PaymentsComponent implements OnInit {
     const paymentData: Payment = {
       amount: this.paymentForm.value.amount,
       dueDate: formattedDueDate,
-      lessonId: this.paymentForm.value.lesson,
+      lessonId: this.paymentForm.value.lessonId,
       lessonDate: this.paymentForm.value.lessonDate,
       tuitionId: this.paymentForm.value.tuitionId
     };
@@ -215,8 +221,14 @@ export class PaymentsComponent implements OnInit {
       });
   }
 
-  fetchPayments(): void {
-    this.paymentsService.getPayments(AuthenticatedUser.getAuthUserProfileId())
+  fetchPayments(status: string = 'All'): void {
+    this.isLoading = true; // Show loading state
+    const profileId = AuthenticatedUser.getAuthUserProfileId();
+
+    // Convert "All" to null to fetch all payments (since backend expects null)
+    const statusParam = status === 'All' ? null : status;
+
+    this.paymentsService.getPayments(profileId, statusParam)
       .pipe(take(1))
       .subscribe((payments: Payment[]) => {
         this.payments = payments.map(payment => ({
@@ -224,19 +236,14 @@ export class PaymentsComponent implements OnInit {
           displayName: payment.displayName ?? 'Unknown'
         }));
 
-        console.log('Processed Payments:', this.payments);
+        console.log('Fetched Payments:', this.payments);
         this.dataSource.data = this.payments;
         this.dataSource._updateChangeSubscription();
+        this.isLoading = false; // Hide loading state
+      }, error => {
+        console.error('Error fetching payments:', error);
+        this.isLoading = false;
       });
-  }
-
-
-  applyFilter(): void {
-    if (this.selectedStatus === 'All') {
-      this.dataSource.data = this.payments;
-    } else {
-      this.dataSource.data = this.payments.filter(p => p.status === this.selectedStatus);
-    }
   }
 
 
@@ -315,6 +322,8 @@ export class PaymentsComponent implements OnInit {
   hasPaidPayments(): boolean {
     return this.selectedPayments.some(payment => payment.status === 'Paid');
   }
+
+  protected readonly AuthenticatedUser = AuthenticatedUser;
 }
 
 @Component({
