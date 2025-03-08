@@ -178,6 +178,10 @@ export class PaymentsComponent implements OnInit {
           next: () => {
             console.log('Payment created without invoice');
             this.fetchPayments();
+            this.snackBar.open('Payment successfully created!', 'OK', { duration: 3000 });
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000)
           },
           error: (err) => console.error('Error creating payment:', err)
         });

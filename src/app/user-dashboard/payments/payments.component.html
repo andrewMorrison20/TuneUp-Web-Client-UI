@@ -115,14 +115,12 @@
           <td mat-cell *matCellDef="let payment">
             <button mat-button color="accent" (click)="viewInvoice(payment)">View Invoice</button>
 
-            <!-- Show disabled button with sent date if reminder was sent -->
-            <button mat-button color="warn" disabled *ngIf="payment.reminderSentOn || AuthenticatedUser.getAuthUserProfileType() !== 'TUTOR'">
+            <button mat-button color="warn" disabled *ngIf="payment.reminderSentOn">
               Sent on {{ payment.reminderSentOn | date:'dd/MM/yyyy' }}
             </button>
 
-            <!-- Show "Send Reminder" button only if a reminder has NOT been sent and payment is NOT Paid -->
             <button mat-button color="warn"
-                    *ngIf="!payment.reminderSentOn && payment.status !== 'Paid'"
+                    *ngIf="!payment.reminderSentOn && payment.status !== 'Paid' && AuthenticatedUser.getAuthUserProfileType() === 'TUTOR'"
                     (click)="sendReminder(payment.id)">
               Send Reminder
             </button>
