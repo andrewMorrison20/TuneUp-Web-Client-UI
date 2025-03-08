@@ -13,6 +13,7 @@ import { StudentProfile } from '../../profiles/interfaces/student.model';
 import { LessonSummary } from '../my-tuitions/tuition-summary/lesson-summary/lesson-summary.model';
 import {PaymentsService} from "./payments.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {DeleteConfirmationDialog} from "./DeleteConfirmationDialog";
 
 interface Payment {
   id?: any;
@@ -372,16 +373,32 @@ export class PaymentsComponent implements OnInit {
     this.fetchPayments();
   }
 
-  deletePayments() {
-    if (!this.selectedPayments.length) return;
+  confirmDeletePayments(): void {
+    const dialogRef = this.dialog.open(DeleteConfirmationDialog, {
+      width: '400px',
+      data: { count: this.selectedPayments.length }
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deletePayments();
+      }
+    });
+  }
+
+  deletePayments(): void {
     const paymentIds = this.selectedPayments.map(p => p.id);
-    this.paymentsService.deletePayments(paymentIds)
-      .pipe(take(1))
-      .subscribe(() => {
-        console.log('Payments deleted');
+
+    this.paymentsService.deletePayments(paymentIds).subscribe({
+      next: () => {
+        this.snackBar.open('Payments deleted successfully!', 'OK', { duration: 3000 });
         this.fetchPayments();
-      });
+      },
+      error: (err) => {
+        console.error('Error deleting payments:', err);
+        this.snackBar.open('Failed to delete payments. Try again later.', 'Close', { duration: 3000 });
+      }
+    });
   }
 }
 @Component({

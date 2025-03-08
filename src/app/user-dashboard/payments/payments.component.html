@@ -174,10 +174,11 @@
       </button>
 
       <button mat-raised-button color="warn" class="paid-button"
-              (click)="deletePayments()"
+              (click)="confirmDeletePayments()"
               [disabled]="!selectedPayments.length || hasPaidPayments()">
         Delete Payments
       </button>
+
 
     </div>
   </mat-card>

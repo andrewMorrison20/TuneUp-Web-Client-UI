@@ -53,6 +53,7 @@ import {
 import {MatSort} from "@angular/material/sort";
 import {PaymentsService} from "./payments/payments.service";
 import {MatMenu, MatMenuTrigger} from "@angular/material/menu";
+import {DeleteConfirmationDialog} from "./payments/DeleteConfirmationDialog";
 
 
 @NgModule({
@@ -65,7 +66,8 @@ import {MatMenu, MatMenuTrigger} from "@angular/material/menu";
     PaymentsComponent,
     ChatsComponent,
     PaymentsComponent,
-    ScheduleComponent
+    ScheduleComponent,
+    DeleteConfirmationDialog
   ],
   exports: [
     SidebarComponent
@@ -122,6 +124,7 @@ import {MatMenu, MatMenuTrigger} from "@angular/material/menu";
     MatMenu,
     MatMenuTrigger
   ],
+
   providers:[AddressService,PaymentsService]
 })
 export class UserDashboardModule { }
