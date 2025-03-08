@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -34,10 +35,11 @@ export class PaymentsService {
     });
   }
 
-
-
-
   deletePayment(paymentId: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${paymentId}`);
+  }
+
+  sendRemindForPayment(paymentId: number) {
+    return this.http.patch<any>(`${this.apiUrl}/send-reminder/${paymentId}`,{})
   }
 }

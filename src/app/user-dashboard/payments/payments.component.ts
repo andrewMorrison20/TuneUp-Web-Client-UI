@@ -12,6 +12,7 @@ import { TutorProfile } from '../../profiles/interfaces/tutor.model';
 import { StudentProfile } from '../../profiles/interfaces/student.model';
 import { LessonSummary } from '../my-tuitions/tuition-summary/lesson-summary/lesson-summary.model';
 import {PaymentsService} from "./payments.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 interface Payment {
   id?: any;
@@ -53,7 +54,11 @@ export class PaymentsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private fb: FormBuilder, private dialog: MatDialog, private tuitionsService: TuitionsService, private paymentsService: PaymentsService) {
+  constructor(private fb: FormBuilder,
+              private dialog: MatDialog,
+              private tuitionsService: TuitionsService,
+              private paymentsService: PaymentsService,
+              private snackBar : MatSnackBar) {
     this.paymentForm = this.fb.group({
       tuition: ['', Validators.required],
       lesson: ['', Validators.required],
@@ -93,9 +98,6 @@ export class PaymentsComponent implements OnInit {
       console.log(selectedLesson)
 
     }
-
-    console.log('Lesson Date:', this.paymentForm.get('lessonDate')?.value);
-    console.log('TUITION ID:', this.paymentForm.get('tuitionId')?.value);
   }
 
 
@@ -244,9 +246,23 @@ export class PaymentsComponent implements OnInit {
     });
   }
 
-  sendReminder(payment: Payment): void {
-    console.log('Sending reminder for:', payment);
+  sendReminder(paymentId: number): void {
+    console.log('Sending reminder for:', paymentId);
+
+    this.paymentsService.sendRemindForPayment(paymentId)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.snackBar.open('Reminder sent successfully!', 'OK', { duration: 3000 });
+          this.fetchPayments();
+        },
+        error: (err) => {
+          console.error('Error sending reminder:', err);
+          this.snackBar.open('Failed to send reminder. Try again later.', 'Close', { duration: 3000 });
+        }
+      });
   }
+
 
   fetchTuitions() {
     this.isLoading = true;
@@ -296,6 +312,9 @@ export class PaymentsComponent implements OnInit {
     }
   }
 
+  hasPaidPayments(): boolean {
+    return this.selectedPayments.some(payment => payment.status === 'Paid');
+  }
 }
 
 @Component({

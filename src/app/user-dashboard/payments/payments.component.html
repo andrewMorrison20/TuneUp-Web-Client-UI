@@ -2,7 +2,7 @@
   <mat-card class="disclaimer-card">
     <mat-icon class="warning-icon">warning</mat-icon>
     <p>
-      <strong>Important:</strong> Payment cannot be deleted once created, as the other party may retain it for records.
+      <strong>Important:</strong> Payment cannot be deleted once marked as paid, as the other party may retain it for records.
       See our <a href="/terms-and-conditions" target="_blank">full terms and conditions</a> regarding data retention.
     </p>
   </mat-card>
@@ -115,26 +115,30 @@
           <td mat-cell *matCellDef="let payment">
             <button mat-button color="accent" (click)="viewInvoice(payment)">View Invoice</button>
 
-            <!-- Show reminderSentOn instead of the button if a reminder has been sent -->
-            <span *ngIf="payment.reminderSentOn">
-                   Reminder Sent: {{ payment.reminderSentOn | date:'dd/MM/yyyy HH:mm' }}
-            </span>
+            <!-- Show disabled button with sent date if reminder was sent -->
+            <button mat-button color="warn" disabled *ngIf="payment.reminderSentOn">
+              Sent on {{ payment.reminderSentOn | date:'dd/MM/yyyy' }}
+            </button>
 
-            <!-- Show the button only if reminder has NOT been sent and status is NOT Paid -->
+            <!-- Show "Send Reminder" button only if a reminder has NOT been sent and payment is NOT Paid -->
             <button mat-button color="warn"
                     *ngIf="!payment.reminderSentOn && payment.status !== 'Paid'"
-                    (click)="sendReminder(payment)">
+                    (click)="sendReminder(payment.id)">
               Send Reminder
             </button>
+
           </td>
         </ng-container>
       </table>
     </div>
     <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
     <div class="paid-button-container">
-      <button mat-raised-button color="accent" class="paid-button" (click)="markAsPaid()" [disabled]="!selectedPayments.length">
+      <button mat-raised-button color="accent" class="paid-button"
+              (click)="markAsPaid()"
+              [disabled]="!selectedPayments.length || hasPaidPayments()">
         Mark as Paid
       </button>
+
     </div>
   </mat-card>
 </div>
