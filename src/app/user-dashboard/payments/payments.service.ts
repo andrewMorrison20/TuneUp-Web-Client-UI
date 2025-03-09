@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {AuthenticatedUser} from "../../authentication/authenticated-user.class";
 
 
 @Injectable({
@@ -58,5 +59,17 @@ export class PaymentsService {
 
   sendRemindForPayment(paymentId: number) {
     return this.http.patch<any>(`${this.apiUrl}/send-reminder/${paymentId}`,{})
+  }
+
+  //Yet another instance of auth interceptor being bypassed by a single method in the same service!
+  getInvoice(paymentId: number): Observable<Blob> {
+    const authToken = AuthenticatedUser.getAuthUserToken();
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${authToken}`,
+      Accept: 'application/pdf'
+    });
+
+    return this.http.get(`${this.apiUrl}/invoice/${paymentId}`, { headers, responseType: 'blob' });
   }
 }

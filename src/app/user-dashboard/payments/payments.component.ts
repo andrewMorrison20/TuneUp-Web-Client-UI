@@ -14,8 +14,9 @@ import { LessonSummary } from '../my-tuitions/tuition-summary/lesson-summary/les
 import {PaymentsService} from "./payments.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {DeleteConfirmationDialog} from "./DeleteConfirmationDialog";
+import {InvoiceDialogComponent} from "./Invoice-dialogue.component";
 
-interface Payment {
+export interface Payment {
   id?: any;
   displayName?: string;
   lessonDate: string;
@@ -271,6 +272,7 @@ export class PaymentsComponent implements OnInit {
 
 
   viewInvoice(payment: Payment): void {
+    console.log(payment)
     this.dialog.open(InvoiceDialogComponent, {
       data: {payment}
     });
@@ -401,20 +403,4 @@ export class PaymentsComponent implements OnInit {
     });
   }
 }
-@Component({
-  selector: 'app-invoice-dialog',
-  template: `
-    <h1 mat-dialog-title>Invoice</h1>
-    <div mat-dialog-content>
-      <p>Invoice details for {{data.payment.displayName}}</p>
-      <p>Amount: {{data.payment.amount}}</p>
-      <p>Status: {{data.payment.status}}</p>
-    </div>
-    <div mat-dialog-actions>
-      <button mat-button mat-dialog-close>Close</button>
-    </div>
-  `
-})
-export class InvoiceDialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { payment: Payment }) {}
-}
+
