@@ -21,7 +21,6 @@ export class NewConversationDialogueComponent implements OnInit {
   totalElements = 0;
   pageSize = 5;
   pageIndex = 0;
-  defaultProfileImage = 'https://example.com/default-avatar.png';
 
   constructor(
     public dialogRef: MatDialogRef<NewConversationDialogueComponent>,
