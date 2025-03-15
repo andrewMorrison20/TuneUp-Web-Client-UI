@@ -4,14 +4,19 @@
     <p>Loading Conversations...</p>
   </div>
 
+  <!-- Start New Conversation Button -->
   <div class="new-conversation">
     <button mat-raised-button color="primary" (click)="openNewConversationDialog()">
       Start New Conversation
     </button>
   </div>
 
-  <ng-container *ngIf="conversations.length > 0; else noConversations">
-    <div *ngFor="let convo of conversations" class="conversation-card" (click)="selectConversation(convo)">
+  <!-- Conversations List -->
+  <ng-container *ngIf="!isLoading && conversations.length > 0;else noConversations">
+    <div *ngFor="let convo of conversations"
+         class="conversation-card"
+         (click)="selectConversation(convo)"
+         [class.selected]="convo.id === selectedConversation?.id">
       <mat-card>
         <h3>{{ convo.participants.join(', ') }}</h3>
         <mat-card-subtitle>
@@ -22,8 +27,11 @@
     </div>
   </ng-container>
 
+  <!-- Chat Panel -->
   <mat-card *ngIf="selectedConversation" class="chat-panel">
     <h2>Chat with {{ selectedConversation.participants.join(', ') }}</h2>
+
+    <!-- Messages List -->
     <div class="message-list">
       <mat-list>
         <mat-list-item *ngFor="let msg of messages">
@@ -32,6 +40,7 @@
       </mat-list>
     </div>
 
+    <!-- Message Input -->
     <div class="message-input">
       <mat-form-field>
         <input matInput [(ngModel)]="newMessage" placeholder="Type a message...">
@@ -40,10 +49,12 @@
     </div>
   </mat-card>
 
+  <!-- No Conversations Message -->
   <ng-template #noConversations>
     <div class="no-conversations-container">
       <h1>😕</h1>
       <h2>No Conversations yet</h2>
+      <p>Try reloading or start a new conversation!</p>
       <button mat-raised-button color="primary" (click)="fetchConversations()">Refresh</button>
     </div>
   </ng-template>

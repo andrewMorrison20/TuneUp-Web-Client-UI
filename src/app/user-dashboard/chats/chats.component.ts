@@ -52,14 +52,23 @@ export class ChatsComponent implements OnInit {
 
   fetchConversations(): void {
     this.isLoading = true;
+
     this.http.get<{ conversations: Conversation[], totalElements: number }>(
       `http://localhost:8080/api/chat/conversations/${this.userId}?page=${this.pageIndex}&size=${this.pageSize}`
-    ).subscribe((data) => {
-      this.conversations = data.conversations;
-      this.totalElements = data.totalElements;
-      this.isLoading = false;
-    });
+    ).pipe(
+      tap((data) => {
+        this.conversations = data.conversations;
+        this.totalElements = data.totalElements;
+        this.isLoading = false;
+      }),
+      catchError((error) => {
+        console.error('Error fetching conversations:', error);
+        this.isLoading = false; // Ensures spinner stops even on error
+        return EMPTY; // Prevents further execution of subscription
+      })
+    ).subscribe();
   }
+
 
   selectConversation(conversation: Conversation): void {
     this.selectedConversation = conversation;
