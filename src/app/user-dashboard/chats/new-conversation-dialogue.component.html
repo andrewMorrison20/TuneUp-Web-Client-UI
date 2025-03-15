@@ -1,0 +1,46 @@
+<h2 mat-dialog-title class="dialog-title">Start a New Conversation</h2>
+
+<mat-dialog-content class="dialog-content">
+  <p class="dialog-description">Select a profile to start a conversation with:</p>
+
+  <!-- Show Spinner While Loading -->
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+    <p>Loading Profiles...</p>
+  </div>
+
+  <!-- Profiles List -->
+  <mat-list *ngIf="!isLoading && profiles.length > 0" class="profile-list">
+    <mat-list-item
+      *ngFor="let profile of profiles"
+      (click)="selectProfile(profile)"
+      [style.backgroundColor]="profile.id === selectedProfileId ? '#aac6df' : 'transparent'"
+      [style.color]="profile.id === selectedProfileId ? 'white' : 'black'"
+    >
+
+    <div mat-line class="profile-name">{{ profile.displayName }}</div>
+      <mat-divider></mat-divider>
+    </mat-list-item>
+  </mat-list>
+
+
+
+  <!-- No Profiles Message -->
+  <div *ngIf="!isLoading && profiles.length === 0" class="no-profiles">
+    <p>No available profiles to start a conversation with.</p>
+  </div>
+
+  <!-- Pagination -->
+  <mat-paginator class="paginator" [length]="totalElements" [pageSize]="pageSize"
+                 [pageSizeOptions]="[5, 10, 20]"
+                 (page)="onPageChange($event)">
+  </mat-paginator>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dialog-actions">
+  <button mat-button class="cancel-button" (click)="dialogRef.close()">Cancel</button>
+  <button mat-raised-button color="primary" class="start-button"
+          [disabled]="!selectedProfileId" (click)="startConversation()">
+    Start Chat
+  </button>
+</mat-dialog-actions>

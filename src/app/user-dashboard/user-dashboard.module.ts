@@ -55,6 +55,8 @@ import {PaymentsService} from "./payments/payments.service";
 import {MatMenu, MatMenuTrigger} from "@angular/material/menu";
 import {DeleteConfirmationDialog} from "./payments/DeleteConfirmationDialog";
 import {InvoiceDialogComponent} from "./payments/Invoice-dialogue.component";
+import {NewConversationDialogueComponent} from "./chats/new-conversation-dialogue.component";
+
 
 
 @NgModule({
@@ -69,7 +71,8 @@ import {InvoiceDialogComponent} from "./payments/Invoice-dialogue.component";
     PaymentsComponent,
     ScheduleComponent,
     DeleteConfirmationDialog,
-    InvoiceDialogComponent
+    InvoiceDialogComponent,
+    NewConversationDialogueComponent
   ],
   exports: [
     SidebarComponent
@@ -78,6 +81,8 @@ import {InvoiceDialogComponent} from "./payments/Invoice-dialogue.component";
     CommonModule,
     MyTuitionsModule,
     UserDashboardRoutingModule,
+    MatDialogActions,
+    MatOption,
     AccountSettingsModule,
     FullCalendarModule,
     MatSidenavModule,
@@ -96,6 +101,9 @@ import {InvoiceDialogComponent} from "./payments/Invoice-dialogue.component";
     FooterModule,
     MatCardSubtitle,
     MatCardTitle,
+    MatLabel,
+    MatOption,
+    MatSelect,
     MatCard,
     MatTabGroup,
     MatTab,

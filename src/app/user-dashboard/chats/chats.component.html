@@ -1,1 +1,50 @@
-chats
+<mat-card class="chat-container">
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+    <p>Loading Conversations...</p>
+  </div>
+
+  <div class="new-conversation">
+    <button mat-raised-button color="primary" (click)="openNewConversationDialog()">
+      Start New Conversation
+    </button>
+  </div>
+
+  <ng-container *ngIf="conversations.length > 0; else noConversations">
+    <div *ngFor="let convo of conversations" class="conversation-card" (click)="selectConversation(convo)">
+      <mat-card>
+        <h3>{{ convo.participants.join(', ') }}</h3>
+        <mat-card-subtitle>
+          <span class="last-message">Last message preview...</span>
+          <br> <span class="timestamp">Time</span>
+        </mat-card-subtitle>
+      </mat-card>
+    </div>
+  </ng-container>
+
+  <mat-card *ngIf="selectedConversation" class="chat-panel">
+    <h2>Chat with {{ selectedConversation.participants.join(', ') }}</h2>
+    <div class="message-list">
+      <mat-list>
+        <mat-list-item *ngFor="let msg of messages">
+          <strong>{{ msg.sender }}:</strong> {{ msg.content }} ({{ msg.timestamp }})
+        </mat-list-item>
+      </mat-list>
+    </div>
+
+    <div class="message-input">
+      <mat-form-field>
+        <input matInput [(ngModel)]="newMessage" placeholder="Type a message...">
+      </mat-form-field>
+      <button mat-button color="primary" (click)="sendMessage()">Send</button>
+    </div>
+  </mat-card>
+
+  <ng-template #noConversations>
+    <div class="no-conversations-container">
+      <h1>😕</h1>
+      <h2>No Conversations yet</h2>
+      <button mat-raised-button color="primary" (click)="fetchConversations()">Refresh</button>
+    </div>
+  </ng-template>
+</mat-card>
