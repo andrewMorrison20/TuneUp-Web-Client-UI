@@ -24,6 +24,7 @@ interface Message {
   sender: string;
   content: string;
   timestamp: string;
+  senderName: string;
 }
 
 @Component({
