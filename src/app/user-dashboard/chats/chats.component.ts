@@ -1,18 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import SockJS from 'sockjs-client';
-import {Client} from "stompjs";
 import {PageEvent} from "@angular/material/paginator";
 
 import {MatDialog} from "@angular/material/dialog";
 import {AuthenticatedUser} from "../../authentication/authenticated-user.class";
 import {tap} from "rxjs/operators";
 import {catchError, EMPTY} from "rxjs";
-import {TuitionsService} from "../my-tuitions/tuitions.service";
 import {TutorProfile} from "../../profiles/interfaces/tutor.model";
 import {StudentProfile} from "../../profiles/interfaces/student.model";
 import {NewConversationDialogueComponent} from "./new-conversation-dialogue.component";
-import {WebsocketService} from "../../services/websocket.service";
 import {ChatDialogueComponent} from "./chat-dialogue.component";
 type Profile = TutorProfile | StudentProfile;
 
@@ -93,7 +89,6 @@ export class ChatsComponent implements OnInit {
     this.openChatDialog(conversation);
 
   }
-
 
   onPageChange(event: PageEvent): void {
     this.pageSize = event.pageSize;
