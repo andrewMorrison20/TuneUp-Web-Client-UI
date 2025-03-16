@@ -40,7 +40,6 @@ export class ChatsComponent implements OnInit {
   userProfileId = AuthenticatedUser.getAuthUserProfileId();
   conversations: Conversation[] = [];
   selectedConversation: Conversation | null = null;
-  newMessage: string = '';
   isLoading = true;
   totalElements = 0;
   pageSize = 5;
@@ -49,8 +48,7 @@ export class ChatsComponent implements OnInit {
 
 
   constructor(private http: HttpClient,
-              public dialog: MatDialog,
-              private websocketService: WebsocketService) {}
+              public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.fetchConversations();
@@ -78,7 +76,7 @@ export class ChatsComponent implements OnInit {
 
   openChatDialog(conversation: Conversation): void {
     const dialogRef = this.dialog.open(ChatDialogueComponent, {
-      width: '900px',
+      width: '600px',
       data: {
         conversation: conversation,
         userProfileId: this.userProfileId,
