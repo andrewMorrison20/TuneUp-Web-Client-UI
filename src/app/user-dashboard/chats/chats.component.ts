@@ -81,6 +81,7 @@ export class ChatsComponent implements OnInit {
 
     this.websocketService.subscribeToConversation(conversation.id).subscribe((newMessage: Message) => {
       this.messages.push(newMessage);
+      console.log('newMessage', newMessage)
     });
   }
 
