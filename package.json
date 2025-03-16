@@ -28,9 +28,9 @@
     "@fullcalendar/timegrid": "^6.1.15",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
+    "@stomp/stompjs": "^7.0.1",
     "rxjs": "~7.8.0",
     "sockjs-client": "^1.6.1",
-    "stompjs": "^2.3.3",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
   },

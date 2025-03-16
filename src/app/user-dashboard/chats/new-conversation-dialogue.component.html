@@ -41,6 +41,7 @@
   <button mat-button class="cancel-button" (click)="dialogRef.close()">Cancel</button>
   <button mat-raised-button color="primary" class="start-button"
           [disabled]="!selectedProfileId" (click)="startConversation()">
+    <mat-icon>chat</mat-icon>
     Start Chat
   </button>
 </mat-dialog-actions>

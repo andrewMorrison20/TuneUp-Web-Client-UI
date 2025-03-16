@@ -12,6 +12,7 @@ import {TuitionsService} from "../my-tuitions/tuitions.service";
 import {TutorProfile} from "../../profiles/interfaces/tutor.model";
 import {StudentProfile} from "../../profiles/interfaces/student.model";
 import {NewConversationDialogueComponent} from "./new-conversation-dialogue.component";
+import {WebsocketService} from "../../services/websocket.service";
 type Profile = TutorProfile | StudentProfile;
 
 interface Conversation {
@@ -31,7 +32,7 @@ interface Message {
   styleUrls: ['./chats.component.scss'],
 })
 export class ChatsComponent implements OnInit {
-  userId = 1; // Mocked user ID (Replace with actual auth logic)
+  userProfileId = AuthenticatedUser.getAuthUserProfileId();
   conversations: Conversation[] = [];
   messages: Message[] = [];
   selectedConversation: Conversation | null = null;
@@ -44,7 +45,10 @@ export class ChatsComponent implements OnInit {
 
   private stompClient!: Client;
 
-  constructor(private http: HttpClient,public dialog: MatDialog, private tuitionsService:TuitionsService) {}
+  constructor(private http: HttpClient,
+              public dialog: MatDialog,
+              private tuitionsService:TuitionsService,
+              private websocketService: WebsocketService) {}
 
   ngOnInit(): void {
     this.fetchConversations();
@@ -53,13 +57,14 @@ export class ChatsComponent implements OnInit {
   fetchConversations(): void {
     this.isLoading = true;
 
-    this.http.get<{ conversations: Conversation[], totalElements: number }>(
-      `http://localhost:8080/api/chat/conversations/${this.userId}?page=${this.pageIndex}&size=${this.pageSize}`
+    this.http.get<{ content: Conversation[], totalElements: number }>(
+      `http://localhost:8080/api/chats/conversations/${this.userProfileId}?page=${this.pageIndex}&size=${this.pageSize}`
     ).pipe(
       tap((data) => {
-        this.conversations = data.conversations;
+        this.conversations = data.content;
         this.totalElements = data.totalElements;
         this.isLoading = false;
+        console.log('Conversations:', this.conversations);
       }),
       catchError((error) => {
         console.error('Error fetching conversations:', error);
@@ -73,10 +78,14 @@ export class ChatsComponent implements OnInit {
   selectConversation(conversation: Conversation): void {
     this.selectedConversation = conversation;
     this.fetchMessages(conversation.id);
+
+    this.websocketService.subscribeToConversation(conversation.id).subscribe((newMessage: Message) => {
+      this.messages.push(newMessage);
+    });
   }
 
   fetchMessages(conversationId: number): void {
-    this.http.get<Message[]>(`http://localhost:8080/api/chat/messages/${conversationId}`)
+    this.http.get<Message[]>(`http://localhost:8080/api/chats/messages/${conversationId}`)
       .subscribe((data) => this.messages = data);
   }
 
@@ -84,14 +93,15 @@ export class ChatsComponent implements OnInit {
     if (!this.selectedConversation || !this.newMessage.trim()) return;
 
     const message = {
-      senderId: this.userId,
+      senderProfileId: this.userProfileId,
       conversationId: this.selectedConversation.id,
       content: this.newMessage
     };
 
-    this.http.post(`http://localhost:8080/api/chat/send`, message)
-      .subscribe(() => this.newMessage = '');
+    this.websocketService.sendMessage(this.selectedConversation.id, message);
+    this.newMessage = '';
   }
+
 
 
   onPageChange(event: PageEvent): void {
@@ -106,17 +116,30 @@ export class ChatsComponent implements OnInit {
       data: { profiles :this.profiles }
     });
 
-    dialogRef.afterClosed().subscribe((selectedStudentId) => {
-      if (selectedStudentId) {
-        this.startNewConversation(selectedStudentId);
+    dialogRef.afterClosed().subscribe((selectedProfileId) => {
+      console.log('Starting conversation with : ' ,selectedProfileId);
+      if (selectedProfileId) {
+        this.startNewConversation(selectedProfileId);
       }
     });
   }
 
-  startNewConversation(studentId: number): void {
-   // this.chatService.createConversation(studentId).subscribe((newConvo) => {
-    //  this.conversations.push(newConvo);
-     // this.selectConversation(newConvo);
-   // });
+  startNewConversation(profileId: number): void {
+    const url = `http://localhost:8080/api/chats/conversation/start`;
+
+    const requestBody = {
+      userId: this.userProfileId, // Logged-in user
+      participantId: profileId, // Selected profile
+    };
+
+    this.http.post(url, requestBody).subscribe(
+      () => {
+        // Instead of modifying local state, fetch fresh data from the backend
+        this.fetchConversations();
+      },
+      (error) => {
+        console.error('Error starting conversation:', error);
+      }
+    );
   }
 }
