@@ -15,6 +15,11 @@ import {AuthenticatedUser} from "../../authentication/authenticated-user.class";
 export class ChatDialogueComponent implements OnInit {
   messages: any[] = [];
   newMessage = '';
+  totalMessages = 0;
+  hasMoreMessages = false;
+  pageIndex = 0;
+  pageSize = 20;
+
   private stompClient!: Client;
 
   constructor(
@@ -31,10 +36,30 @@ export class ChatDialogueComponent implements OnInit {
     });
   }
 
-  fetchMessages(conversationId: number): void {
-    this.http.get<Message[]>(`http://localhost:8080/api/chats/messages/${conversationId}`)
-      .subscribe((data) => this.messages = data);
+  fetchMessages(conversationId: number, pageIndex: number = 0, pageSize: number = 20): void {
+    const token = AuthenticatedUser.getAuthUserToken();
+    const url = `http://localhost:8080/api/chats/conversation/${conversationId}/messages?page=${pageIndex}&size=${pageSize}`;
+
+    this.http.get<{ content: Message[], totalElements: number }>(url, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .subscribe(response => {
+        this.messages = [...response.content, ...this.messages]; // Append new messages at the beginning
+        this.totalMessages = response.totalElements;
+        this.hasMoreMessages = response.content.length === pageSize; // Check if more messages exist
+      });
   }
+
+
+  onScroll(event: any): void {
+    const scrollTop = event.target.scrollTop;
+
+    if (scrollTop === 0 && this.hasMoreMessages) {
+      this.pageIndex++;
+      this.fetchMessages(this.data.conversation.id, this.pageIndex, this.pageSize);
+    }
+  }
+
 
   sendMessage(): void {
     if (!this.newMessage.trim()) return;
