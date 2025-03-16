@@ -4,12 +4,6 @@
     <p>Loading Conversations...</p>
   </div>
 
-  <!-- Start New Conversation Button -->
-  <div class="new-conversation">
-    <button mat-raised-button color="accent" (click)="openNewConversationDialog()">
-      <mat-icon>chat</mat-icon> Start New Conversation
-    </button>
-  </div>
 
   <!-- Conversations List -->
   <ng-container *ngIf="!isLoading && conversations.length > 0;else noConversations">
@@ -20,34 +14,17 @@
       <mat-card>
         <h3>{{ convo.participants.join(', ') }}</h3>
         <mat-card-subtitle>
-          <span class="last-message">Last message preview...</span>
-          <br> <span class="timestamp">Time</span>
+      <span class="last-message">
+  {{ convo?.lastMessage ? (convo.lastMessage | slice:0:50) + (convo.lastMessage.length > 50 ? '...' : '') : 'No messages yet' }}
+</span>
+
+          <br>
+          <span class="timestamp">{{ convo.lastMessageTimestamp | date: 'medium' }}</span>
+
         </mat-card-subtitle>
       </mat-card>
     </div>
   </ng-container>
-
-  <!-- Chat Panel -->
-  <mat-card *ngIf="selectedConversation" class="chat-panel">
-    <h2>Chat with {{ selectedConversation.participants.join(', ') }}</h2>
-
-    <!-- Messages List -->
-    <div class="message-list">
-      <mat-list>
-        <mat-list-item *ngFor="let msg of messages">
-          <strong>{{ msg.senderName}}:</strong> {{ msg.content }}
-        </mat-list-item>
-      </mat-list>
-    </div>
-
-    <!-- Message Input -->
-    <div class="message-input">
-      <mat-form-field>
-        <input matInput [(ngModel)]="newMessage" placeholder="Type a message...">
-      </mat-form-field>
-      <button mat-button color="primary" (click)="sendMessage()">Send</button>
-    </div>
-  </mat-card>
 
   <!-- No Conversations Message -->
   <ng-template #noConversations>
@@ -58,4 +35,12 @@
       <button mat-raised-button color="primary" (click)="fetchConversations()">Refresh</button>
     </div>
   </ng-template>
+  <br>
+  <!-- Start New Conversation Button -->
+  <div class="new-conversation">
+    <button mat-raised-button color="accent" (click)="openNewConversationDialog()">
+      <mat-icon>chat</mat-icon> Start New Conversation
+    </button>
+  </div>
+
 </mat-card>

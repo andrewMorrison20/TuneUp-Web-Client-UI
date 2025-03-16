@@ -28,24 +28,6 @@
   color: lightgray;
 }
 
-.chat-panel {
-  margin-top: 20px;
-  padding: 15px;
-}
-
-.message-list {
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-.message-input {
-  display: flex;
-  align-items: center;
-}
-
-.message-input mat-form-field {
-  flex-grow: 1;
-}
 
 .no-conversations-container {
   text-align: center;
@@ -55,3 +37,9 @@
 .no-conversations-container h1 {
   font-size: 50px;
 }
+
+
+
+
+
+

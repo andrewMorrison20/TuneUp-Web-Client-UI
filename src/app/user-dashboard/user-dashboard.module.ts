@@ -56,6 +56,7 @@ import {MatMenu, MatMenuTrigger} from "@angular/material/menu";
 import {DeleteConfirmationDialog} from "./payments/DeleteConfirmationDialog";
 import {InvoiceDialogComponent} from "./payments/Invoice-dialogue.component";
 import {NewConversationDialogueComponent} from "./chats/new-conversation-dialogue.component";
+import {ChatDialogueComponent} from "./chats/chat-dialogue.component";
 
 
 
@@ -67,6 +68,7 @@ import {NewConversationDialogueComponent} from "./chats/new-conversation-dialogu
     SidebarComponent,
     StudyHubComponent,
     PaymentsComponent,
+    ChatDialogueComponent,
     ChatsComponent,
     PaymentsComponent,
     ScheduleComponent,

@@ -1,0 +1,33 @@
+<mat-dialog-content class="chat-panel">
+  <h2>Chat with {{ data.conversation.participants.join(', ') }}</h2>
+
+  <mat-list>
+    <mat-list-item *ngFor="let msg of messages"
+                   [ngClass]="{'self': msg.senderProfileId === AuthenticatedUser.getAuthUserProfileId(), 'other': msg.senderProfileId !== AuthenticatedUser.getAuthUserProfileId()}"
+                   class="message-item">
+      <div class="message-header">
+        <img *ngIf="msg.senderProfilePictureUrl"
+             [src]="msg.senderProfilePictureUrl"
+             alt="Profile Picture"
+             class="profile-pic">
+        <strong>{{ msg.senderName }}:</strong>
+      </div>
+      <div class="message-body">
+        {{ msg.content }}
+        <br>
+        <small>{{ msg.timestamp | date:'shortTime' }}</small>
+      </div>
+    </mat-list-item>
+  </mat-list>
+
+  <div class="message-input">
+    <mat-form-field>
+      <input matInput [(ngModel)]="newMessage" placeholder="Type a message...">
+    </mat-form-field>
+    <button mat-button color="primary" (click)="sendMessage()">Send</button>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Close</button>
+</mat-dialog-actions>

@@ -13,18 +13,22 @@ import {TutorProfile} from "../../profiles/interfaces/tutor.model";
 import {StudentProfile} from "../../profiles/interfaces/student.model";
 import {NewConversationDialogueComponent} from "./new-conversation-dialogue.component";
 import {WebsocketService} from "../../services/websocket.service";
+import {ChatDialogueComponent} from "./chat-dialogue.component";
 type Profile = TutorProfile | StudentProfile;
 
-interface Conversation {
+export interface Conversation {
   id: number;
   participants: string[]; // Usernames
+  lastMessage: string;
+  lastMessageTimestamp:string;
 }
 
-interface Message {
+export interface Message {
   sender: string;
   content: string;
   timestamp: string;
   senderName: string;
+  senderProfilePictureUrl:string
 }
 
 @Component({
@@ -35,7 +39,6 @@ interface Message {
 export class ChatsComponent implements OnInit {
   userProfileId = AuthenticatedUser.getAuthUserProfileId();
   conversations: Conversation[] = [];
-  messages: Message[] = [];
   selectedConversation: Conversation | null = null;
   newMessage: string = '';
   isLoading = true;
@@ -44,11 +47,9 @@ export class ChatsComponent implements OnInit {
   pageIndex = 0;
   profiles:Profile[] = []
 
-  private stompClient!: Client;
 
   constructor(private http: HttpClient,
               public dialog: MatDialog,
-              private tuitionsService:TuitionsService,
               private websocketService: WebsocketService) {}
 
   ngOnInit(): void {
@@ -75,35 +76,25 @@ export class ChatsComponent implements OnInit {
     ).subscribe();
   }
 
+  openChatDialog(conversation: Conversation): void {
+    const dialogRef = this.dialog.open(ChatDialogueComponent, {
+      width: '900px',
+      data: {
+        conversation: conversation,
+        userProfileId: this.userProfileId,
+      },
+    });
 
-  selectConversation(conversation: Conversation): void {
-    this.selectedConversation = conversation;
-    this.fetchMessages(conversation.id);
-
-    this.websocketService.subscribeToConversation(conversation.id).subscribe((newMessage: Message) => {
-      this.messages.push(newMessage);
-      console.log('newMessage', newMessage)
+    dialogRef.afterClosed().subscribe(() => {
+      console.log('Chat dialog closed.');
     });
   }
 
-  fetchMessages(conversationId: number): void {
-    this.http.get<Message[]>(`http://localhost:8080/api/chats/messages/${conversationId}`)
-      .subscribe((data) => this.messages = data);
+  selectConversation(conversation: Conversation): void {
+    this.selectedConversation = conversation;
+    this.openChatDialog(conversation);
+
   }
-
-  sendMessage(): void {
-    if (!this.selectedConversation || !this.newMessage.trim()) return;
-
-    const message = {
-      senderProfileId: this.userProfileId,
-      conversationId: this.selectedConversation.id,
-      content: this.newMessage
-    };
-
-    this.websocketService.sendMessage(this.selectedConversation.id, message);
-    this.newMessage = '';
-  }
-
 
 
   onPageChange(event: PageEvent): void {
