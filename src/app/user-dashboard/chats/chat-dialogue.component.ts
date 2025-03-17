@@ -78,6 +78,12 @@ export class ChatDialogueComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  isSameDay(timestamp1: string, timestamp2: string): boolean {
+    const date1 = new Date(timestamp1).setHours(0, 0, 0, 0);
+    const date2 = new Date(timestamp2).setHours(0, 0, 0, 0);
+    return date1 === date2;
+  }
+
   protected readonly AuthenticatedUser = AuthenticatedUser;
 }
 

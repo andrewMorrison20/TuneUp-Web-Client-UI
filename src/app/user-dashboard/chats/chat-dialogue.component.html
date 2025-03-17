@@ -1,25 +1,36 @@
-<mat-dialog-content class="chat-panel">
+<div class="chat-header">
   <h2>Chat with {{ data.conversation.participants.join(', ') }}</h2>
+</div>
 
+<mat-dialog-content class="chat-panel" (scroll)="onScroll($event)">
   <mat-list>
-    <mat-list-item *ngFor="let msg of messages"
-                   [ngClass]="{'self': msg.senderProfileId === AuthenticatedUser.getAuthUserProfileId(), 'other': msg.senderProfileId !== AuthenticatedUser.getAuthUserProfileId()}"
-                   class="message-item">
-      <div class="message-header">
-        <img *ngIf="msg.senderProfilePictureUrl"
-             [src]="msg.senderProfilePictureUrl"
-             alt="Profile Picture"
-             class="profile-pic">
-        <strong>{{ msg.senderName }}:</strong>
+    <ng-container *ngFor="let msg of messages; let i = index">
+      <!-- Show Date Header if Previous Message is on a Different Day -->
+      <div *ngIf="i === 0 || !isSameDay(msg.timestamp, messages[i - 1].timestamp)" class="date-separator">
+        {{ msg.timestamp | date: 'fullDate' }}
       </div>
-      <div class="message-body">
-        {{ msg.content }}
-        <br>
-        <small>{{ msg.timestamp | date:'shortTime' }}</small>
-      </div>
-    </mat-list-item>
-  </mat-list>
 
+      <mat-list-item
+        [ngClass]="{'self': msg.senderProfileId === AuthenticatedUser.getAuthUserProfileId(), 'other': msg.senderProfileId !== AuthenticatedUser.getAuthUserProfileId()}"
+        class="message-item">
+
+        <div class="message-header">
+          <img *ngIf="msg.senderProfilePictureUrl"
+               [src]="msg.senderProfilePictureUrl"
+               alt="Profile Picture"
+               class="profile-pic">
+          <strong>{{ msg.senderName }}:</strong>
+        </div>
+        <div class="message-body">
+          {{ msg.content }}
+          <br>
+          <small>{{ msg.timestamp | date:'shortTime' }}</small>
+        </div>
+      </mat-list-item>
+    </ng-container>
+  </mat-list>
+  <mat-divider></mat-divider>
+  <br>
   <div class="message-input">
     <mat-form-field>
       <input matInput [(ngModel)]="newMessage" placeholder="Type a message...">
@@ -28,6 +39,7 @@
   </div>
 </mat-dialog-content>
 
+<mat-divider></mat-divider>
 <mat-dialog-actions align="end">
   <button mat-button (click)="close()">Close</button>
 </mat-dialog-actions>
