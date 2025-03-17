@@ -17,6 +17,7 @@ import { TuitionsService } from '../tuitions.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {ReviewDialogueComponent} from "../reviews/review-dialogue.component";
 import {ChatDialogueComponent} from "../../chats/chat-dialogue.component";
+import {forkJoin} from "rxjs";
 
 
 
@@ -28,25 +29,7 @@ import {ChatDialogueComponent} from "../../chats/chat-dialogue.component";
 export class TuitionSummaryComponent implements OnInit {
 
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
-  calendarOptions: CalendarOptions =  {
-    initialView: 'dayGridMonth',
-    selectable: true,
-    plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
-    height: 'auto',
-    contentHeight: 600,
-    slotMinTime: "06:00:00",
-    slotMaxTime: "23:00:00",
-    slotDuration: "00:15:00",
-    expandRows: true,
-    events: [],
-    dateClick: this.onDateClick.bind(this),
-    datesSet: this.onMonthChange.bind(this),
-    eventTimeFormat: {
-      hour: '2-digit',
-      minute: '2-digit',
-      meridiem: false
-    }
-  }
+  calendarOptions!: CalendarOptions;
   availabilitySlots: any[] = []
   isTimeGridView = false;
   profileId!: number;
@@ -71,28 +54,83 @@ export class TuitionSummaryComponent implements OnInit {
   ) {
   }
 
-  ngOnInit() {
-    this.profileId = Number(this.route.snapshot.paramMap.get('id'));
-    this.fetchTuitionSummary();
-    this.fetchProfiles();
-    this.fetchLessons(new Date());
-    this.updateCalendarEvents();
-    this.loading = false;
+
+ngOnInit(): void {
+  this.profileId = Number(this.route.snapshot.paramMap.get('id'));
+  
+  const tuitionSummary$ = this.availabilityService.getTuitionSummary(
+    this.profileId,
+    AuthenticatedUser.getAuthUserProfileId()
+  );
+  const userProfile$ = this.profileService.getProfileById(
+    AuthenticatedUser.getAuthUserProfileId()
+  );
+  const tuitionProfile$ = this.profileService.getProfileById(this.profileId);
+
+  forkJoin([tuitionSummary$, userProfile$, tuitionProfile$])
+  .subscribe({
+    next: ([tuitionSummary, userProfile, tuitionProfile]) => {
+
+      this.tuitionSummary = tuitionSummary;
+      this.userProfile = userProfile;
+      this.profile = tuitionProfile;
+
+
+      this.fetchLessons(new Date());
+      this.initializeCalendar();
+      this.updateCalendarEvents();
+      this.loading = false;
+    },
+    error: (err) => {
+
+      console.error('Failed to load all required data', err);
+
+    }
+  });
+}
+
+
+  private initializeCalendar(): void {
+    this.calendarOptions = {
+      initialView: 'dayGridMonth',
+      selectable: true,
+      selectMirror: true,
+      selectOverlap: false,
+      plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
+      height: 'auto',
+      contentHeight: 600,
+      slotMinTime: "06:00:00",
+      slotMaxTime: "23:00:00",
+      slotDuration: "00:15:00",
+      expandRows: true,
+      events: [],
+      dateClick: this.onDateClick.bind(this),
+      datesSet: this.onMonthChange.bind(this),
+      eventTimeFormat: {
+        hour: '2-digit',
+        minute: '2-digit',
+        meridiem: false
+      }
+    };
   }
 
   fetchTuitionSummary() {
     this.availabilityService.getTuitionSummary(this.profileId, AuthenticatedUser.getAuthUserProfileId()).subscribe(response => {
       this.tuitionSummary = response;
       this.tuitionDetails.startDate = this.tuitionSummary.startDate;
+      this.fetchLessons(new Date());
     });
+
+    console.log('TUITION SUMMARY' ,this.tuitionSummary)
   }
 
   private fetchLessons(date: Date): void {
+    console.log('in here')
     if (!this.profile?.id) return;
     const start = new Date(date.getFullYear(), date.getMonth(), 1).toISOString();
     const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59, 999);
     const end = `${endDate.getFullYear()}-${(endDate.getMonth() + 1).toString().padStart(2, '0')}-${endDate.getDate().toString().padStart(2, '0')}T23:59:59.999`;
-
+    console.log('Fetching lessons for cal')
     this.availabilityService.getTuitionLessonSummary(this.tuitionSummary.id, start, end)
       .subscribe(response => {
         this.availabilitySlots = response.map((lesson: LessonSummary) => lesson);
@@ -115,6 +153,7 @@ export class TuitionSummaryComponent implements OnInit {
 
     this.calendarOptions.eventClick = this.onLessonClick.bind(this);
   }
+
 
   onLessonClick(info: any): void {
     const lesson: LessonSummary = info.event.extendedProps.lesson;
@@ -144,7 +183,7 @@ export class TuitionSummaryComponent implements OnInit {
     }
   }
 
-  /** 🔹 Switch to TimeGrid Day View */
+
   onDateClick(info: any): void {
     console.log('Clicked date:', info.dateStr);
     if (this.calendarComponent?.getApi()) {
@@ -153,7 +192,7 @@ export class TuitionSummaryComponent implements OnInit {
     }
   }
 
-  /** Switch Back to Month View */
+
   switchToMonthView(): void {
     console.log('Switching back to Month View...');
     if (this.calendarComponent?.getApi()) {
@@ -167,7 +206,7 @@ export class TuitionSummaryComponent implements OnInit {
       console.warn(' calendarComponent not initialized yet.');
       return;
     }
-
+    console.log('TUITION SUMMARY' ,this.tuitionSummary)
     const currentDate = this.calendarComponent.getApi().getDate();
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
@@ -204,7 +243,7 @@ export class TuitionSummaryComponent implements OnInit {
 
     this.tuitionsService.deactivateTuition(this.tuitionSummary.id).subscribe({
       next: () => {
-        this.snackBar.open('Tuition successfully deactivated.', 'OK', {duration: 3000}); // ✅ Success message
+        this.snackBar.open('Tuition successfully deactivated.', 'OK', {duration: 3000});
       },
       error: (err) => {
         console.error('Failed to deactivate tuition:', err);

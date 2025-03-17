@@ -54,7 +54,7 @@ export class ScheduleComponent implements OnInit {
     const start = new Date(date.getFullYear(), date.getMonth(), 1).toISOString();
     const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59, 999);
     const end = `${endDate.getFullYear()}-${(endDate.getMonth() + 1).toString().padStart(2, '0')}-${endDate.getDate().toString().padStart(2, '0')}T23:59:59.999`;
-    console.log(start ,end + 'IN FETCH')
+
     this.availabilityService.getPeriodAvailabilityForProfile(AuthenticatedUser.getAuthUserProfileId(), start, end)
       .subscribe(response => {
         this.availabilitySlots = response;
@@ -95,7 +95,7 @@ export class ScheduleComponent implements OnInit {
     );
 
     if (isOverlap) {
-      alert('⚠️ Selected slot overlaps with existing availability.');
+      alert(' Selected slot overlaps with existing availability.');
       this.calendarComponent.getApi().unselect();
     } else {
       this.openAvailabilityDialog(selectInfo.startStr, selectInfo.endStr, false);
