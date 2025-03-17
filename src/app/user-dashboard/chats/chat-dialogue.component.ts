@@ -6,7 +6,8 @@ import {HttpClient} from "@angular/common/http";
 import {Client} from "@stomp/stompjs";
 import {AuthenticatedUser} from "../../authentication/authenticated-user.class";
 import {Conversation} from "./chats.component";
-import {tap} from "rxjs/operators";
+import {switchMap, tap} from "rxjs/operators";
+import {Observable} from "rxjs";
 
 
 @Component({
@@ -32,50 +33,51 @@ export class ChatDialogueComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.data)
     if (this.data.conversation) {
-      // Existing conversation
-      this.fetchMessages(this.data.conversation.id);
-      console.log('convo',this.data.conversation)
-    } else {
-      // No conversation exists, fetch or create one
-      this.startOrFetchConversation(this.data.userProfileId,this.data.participantId);
-      console.log('convo',this.data.conversation)
-    }
 
-    this.fetchMessages(this.data.conversation.id);
-    this.websocketService.subscribeToConversation(this.data.conversation.id).subscribe((newMessage: any) => {
+      this.fetchMessages(this.data.conversation.id).subscribe();
+      this.subscribeToMessages(this.data.conversation.id);
+    } else {
+
+      this.startOrFetchConversation(this.data.userProfileId, this.data.participantId).pipe(
+        tap(conversation => {
+          this.data.conversation = conversation;
+          this.subscribeToMessages(conversation.id);
+        }),
+        switchMap(conversation => this.fetchMessages(conversation.id))
+      ).subscribe({
+        error: (error) => console.error("Error fetching or starting conversation:", error)
+      });
+    }
+  }
+
+
+  subscribeToMessages(conversationId: number): void {
+    this.websocketService.subscribeToConversation(conversationId).subscribe((newMessage: any) => {
       this.messages.push(newMessage);
     });
   }
 
-  startOrFetchConversation(userProfileId: number, participantId: number): void {
-    this.http.post<Conversation>(
+  startOrFetchConversation(userProfileId: number, participantId: number) {
+    return this.http.post<Conversation>(
       `http://localhost:8080/api/chats/conversation/start`,
       { userId: userProfileId, participantId: participantId }
-    ).pipe(
-      tap((conversation) => {
-        this.data.conversation = conversation;
-        this.fetchMessages(conversation.id);
-      })
-    ).subscribe({
-      error: (error) => console.error("Error fetching or starting conversation:", error)
-    });
+    );
   }
 
-
-  fetchMessages(conversationId: number, pageIndex: number = 0, pageSize: number = 20): void {
+  fetchMessages(conversationId: number, pageIndex: number = 0, pageSize: number = 20): Observable<{ content: Message[], totalElements: number }> {
     const token = AuthenticatedUser.getAuthUserToken();
     const url = `http://localhost:8080/api/chats/conversation/${conversationId}/messages?page=${pageIndex}&size=${pageSize}`;
 
-    this.http.get<{ content: Message[], totalElements: number }>(url, {
+    return this.http.get<{ content: Message[], totalElements: number }>(url, {
       headers: { Authorization: `Bearer ${token}` }
-    })
-      .subscribe(response => {
-        this.messages = [...response.content, ...this.messages]; // Append new messages at the beginning
+    }).pipe(
+      tap(response => {
+        this.messages = [...response.content, ...this.messages]; // Append messages at the beginning
         this.totalMessages = response.totalElements;
-        this.hasMoreMessages = response.content.length === pageSize; // Check if more messages exist
-      });
+        this.hasMoreMessages = response.content.length === pageSize;
+      })
+    );
   }
 
 
@@ -84,10 +86,9 @@ export class ChatDialogueComponent implements OnInit {
 
     if (scrollTop === 0 && this.hasMoreMessages) {
       this.pageIndex++;
-      this.fetchMessages(this.data.conversation.id, this.pageIndex, this.pageSize);
+      this.fetchMessages(this.data.conversation.id, this.pageIndex, this.pageSize).subscribe();
     }
   }
-
 
   sendMessage(): void {
     if (!this.newMessage.trim()) return;
