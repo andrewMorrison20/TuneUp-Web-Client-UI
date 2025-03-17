@@ -16,6 +16,7 @@ import {LessonSummary} from "./lesson-summary/lesson-summary.model";
 import { TuitionsService } from '../tuitions.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {ReviewDialogueComponent} from "../reviews/review-dialogue.component";
+import {ChatDialogueComponent} from "../../chats/chat-dialogue.component";
 
 
 

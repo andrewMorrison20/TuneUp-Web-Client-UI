@@ -5,6 +5,8 @@ import {Message} from "stompjs";
 import {HttpClient} from "@angular/common/http";
 import {Client} from "@stomp/stompjs";
 import {AuthenticatedUser} from "../../authentication/authenticated-user.class";
+import {Conversation} from "./chats.component";
+import {tap} from "rxjs/operators";
 
 
 @Component({
@@ -30,11 +32,37 @@ export class ChatDialogueComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log(this.data)
+    if (this.data.conversation) {
+      // Existing conversation
+      this.fetchMessages(this.data.conversation.id);
+      console.log('convo',this.data.conversation)
+    } else {
+      // No conversation exists, fetch or create one
+      this.startOrFetchConversation(this.data.userProfileId,this.data.participantId);
+      console.log('convo',this.data.conversation)
+    }
+
     this.fetchMessages(this.data.conversation.id);
     this.websocketService.subscribeToConversation(this.data.conversation.id).subscribe((newMessage: any) => {
       this.messages.push(newMessage);
     });
   }
+
+  startOrFetchConversation(userProfileId: number, participantId: number): void {
+    this.http.post<Conversation>(
+      `http://localhost:8080/api/chats/conversation/start`,
+      { userId: userProfileId, participantId: participantId }
+    ).pipe(
+      tap((conversation) => {
+        this.data.conversation = conversation;
+        this.fetchMessages(conversation.id);
+      })
+    ).subscribe({
+      error: (error) => console.error("Error fetching or starting conversation:", error)
+    });
+  }
+
 
   fetchMessages(conversationId: number, pageIndex: number = 0, pageSize: number = 20): void {
     const token = AuthenticatedUser.getAuthUserToken();
@@ -69,7 +97,8 @@ export class ChatDialogueComponent implements OnInit {
       conversationId: this.data.conversation.id,
       content: this.newMessage
     };
-
+    console.log('MESSAGE',message);
+    console.log(this.data.conversation)
     this.websocketService.sendMessage(this.data.conversation.id, message);
     this.newMessage = '';
   }

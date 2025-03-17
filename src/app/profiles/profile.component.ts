@@ -12,6 +12,8 @@ import {MatDialog} from "@angular/material/dialog";
 import {LessonRequestDialogComponent} from "../lessons/lesson-request/lesson-request-dialog.component";
 import {AuthenticatedUser} from "../authentication/authenticated-user.class";
 import {AvailabilityService} from "../lessons/availability.service";
+import {ChatDialogueComponent} from "../user-dashboard/chats/chat-dialogue.component";
+import {Conversation} from "../user-dashboard/chats/chats.component";
 
 type Profile = TutorProfile | StudentProfile;
 
@@ -54,7 +56,6 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     }
   }
 
-  /** 🔹 Initialize FullCalendar Configuration */
   private initializeCalendar(): void {
     this.calendarOptions = {
       initialView: 'dayGridMonth',
@@ -78,7 +79,6 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     };
   }
 
-  /** 🔹 Fetch Profile Details */
   private fetchProfile(profileId: number): void {
     this.profileService.getProfileById(profileId).subscribe(
       profile => {
@@ -120,7 +120,6 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     this.fetchAvailability(new Date(start));
   }
 
-  /**  Switch to TimeGrid Day View */
   onDateClick(info: any): void {
     console.log('Clicked date:', info.dateStr);
     if (this.calendarComponent?.getApi()) {
@@ -129,7 +128,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     }
   }
 
-  /**  Switch Back to Month View */
+
   switchToMonthView(): void {
     console.log('Switching back to Month View...');
     if (this.calendarComponent?.getApi()) {
@@ -138,7 +137,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     }
   }
 
-  /**  Handle Event Click */
+
   onEventClick(info: any): void {
     console.log('Event clicked:', info.event.title);
 
@@ -192,6 +191,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
   startChat(): void {
     console.log('Starting chat with', this.profile?.displayName);
+    this.openChatDialog();
   }
 
   private updateCalendarEvents(): void {
@@ -213,6 +213,22 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     }
   }
 
+  openChatDialog(): void {
+    const dialogRef = this.dialog.open(ChatDialogueComponent, {
+      width: '800px',
+      data: {
+        conversation: null,
+        participantId: this.profile?.id,
+        userProfileId: AuthenticatedUser.getAuthUserProfileId(),
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      console.log('Chat dialog closed.');
+    });
+  }
+
+  //THIS IS WRONG
   private fetchProfileQualifications() {
     this.profileService.getProfileQualificationsById(AuthenticatedUser.getAuthUserProfileId())
       .subscribe();
