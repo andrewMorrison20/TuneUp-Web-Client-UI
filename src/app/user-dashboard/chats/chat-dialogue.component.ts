@@ -98,8 +98,6 @@ export class ChatDialogueComponent implements OnInit {
       conversationId: this.data.conversation.id,
       content: this.newMessage
     };
-    console.log('MESSAGE',message);
-    console.log(this.data.conversation)
     this.websocketService.sendMessage(this.data.conversation.id, message);
     this.newMessage = '';
   }
