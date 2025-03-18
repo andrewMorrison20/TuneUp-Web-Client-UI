@@ -57,7 +57,7 @@ export class TuitionSummaryComponent implements OnInit {
 
 ngOnInit(): void {
   this.profileId = Number(this.route.snapshot.paramMap.get('id'));
-  
+
   const tuitionSummary$ = this.availabilityService.getTuitionSummary(
     this.profileId,
     AuthenticatedUser.getAuthUserProfileId()

@@ -2,7 +2,7 @@
   <h2>Chat with {{ data.conversation.participants.join(', ') }}</h2>
 </div>
 
-<mat-dialog-content class="chat-panel" (scroll)="onScroll($event)">
+<mat-dialog-content class="chat-panel" (scroll)="onScroll($event)" #chatPanel>
   <mat-list>
     <ng-container *ngFor="let msg of messages; let i = index">
       <!-- Show Date Header if Previous Message is on a Different Day -->
@@ -19,8 +19,9 @@
                [src]="msg.senderProfilePictureUrl"
                alt="Profile Picture"
                class="profile-pic">
-          <strong>{{ msg.senderName }}:</strong>
+          <strong>{{ msg.senderName }}</strong>
         </div>
+        <br>
         <div class="message-body">
           {{ msg.content }}
           <br>

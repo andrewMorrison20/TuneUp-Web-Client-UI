@@ -1,29 +1,29 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import {WebsocketService} from "../../services/websocket.service";
-import {Message} from "stompjs";
-import {HttpClient} from "@angular/common/http";
-import {Client} from "@stomp/stompjs";
-import {AuthenticatedUser} from "../../authentication/authenticated-user.class";
-import {Conversation} from "./chats.component";
-import {switchMap, tap} from "rxjs/operators";
-import {Observable} from "rxjs";
-
+import { WebsocketService } from "../../services/websocket.service";
+import { Message } from "stompjs";
+import { HttpClient } from "@angular/common/http";
+import { Client } from "@stomp/stompjs";
+import { AuthenticatedUser } from "../../authentication/authenticated-user.class";
+import { Conversation } from "./chats.component";
+import { switchMap, tap } from "rxjs/operators";
+import { Observable } from "rxjs";
 
 @Component({
   selector: 'app-chat-dialogue',
   templateUrl: './chat-dialogue.component.html',
-  styleUrl: './chat-dialogue.component.scss'
+  styleUrls: ['./chat-dialogue.component.scss']
 })
-export class ChatDialogueComponent implements OnInit {
+export class ChatDialogueComponent implements OnInit, AfterViewChecked {
   messages: any[] = [];
   newMessage = '';
   totalMessages = 0;
   hasMoreMessages = false;
   pageIndex = 0;
   pageSize = 20;
-
   private stompClient!: Client;
+
+  @ViewChild('chatPanel') chatPanel!: ElementRef;
 
   constructor(
     public dialogRef: MatDialogRef<ChatDialogueComponent>,
@@ -34,11 +34,9 @@ export class ChatDialogueComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data.conversation) {
-
       this.fetchMessages(this.data.conversation.id).subscribe();
       this.subscribeToMessages(this.data.conversation.id);
     } else {
-
       this.startOrFetchConversation(this.data.userProfileId, this.data.participantId).pipe(
         tap(conversation => {
           this.data.conversation = conversation;
@@ -51,6 +49,24 @@ export class ChatDialogueComponent implements OnInit {
     }
   }
 
+  ngAfterViewChecked(): void {
+    if (this.isUserNearBottom()) {
+      this.scrollToBottom();
+    }
+  }
+
+  private isUserNearBottom(): boolean {
+    const nativeEl = this.chatPanel.nativeElement;
+    const threshold = 150; // pixels from the bottom
+    const position = nativeEl.scrollHeight - nativeEl.scrollTop - nativeEl.clientHeight;
+    return position <= threshold;
+  }
+
+  private scrollToBottom(): void {
+    if (this.chatPanel && this.chatPanel.nativeElement) {
+      this.chatPanel.nativeElement.scrollTop = this.chatPanel.nativeElement.scrollHeight;
+    }
+  }
 
   subscribeToMessages(conversationId: number): void {
     this.websocketService.subscribeToConversation(conversationId).subscribe((newMessage: any) => {
@@ -73,17 +89,15 @@ export class ChatDialogueComponent implements OnInit {
       headers: { Authorization: `Bearer ${token}` }
     }).pipe(
       tap(response => {
-        this.messages = [...response.content, ...this.messages]; // Append messages at the beginning
+        this.messages = [...response.content, ...this.messages];
         this.totalMessages = response.totalElements;
         this.hasMoreMessages = response.content.length === pageSize;
       })
     );
   }
 
-
   onScroll(event: any): void {
     const scrollTop = event.target.scrollTop;
-
     if (scrollTop === 0 && this.hasMoreMessages) {
       this.pageIndex++;
       this.fetchMessages(this.data.conversation.id, this.pageIndex, this.pageSize).subscribe();
@@ -92,7 +106,6 @@ export class ChatDialogueComponent implements OnInit {
 
   sendMessage(): void {
     if (!this.newMessage.trim()) return;
-
     const message = {
       senderProfileId: this.data.userProfileId,
       conversationId: this.data.conversation.id,
@@ -114,5 +127,3 @@ export class ChatDialogueComponent implements OnInit {
 
   protected readonly AuthenticatedUser = AuthenticatedUser;
 }
-
-
