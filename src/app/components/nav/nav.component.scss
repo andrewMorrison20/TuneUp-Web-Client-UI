@@ -8,8 +8,6 @@
 .logo-matching-toolbar button {
   color: #100e0e;
   box-sizing: border-box;
-
-
 }
 
 .account-icon .mat-icon {
@@ -28,7 +26,7 @@ mat-toolbar {
   height: 150px;
   transition: height 0.3s ease;
 }
-/* Website Title Styling */
+
 .website-title {
   display: flex;
   justify-content: flex-start;
@@ -38,14 +36,11 @@ mat-toolbar {
   padding-left: 20px;
 }
 
-
-
 .website-title .logo {
   height: 120px;
   width: auto;
   object-fit: contain;
 }
-
 
 @media (max-width: 768px) {
  .logo {
@@ -53,31 +48,19 @@ mat-toolbar {
   }
 }
 
-
-/* Navigation Links Styling */
 .nav-links {
   display: flex;
-  justify-content: center; /* Align links to the left */
-  gap: 30px; /* Reduced gap for better spacing */
-  font-size: 1.6rem; /* Adjust font size for normal screens */
-  flex: 1; /* Allow links to expand */
-  transition: transform 0.3s ease; /* Smooth transition when collapsing/expanding */
+  justify-content: center;
+  gap: 30px;
+  font-size: 1.6rem;
+  flex: 1;
+  transition: transform 0.3s ease;
 }
 
-/* Collapsed navigation links (on mobile screens) */
 .nav-links.collapsed {
-  display: none; /* Hide the links when collapsed */
+  display: none;
 }
 
-/* Account icon styling */
-.account-icon {
-  width: 25px; /* Smaller icon for smaller screens */
-  height: 25px;
-  margin-left: 20px;
-  margin-right: 20px;
-}
-
-/* Hamburger Menu */
 .hamburger-menu {
   display: none;
   cursor: pointer;
@@ -93,54 +76,45 @@ mat-toolbar {
     padding: 0 8px;
   }
 
-  /* Title font size for mobile screens */
   .website-title {
     font-size: 1.2rem;
-    justify-content: center; /* Center the title */
+    justify-content: center;
   }
 
-  /* Position the hamburger menu on the left */
   .hamburger-menu {
     display: block;
-    position: absolute; /* Absolute positioning to avoid overlap */
-    left: 16px; /* Align it to the left */
+    position: absolute;
+    left: 16px;
   }
 
   .nav-links {
-    flex-direction: column; /* Stack links vertically */
-    background-color: #fff; /* Background color for dropdown */
+    flex-direction: column;
+    background-color: #fff;
     position: absolute;
-    top: 60px; /* Position below the toolbar */
+    top: 60px;
     left: 0;
     width: 100%;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     padding: 10px 0;
-    display: none; /* Hide by default */
+    display: none;
   }
 
-  /* Show the nav links when expanded */
   .nav-links.expanded {
-    display: flex; /* Display links */
+    display: flex;
   }
 
   .nav-links a {
-    font-size: 1.6rem; /* Increase font size of links */
-    font-weight: 500;  /* Slightly bold to make them stand out more */
-    padding: 8px 15px; /* Add padding for clickable area */
-    transition: transform 0.3s ease; /* Smooth scaling transition */
-  }
-  /* Account icon should stay on the right */
-  .account-icon {
-    position: absolute;
-    right: 10px;
-    top: 15px; /* Position account icon on mobile */
+    font-size: 1.6rem;
+    font-weight: 500;
+    padding: 8px 15px;
+    transition: transform 0.3s ease;
   }
 }
 
-/* Hover effect for links and buttons */
+
 .mat-button:hover,
 .nav-links a:hover {
-  transform: scale(1.1); /* Enlarge on hover */
+  transform: scale(1.1);
   text-decoration: underline;
   border-radius: 10px;
 }
