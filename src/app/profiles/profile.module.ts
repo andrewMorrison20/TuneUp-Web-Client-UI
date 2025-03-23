@@ -27,6 +27,7 @@ import {MatSidenav, MatSidenavContainer, MatSidenavModule} from "@angular/materi
 import {FullCalendarModule} from "@fullcalendar/angular";
 import {LessonsModule} from "../lessons/lessons.module";
 import {MatLabel} from "@angular/material/form-field";
+import {SharedModule} from "../shared/shared.module";
 
 const profileRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent },
@@ -40,36 +41,19 @@ const profileRoutes: Routes = [
     SearchResultsComponent,
     ReviewCardComponent
   ],
-    imports: [
-        CommonModule,
-        HttpClientModule,
-        MatCardModule,
-        MatIconModule,
-        MatListModule,
-        MatProgressBarModule,
-        MatChipsModule,
-        MatDividerModule,
-        MatCardModule,
-        MatSidenavModule,
-        RouterLink,
-        RouterModule.forChild(profileRoutes),
-        MatProgressSpinner,
-        MatPaginator,
-        NavModule,
-        MatLabel,
-        SearchBarModule,
-        MatButton,
-        FooterModule,
-        FiltersSideBarModule,
-        MatSidenav,
-        MatSidenavContainer,
-        MatIconButton,
-        FullCalendarModule,
-        LessonsModule
-    ],
-  providers: [
-    ProfileService
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    SharedModule,
+    RouterModule.forChild(profileRoutes),
+    NavModule,
+    SearchBarModule,
+    FooterModule,
+    FiltersSideBarModule,
+    FullCalendarModule,
+    LessonsModule
   ],
+  providers: [ ProfileService ],
   exports: [
     ProfileComponent,
     SearchResultsComponent,
@@ -77,4 +61,3 @@ const profileRoutes: Routes = [
   ]
 })
 export class ProfileModule { }
-

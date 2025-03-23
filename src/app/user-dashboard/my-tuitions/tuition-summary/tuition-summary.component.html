@@ -38,8 +38,10 @@
 
   <!-- Links -->
   <div class="tuition-links">
-    <button mat-raised-button color="primary" routerLink="/user-dashboard/payments">Go to Payments</button>
-    <button mat-raised-button color="accent" routerLink="/user-dashboard/chats">Go to Chats</button>
+    <button mat-raised-button color="primary" routerLink="/user-dashboard/payments">
+      <mat-icon>payment</mat-icon> Go to Payments</button>
+    <button mat-raised-button color="accent" routerLink="/user-dashboard/chats">
+      <mat-icon>chat</mat-icon>Go to Chats</button>
 
 
     <!-- Show Deactivate Tuition button  if tuition is active -->
@@ -48,6 +50,7 @@
       mat-raised-button
       color="warn"
       (click)="deactivateTuition()">
+      <mat-icon>pause</mat-icon>
       Stop Tuition
     </button>
   </div>

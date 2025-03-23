@@ -66,19 +66,4 @@ export class AuthService {
     return Math.max(refreshTime - this.tokenRefreshThreshold, 0);
   }
 
-  public tokenIsValid(): boolean {
-    const token = AuthenticatedUser.getAuthUserToken();
-    if (token && !this.jwtHelper.isTokenExpired(token)) {
-      return true;
-    }
-    // Token is expired; clear it from storage
-    AuthenticatedUser.deleteObj();
-    sessionStorage.removeItem(AuthenticatedUser.key);
-    return false;
-  }
-
-
-  public getAuthToken(): string | null {
-    return AuthenticatedUser.getAuthUserToken();
-  }
 }

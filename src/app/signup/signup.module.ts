@@ -14,6 +14,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {HttpClientModule} from "@angular/common/http";
 import {NavModule} from "../components/nav/nav.module";
 import {MatOption, MatSelect} from "@angular/material/select";
+import {SharedModule} from "../shared/shared.module";
 
 
 @NgModule({
@@ -22,20 +23,9 @@ import {MatOption, MatSelect} from "@angular/material/select";
     CommonModule,
     HttpClientModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    MatButtonModule,
+    SharedModule,
     SignupRoutingModule,
-    MatCardContent,
-    MatCardTitle,
-    MatCard,
-    MatCardActions,
-    MatCardFooter,
-    MatCheckbox,
-    MatProgressSpinner,
     NavModule,
-    MatSelect,
     MatOption
   ]
 })

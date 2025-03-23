@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-signup',
@@ -15,7 +16,7 @@ export class SignupComponent {
   successMessage='';
   isLoading = false;
 
-  constructor(private fb: FormBuilder,private http: HttpClient) {
+  constructor(private fb: FormBuilder,private http: HttpClient,private router: Router) {
     this.signupForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
@@ -44,16 +45,19 @@ export class SignupComponent {
         email: formData.email,
         name: formData.name,
         password: formData.password
-      }).subscribe(
-        response => {
+      }).subscribe({
+        next: response => {
           this.isLoading = false;
-          this.successMessage = 'Signup successful! Please check your email to verify your account.';
+          this.successMessage = 'Signup successful! Please log in.';
           console.log('User Creation Successful', response);
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 1000); // Redirect after 2 seconds
         },
-        (error: HttpErrorResponse) => {
+        error: (error: HttpErrorResponse) => {
           this.isLoading = false;
           if (error.status === 400) {
-            this.errorMessage = 'Invalid request. Please check your details.';
+            this.errorMessage = 'Email already exist. Please check your details.';
           } else if (error.status === 409) {
             this.errorMessage = 'Email already exists. Please use a different email.';
           } else if (error.status === 500) {
@@ -63,11 +67,8 @@ export class SignupComponent {
           }
           console.error('Signup failed', error);
         }
-      );
-    } else {
-      this.errorMessage = 'Please fill out the form correctly.';
-      console.log('Signup form validation failed', this.signupForm.value);
+      });
     }
   }
 
-}
+    }

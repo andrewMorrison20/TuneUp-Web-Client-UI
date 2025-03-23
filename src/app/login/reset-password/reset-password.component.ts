@@ -12,7 +12,6 @@ export class ResetPasswordComponent {
   errorMessage: string | null = null;
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
-    // Initialize the form group
     this.forgotPasswordForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
     });
@@ -37,7 +36,7 @@ export class ResetPasswordComponent {
     }
   }
 
-  // Send email request to backend
+
   requestEmailLink(email: string) {
     const url =  'http://localhost:8080/api/users/requestResetPasswordEmail';
     return this.http.post(url, { email });

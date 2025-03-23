@@ -19,7 +19,7 @@ export class AuthInterceptor implements HttpInterceptor {
         console.warn('Token is expired and will not be attached.');
       }
     }
-    return next.handle(req); // Proceed without token
+    return next.handle(req);
   }
 }
 

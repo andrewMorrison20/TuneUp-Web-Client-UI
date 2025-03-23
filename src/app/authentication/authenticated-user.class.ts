@@ -33,14 +33,6 @@ export class AuthenticatedUser implements BaseAuthenticatedUser {
     return this.console === 'admin';
   }
 
-  forUserConsole() {
-    return this.console === 'user';
-  }
-
-  forTutorConsole() {
-    return this.console === 'Tutor';
-  }
-
   static getAuthUserToken(): string {
     const userObj = this.getAuthenticatedUser();
     return userObj ? userObj.token : '';
@@ -71,16 +63,6 @@ export class AuthenticatedUser implements BaseAuthenticatedUser {
     return currentUser ? currentUser.forAdminConsole() : false;
   }
 
-  static currentUserAuthenticatedForUser(): boolean {
-    const currentUser = this.getAuthenticatedUser();
-    return currentUser ? currentUser.forUserConsole() : false;
-  }
-
-  static currentUserIsUsingSamlAuth(): boolean {
-    const currentUser = this.getAuthenticatedUser();
-    return currentUser?.authType === 'SAML_AUTH';
-  }
-
   static userLoggedIn(): boolean {
     const currentUser = this.getAuthenticatedUser();
     if (currentUser) {
@@ -88,10 +70,6 @@ export class AuthenticatedUser implements BaseAuthenticatedUser {
       return !helper.isTokenExpired(currentUser.token);
     }
     return false;
-  }
-
-  static userTokenExists(): boolean {
-    return this.getAuthenticatedUser() !== null;
   }
 
   static save(user: string, _console: string, token: string, authType: string,id: number, profileId:number, profileType:string): AuthenticatedUser {

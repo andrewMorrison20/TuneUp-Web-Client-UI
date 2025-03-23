@@ -28,6 +28,7 @@ import {ReviewDialogueComponent} from "./reviews/review-dialogue.component";
 import {MatFormField, MatHint, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatDivider} from "@angular/material/divider";
+import {SharedModule} from "../../shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -43,27 +44,13 @@ import {MatDivider} from "@angular/material/divider";
   imports: [
     CommonModule,
     HttpClientModule,
-    MatTabsModule,
-    MatCardModule,
-    MatPaginator,
-    MatButton,
-    MatDialogContent,
-    MatLabel,
-    MatList,
-    MatListItem,
-    MatDialogActions,
-    MatIcon,
-    MatProgressSpinner,
+    SharedModule,
     RouterLink,
     FullCalendarModule,
     MatCheckbox,
     FormsModule,
     GoogleMap,
-    MapMarker,
-    MatHint,
-    MatFormField,
-    MatInput,
-    MatDivider
+    MapMarker
   ],
   providers:[AvailabilityService,AddressService,TuitionsService,GoogleMap],
   exports: [MyTuitionsComponent,ProfileLessonRequestsDialogComponent]
