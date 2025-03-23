@@ -31,8 +31,10 @@
       <div class="notification-menu-container">
         <ng-container *ngIf="notifications && notifications.length; else noNotifications">
           <button mat-menu-item *ngFor="let notification of notifications">
-            <mat-icon>info</mat-icon>
+            <mat-icon>{{ notification.type | notificationIcon }}</mat-icon>
             <span>{{ notification.message }}</span>
+
+            <mat-divider></mat-divider>
           </button>
         </ng-container>
         <ng-template #noNotifications>
