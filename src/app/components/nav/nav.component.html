@@ -19,25 +19,28 @@
 
 
   <!-- Notification Icon -->
-  <button mat-icon-button [matMenuTriggerFor]="notificationMenu" class="notification-icon" aria-label="Notifications">
-    <mat-icon>notifications</mat-icon>
-    <!-- Optionally add a badge for unread count -->
-    <span *ngIf="unreadCount > 0" class="notification-badge">{{ unreadCount }}</span>
-  </button>
+  <ng-container *ngIf="AuthenticatedUser.userLoggedIn()">
+    <!-- Notification Icon -->
+    <button mat-icon-button [matMenuTriggerFor]="notificationMenu" class="notification-icon" aria-label="Notifications"  (menuOpened)="toggleNotificationMenu()">
+      <mat-icon>notifications</mat-icon>
+      <!-- Optionally add a badge for unread count -->
+      <span *ngIf="unreadCount > 0" class="notification-badge">{{ unreadCount }}</span>
+    </button>
 
-  <mat-menu #notificationMenu="matMenu" class="notification-menu">
-    <div class="notification-menu-container">
-      <ng-container *ngIf="notifications && notifications.length; else noNotifications">
-        <button mat-menu-item *ngFor="let notification of notifications">
-          <mat-icon>info</mat-icon>
-          <span>{{ notification.message }}</span>
-        </button>
-      </ng-container>
-      <ng-template #noNotifications>
-        <div class="no-notifications">No new notifications</div>
-      </ng-template>
-    </div>
-  </mat-menu>
+    <mat-menu #notificationMenu="matMenu" class="notification-menu">
+      <div class="notification-menu-container">
+        <ng-container *ngIf="notifications && notifications.length; else noNotifications">
+          <button mat-menu-item *ngFor="let notification of notifications">
+            <mat-icon>info</mat-icon>
+            <span>{{ notification.message }}</span>
+          </button>
+        </ng-container>
+        <ng-template #noNotifications>
+          <div class="no-notifications"> No new notifications </div>
+        </ng-template>
+      </div>
+    </mat-menu>
+  </ng-container>
 
 
   <!-- Conditional Menu Items -->

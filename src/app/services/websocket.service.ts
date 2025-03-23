@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import sockjs from 'sockjs-client/dist/sockjs';
 import { Client, StompSubscription } from '@stomp/stompjs';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import {AuthenticatedUser} from "../authentication/authenticated-user.class";
 
 @Injectable({
   providedIn: 'root',
@@ -11,17 +12,25 @@ export class WebsocketService {
   private messageSubjects: { [conversationId: number]: Subject<any> } = {};
   private activeSubscriptions: { [conversationId: number]: StompSubscription | null } = {};
 
+  private connected$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
   constructor() {
     this.stompClient = new Client({
       webSocketFactory: () => new sockjs('http://localhost:8080/chat-ws'),
-      reconnectDelay: 5000, // Auto-reconnect after 5 seconds
+      reconnectDelay: 5000,
       debug: (msg) => console.log('STOMP:', msg),
-      onConnect: () => console.log(' Connected to WebSocket'),
-      onStompError: (frame) => console.error(' STOMP Error:', frame),
-      onWebSocketClose: () => console.warn(' WebSocket Disconnected'),
+      onConnect: () => {
+        console.log('Connected to WebSocket');
+        this.connected$.next(true);
+      },
+      onStompError: (frame) => console.error('STOMP Error:', frame),
+      onWebSocketClose: () => {
+        console.warn('WebSocket Disconnected');
+        this.connected$.next(false);
+      },
     });
 
-    this.stompClient.activate(); // Start WebSocket connection
+    this.stompClient.activate();
   }
 
   /**
@@ -30,20 +39,17 @@ export class WebsocketService {
    */
   public subscribeToConversation(conversationId: number): Observable<any> {
     if (!this.stompClient.connected) {
-      console.error(' WebSocket is not connected!');
+      console.error('WebSocket is not connected!');
       return new Observable();
     }
 
-    // Unsubscribe from any previous subscription for the same conversation
     if (this.activeSubscriptions[conversationId]) {
       this.activeSubscriptions[conversationId]?.unsubscribe();
-      console.log(` Unsubscribed from previous conversation: ${conversationId}`);
+      console.log(`Unsubscribed from previous conversation: ${conversationId}`);
     }
 
-    // Create a new subject for this conversation
     this.messageSubjects[conversationId] = new Subject<any>();
 
-    // Subscribe to conversation topic
     this.activeSubscriptions[conversationId] = this.stompClient.subscribe(
       `/topic/chat/${conversationId}`,
       (message) => {
@@ -51,8 +57,7 @@ export class WebsocketService {
       }
     );
 
-    console.log(` Subscribed to conversation: ${conversationId}`);
-
+    console.log(`Subscribed to conversation: ${conversationId}`);
     return this.messageSubjects[conversationId].asObservable();
   }
 
@@ -65,10 +70,30 @@ export class WebsocketService {
         destination: `/app/chat/send/${conversationId}`,
         body: JSON.stringify(message),
       });
-      console.log(` Sent message to /app/chat/send/${conversationId}`);
+      console.log(`Sent message to /app/chat/send/${conversationId}`);
     } else {
-      console.error(' WebSocket is not connected!');
+      console.error('WebSocket is not connected!');
     }
   }
+
+  /**
+   * Subscribes to notifications. Waits until connection is established.
+   */
+  public subscribeToNotifications(): Observable<any> {
+    const notificationSubject = new Subject<any>();
+    const userId = AuthenticatedUser.getAuthUserId();
+
+    this.connected$.subscribe((isConnected) => {
+      if (isConnected) {
+        this.stompClient.subscribe(`/user/${userId}/queue/notifications`, (message) => {
+          notificationSubject.next(JSON.parse(message.body));
+        });
+        console.log('Subscribed to notifications');
+      }
+    });
+
+    return notificationSubject.asObservable();
+  }
 }
+
 
