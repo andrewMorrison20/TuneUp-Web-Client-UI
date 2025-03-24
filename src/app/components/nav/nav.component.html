@@ -21,7 +21,7 @@
   <!-- Notification Icon -->
   <ng-container *ngIf="AuthenticatedUser.userLoggedIn()">
     <!-- Notification Icon -->
-    <button mat-icon-button [matMenuTriggerFor]="notificationMenu" class="notification-icon" aria-label="Notifications"  (menuOpened)="toggleNotificationMenu()">
+    <button mat-icon-button [matMenuTriggerFor]="notificationMenu" class="notification-icon" aria-label="Notifications">
       <mat-icon>notifications</mat-icon>
       <!-- Optionally add a badge for unread count -->
       <span *ngIf="unreadCount > 0" class="notification-badge">{{ unreadCount }}</span>
@@ -30,7 +30,7 @@
     <mat-menu #notificationMenu="matMenu" class="notification-menu">
       <div class="notification-menu-container">
         <ng-container *ngIf="notifications && notifications.length; else noNotifications">
-          <button mat-menu-item *ngFor="let notification of notifications"  [routerLink]="notification.type | notificationLink">
+          <button mat-menu-item *ngFor="let notification of notifications"  [routerLink]="notification.type | notificationLink" (click)="markNotificationAsRead(notification)">
             <mat-icon>{{ notification.type | notificationIcon }}</mat-icon>
             <span>{{ notification.message }}</span>
 

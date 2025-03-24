@@ -65,20 +65,13 @@ export class NavComponent implements OnInit, OnDestroy {
     this.router.navigate(['/login']);
   }
 
-  toggleNotificationMenu(): void {
-    this.markNotificationsAsRead();
-  }
-
-  // Mark notifications as read in the UI and via a backend call.
-  markNotificationsAsRead(): void {
-    const unreadNotificationIds = this.notifications.filter(n => !n.read).map(n => n.id);
-    if (unreadNotificationIds.length > 0) {
-      this.markNotificationsAsRead2(unreadNotificationIds)
-        .subscribe(() => {
-          // Update local notifications to reflect that they are now read.
-          this.notifications = this.notifications.map(n => ({ ...n, read: true }));
-          this.updateUnreadCount();
-        });
+  markNotificationAsRead(notification: Notification): void {
+    if (!notification.read) {
+      this.updateNotificationAsRead(notification.id).subscribe(() => {
+        // Update local state for this notification
+        notification.read = true;
+        this.updateUnreadCount();
+      });
     }
   }
 
@@ -101,8 +94,8 @@ getUnreadNotifications(userId: string | number): Observable<Notification[]> {
     return this.http.get<Notification[]>(`http://localhost:8080/api/notifications/unread/${userId}`);
   }
 
-  markNotificationsAsRead2(notificationIds: number[]): Observable<any> {
-    // You might need to create a corresponding backend endpoint.
-    return this.http.post(`http://localhost:8080/api/notifications/mark-read-batch`, { notificationIds });
+  updateNotificationAsRead(notificationId: number): Observable<any> {
+    return this.http.post(`http://localhost:8080/api/notifications/${notificationId}/mark-read`, {});
   }
+
 }
