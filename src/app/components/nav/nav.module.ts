@@ -7,11 +7,12 @@ import {RouterLink, RouterLinkActive} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {SearchBarModule} from "../search-bar/search-bar.module";
 import {NotificationIconPipe} from "../../notification-icon.pipe";
+import {NotificationLinkPipe} from "../../notification-link.pipe";
 
 
 
 @NgModule({
-  declarations: [NavComponent,NotificationIconPipe],
+  declarations: [NavComponent,NotificationIconPipe,NotificationLinkPipe],
   imports: [
     CommonModule,
     SharedModule,

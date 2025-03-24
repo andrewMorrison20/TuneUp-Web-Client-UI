@@ -30,7 +30,7 @@
     <mat-menu #notificationMenu="matMenu" class="notification-menu">
       <div class="notification-menu-container">
         <ng-container *ngIf="notifications && notifications.length; else noNotifications">
-          <button mat-menu-item *ngFor="let notification of notifications">
+          <button mat-menu-item *ngFor="let notification of notifications"  [routerLink]="notification.type | notificationLink">
             <mat-icon>{{ notification.type | notificationIcon }}</mat-icon>
             <span>{{ notification.message }}</span>
 
