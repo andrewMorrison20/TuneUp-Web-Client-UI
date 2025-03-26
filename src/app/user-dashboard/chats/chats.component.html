@@ -41,6 +41,13 @@
           <button mat-raised-button color="primary" (click)="fetchConversations()">Refresh</button>
         </div>
       </ng-template>
+      
+      <mat-paginator [length]="totalElements"
+                     [pageSize]="pageSize"
+                     [pageIndex]="pageIndex"
+                     (page)="onPageChange($event)">
+      </mat-paginator>
+
       <br>
       <div class="new-conversation">
         <button mat-raised-button color="accent" (click)="openNewConversationDialog()">
