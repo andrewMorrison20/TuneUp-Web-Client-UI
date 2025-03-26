@@ -12,11 +12,14 @@
   margin: 10px;
   padding: 10px;
   cursor: pointer;
+  border-radius: 10px;
   transition: 0.2s ease-in-out;
+  box-shadow: 0 2px 5px rgba(44, 62, 80, 0.4);
 }
 
 .conversation-card mat-card:hover {
-  background-color: #f0f0f0;
+  background-color: #ceceef;
+  transform: scale(1.02);
 }
 
 .last-message {
@@ -36,6 +39,46 @@
 .no-conversations-container h1 {
   font-size: 50px;
 }
+
+
+.conversation-item {
+  display: flex;
+  align-items: flex-start;
+}
+
+.profile-picture {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 12px;
+}
+
+.conversation-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.participant-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.last-message {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.timestamp {
+  font-size: 12px;
+  color: #999;
+  margin-top: 4px;
+}
+
+
 
 
 

@@ -6,8 +6,8 @@ import {NavComponent} from "./nav.component";
 import {RouterLink, RouterLinkActive} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {SearchBarModule} from "../search-bar/search-bar.module";
-import {NotificationIconPipe} from "../../notification-icon.pipe";
-import {NotificationLinkPipe} from "../../notification-link.pipe";
+import {NotificationIconPipe} from "../../shared/pipes/notification-icon.pipe";
+import {NotificationLinkPipe} from "../../shared/pipes/notification-link.pipe";
 
 
 

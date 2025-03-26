@@ -14,7 +14,7 @@ type Profile = TutorProfile | StudentProfile;
 
 export interface Conversation {
   id: number;
-  participants: string[]; // Usernames
+  participants: ConversationParticipantDto[];
   lastMessage: string;
   lastMessageTimestamp:string;
 }
@@ -25,6 +25,12 @@ export interface Message {
   timestamp: string;
   senderName: string;
   senderProfilePictureUrl:string
+}
+
+interface ConversationParticipantDto {
+  id: number;
+  displayName: string;
+  profilePictureUrl: string | null;
 }
 
 @Component({
@@ -128,4 +134,13 @@ export class ChatsComponent implements OnInit {
       }
     );
   }
+
+
+ getOtherParticipant(
+  participants: ConversationParticipantDto[],
+  currentUserProfileId: number): ConversationParticipantDto | undefined {
+   return participants.find(participant => participant.id !== currentUserProfileId);
+ }
+
+  protected readonly AuthenticatedUser = AuthenticatedUser;
 }

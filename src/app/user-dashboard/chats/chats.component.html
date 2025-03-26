@@ -6,25 +6,30 @@
 
 
   <!-- Conversations List -->
-  <ng-container *ngIf="!isLoading && conversations.length > 0;else noConversations">
+  <ng-container *ngIf="!isLoading && conversations.length > 0; else noConversations">
     <div *ngFor="let convo of conversations"
          class="conversation-card"
          (click)="selectConversation(convo)"
          [class.selected]="convo.id === selectedConversation?.id">
       <mat-card>
-        <h3>{{ convo.participants.join(', ') }}</h3>
-        <mat-card-subtitle>
-      <span class="last-message">
-  {{ convo?.lastMessage ? (convo.lastMessage | slice:0:50) + (convo.lastMessage.length > 50 ? '...' : '') : 'No messages yet' }}
-</span>
-
-          <br>
-          <span class="timestamp">{{ convo.lastMessageTimestamp | date: 'medium' }}</span>
-
-        </mat-card-subtitle>
+        <ng-container *ngIf="getOtherParticipant(convo.participants, AuthenticatedUser.getAuthUserProfileId()) as participant">
+          <div class="conversation-item">
+            <img [src]="participant.profilePictureUrl || 'https://storage.googleapis.com/download/storage/v1/b/tuneup_profile_images/o/79a88d6b-8196-49cf-9cde-d6d4d3bf10fd-defaultProfilePicture.jpg?generation=1735034744997677&alt=media'"
+                 class="profile-picture">
+            <div class="conversation-details">
+              <h3 class="participant-name">{{ participant.displayName }}</h3>
+              <p class="last-message">
+                {{ convo?.lastMessage ? (convo.lastMessage | slice:0:50) + (convo.lastMessage.length > 50 ? '...' : '') : 'No messages yet' }}
+              </p>
+              <span class="timestamp">{{ convo.lastMessageTimestamp | date: 'medium' }}</span>
+            </div>
+          </div>
+        </ng-container>
       </mat-card>
     </div>
   </ng-container>
+
+
 
   <!-- No Conversations Message -->
   <ng-template #noConversations>
