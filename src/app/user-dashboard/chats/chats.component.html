@@ -1,51 +1,65 @@
 <mat-card class="chat-container">
-  <div *ngIf="isLoading" class="loading-container">
-    <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
-    <p>Loading Conversations...</p>
-  </div>
+  <div class="chat-split-container">
+    <!-- Left Panel: Conversations List -->
+    <div class="conversation-list">
+      <div *ngIf="isLoading" class="loading-container">
+        <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+        <p>Loading Conversations...</p>
+      </div>
 
+      <ng-container *ngIf="!isLoading && conversations.length > 0; else noConversations">
+        <div *ngFor="let convo of conversations"
+             class="conversation-card"
+             (click)="selectConversation(convo)"
+             [class.selected]="convo.id === selectedConversation?.id">
+          <mat-card>
+            <ng-container
+              *ngIf="getOtherParticipant(convo.participants, AuthenticatedUser.getAuthUserProfileId()) as participant">
+              <div class="conversation-item">
+                <img
+                  [src]="participant.profilePictureUrl || 'https://storage.googleapis.com/download/storage/v1/b/tuneup_profile_images/o/79a88d6b-8196-49cf-9cde-d6d4d3bf10fd-defaultProfilePicture.jpg?generation=1735034744997677&alt=media'"
+                  class="profile-picture">
+                <div class="conversation-details">
+                  <h3 class="participant-name">{{ participant.displayName }}</h3>
+                  <p class="last-message">
+                    {{ convo?.lastMessage ? (convo.lastMessage | slice:0:50) + (convo.lastMessage.length > 50 ? '...' : '') : 'No messages yet' }}
+                  </p>
+                  <span class="timestamp">{{ convo.lastMessageTimestamp | date: 'medium' }}</span>
+                </div>
+              </div>
+            </ng-container>
+          </mat-card>
+        </div>
+      </ng-container>
 
-  <!-- Conversations List -->
-  <ng-container *ngIf="!isLoading && conversations.length > 0; else noConversations">
-    <div *ngFor="let convo of conversations"
-         class="conversation-card"
-         (click)="selectConversation(convo)"
-         [class.selected]="convo.id === selectedConversation?.id">
-      <mat-card>
-        <ng-container *ngIf="getOtherParticipant(convo.participants, AuthenticatedUser.getAuthUserProfileId()) as participant">
-          <div class="conversation-item">
-            <img [src]="participant.profilePictureUrl || 'https://storage.googleapis.com/download/storage/v1/b/tuneup_profile_images/o/79a88d6b-8196-49cf-9cde-d6d4d3bf10fd-defaultProfilePicture.jpg?generation=1735034744997677&alt=media'"
-                 class="profile-picture">
-            <div class="conversation-details">
-              <h3 class="participant-name">{{ participant.displayName }}</h3>
-              <p class="last-message">
-                {{ convo?.lastMessage ? (convo.lastMessage | slice:0:50) + (convo.lastMessage.length > 50 ? '...' : '') : 'No messages yet' }}
-              </p>
-              <span class="timestamp">{{ convo.lastMessageTimestamp | date: 'medium' }}</span>
-            </div>
-          </div>
-        </ng-container>
-      </mat-card>
+      <!-- No Conversations Message -->
+      <ng-template #noConversations>
+        <div class="no-conversations-container">
+          <h1>😕</h1>
+          <h2>No Conversations yet</h2>
+          <p>Try reloading or start a new conversation!</p>
+          <button mat-raised-button color="primary" (click)="fetchConversations()">Refresh</button>
+        </div>
+      </ng-template>
+      <br>
+      <div class="new-conversation">
+        <button mat-raised-button color="accent" (click)="openNewConversationDialog()">
+          <mat-icon>chat</mat-icon>
+          Start New Conversation
+        </button>
+      </div>
     </div>
-  </ng-container>
 
-
-
-  <!-- No Conversations Message -->
-  <ng-template #noConversations>
-    <div class="no-conversations-container">
-      <h1>😕</h1>
-      <h2>No Conversations yet</h2>
-      <p>Try reloading or start a new conversation!</p>
-      <button mat-raised-button color="primary" (click)="fetchConversations()">Refresh</button>
+    <!-- Right Panel: Chat Display -->
+    <div class="chat-display">
+      <ng-container *ngIf="selectedConversation; else selectConversationPrompt">
+        <!-- Embed ChatDialogueComponent inline -->
+      </ng-container>
+      <ng-template #selectConversationPrompt>
+        <div class="select-conversation">
+          <p>Please select a conversation</p>
+        </div>
+      </ng-template>
     </div>
-  </ng-template>
-  <br>
-  <!-- Start New Conversation Button -->
-  <div class="new-conversation">
-    <button mat-raised-button color="accent" (click)="openNewConversationDialog()">
-      <mat-icon>chat</mat-icon> Start New Conversation
-    </button>
   </div>
-
 </mat-card>

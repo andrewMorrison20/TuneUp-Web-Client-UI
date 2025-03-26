@@ -178,13 +178,11 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     return profile.profileType === 'Tutor';
   }
 
-  /** 🔹 Check if Profile Has Pricing */
   isPricesMapNotEmpty(): boolean {
     return this.isTutorProfile(this.profile!) && (this.profile as TutorProfile).prices.length > 0;
   }
 
 
-  /** 🔹 Navigation Methods */
   goBackToResults(): void {
     this.router.navigate(['/profiles/search']);
   }
@@ -215,7 +213,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
   openChatDialog(): void {
     const dialogRef = this.dialog.open(ChatDialogueComponent, {
-      width: '800px',
+      width: '600px',
       data: {
         conversation: null,
         participantId: this.profile?.id,
