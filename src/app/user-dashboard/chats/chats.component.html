@@ -8,7 +8,14 @@
       </div>
 
       <ng-container *ngIf="!isLoading && conversations.length > 0; else noConversations">
-        <h1><strong> All Conversations</strong></h1>
+        <h1><strong> All Conversations</strong> </h1>
+        <div class="new-conversation">
+          <button mat-raised-button color="accent" (click)="openNewConversationDialog()">
+            <mat-icon>chat</mat-icon>
+            Start New Conversation
+          </button>
+        </div>
+        <br>
         <mat-divider></mat-divider>
         <div *ngFor="let convo of conversations"
              class="conversation-card"
@@ -51,12 +58,6 @@
       </mat-paginator>
 
       <br>
-      <div class="new-conversation">
-        <button mat-raised-button color="accent" (click)="openNewConversationDialog()">
-          <mat-icon>chat</mat-icon>
-          Start New Conversation
-        </button>
-      </div>
     </div>
 
     <!-- Right Panel: Chat Display (only on desktop) -->
