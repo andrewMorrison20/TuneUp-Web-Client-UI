@@ -1,13 +1,22 @@
-import {Component, Inject, OnInit, AfterViewChecked, ElementRef, ViewChild, Input, Optional} from '@angular/core';
+import {
+  Component,
+  Inject,
+  OnInit,
+  AfterViewChecked,
+  ElementRef,
+  ViewChild,
+  Input,
+  Optional,
+  SimpleChanges
+} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { WebsocketService } from "../../services/websocket.service";
 import { Message } from "stompjs";
 import { HttpClient } from "@angular/common/http";
-import { Client } from "@stomp/stompjs";
 import { AuthenticatedUser } from "../../authentication/authenticated-user.class";
 import { Conversation } from "./chats.component";
 import { switchMap, tap } from "rxjs/operators";
-import { Observable } from "rxjs";
+import {Observable, Subscription} from "rxjs";
 
 @Component({
   selector: 'app-chat-dialogue',
@@ -27,6 +36,8 @@ export class ChatDialogueComponent implements OnInit, AfterViewChecked {
 
   @ViewChild('chatPanel') chatPanel!: ElementRef;
 
+  private websocketSubscription?: Subscription;
+
   constructor(
     @Optional() public dialogRef: MatDialogRef<ChatDialogueComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
@@ -35,7 +46,6 @@ export class ChatDialogueComponent implements OnInit, AfterViewChecked {
   ) {}
 
   ngOnInit(): void {
-
     if (!this.data) {
       this.data = {};
     }
@@ -50,14 +60,14 @@ export class ChatDialogueComponent implements OnInit, AfterViewChecked {
       this.data.userProfileId = this.userProfileId;
     }
 
+    // Initialize messages and subscription for the current conversation
     if (this.data.conversation) {
-      this.fetchMessages(this.data.conversation.id).subscribe();
-      this.subscribeToMessages(this.data.conversation.id);
+      this.initializeConversation(this.data.conversation.id);
     } else {
       this.startOrFetchConversation(this.data.userProfileId, this.data.participantId).pipe(
         tap(conversation => {
           this.data.conversation = conversation;
-          this.subscribeToMessages(conversation.id);
+          this.initializeConversation(conversation.id);
         }),
         switchMap(conversation => this.fetchMessages(conversation.id))
       ).subscribe({
@@ -72,6 +82,28 @@ export class ChatDialogueComponent implements OnInit, AfterViewChecked {
     if (this.autoScroll) {
       this.scrollToBottom();
     }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['conversation'] && !changes['conversation'].firstChange) {
+      // Clear previous messages and reset page index
+      this.messages = [];
+      this.pageIndex = 0;
+
+      // Unsubscribe from previous subscription if exists
+      if (this.websocketSubscription) {
+        this.websocketSubscription.unsubscribe();
+      }
+
+      // Update data with the new conversation and fetch new messages
+      this.data.conversation = this.conversation;
+      this.initializeConversation(this.data.conversation.id);
+    }
+  }
+
+  private initializeConversation(conversationId: number): void {
+    this.fetchMessages(conversationId).subscribe();
+    this.subscribeToMessages(conversationId);
   }
 
   private isUserNearBottom(): boolean {

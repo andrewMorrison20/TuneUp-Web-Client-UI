@@ -213,7 +213,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
   openChatDialog(): void {
     const dialogRef = this.dialog.open(ChatDialogueComponent, {
-      width: '600px',
+      width: '800px',
       data: {
         conversation: null,
         participantId: this.profile?.id,

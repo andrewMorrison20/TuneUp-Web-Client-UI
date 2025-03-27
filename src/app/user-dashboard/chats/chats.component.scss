@@ -89,7 +89,7 @@
 .conversation-list {
   width: 25%;
   border-right: 1px solid rgba(106, 103, 103, 0.2);
-  padding: 30px;
+  padding: 100px;
   overflow-y: auto;
 }
 
@@ -143,12 +143,12 @@
 
 }
 
-/* When in mobile mode, make the conversation list full width */
+
 .conversation-list.full-screen {
   width: 100%;
 }
 .chat-display {
-  flex: 1; /* This container will automatically take up the remaining space */
+  flex: 1;
 }
 
 
