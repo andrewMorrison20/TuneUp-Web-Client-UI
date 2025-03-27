@@ -73,6 +73,9 @@ export class ChatsComponent implements OnInit {
         this.conversations = data.content;
         this.totalElements = data.totalElements;
         this.isLoading = false;
+        if (this.conversations.length > 0 && !this.isMobile) {
+          this.selectedConversation = this.conversations[0];
+        }
         console.log('Conversations:', this.conversations);
       }),
       catchError((error) => {

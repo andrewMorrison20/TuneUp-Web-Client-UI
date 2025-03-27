@@ -8,6 +8,8 @@
       </div>
 
       <ng-container *ngIf="!isLoading && conversations.length > 0; else noConversations">
+        <h1><strong> All Conversations</strong></h1>
+        <mat-divider></mat-divider>
         <div *ngFor="let convo of conversations"
              class="conversation-card"
              (click)="selectConversation(convo)"
@@ -59,17 +61,12 @@
 
     <!-- Right Panel: Chat Display (only on desktop) -->
     <div class="chat-display" *ngIf="!isMobile">
-      <ng-container *ngIf="selectedConversation; else selectConversationPrompt">
+      <ng-container *ngIf="selectedConversation;">
         <app-chat-dialogue
           [conversation]="selectedConversation"
           [userProfileId]="userProfileId">
         </app-chat-dialogue>
       </ng-container>
-      <ng-template #selectConversationPrompt>
-        <div class="select-conversation">
-          <p>Please select a conversation</p>
-        </div>
-      </ng-template>
     </div>
   </div>
 </mat-card>
