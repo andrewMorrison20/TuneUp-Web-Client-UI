@@ -40,6 +40,7 @@ interface ConversationParticipantDto {
   styleUrls: ['./chats.component.scss'],
 })
 export class ChatsComponent implements OnInit {
+  protected readonly AuthenticatedUser = AuthenticatedUser;
   userProfileId = AuthenticatedUser.getAuthUserProfileId();
   conversations: Conversation[] = [];
   selectedConversation: Conversation | null = null;
@@ -151,6 +152,4 @@ export class ChatsComponent implements OnInit {
   currentUserProfileId: number): ConversationParticipantDto | undefined {
    return participants.find(participant => participant.id !== currentUserProfileId);
  }
-
-  protected readonly AuthenticatedUser = AuthenticatedUser;
 }
