@@ -10,6 +10,7 @@ import {TutorProfile} from "../../profiles/interfaces/tutor.model";
 import {StudentProfile} from "../../profiles/interfaces/student.model";
 import {NewConversationDialogueComponent} from "./new-conversation-dialogue.component";
 import {ChatDialogueComponent} from "./chat-dialogue.component";
+import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 type Profile = TutorProfile | StudentProfile;
 
 export interface Conversation {
@@ -47,12 +48,17 @@ export class ChatsComponent implements OnInit {
   pageSize = 5;
   pageIndex = 0;
   profiles:Profile[] = []
+  isMobile: boolean = false;
 
 
   constructor(private http: HttpClient,
-              public dialog: MatDialog) {}
+              public dialog: MatDialog,
+              private breakpointObserver: BreakpointObserver) {}
 
   ngOnInit(): void {
+    this.breakpointObserver.observe(['(max-width: 1200px)']).subscribe(result => {
+      this.isMobile = result.matches;
+    });
     this.fetchConversations();
   }
 
@@ -91,9 +97,13 @@ export class ChatsComponent implements OnInit {
   }
 
   selectConversation(conversation: Conversation): void {
-    this.selectedConversation = conversation;
-    this.openChatDialog(conversation);
-
+    if (this.isMobile) {
+      // On mobile: open chat in dialog
+      this.openChatDialog(conversation);
+    } else {
+      // On desktop: render chat inline
+      this.selectedConversation = conversation;
+    }
   }
 
   onPageChange(event: PageEvent): void {

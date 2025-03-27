@@ -138,6 +138,17 @@
   font-size: 14px;
   color: #666;
 }
+.conversation-list {
+  width: 500px;
 
+}
+
+/* When in mobile mode, make the conversation list full width */
+.conversation-list.full-screen {
+  width: 100%;
+}
+.chat-display {
+  flex: 1; /* This container will automatically take up the remaining space */
+}
 
 

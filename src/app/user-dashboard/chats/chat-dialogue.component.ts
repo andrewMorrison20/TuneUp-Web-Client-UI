@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
+import {Component, Inject, OnInit, AfterViewChecked, ElementRef, ViewChild, Input, Optional} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { WebsocketService } from "../../services/websocket.service";
 import { Message } from "stompjs";
@@ -21,18 +21,35 @@ export class ChatDialogueComponent implements OnInit, AfterViewChecked {
   hasMoreMessages = false;
   pageIndex = 0;
   pageSize = 20;
-  private stompClient!: Client;
+  @Input() conversation!: Conversation;
+  @Input() userProfileId!: number;
+  autoScroll: boolean = true;
 
   @ViewChild('chatPanel') chatPanel!: ElementRef;
 
   constructor(
-    public dialogRef: MatDialogRef<ChatDialogueComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Optional() public dialogRef: MatDialogRef<ChatDialogueComponent>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
     private websocketService: WebsocketService,
     private http: HttpClient
   ) {}
 
   ngOnInit(): void {
+
+    if (!this.data) {
+      this.data = {};
+    }
+
+    // If conversation was provided via @Input(), assign it to data.conversation
+    if (!this.data.conversation && this.conversation) {
+      this.data.conversation = this.conversation;
+    }
+
+    // Similarly, if userProfileId was provided via @Input(), assign it
+    if (!this.data.userProfileId && this.userProfileId) {
+      this.data.userProfileId = this.userProfileId;
+    }
+
     if (this.data.conversation) {
       this.fetchMessages(this.data.conversation.id).subscribe();
       this.subscribeToMessages(this.data.conversation.id);
@@ -49,8 +66,10 @@ export class ChatDialogueComponent implements OnInit, AfterViewChecked {
     }
   }
 
+
   ngAfterViewChecked(): void {
-    if (this.isUserNearBottom()) {
+    // Only scroll to bottom if autoScroll is true.
+    if (this.autoScroll) {
       this.scrollToBottom();
     }
   }
@@ -65,6 +84,21 @@ export class ChatDialogueComponent implements OnInit, AfterViewChecked {
   private scrollToBottom(): void {
     if (this.chatPanel && this.chatPanel.nativeElement) {
       this.chatPanel.nativeElement.scrollTop = this.chatPanel.nativeElement.scrollHeight;
+    }
+  }
+
+  onScroll(event: any): void {
+    const nativeEl = event.target;
+    const threshold = 150;
+    const position = nativeEl.scrollHeight - nativeEl.scrollTop - nativeEl.clientHeight;
+
+    // Set autoScroll to true only if near bottom, otherwise disable it.
+    this.autoScroll = (position <= threshold);
+
+    // If scrolled to top and more messages are available, fetch more.
+    if (nativeEl.scrollTop === 0 && this.hasMoreMessages) {
+      this.pageIndex++;
+      this.fetchMessages(this.data.conversation.id, this.pageIndex, this.pageSize).subscribe();
     }
   }
 
@@ -94,14 +128,6 @@ export class ChatDialogueComponent implements OnInit, AfterViewChecked {
         this.hasMoreMessages = response.content.length === pageSize;
       })
     );
-  }
-
-  onScroll(event: any): void {
-    const scrollTop = event.target.scrollTop;
-    if (scrollTop === 0 && this.hasMoreMessages) {
-      this.pageIndex++;
-      this.fetchMessages(this.data.conversation.id, this.pageIndex, this.pageSize).subscribe();
-    }
   }
 
   sendMessage(): void {
