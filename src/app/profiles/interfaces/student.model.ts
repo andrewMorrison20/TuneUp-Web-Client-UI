@@ -2,7 +2,7 @@ import {Review} from "./review.model";
 import {Genre, Instrument} from "../../components/search-bar/search-bar.component";
 import {TuitionRegion} from "./tuition-region.model";
 import {Image} from "./image.model";
-import {Qualification} from "../../components/shared-data-service.component";
+import {InstrumentQualification, Qualification} from "../../components/shared-data-service.component";
 
 export interface StudentProfile {
   id: number;
@@ -15,6 +15,7 @@ export interface StudentProfile {
   enrolledCourses: string[];
   completedCourses: string[];
   qualifications: Qualification[];
+  instrumentQuals: InstrumentQualification[];
   instruments: Instrument[];
   grades: string[];
   reviews: Review[];

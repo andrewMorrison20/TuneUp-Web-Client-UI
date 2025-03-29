@@ -19,6 +19,13 @@ export interface Qualification {
   id: number;
 }
 
+export interface InstrumentQualification {
+  qualificationName: string;
+  qualificationId: number;
+  instrumentName: string;
+  instrumentId: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })

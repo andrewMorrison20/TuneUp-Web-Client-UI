@@ -114,12 +114,12 @@
           </div>
 
 
-          <div class="genres-section" *ngIf="profile.qualifications && profile.qualifications.length > 0">
+          <div class="genres-section" *ngIf="profile.instrumentQuals && profile.instrumentQuals.length > 0">
             <div class="genre-container">
-              <h1><b>Qualifications/Course-Type</b></h1>
+              <h1><b>Qualifications</b></h1>
               <ul>
-                <li *ngFor="let qualification of profile.qualifications">
-                  {{ qualification.name }}
+                <li *ngFor="let qualification of profile.instrumentQuals">
+                  {{ qualification.instrumentName }} : {{ qualification.qualificationName }}
                 </li>
               </ul>
             </div>

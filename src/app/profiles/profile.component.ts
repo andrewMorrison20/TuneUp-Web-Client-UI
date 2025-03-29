@@ -45,7 +45,6 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       const profileId = params.get('id');
       if (profileId) {
         this.fetchProfile(Number(profileId));
-        this.fetchProfileQualifications();
       }
     });
   }
@@ -85,6 +84,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
         this.profile = profile;
         console.log('Profile loaded:', profile);
 
+        // Fetch reviews for the profile
         this.profileService.getProfileReviews(profile.id).subscribe({
           next: reviews => {
             this.profile!.reviews = reviews;
@@ -95,6 +95,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
           }
         });
 
+        // Fetch qualifications and availability
+        this.fetchProfileQualifications();
         this.fetchAvailability(new Date());
       },
       error: err => {
@@ -238,9 +240,21 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     });
   }
 
-  //THIS IS WRONG
-  private fetchProfileQualifications() {
-    this.profileService.getProfileQualificationsById(AuthenticatedUser.getAuthUserProfileId())
-      .subscribe();
+  private fetchProfileQualifications(): void {
+    console.log('FETCHING QUALS')
+    const currentProfile = this.profile;
+    console.log('CURR PROFILE', currentProfile)
+    if (currentProfile) {
+      this.profileService.getProfileQualificationsById(currentProfile.id)
+        .subscribe({
+          next: (results) => {
+            console.log('results are',results)
+            currentProfile.instrumentQuals = results;
+          },
+          error: (err) => {
+            console.error('Error fetching profile qualifications:', err);
+          }
+        });
+    }
   }
 }

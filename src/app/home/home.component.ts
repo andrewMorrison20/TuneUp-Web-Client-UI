@@ -16,6 +16,7 @@ export class HomeComponent {
   toggleSearchBanner(): void {
     this.searchBannerExpanded = !this.searchBannerExpanded;
   }
+
   onTakeQuiz(){
 
   };

@@ -9,6 +9,7 @@ import {Review} from "./interfaces/review.model";
 import {Price} from "./interfaces/price";
 import {PeriodMap} from "./interfaces/period";
 import {environment} from "../../environments/environment";
+import {InstrumentQualification} from "../components/shared-data-service.component";
 
 type Profile = TutorProfile | StudentProfile;
 
@@ -219,6 +220,7 @@ export class ProfileService {
       reviews:[],
       id: profile.id,
       displayName: profile.displayName,
+      instrumentQuals:[],
       bio: profile.bio,
       lessonType:profile.lessonType,
       profileType: profile.profileType,
@@ -247,6 +249,7 @@ export class ProfileService {
       reviews: [],
       id: profile.id,
       displayName: profile.displayName,
+      instrumentQuals:[],
       bio: profile.bio,
       lessonType: profile.lessonType,
       profileType: profile.profileType,
@@ -286,8 +289,7 @@ export class ProfileService {
   }
 
   public getProfileQualificationsById(profileId: number) {
-    return this.http.get<any[]>(`${this.baseUrl}/profiles/instrumentQualifications/${profileId}`);
-
+    return this.http.get<InstrumentQualification[]>(`${this.baseUrl}/profiles/instrumentQualifications/${profileId}`);
   }
 
   createReview(reviewDto: {
