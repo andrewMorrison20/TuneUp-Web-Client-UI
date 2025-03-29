@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import {catchError, Observable} from 'rxjs';
+import {catchError, Observable, throwError} from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { TutorProfile } from './interfaces/tutor.model';
@@ -8,6 +8,7 @@ import { StudentProfile } from './interfaces/student.model';
 import {Review} from "./interfaces/review.model";
 import {Price} from "./interfaces/price";
 import {PeriodMap} from "./interfaces/period";
+import {environment} from "../../environments/environment";
 
 type Profile = TutorProfile | StudentProfile;
 
@@ -34,11 +35,17 @@ interface ProfileResponse {
   providedIn: 'root'
 })
 export class ProfileService {
-  private apiUrl = 'http://localhost:8080/api/profiles';
-  private baseUrl = 'http://localhost:8080/api';
-  public apiReviewUrl = 'http://localhost:8080/api/review';
+
+  private readonly baseUrl = environment.apiUrl;
 
 
+  private get profilesUrl(): string {
+    return `${this.baseUrl}/profiles`;
+  }
+
+  private get reviewUrl(): string {
+    return `${this.baseUrl}/review`;
+  }
 
   constructor(private http: HttpClient) {}
 
@@ -51,11 +58,15 @@ export class ProfileService {
       .set('size', size.toString())
       .set('sort', sort);
 
-    return this.http.get<ProfileResponse>(this.apiUrl, { params }).pipe(
+    return this.http.get<ProfileResponse>(this.profilesUrl, { params }).pipe(
       map(response => ({
         profiles: this.mapProfiles(response.content),
         totalElements: response.totalElements,
-      }))
+      })),
+      catchError(error => {
+        console.error('Error fetching all profiles:', error);
+        return throwError(() => error);
+      })
     );
   }
 
@@ -68,7 +79,7 @@ export class ProfileService {
       .set('size', size.toString())
       .set('sort', sort);
 
-    return this.http.post<ProfileResponse>(`${this.apiUrl}/search`, searchParams, { params }).pipe(
+    return this.http.post<ProfileResponse>(`${this.profilesUrl}/search`, searchParams, { params }).pipe(
       map(response => ({
         profiles: this.mapProfiles(response.content),
         totalElements: response.totalElements,
@@ -78,20 +89,16 @@ export class ProfileService {
 
   /**
    * Retrieve Reviews for a given profile
-   * @param profile profile to fetch reviews for
+   * @param profileId
    */
-  public getProfileReviews(profile: any): void {
-    const url = `${this.apiReviewUrl}/${profile.id}`;
-    this.http.get<ProfileResponse[]>(url).pipe(
-      map(response => this.mapReviews(response)) // Map the reviews to the desired format
-    ).subscribe(
-      (reviews) => {
-        profile.reviews = reviews; // Assign the resolved reviews
-        console.log('Resolved reviews:', reviews);
-      },
-      (error) => {
-        console.error('Error fetching reviews:', error);
-      }
+  public getProfileReviews(profileId: number): Observable<Review[]> {
+    const url = `${this.reviewUrl}/${profileId}`;
+    return this.http.get<any[]>(url).pipe(
+      map(rawReviews => this.mapReviews(rawReviews)),
+      catchError(error => {
+        console.error(`Error fetching reviews for profile ${profileId}:`, error);
+        return throwError(() => error);
+      })
     );
   }
 
@@ -99,23 +106,23 @@ export class ProfileService {
    * Retrieve full profile by its id
    * @param id unique id of the profile to fetch
    */
-  getProfileById(id: number) {
-    const url = `${this.apiUrl}/${id}`;
-    const params = new HttpParams().set('id', id);
-
+  getProfileById(id: number): Observable<Profile> {
+    const url = `${this.profilesUrl}/${id}`;
     return this.http.get<Profile>(url).pipe(
-      map(response => this.mapProfiles([response]))
-    ).pipe(
-      map(profiles => profiles[0])
+      map(response => this.mapProfiles([response])[0]),
+      catchError(error => {
+        console.error(`Error fetching profile with id ${id}:`, error);
+        return throwError(() => error);
+      })
     );
   }
 
   /**
    * Retrieve full profile by its user id
-   * @param id unique user id of the profile to fetch
+   * @param userId
    */
   public getProfileByAppUserId(userId: number) {
-    const url = `${this.apiUrl}/profile/${userId}`;
+    const url = `${this.profilesUrl}/profile/${userId}`;
 
     return this.http.get<Profile>(url).pipe(
       map(response => this.mapProfiles([response]))
@@ -129,7 +136,7 @@ export class ProfileService {
    * @param profile profile to update
    */
   public updateProfile(profile: Profile): Observable<any> {
-    const url = `${this.apiUrl}/update`;
+    const url = `${this.profilesUrl}/update`;
     return this.http.put(url, profile);
   }
 
@@ -147,7 +154,7 @@ export class ProfileService {
 
     console.log('Transformed Prices for Backend:', transformedPriceSet);
 
-    const url = `${this.apiUrl}/update/pricing/${profile.id}`;
+    const url = `${this.profilesUrl}/update/pricing/${profile.id}`;
     // Return the HTTP PUT observable
     return this.http.put(url, transformedPriceSet);
   }
@@ -161,12 +168,12 @@ export class ProfileService {
     qualificationsToSubmit: { qualificationId: number; instrumentId: number }[],
     profile: Profile
   ): Observable<any>{
-    const url = `${this.apiUrl}/update/qualifications/${profile.id}`;
+    const url = `${this.profilesUrl}/update/qualifications/${profile.id}`;
     return this.http.put(url, qualificationsToSubmit);
   }
 
   /**
-   * Map incoming repsonse to profile interface (either tutor or student)
+   * Map incoming response to profile interface (either tutor or student)
    * @param rawProfiles raw data to map
    * @private
    */
@@ -278,14 +285,8 @@ export class ProfileService {
     };
   }
 
-  public getPeriodAvailabilityForProfile(profileId: number, start: string, end: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/availability/${profileId}/period`, {
-      params: { start, end }
-    });
-  }
-
   public getProfileQualificationsById(profileId: number) {
-    return this.http.get<any[]>(`${this.baseUrl}/instrumentQualifications/${profileId}`);
+    return this.http.get<any[]>(`${this.baseUrl}/profiles/instrumentQualifications/${profileId}`);
 
   }
 

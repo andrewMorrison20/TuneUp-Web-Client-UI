@@ -63,10 +63,10 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       height: 'auto',
       contentHeight: 600,
-      slotMinTime: "06:00:00", // Start time of the day (Adjust based on business hours)
-      slotMaxTime: "23:00:00", // End time
-      slotDuration: "00:15:00", // Smaller slots allow finer adjustments
-      expandRows: true, // Ensures row height expands for long slots
+      slotMinTime: "06:00:00",
+      slotMaxTime: "23:00:00",
+      slotDuration: "00:15:00",
+      expandRows: true,
       events: [],
       eventClick: this.onEventClick.bind(this),
       dateClick: this.onDateClick.bind(this),
@@ -80,15 +80,27 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   }
 
   private fetchProfile(profileId: number): void {
-    this.profileService.getProfileById(profileId).subscribe(
-      profile => {
+    this.profileService.getProfileById(profileId).subscribe({
+      next: profile => {
         this.profile = profile;
         console.log('Profile loaded:', profile);
-        this.profileService.getProfileReviews(this.profile);
+
+        this.profileService.getProfileReviews(profile.id).subscribe({
+          next: reviews => {
+            this.profile!.reviews = reviews;
+            console.log('Resolved reviews:', reviews);
+          },
+          error: err => {
+            console.error('Error fetching reviews:', err);
+          }
+        });
+
         this.fetchAvailability(new Date());
       },
-      error => console.error('Error fetching profile:', error)
-    );
+      error: err => {
+        console.error('Error fetching profile:', err);
+      }
+    });
   }
 
   private fetchAvailability(date: Date): void {
