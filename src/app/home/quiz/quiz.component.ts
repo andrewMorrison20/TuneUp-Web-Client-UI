@@ -13,7 +13,8 @@ export class QuizComponent implements OnInit, OnDestroy {
   stepOneFormGroup!: FormGroup;
   stepTwoFormGroup!: FormGroup;
   stepThreeFormGroup!: FormGroup;
-  stepFourFormGroup!: FormGroup;  // New form group for qualifications
+  stepFourFormGroup!: FormGroup;
+  stepFiveFormGroup!: FormGroup; // New form group for Price Range
 
   lessonTypes = ['Online', 'InPerson', 'Any'];
   instruments: Instrument[] = [];
@@ -68,6 +69,9 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.stepOneFormGroup = this.fb.group({
       lessonType: ['', Validators.required]
     });
+
+    // Initialize the price form (step five) with default values.
+    this.initializePriceForm();
   }
 
   private initializeInstrumentsForm(): void {
@@ -85,6 +89,14 @@ export class QuizComponent implements OnInit, OnDestroy {
   private initializeQualificationsForm(): void {
     this.stepFourFormGroup = this.fb.group({
       qualifications: this.fb.array(this.qualifications.map(() => false))
+    });
+  }
+
+  private initializePriceForm(): void {
+    // Default price range: minimum 0 and maximum 100.
+    this.stepFiveFormGroup = this.fb.group({
+      minPrice: [0, [Validators.required, Validators.min(0)]],
+      maxPrice: [100, [Validators.required, Validators.min(0)]]
     });
   }
 
@@ -119,15 +131,20 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   onSubmitQuiz(): void {
+    // Build criteria from all steps.
     const criteria: any = {
       lessonType: this.stepOneFormGroup.value.lessonType,
       instruments: this.selectedInstruments.map(inst => inst.id),
       genres: this.selectedGenres.map(genre => genre.id),
-      qualifications: this.selectedQualifications.map(qual => qual.id)
+      qualifications: this.selectedQualifications.map(qual => qual.id),
+      priceRange: {
+        min: this.stepFiveFormGroup.value.minPrice,
+        max: this.stepFiveFormGroup.value.maxPrice
+      }
     };
 
     console.log('Quiz criteria:', criteria);
-    // Call your search method, e.g.:
+    // Use the criteria to perform your search, e.g.:
     // this.profileService.searchProfiles(criteria).subscribe(...);
   }
 

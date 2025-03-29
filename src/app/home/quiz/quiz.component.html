@@ -72,38 +72,65 @@
           </form>
         </mat-step>
 
+        <!-- Step 5: Price Range -->
+        <mat-step [stepControl]="stepFiveFormGroup">
+          <form [formGroup]="stepFiveFormGroup">
+            <ng-template matStepLabel>Select Price Range</ng-template>
+            <div class="price-range">
+              <mat-form-field appearance="fill">
+                <mat-label>Minimum Price</mat-label>
+                <input matInput type="number" formControlName="minPrice">
+              </mat-form-field>
+              <mat-form-field appearance="fill">
+                <mat-label>Maximum Price</mat-label>
+                <input matInput type="number" formControlName="maxPrice">
+              </mat-form-field>
+            </div>
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button mat-button matStepperNext [disabled]="!stepFiveFormGroup.valid">Next</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <!-- Final Step: Review & Search -->
         <!-- Final Step: Review & Search -->
         <mat-step>
           <ng-template matStepLabel>Review Your Answers</ng-template>
-          <p>Review your choices before searching for Matches.</p>
-          <ul>
+          <p>Review your choices before searching for tutors.</p>
+          <ul class="review-list">
             <li><strong>Lesson Type:</strong> {{ stepOneFormGroup?.value.lessonType }}</li>
             <li>
               <strong>Instruments:</strong>
               <span *ngFor="let instrument of selectedInstruments; let last = last">
-                {{ instrument.name }}<span *ngIf="!last">, </span>
-              </span>
+        {{ instrument.name }}<span *ngIf="!last">, </span>
+      </span>
             </li>
             <li>
               <strong>Genres:</strong>
               <span *ngFor="let genre of selectedGenres; let last = last">
-                {{ genre.name }}<span *ngIf="!last">, </span>
-              </span>
+        {{ genre.name }}<span *ngIf="!last">, </span>
+      </span>
             </li>
             <li>
               <strong>Qualifications:</strong>
               <span *ngFor="let qual of selectedQualifications; let last = last">
-                {{ qual.name }}<span *ngIf="!last">, </span>
-              </span>
+        {{ qual.name }}<span *ngIf="!last">, </span>
+      </span>
+            </li>
+            <li>
+              <strong>Price Range:</strong>
+              {{ stepFiveFormGroup?.value.minPrice }} - {{ stepFiveFormGroup?.value.maxPrice }}
             </li>
           </ul>
           <div>
             <button mat-button matStepperPrevious>Back</button>
-            <button mat-raised-button color="primary" (click)="onSubmitQuiz()">Search Profiles</button>
+            <button mat-raised-button color="primary" (click)="onSubmitQuiz()">Search Tutors</button>
           </div>
         </mat-step>
       </mat-horizontal-stepper>
     </div>
   </div>
+
   <app-footer></app-footer>
 </div>
