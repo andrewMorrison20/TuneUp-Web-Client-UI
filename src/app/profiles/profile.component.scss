@@ -1,4 +1,4 @@
-/* Global Styles */
+
 body {
   font-family: 'Roboto', sans-serif;
   margin: 0;
@@ -6,7 +6,7 @@ body {
   background-color: #e6dddd;
 }
 
-/* Profile Page Container */
+
 .profile-page-container {
   max-width: 1600px;
   margin: 1.5rem auto;
@@ -17,7 +17,6 @@ body {
   overflow: hidden;
 }
 
-/* Profile Header */
 .profile-header {
   display: flex;
   flex-direction: column;
@@ -70,7 +69,7 @@ body {
   margin-top: 0.5rem;
 }
 
-/* Two-Column Layout */
+
 .profile-grid {
   display: grid;
   grid-template-columns: 2.3fr 0.7fr;
@@ -78,21 +77,21 @@ body {
   margin-top: 2rem;
 }
 
-/* Left Column (Calendar & Reviews) */
+
 .left-column {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-/* Right Column (Pricing, Instruments, Genres) */
+
 .right-column {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-/* Calendar Section */
+
 .calendar-container {
   padding: 16px;
   border: 1px solid #ddd;
@@ -103,7 +102,7 @@ body {
   margin: 0 auto;
 }
 
-/* Reviews Section */
+
 .reviews-section {
   width: 97%;
   height: auto;
@@ -112,15 +111,15 @@ body {
   border-radius: 8px;
 }
 
-/* Pricing Section */
+
 .pricing-section {
   background-color: #fafafa;
   padding: 16px;
   border-radius: 8px;
 }
 
-/* Instruments & Genres Sections */
 .instruments-section,
+.qualifications-section,
 .genres-section {
   background-color: #ffffff;
   padding: 16px;
@@ -128,12 +127,13 @@ body {
 }
 
 .instrument-container li,
+.qualifications-container li,
 .genre-container li {
   font-size: 1.7rem;
   margin: 0.7rem 0;
 }
 
-/* Pricing Table */
+
 .pricing-container {
   display: flex;
   flex-direction: column;
@@ -164,7 +164,6 @@ body {
   color: #00796b;
 }
 
-/* Rating Section */
 .average-rating-section {
   margin-top: 16px;
   padding: 8px 0;
@@ -193,7 +192,8 @@ body {
   color: #ffc107;
   font-size: 20px;
 }
-/* Shared Card Style for Modern Look */
+
+
 .section-card {
   background: #fff;
   padding: 20px;
@@ -209,6 +209,10 @@ body {
 
 
 .instruments-section {
+  @extend .section-card;
+}
+
+.qualifications-section {
   @extend .section-card;
 }
 
@@ -238,11 +242,11 @@ body {
 }
 
 .instrument-container li::before {
-  content: "🎸"; /* Change this icon if needed */
+  content: "🎸";
   margin-right: 8px;
 }
 
-/* Genres Section */
+
 .genres-section {
   @extend .section-card;
 }
@@ -265,12 +269,35 @@ body {
   align-items: center;
 }
 
+.qualifications-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 10px;
+}
+
+
+.qualifications-container li {
+  background: #8989e1;
+  color: #fffcee;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 1.4rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
 .genre-container li::before {
   content: "🎵";
   margin-right: 8px;
 }
 
-/* Pricing Section */
+.qualifications-container li::before {
+  content: "📜";
+  margin-right: 8px;
+}
+
 .pricing-section {
   @extend .section-card;
 }
@@ -302,10 +329,10 @@ body {
   font-weight: bold;
 }
 
-/* Responsive Styles */
+
 @media (max-width: 1024px) {
   .profile-grid {
-    grid-template-columns: 1fr; /* Switch to single column layout */
+    grid-template-columns: 1fr;
   }
 }
 
@@ -351,7 +378,6 @@ body {
     margin-top: 0.5rem;
   }
 
-  /* Adjust layout for smaller screens */
   .profile-section {
     display: grid;
     grid-template-columns: 1fr;
@@ -365,14 +391,13 @@ body {
     gap: 1rem;
   }
 
-  /* Adjust sections */
   .calendar-container,
   .reviews-section,
   .pricing-section,
   .instruments-section,
+  .qualifications-section,
   .genres-section {
     max-width: 100%;
     margin: 0;
   }
-
 }

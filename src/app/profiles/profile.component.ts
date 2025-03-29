@@ -30,6 +30,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   isTimeGridView = false;
   calendarOptions!: CalendarOptions;
   availabilitySlots: any[] = []
+  isOwnProfile = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -45,6 +46,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       const profileId = params.get('id');
       if (profileId) {
         this.fetchProfile(Number(profileId));
+        this.isOwnProfile = (AuthenticatedUser.getAuthUserProfileId() === +profileId)
       }
     });
   }

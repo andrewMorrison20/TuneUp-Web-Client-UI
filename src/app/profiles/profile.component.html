@@ -31,7 +31,12 @@
       </div>
 
       <div class="chat-button-container">
-        <button mat-raised-button color="accent" class="chat-button" (click)="startChat()">
+        <button
+          mat-raised-button
+          color="accent"
+          class="chat-button"
+          (click)="startChat()"
+          [disabled]="isOwnProfile">
           <mat-icon>chat</mat-icon> chat to {{profile.displayName}}
         </button>
       </div>
@@ -114,8 +119,8 @@
           </div>
 
 
-          <div class="genres-section" *ngIf="profile.instrumentQuals && profile.instrumentQuals.length > 0">
-            <div class="genre-container">
+          <div class="qualifications-section" *ngIf="profile.instrumentQuals && profile.instrumentQuals.length > 0">
+            <div class="qualifications-container">
               <h1><b>Qualifications</b></h1>
               <ul>
                 <li *ngFor="let qualification of profile.instrumentQuals">
