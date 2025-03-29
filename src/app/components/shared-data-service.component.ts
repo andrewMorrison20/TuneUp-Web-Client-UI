@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {BehaviorSubject, catchError, Observable} from 'rxjs';
+import {BehaviorSubject, catchError} from 'rxjs';
 import { tap } from 'rxjs/operators';
 import {MatSnackBar} from "@angular/material/snack-bar";
 
@@ -144,7 +144,4 @@ export class SharedDataService {
     this.regionsSubject.next([]);
 
   }
-
-
-
 }

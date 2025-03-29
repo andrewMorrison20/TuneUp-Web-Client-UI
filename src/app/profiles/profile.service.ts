@@ -42,6 +42,9 @@ export class ProfileService {
 
   constructor(private http: HttpClient) {}
 
+  /**
+   * USed to retrieve all profiles - primarily for admin console
+   */
   getAllProfiles(page: number = 0, size: number = 8, sort: string = 'displayName,asc'): Observable<{ profiles: Profile[]; totalElements: number }> {
     const params = new HttpParams()
       .set('page', page.toString())
@@ -73,6 +76,10 @@ export class ProfileService {
     );
   }
 
+  /**
+   * Retrieve Reviews for a given profile
+   * @param profile profile to fetch reviews for
+   */
   public getProfileReviews(profile: any): void {
     const url = `${this.apiReviewUrl}/${profile.id}`;
     this.http.get<ProfileResponse[]>(url).pipe(
@@ -88,6 +95,10 @@ export class ProfileService {
     );
   }
 
+  /**
+   * Retrieve full profile by its id
+   * @param id unique id of the profile to fetch
+   */
   getProfileById(id: number) {
     const url = `${this.apiUrl}/${id}`;
     const params = new HttpParams().set('id', id);
@@ -99,6 +110,10 @@ export class ProfileService {
     );
   }
 
+  /**
+   * Retrieve full profile by its user id
+   * @param id unique user id of the profile to fetch
+   */
   public getProfileByAppUserId(userId: number) {
     const url = `${this.apiUrl}/profile/${userId}`;
 
@@ -109,12 +124,20 @@ export class ProfileService {
     );
   }
 
+  /**
+   * Update a given profiles details
+   * @param profile profile to update
+   */
   public updateProfile(profile: Profile): Observable<any> {
     const url = `${this.apiUrl}/update`;
     return this.http.put(url, profile);
   }
 
-
+  /**
+   * Update pricing for a given profile
+   * @param priceSet the updated set of prices to assign to profile
+   * @param profile the profie to update
+   */
   public updateProfilePricing(priceSet: Price[], profile: Profile): Observable<any> {
     // Map human-readable strings to backend enum format
     const transformedPriceSet = priceSet.map(price => ({
@@ -129,6 +152,11 @@ export class ProfileService {
     return this.http.put(url, transformedPriceSet);
   }
 
+  /**
+   * Update the combination of qualifications and instruments for a profile
+   * @param qualificationsToSubmit the set of qualifications to assign
+   * @param profile the profile to update
+   */
   public updateProfileQualifications(
     qualificationsToSubmit: { qualificationId: number; instrumentId: number }[],
     profile: Profile
@@ -137,6 +165,11 @@ export class ProfileService {
     return this.http.put(url, qualificationsToSubmit);
   }
 
+  /**
+   * Map incoming repsonse to profile interface (either tutor or student)
+   * @param rawProfiles raw data to map
+   * @private
+   */
   private mapProfiles(rawProfiles: any[]): Profile[] {
     console.log('Profile : ', rawProfiles)
     return rawProfiles.map(profile => {
@@ -150,6 +183,11 @@ export class ProfileService {
     });
   }
 
+  /**
+   * Map raw review data to interface
+   * @param rawReviews
+   * @private
+   */
   private mapReviews(rawReviews: any[]): Review[] {
     console.log('Reviews', rawReviews)
     return rawReviews.map(review => {
@@ -160,6 +198,11 @@ export class ProfileService {
   }
 
 
+  /**
+   * Map raw profile data to tutor profile interface
+   * @param profile profile to map
+   * @private
+   */
   private mapToTutorProfile(profile: any): TutorProfile {
     return {
       enrolledStudents: 0,
@@ -180,6 +223,12 @@ export class ProfileService {
     };
   }
 
+
+  /**
+   * Map raw profile data to student profile interface
+   * @param profile profile to map
+   * @private
+   */
   private mapToStudentProfile(profile: any): StudentProfile {
     return {
       qualifications: [],
@@ -201,6 +250,11 @@ export class ProfileService {
     };
   }
 
+  /**
+   * review mapper
+   * @param review raw review to map
+   * @private
+   */
   private mapToReview(review: any): Review {
     return {
       comment: review.comment,

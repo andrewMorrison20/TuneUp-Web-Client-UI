@@ -66,23 +66,24 @@
               No reviews yet.
             </p>
           </div>
-        </div> <!-- ✅ Correctly closing left-column -->
+        </div>
 
-        <!-- Right Column (Moved Outside Left Column) -->
+        <!-- Right Column -->
         <div class="right-column">
           <div class="genres-section">
+            <h1><b>Genres</b></h1>
             <div class="genre-container">
-              <div *ngIf="profile.genres !== undefined; else noData">
-                <div *ngIf="profile.genres.length > 0">
-                  <h1><b>Genres</b></h1>
+              <div *ngIf="profile.genres && profile.genres.length > 0; else noGenres">
                   <ul>
                     <li *ngFor="let genre of profile.genres">
                       {{ genre.name }}
                     </li>
                   </ul>
-                </div>
               </div>
             </div>
+            <ng-template #noGenres>
+              <p>No Genres listed</p>
+            </ng-template>
           </div>
 
           <div class="instruments-section">
@@ -109,12 +110,13 @@
             <ng-template #noData>
               <p>Instruments: Not available</p>
             </ng-template>
+
           </div>
 
 
           <div class="genres-section" *ngIf="profile.qualifications && profile.qualifications.length > 0">
             <div class="genre-container">
-              <h1><b>Qualifications/Lesson-Type</b></h1>
+              <h1><b>Qualifications/Course-Type</b></h1>
               <ul>
                 <li *ngFor="let qualification of profile.qualifications">
                   {{ qualification.name }}
