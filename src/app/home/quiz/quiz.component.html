@@ -1,0 +1,109 @@
+<div class="app-container">
+  <app-navbar></app-navbar>
+  <div class="content">
+    <div class="quiz-container">
+      <mat-horizontal-stepper [linear]="true" #stepper>
+        <!-- Step 1: Lesson Type -->
+        <mat-step [stepControl]="stepOneFormGroup">
+          <form [formGroup]="stepOneFormGroup">
+            <ng-template matStepLabel>Choose Lesson Type</ng-template>
+            <mat-radio-group formControlName="lessonType">
+              <mat-radio-button *ngFor="let type of lessonTypes" [value]="type">
+                {{ type }}
+              </mat-radio-button>
+            </mat-radio-group>
+            <div>
+              <button mat-button matStepperNext [disabled]="!stepOneFormGroup?.valid">Next</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <!-- Step 2: Instruments -->
+        <mat-step [stepControl]="stepTwoFormGroup">
+          <form [formGroup]="stepTwoFormGroup">
+            <ng-template matStepLabel>Select Instruments</ng-template>
+            <div formArrayName="instruments">
+              <div *ngFor="let control of instrumentsArray.controls; let i = index">
+                <mat-checkbox [formControlName]="i">
+                  {{ instruments[i]?.name }}
+                </mat-checkbox>
+              </div>
+            </div>
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button mat-button matStepperNext>Next</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <!-- Step 3: Genres -->
+        <mat-step [stepControl]="stepThreeFormGroup">
+          <form [formGroup]="stepThreeFormGroup">
+            <ng-template matStepLabel>Select Genres</ng-template>
+            <div formArrayName="genres">
+              <div *ngFor="let control of genresArray.controls; let i = index">
+                <mat-checkbox [formControlName]="i">
+                  {{ genres[i]?.name }}
+                </mat-checkbox>
+              </div>
+            </div>
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button mat-button matStepperNext>Next</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <!-- Step 4: Qualifications -->
+        <mat-step [stepControl]="stepFourFormGroup">
+          <form [formGroup]="stepFourFormGroup">
+            <ng-template matStepLabel>Select Qualifications</ng-template>
+            <div formArrayName="qualifications">
+              <div *ngFor="let control of qualificationsArray.controls; let i = index">
+                <mat-checkbox [formControlName]="i">
+                  {{ qualifications[i]?.name }}
+                </mat-checkbox>
+              </div>
+            </div>
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button mat-button matStepperNext>Next</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <!-- Final Step: Review & Search -->
+        <mat-step>
+          <ng-template matStepLabel>Review Your Answers</ng-template>
+          <p>Review your choices before searching for Matches.</p>
+          <ul>
+            <li><strong>Lesson Type:</strong> {{ stepOneFormGroup?.value.lessonType }}</li>
+            <li>
+              <strong>Instruments:</strong>
+              <span *ngFor="let instrument of selectedInstruments; let last = last">
+                {{ instrument.name }}<span *ngIf="!last">, </span>
+              </span>
+            </li>
+            <li>
+              <strong>Genres:</strong>
+              <span *ngFor="let genre of selectedGenres; let last = last">
+                {{ genre.name }}<span *ngIf="!last">, </span>
+              </span>
+            </li>
+            <li>
+              <strong>Qualifications:</strong>
+              <span *ngFor="let qual of selectedQualifications; let last = last">
+                {{ qual.name }}<span *ngIf="!last">, </span>
+              </span>
+            </li>
+          </ul>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-raised-button color="primary" (click)="onSubmitQuiz()">Search Profiles</button>
+          </div>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>

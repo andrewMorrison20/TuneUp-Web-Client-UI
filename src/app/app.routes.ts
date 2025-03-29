@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
+import {QuizComponent} from "./home/quiz/quiz.component";
 export const routes: Routes = [
   {
     path: 'home',
@@ -20,6 +21,7 @@ export const routes: Routes = [
     title:'Account Settings',
   },
   { path: 'user-dashboard', loadChildren: () => import('./user-dashboard/user-dashboard.module').then(m => m.UserDashboardModule) },
+  { path: 'quiz', component: QuizComponent },
 
   { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];

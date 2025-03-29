@@ -12,31 +12,47 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {NavModule} from "../components/nav/nav.module";
 import {FooterModule} from "../components/footer/footer.module";
 import {SearchBarModule} from "../components/search-bar/search-bar.module";
-import {NgIf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
+import {QuizComponent} from "./quiz/quiz.component";
+import {MatStep, MatStepLabel, MatStepper, MatStepperNext, MatStepperPrevious} from "@angular/material/stepper";
+import {MatCheckbox} from "@angular/material/checkbox";
+import {ReactiveFormsModule} from "@angular/forms";
+import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
 
 @NgModule({
   declarations: [
-    HomeComponent
+    HomeComponent,
+    QuizComponent
   ],
-    imports: [
-        HomeRoutingModule,
-        MatSlideToggle,
-        MatToolbar,
-        MatIcon,
-        MatFormField,
-        MatAnchor,
-        MatButton,
-        MatInput,
-        MatIconButton,
-        MatNavList,
-        MatMenuTrigger,
-        MatMenu,
-        MatMenuItem,
-        NavModule,
-        FooterModule,
-        SearchBarModule,
-        NgIf
-    ],
+  imports: [
+    HomeRoutingModule,
+    MatSlideToggle,
+    MatToolbar,
+    MatIcon,
+    MatFormField,
+    MatAnchor,
+    MatButton,
+    MatInput,
+    MatIconButton,
+    MatNavList,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem,
+    NavModule,
+    FooterModule,
+    SearchBarModule,
+    NgIf,
+    MatStep,
+    MatCheckbox,
+    ReactiveFormsModule,
+    MatRadioGroup,
+    MatRadioButton,
+    MatStepper,
+    MatStepperPrevious,
+    MatStepLabel,
+    MatStepperNext,
+    NgForOf
+  ],
   exports:[HomeComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

@@ -9,7 +9,7 @@ import {MatAnchor, MatButton, MatIconButton} from "@angular/material/button";
 import {MatInput} from "@angular/material/input";
 
 const routes: Routes = [
-  { path: '', component: HomeComponent, title: 'Home Page' } // Default route for HomeModule
+  { path: '', component: HomeComponent, title: 'Home Page' }
 ];
 
 @NgModule({
