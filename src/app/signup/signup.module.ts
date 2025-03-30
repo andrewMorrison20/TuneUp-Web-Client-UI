@@ -15,19 +15,21 @@ import {HttpClientModule} from "@angular/common/http";
 import {NavModule} from "../components/nav/nav.module";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {SharedModule} from "../shared/shared.module";
+import {FooterModule} from "../components/footer/footer.module";
 
 
 @NgModule({
   declarations: [SignupComponent],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    SharedModule,
-    SignupRoutingModule,
-    NavModule,
-    MatOption
-  ]
+    imports: [
+        CommonModule,
+        HttpClientModule,
+        ReactiveFormsModule,
+        SharedModule,
+        SignupRoutingModule,
+        NavModule,
+        MatOption,
+        FooterModule
+    ]
 })
 
 export class SignupModule { }

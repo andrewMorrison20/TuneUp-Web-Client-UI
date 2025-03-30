@@ -11,6 +11,7 @@ import {ResetPasswordComponent} from "./reset-password/reset-password.component"
 import {UpdatePasswordComponent} from "./reset-password/update-password/update-password.component";
 import {SharedModule} from "../shared/shared.module";
 import {LoginComponent} from "./login.component";
+import {FooterModule} from "../components/footer/footer.module";
 
 
 @NgModule({
@@ -19,16 +20,17 @@ import {LoginComponent} from "./login.component";
     ResetPasswordComponent,
     UpdatePasswordComponent
   ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    SharedModule,
-    LoginRoutingModule,
-    NavModule,
-    SearchBarModule,
-    AuthenticationModule
-  ]
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        SharedModule,
+        LoginRoutingModule,
+        NavModule,
+        SearchBarModule,
+        AuthenticationModule,
+        FooterModule
+    ]
 })
 
 export class LoginModule { }
