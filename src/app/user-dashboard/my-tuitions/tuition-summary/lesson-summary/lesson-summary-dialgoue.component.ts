@@ -43,6 +43,7 @@ export class LessonSummaryDialogComponent implements OnInit {
       (address) => {
         if (address?.latitude && address?.longitude) {
           this.setMapCoordinates(address.latitude, address.longitude);
+          this.data.address = address;
         }
       },
       (error) => {console.error('Error fetching lesson location:', error);
@@ -78,6 +79,7 @@ export class LessonSummaryDialogComponent implements OnInit {
   closeDialog(): void {
     this.dialogRef.close();
   }
+
   private showAlert(message: string): void {
     window.alert(message);
   }

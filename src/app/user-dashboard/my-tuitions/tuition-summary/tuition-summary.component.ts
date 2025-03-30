@@ -160,6 +160,7 @@ ngOnInit(): void {
 
 
     const dialogRef = this.dialog.open(LessonSummaryDialogComponent, {
+      height: '700px',
       data: {lesson}
     });
 
