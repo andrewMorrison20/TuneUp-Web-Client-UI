@@ -4,10 +4,10 @@ import {HomeRoutingModule} from "./home-routing.module";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {MatToolbar} from "@angular/material/toolbar";
 import {MatIcon} from "@angular/material/icon";
-import {MatFormField} from "@angular/material/form-field";
+import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatAnchor, MatButton, MatIconButton} from "@angular/material/button";
 import {MatInput} from "@angular/material/input";
-import {MatNavList} from "@angular/material/list";
+import {MatList, MatListItem, MatNavList} from "@angular/material/list";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {NavModule} from "../components/nav/nav.module";
 import {FooterModule} from "../components/footer/footer.module";
@@ -16,7 +16,7 @@ import {NgForOf, NgIf} from "@angular/common";
 import {QuizComponent} from "./quiz/quiz.component";
 import {MatStep, MatStepLabel, MatStepper, MatStepperNext, MatStepperPrevious} from "@angular/material/stepper";
 import {MatCheckbox} from "@angular/material/checkbox";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
 
 @NgModule({
@@ -51,7 +51,11 @@ import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
     MatStepperPrevious,
     MatStepLabel,
     MatStepperNext,
-    NgForOf
+    NgForOf,
+    MatLabel,
+    MatList,
+    MatListItem,
+    FormsModule
   ],
   exports:[HomeComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

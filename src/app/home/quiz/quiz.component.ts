@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ProfileService } from '../../profiles/profile.service';
 import { Subscription } from 'rxjs';
 import { Genre, Instrument, Qualification, SharedDataService } from '../../components/shared-data-service.component';
+import {TuitionRegion} from "../../profiles/interfaces/tuition-region.model";
 
 @Component({
   selector: 'app-quiz',
@@ -14,12 +15,21 @@ export class QuizComponent implements OnInit, OnDestroy {
   stepTwoFormGroup!: FormGroup;
   stepThreeFormGroup!: FormGroup;
   stepFourFormGroup!: FormGroup;
-  stepFiveFormGroup!: FormGroup; // New form group for Price Range
+  stepFiveFormGroup!: FormGroup;
+  stepSixFormGroup!: FormGroup;
 
-  lessonTypes = ['Online', 'InPerson', 'Any'];
+  lessonTypes = [
+    { id: 'Online', name: 'Online only', selected: false },
+    { id: 'In Person', name: 'In person only ', selected: false },
+    { id: 'Online & In-Person', name: 'Online And Inperson', selected: false }
+  ];
+
   instruments: Instrument[] = [];
   genres: Genre[] = [];
   qualifications: Qualification[] = [];
+
+  regionSuggestions: any[] = [];
+  selectedRegion: TuitionRegion | null = null;
 
   private subscriptions: Subscription = new Subscription();
 
@@ -30,69 +40,78 @@ export class QuizComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // Load shared data.
+
     this.sharedData.loadInstruments();
     this.sharedData.loadGenres();
     this.sharedData.loadQualifications();
 
-    // Subscribe to instruments.
     this.subscriptions.add(
       this.sharedData.instruments$.subscribe(data => {
         if (data) {
           this.instruments = data;
-          this.initializeInstrumentsForm();
+          this.initialiseInstrumentsForm();
         }
       })
     );
 
-    // Subscribe to genres.
     this.subscriptions.add(
       this.sharedData.genres$.subscribe(data => {
         if (data) {
           this.genres = data;
-          this.initializeGenresForm();
+          this.initialiseGenresForm();
         }
       })
     );
 
-    // Subscribe to qualifications.
     this.subscriptions.add(
       this.sharedData.qualifications$.subscribe(data => {
         if (data) {
           this.qualifications = data;
-          this.initializeQualificationsForm();
+          this.initialiseQualificationsForm();
         }
       })
     );
 
-    // Initialize step one: Lesson Type.
+    this.sharedData.regions$.subscribe((data) => {
+      this.regionSuggestions = data;
+    })
+
     this.stepOneFormGroup = this.fb.group({
       lessonType: ['', Validators.required]
     });
 
-    // Initialize the price form (step five) with default values.
-    this.initializePriceForm();
+    this.initialisePriceForm();
+    this.initialiseRegionForm();
+
   }
 
-  private initializeInstrumentsForm(): void {
+  private initialiseRegionForm(): void {
+    this.stepSixFormGroup = this.fb.group({
+      regionSearch: [''],
+      region: [null]
+    });
+  }
+
+
+  private initialiseInstrumentsForm(): void {
     this.stepTwoFormGroup = this.fb.group({
       instruments: this.fb.array(this.instruments.map(() => false))
     });
   }
 
-  private initializeGenresForm(): void {
+  private initialiseGenresForm(): void {
     this.stepThreeFormGroup = this.fb.group({
       genres: this.fb.array(this.genres.map(() => false))
     });
   }
 
-  private initializeQualificationsForm(): void {
+  private initialiseQualificationsForm(): void {
     this.stepFourFormGroup = this.fb.group({
       qualifications: this.fb.array(this.qualifications.map(() => false))
     });
   }
 
-  private initializePriceForm(): void {
+  private initialisePriceForm(): void {
     // Default price range: minimum 0 and maximum 100.
     this.stepFiveFormGroup = this.fb.group({
       minPrice: [0, [Validators.required, Validators.min(0)]],
@@ -100,52 +119,66 @@ export class QuizComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Getter for instruments FormArray.
   get instrumentsArray(): FormArray {
     return this.stepTwoFormGroup.get('instruments') as FormArray;
   }
 
-  // Getter for genres FormArray.
   get genresArray(): FormArray {
     return this.stepThreeFormGroup.get('genres') as FormArray;
   }
 
-  // Getter for qualifications FormArray.
   get qualificationsArray(): FormArray {
     return this.stepFourFormGroup.get('qualifications') as FormArray;
   }
 
-  // Compute selected instruments.
   get selectedInstruments() {
     return this.instruments.filter((_, index) => this.instrumentsArray.at(index).value);
   }
 
-  // Compute selected genres.
   get selectedGenres() {
     return this.genres.filter((_, index) => this.genresArray.at(index).value);
   }
 
-  // Compute selected qualifications.
   get selectedQualifications() {
     return this.qualifications.filter((_, index) => this.qualificationsArray.at(index).value);
   }
 
   onSubmitQuiz(): void {
-    // Build criteria from all steps.
     const criteria: any = {
-      lessonType: this.stepOneFormGroup.value.lessonType,
+      lessonType: [this.stepOneFormGroup.value.lessonType.id],
       instruments: this.selectedInstruments.map(inst => inst.id),
       genres: this.selectedGenres.map(genre => genre.id),
       qualifications: this.selectedQualifications.map(qual => qual.id),
-      priceRange: {
-        min: this.stepFiveFormGroup.value.minPrice,
-        max: this.stepFiveFormGroup.value.maxPrice
-      }
+      priceRange: [this.stepFiveFormGroup.value.minPrice,
+                   this.stepFiveFormGroup.value.maxPrice],
+      tuitionRegion: this.selectedRegion
     };
 
     console.log('Quiz criteria:', criteria);
-    // Use the criteria to perform your search, e.g.:
-    // this.profileService.searchProfiles(criteria).subscribe(...);
+
+    this.profileService.getFilteredProfiles(criteria, 0, 3, 'averageRating,desc')
+      .subscribe({
+        next: (result) => {
+        },
+        error: (err) => {
+          console.error('Error fetching filtered profiles:', err);
+        }
+      });
+  }
+
+  onRegionSearch(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    const query = target.value;
+    this.sharedData.searchRegions(query);
+  }
+
+  selectRegion(region: any): void {
+    this.selectedRegion = region;
+    this.sharedData.selectRegion(region);
+  }
+
+  clearSelection() {
+    this.selectedRegion = null;
   }
 
   ngOnDestroy(): void {

@@ -39,7 +39,6 @@ export class ProfileService {
 
   private readonly baseUrl = environment.apiUrl;
 
-
   private get profilesUrl(): string {
     return `${this.baseUrl}/profiles`;
   }
@@ -80,6 +79,7 @@ export class ProfileService {
       .set('size', size.toString())
       .set('sort', sort);
 
+    console.log('search', params)
     return this.http.post<ProfileResponse>(`${this.profilesUrl}/search`, searchParams, { params }).pipe(
       map(response => ({
         profiles: this.mapProfiles(response.content),
