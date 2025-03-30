@@ -15,7 +15,7 @@
             </mat-radio-group>
             <br>
             <div>
-              <button mat-button matStepperNext [disabled]="!stepOneFormGroup?.valid">Next</button>
+              <button mat-button matStepperNext>Next</button>
             </div>
           </form>
         </mat-step>
@@ -176,6 +176,18 @@
           </div>
         </mat-step>
       </mat-horizontal-stepper>
+
+      <!-- Search Results Container -->
+      <div class="search-results-container" *ngIf="!isLoading && profiles.length > 0">
+        <div class="top-matches-header">Your Top Matches</div>
+        <div class="profile-cards-grid" [@listAnimation]>
+          <app-profile-card *ngFor="let profile of profiles" [profile]="profile"></app-profile-card>
+        </div>
+      </div>
+      <mat-spinner *ngIf="isLoading"></mat-spinner>
+      <div *ngIf="error" class="error-message">
+        {{ error }}
+      </div>
     </div>
   </div>
   <app-footer></app-footer>

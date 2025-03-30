@@ -18,6 +18,9 @@ import {MatStep, MatStepLabel, MatStepper, MatStepperNext, MatStepperPrevious} f
 import {MatCheckbox} from "@angular/material/checkbox";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
+import {ProfileModule} from "../profiles/profile.module";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {MatCardTitle} from "@angular/material/card";
 
 @NgModule({
   declarations: [
@@ -55,7 +58,10 @@ import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
     MatLabel,
     MatList,
     MatListItem,
-    FormsModule
+    FormsModule,
+    ProfileModule,
+    MatProgressSpinner,
+    MatCardTitle
   ],
   exports:[HomeComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

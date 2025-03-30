@@ -4,11 +4,24 @@ import { ProfileService } from '../../profiles/profile.service';
 import { Subscription } from 'rxjs';
 import { Genre, Instrument, Qualification, SharedDataService } from '../../components/shared-data-service.component';
 import {TuitionRegion} from "../../profiles/interfaces/tuition-region.model";
+import {animate, query, stagger, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'app-quiz',
   templateUrl: './quiz.component.html',
-  styleUrls: ['./quiz.component.scss']
+  styleUrls: ['./quiz.component.scss'],
+  animations: [
+    trigger('listAnimation', [
+      transition('* => *', [
+        query(':enter', [
+          style({ opacity: 0, transform: 'translateY(20px)' }),
+          stagger(100, [
+            animate('0.5s ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+          ])
+        ], { optional: true })
+      ])
+    ])
+  ]
 })
 export class QuizComponent implements OnInit, OnDestroy {
   stepOneFormGroup!: FormGroup;
@@ -19,10 +32,14 @@ export class QuizComponent implements OnInit, OnDestroy {
   stepSixFormGroup!: FormGroup;
 
   lessonTypes = [
-    { id: 'Online', name: 'Online only', selected: false },
-    { id: 'In Person', name: 'In person only ', selected: false },
-    { id: 'Online & In-Person', name: 'Online And Inperson', selected: false }
+    { id: 'Online', name: 'Online only'},
+    { id: 'In Person', name: 'In person only '},
+    { id: 'Online & In-Person', name: 'Online And Inperson'},
   ];
+
+  profiles: any[] = [];
+  isLoading: boolean = false;
+  error: string | null = null;
 
   instruments: Instrument[] = [];
   genres: Genre[] = [];
@@ -77,7 +94,7 @@ export class QuizComponent implements OnInit, OnDestroy {
     })
 
     this.stepOneFormGroup = this.fb.group({
-      lessonType: ['', Validators.required]
+      lessonType: ['']
     });
 
     this.initialisePriceForm();
@@ -144,14 +161,23 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   onSubmitQuiz(): void {
+    const selectedLesson = this.stepOneFormGroup.value.lessonType;
+    const lessonTypeIds = selectedLesson && selectedLesson.id ? [selectedLesson.id] : null;
+
+    const instrumentIds = this.selectedInstruments.map(inst => inst.id);
+    const genreIds = this.selectedGenres.map(genre => genre.id);
+    const qualificationIds = this.selectedQualifications.map(qual => qual.id);
+    const isPriceRangeDefault = this.stepFiveFormGroup.value.minPrice === 0 && this.stepFiveFormGroup.value.maxPrice === 100;
+
     const criteria: any = {
-      lessonType: [this.stepOneFormGroup.value.lessonType.id],
-      instruments: this.selectedInstruments.map(inst => inst.id),
-      genres: this.selectedGenres.map(genre => genre.id),
-      qualifications: this.selectedQualifications.map(qual => qual.id),
-      priceRange: [this.stepFiveFormGroup.value.minPrice,
-                   this.stepFiveFormGroup.value.maxPrice],
-      tuitionRegion: this.selectedRegion
+      lessonType: lessonTypeIds,
+      instruments: instrumentIds.length === 0 ? null : instrumentIds,
+      genres: genreIds.length === 0 ? null : genreIds,
+      qualifications: qualificationIds.length === 0 ? null : qualificationIds,
+      priceRange: isPriceRangeDefault
+        ? null
+        : [this.stepFiveFormGroup.value.minPrice, this.stepFiveFormGroup.value.maxPrice],
+      regionId: this.selectedRegion?.id
     };
 
     console.log('Quiz criteria:', criteria);
@@ -159,12 +185,16 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.profileService.getFilteredProfiles(criteria, 0, 3, 'averageRating,desc')
       .subscribe({
         next: (result) => {
+          this.profiles = result.profiles;
+          this.isLoading = false;
         },
         error: (err) => {
-          console.error('Error fetching filtered profiles:', err);
+          this.error = 'Error fetching profiles';
+          this.isLoading = false;
         }
       });
   }
+
 
   onRegionSearch(event: Event): void {
     const target = event.target as HTMLInputElement;

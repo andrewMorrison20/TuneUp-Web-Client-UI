@@ -205,8 +205,40 @@ button.mat-raised-button {
   background-size: cover;
 }
 
+.search-results-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: 2rem auto;
+  width: 100%;
+  max-width: 1200px; /* constrain width for larger screens */
+}
 
+.profile-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+}
 
+/* For smaller screens, adjust grid columns */
+@media (max-width: 1000px) {
+  .profile-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.top-matches-header {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+
+  text-align: center;
+}
 
 
 
