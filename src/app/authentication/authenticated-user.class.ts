@@ -58,6 +58,11 @@ export class AuthenticatedUser implements BaseAuthenticatedUser {
     return json ? this.fromString(json) : null;
   }
 
+  static getAuthUserName(): string {
+    const userObj = this.getAuthenticatedUser();
+    return userObj ? userObj.user : "User";
+  }
+
   static currentUserAuthenticatedForAdmin(): boolean {
     const currentUser = this.getAuthenticatedUser();
     return currentUser ? currentUser.forAdminConsole() : false;

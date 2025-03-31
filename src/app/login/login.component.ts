@@ -67,13 +67,13 @@ export class LoginComponent implements OnInit {
       console.log('Decoded JWT:', decodedToken);
 
       const authUserObj = AuthenticatedUser.save(
-        decodedToken.username,
+        decodedToken.name,
         'user',
         token,
         'form',
-        decodedToken.userId, // User ID
+        decodedToken.userId,
         decodedToken.profileId,
-        decodedToken.profileType// Profile ID
+        decodedToken.profileType
       );
 
       console.log('Authenticated User:', authUserObj);

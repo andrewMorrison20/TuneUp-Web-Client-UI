@@ -32,4 +32,8 @@ export class UserDashboardComponent implements OnInit {
     return type.toLowerCase() ==='tutor'
 
   }
+
+  getDashboardTitle() {
+    return AuthenticatedUser.getAuthUserName() + "'s Dashboard";
+  }
 }

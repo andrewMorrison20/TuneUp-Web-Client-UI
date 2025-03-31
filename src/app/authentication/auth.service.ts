@@ -7,7 +7,7 @@ import { AuthenticatedUser } from "./authenticated-user.class";
 @Injectable()
 export class AuthService {
   public jwtHelper: JwtHelperService = new JwtHelperService();
-  private tokenRefreshThreshold = 10000; // 10 seconds
+  private readonly tokenRefreshThreshold = 10000;
   private refreshInterval: any;
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -60,7 +60,7 @@ export class AuthService {
   private getRefreshTime(token: string): number {
     const decodedJWT = this.jwtHelper.decodeToken(token);
     const currentTime = new Date().getTime();
-    const expirationTime = decodedJWT.exp * 1000; // Convert to milliseconds
+    const expirationTime = decodedJWT.exp * 1000;
     const refreshTime = expirationTime - currentTime;
 
     return Math.max(refreshTime - this.tokenRefreshThreshold, 0);
