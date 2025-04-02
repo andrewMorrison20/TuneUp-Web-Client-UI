@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import {Component, OnInit, ViewChild, AfterViewInit, HostListener} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from './profile.service';
 import { TutorProfile } from './interfaces/tutor.model';
@@ -13,7 +13,6 @@ import {LessonRequestDialogComponent} from "../lessons/lesson-request/lesson-req
 import {AuthenticatedUser} from "../authentication/authenticated-user.class";
 import {AvailabilityService} from "../lessons/availability.service";
 import {ChatDialogueComponent} from "../user-dashboard/chats/chat-dialogue.component";
-import {Conversation} from "../user-dashboard/chats/chats.component";
 
 type Profile = TutorProfile | StudentProfile;
 
@@ -66,7 +65,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       contentHeight: 600,
       slotMinTime: "06:00:00",
       slotMaxTime: "23:00:00",
-      slotDuration: "00:15:00",
+      slotDuration: "00:30:00",
       expandRows: true,
       events: [],
       eventClick: this.onEventClick.bind(this),
@@ -76,6 +75,18 @@ export class ProfileComponent implements OnInit, AfterViewInit {
         hour: '2-digit',
         minute: '2-digit',
         meridiem: false
+      },
+      displayEventEnd: true,
+      eventDidMount: (info) => {
+        const status = info.event.extendedProps['status'];
+        const timeEl = info.el.querySelector('.fc-event-time');
+        if (timeEl && timeEl instanceof HTMLElement) {
+          if (status === 'BOOKED') {
+            timeEl.style.color = 'grey';
+          } else {
+            timeEl.style.color = 'inherit';
+          }
+        }
       }
     };
   }
@@ -132,7 +143,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     const start = new Date(year, month, 1).toISOString();
     const end = new Date(year, month + 1, 0).toISOString();
 
-    console.log(`📅 Fetching for month: ${start} to ${end}`);
+    console.log(`Fetching for month: ${start} to ${end}`);
     this.fetchAvailability(new Date(start));
   }
 
@@ -144,7 +155,6 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     }
   }
 
-
   switchToMonthView(): void {
     console.log('Switching back to Month View...');
     if (this.calendarComponent?.getApi()) {
@@ -152,7 +162,6 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       this.isTimeGridView = false;
     }
   }
-
 
   onEventClick(info: any): void {
     console.log('Event clicked:', info.event.title);
@@ -210,10 +219,10 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
   private updateCalendarEvents(): void {
     this.calendarOptions.events = this.availabilitySlots.map(slot => ({
-      title: slot.status,
+      title: '',
       start: slot.startTime,
       end: slot.endTime,
-      extendedProps: { availabilityId: slot.id },
+      extendedProps: { availabilityId: slot.id, status:slot.status},
       color: this.getEventColor(slot.status)
     }));
   }
@@ -243,9 +252,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   }
 
   private fetchProfileQualifications(): void {
-    console.log('FETCHING QUALS')
     const currentProfile = this.profile;
-    console.log('CURR PROFILE', currentProfile)
     if (currentProfile) {
       this.profileService.getProfileQualificationsById(currentProfile.id)
         .subscribe({
@@ -259,4 +266,17 @@ export class ProfileComponent implements OnInit, AfterViewInit {
         });
     }
   }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    if (this.calendarComponent) {
+      if (window.innerWidth < 768 && !this.isTimeGridView) {
+        const today = new Date().toISOString().split('T')[0];
+        this.onDateClick({ dateStr: today });
+      } else if (window.innerWidth >= 768 && this.isTimeGridView) {
+        this.switchToMonthView();
+      }
+    }
+  }
+
 }

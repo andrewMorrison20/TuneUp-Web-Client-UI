@@ -3,6 +3,23 @@
   <div class="content">
     <div class="quiz-container">
       <mat-horizontal-stepper [linear]="true" #stepper>
+
+        <mat-step [stepControl]="stepZeroFormGroup">
+          <form [formGroup]="stepZeroFormGroup">
+            <ng-template matStepLabel>Choose Profile Type</ng-template>
+            <p>Are you looking for student or Tutors? </p>
+            <mat-radio-group formControlName="profileType">
+              <mat-radio-button *ngFor="let type of profileTypes" [value]="type">
+                {{ type.name }}
+              </mat-radio-button>
+            </mat-radio-group>
+            <br>
+            <div>
+              <button mat-button matStepperNext>Next</button>
+            </div>
+          </form>
+        </mat-step>
+
         <!-- Step 1: Lesson Type -->
         <mat-step [stepControl]="stepOneFormGroup">
           <form [formGroup]="stepOneFormGroup">
@@ -172,7 +189,7 @@
           <div>
             <br>
             <button mat-button matStepperPrevious>Back</button>
-            <button mat-raised-button color="primary" (click)="onSubmitQuiz()">Search Profiles</button>
+            <button mat-raised-button color="primary" (click)="onSubmitQuiz()">Search Matching Profiles</button>
           </div>
         </mat-step>
       </mat-horizontal-stepper>

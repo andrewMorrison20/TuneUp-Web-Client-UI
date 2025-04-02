@@ -24,6 +24,7 @@ import {animate, query, stagger, style, transition, trigger} from "@angular/anim
   ]
 })
 export class QuizComponent implements OnInit, OnDestroy {
+  stepZeroFormGroup!: FormGroup;
   stepOneFormGroup!: FormGroup;
   stepTwoFormGroup!: FormGroup;
   stepThreeFormGroup!: FormGroup;
@@ -35,6 +36,11 @@ export class QuizComponent implements OnInit, OnDestroy {
     { id: 'Online', name: 'Online only'},
     { id: 'In Person', name: 'In person only '},
     { id: 'Online & In-Person', name: 'Online And Inperson'},
+  ];
+
+  profileTypes = [
+    { id: 'TUTOR', name: 'Tutor'},
+    { id: 'STUDENT', name: 'Student'},
   ];
 
   profiles: any[] = [];
@@ -92,6 +98,10 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.sharedData.regions$.subscribe((data) => {
       this.regionSuggestions = data;
     })
+
+    this.stepZeroFormGroup = this.fb.group({
+      profileType: ['']
+    });
 
     this.stepOneFormGroup = this.fb.group({
       lessonType: ['']
@@ -164,6 +174,9 @@ export class QuizComponent implements OnInit, OnDestroy {
     const selectedLesson = this.stepOneFormGroup.value.lessonType;
     const lessonTypeIds = selectedLesson && selectedLesson.id ? [selectedLesson.id] : null;
 
+    const selectedProfileType = this.stepZeroFormGroup.value.profileType;
+    const profileType = selectedProfileType && selectedProfileType.id ? selectedProfileType.id : null;
+
     const instrumentIds = this.selectedInstruments.map(inst => inst.id);
     const genreIds = this.selectedGenres.map(genre => genre.id);
     const qualificationIds = this.selectedQualifications.map(qual => qual.id);
@@ -171,6 +184,7 @@ export class QuizComponent implements OnInit, OnDestroy {
 
     const criteria: any = {
       lessonType: lessonTypeIds,
+      profileType:profileType,
       instruments: instrumentIds.length === 0 ? null : instrumentIds,
       genres: genreIds.length === 0 ? null : genreIds,
       qualifications: qualificationIds.length === 0 ? null : qualificationIds,

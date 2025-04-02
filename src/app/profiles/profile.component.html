@@ -49,6 +49,22 @@
         <!-- Left Column -->
         <div class="left-column">
           <div class="calendar-container">
+            <h1><strong>Availability</strong></h1>
+            <h3>Click on a slot to see more information or make a booking.Click on a day enter daily view</h3>
+            <div class="calendar-legend">
+              <div class="legend-item">
+                <span class="legend-dot available"></span>
+                Available
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot booked"></span>
+                Booked
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot pending"></span>
+                Pending
+              </div>
+            </div>
             <button *ngIf="isTimeGridView" mat-raised-button color="primary" (click)="switchToMonthView()">
               Month View
             </button>
