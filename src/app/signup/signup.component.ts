@@ -48,7 +48,7 @@ export class SignupComponent {
       }).subscribe({
         next: response => {
           this.isLoading = false;
-          this.successMessage = 'Signup successful! Please log in.';
+          this.successMessage = 'Signup successful! Please check your email to verify your account.';
           console.log('User Creation Successful', response);
           setTimeout(() => {
             this.router.navigate(['/login']);
