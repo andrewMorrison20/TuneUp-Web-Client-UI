@@ -1,0 +1,29 @@
+<app-navbar></app-navbar>
+<div class="validation-container">
+  <mat-card class="login-card double-width-card">
+    <!-- Left side -->
+    <div class="left-side">
+      <!-- Show spinner while loading; else show message -->
+      <ng-container *ngIf="isLoading; else verifiedTemplate">
+        <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+        <br>
+        <p>Verifying your email, please wait...</p>
+      </ng-container>
+      <ng-template #verifiedTemplate>
+        <p>{{ message }}</p>
+      </ng-template>
+
+      <mat-card-footer class="signup-footer">
+        <span>Click here if you are not redirected..</span>
+        <a routerLink="/login" class="signup-link">log in</a>
+      </mat-card-footer>
+    </div>
+
+    <!-- Right side: Image -->
+    <div class="right-side">
+      <img src="./assets/pexels-yankrukov-8520444.jpg" alt="Login Image" class="login-image" />
+    </div>
+  </mat-card>
+</div>
+<app-footer></app-footer>
+

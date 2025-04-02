@@ -12,13 +12,15 @@ import {UpdatePasswordComponent} from "./reset-password/update-password/update-p
 import {SharedModule} from "../shared/shared.module";
 import {LoginComponent} from "./login.component";
 import {FooterModule} from "../components/footer/footer.module";
+import {EmailVerificationComponent} from "./verify-email/verify-email.component";
 
 
 @NgModule({
   declarations: [
     LoginComponent,
     ResetPasswordComponent,
-    UpdatePasswordComponent
+    UpdatePasswordComponent,
+    EmailVerificationComponent
   ],
     imports: [
         CommonModule,

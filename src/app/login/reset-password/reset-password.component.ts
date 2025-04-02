@@ -36,7 +36,6 @@ export class ResetPasswordComponent {
     }
   }
 
-
   requestEmailLink(email: string) {
     const url =  'http://localhost:8080/api/users/requestResetPasswordEmail';
     return this.http.post(url, { email });
