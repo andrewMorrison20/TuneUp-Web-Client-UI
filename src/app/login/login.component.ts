@@ -121,5 +121,9 @@ export class LoginComponent implements OnInit {
   loginWithOutlook() {
     console.log('Login with Outlook');
   }
+
+  requestVerificationLink() {
+
+  }
 }
 
