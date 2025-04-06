@@ -1,0 +1,197 @@
+:host {
+  display: block;
+  padding: 20px;
+  background-color: #f4f4f9;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+
+
+
+@media (max-width: 1200px) {
+  .create-payment-container {
+    flex-direction: column;
+  }
+  .create-payment-image {
+    display: none;
+  }
+}
+@media (max-width: 768px) {
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }}
+
+mat-card {
+  padding: 20px;
+  background: #adade6;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+button {
+  margin-top: 10px;
+  width: auto;
+}
+
+table {
+  width: 100%;
+  margin-top: 10px;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: #007bff;
+  color: #090606;
+  padding: 10px;
+  text-align: left;
+}
+
+td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.mat-tab-group {
+  margin-bottom: 20px;
+}
+
+.mat-elevation-z8 {
+  border-radius: 10px;
+}
+
+mat-paginator {
+  margin-top: 10px;
+}
+
+button.mat-button {
+  font-weight: bold;
+}
+
+button.mat-button[color="warn"] {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+button.mat-button[color="accent"] {
+  background-color: #ffa500;
+  color: white;
+}
+
+.paid-button-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 10px 0;
+}
+
+.paid-button {
+  width: auto;
+  min-width: 150px;
+}
+
+
+.sort-filter-container {
+  position: relative;
+  display: inline-block;
+}
+
+.sort-filter-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.custom-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 300px;
+  background: white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 15px;
+  z-index: 1000;
+}
+
+.dropdown-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.profile-dropdown {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.reset-filters-button {
+  margin-top: 10px;
+  padding: 8px;
+  width: 100%;
+  font-weight: bold;
+  background: #f44336;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.reset-filters-button:hover {
+  background: #d32f2f;
+}
+
+mat-paginator {
+  margin-top: 10px;
+  background-color: #adade6 !important;
+  color: white !important;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+/* Change paginator buttons color */
+.mat-paginator-container {
+  background-color: #adade6 !important;
+  color: white !important;
+  border-radius: 10px;
+}
+
+
+.mat-paginator-navigation-first,
+.mat-paginator-navigation-previous,
+.mat-paginator-navigation-next,
+.mat-paginator-navigation-last {
+  color: white !important;
+}
+
+
+.mat-paginator-page-size .mat-select-value {
+  color: white !important;
+}
+
+.mat-paginator-range-label {
+  color: white !important;
+}
+
+/* Style dropdown arrows */
+.mat-select-arrow {
+  color: white !important;
+}
+
+.overdue {
+  color: red;
+  font-weight: bold;
+}

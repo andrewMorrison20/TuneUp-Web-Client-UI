@@ -21,6 +21,7 @@ export const routes: Routes = [
     title:'Account Settings',
   },
   { path: 'user-dashboard', loadChildren: () => import('./user-dashboard/user-dashboard.module').then(m => m.UserDashboardModule) },
+  { path: 'admin-dashboard', loadChildren: () => import('./admin-dashboard/admin-dashboard.module').then(m => m.AdminDashboardModule) },
   { path: 'quiz', component: QuizComponent },
 
   { path: '**', redirectTo: '/home', pathMatch: 'full' }

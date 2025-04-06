@@ -1,0 +1,29 @@
+.sidenav-container {
+  height: 100vh; /* Full height */
+
+}
+
+.sidebar {
+  width: 240px;
+  background: rgba(244, 240, 240, 0.91);
+}
+
+.mat-sidenav-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.main-content {
+  padding: 16px;
+  overflow-y: auto; /* Scrollable content */
+}
+.dashboard-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.mat-sidenav-content {
+  background: linear-gradient(to bottom right, #f1f6f6 0%, rgb(177, 202, 244) 100%);
+  background-size: cover;
+}

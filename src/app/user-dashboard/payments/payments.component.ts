@@ -89,7 +89,6 @@ export class PaymentsComponent implements OnInit {
   }
 
 
-
   @HostListener('document:click', ['$event'])
   closeDropdownOnOutsideClick(event: Event): void {
     const target = event.target as HTMLElement;
@@ -268,7 +267,6 @@ export class PaymentsComponent implements OnInit {
         }
       });
   }
-
 
 
   viewInvoice(payment: Payment): void {
