@@ -122,8 +122,20 @@ export class LoginComponent implements OnInit {
     console.log('Login with Outlook');
   }
 
-  requestVerificationLink() {
 
+  requestVerificationLink() {
+    // Get the email from the login form
+    const email = this.loginForm.get('email')?.value;
+    if (!email) {
+      console.error('Email is required to request verification');
+      return;
+    }
+
+    this.http.post('http://localhost:8080/api/users/requestVerification', email)
+      .subscribe({
+        next: response => console.log('Verification email sent successfully', response),
+        error: error => console.error('Error sending verification email', error)
+      });
   }
 }
 

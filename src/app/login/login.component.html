@@ -9,9 +9,6 @@
         <div *ngIf="errorMessage" class="error-message">
           <mat-error>{{ errorMessage }}</mat-error>
         </div>
-        <div *ngIf="errorMessage === ' Email is not verified. Please verify your email before logging in.'">
-          <a class="verification-link" (click)="requestVerificationLink()">Click here to request a new verification link</a>
-        </div>
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-icon matPrefix>person</mat-icon>
@@ -21,6 +18,16 @@
             Please enter a valid email
           </mat-error>
         </mat-form-field>
+        <br>
+
+        <div *ngIf="errorMessage === 'Email is not verified. Please verify your email before logging in.'">
+          <a href="#"
+             class="verification-link"
+             (click)="requestVerificationLink(); $event.preventDefault()">
+            (request a new verification link)
+          </a>
+        </div>
+        <br>
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-icon matPrefix>lock</mat-icon>
