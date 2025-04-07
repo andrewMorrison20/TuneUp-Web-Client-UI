@@ -21,7 +21,7 @@
 <div class="welcome-container">
   <h1>Welcome to TuneUp</h1>
   <p>Take the next step in Music Mastery Today</p>
-  <button mat-raised-button color="primary">Get Started</button>
+  <button mat-raised-button color="primary" (click) ="onTakeQuiz()">Get Started</button>
 </div>
 
 
@@ -45,7 +45,9 @@
   <div class="text-container">
     <h2>Our Services</h2>
     <p>We offer personalized music tutoring with expert teachers in various instruments. Whether you're a beginner or advanced, we match you with the perfect tutor to fit your needs.</p>
+    <button mat-raised-button routerLink="/home/services">See full Services</button>
   </div>
+
   <div class="image-container">
     <img src="./assets/pianoKeyLabelsSide.jpg" alt="Services Image">
   </div>
