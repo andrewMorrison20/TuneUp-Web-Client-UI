@@ -1,0 +1,86 @@
+
+<div class="contact-us-container">
+  <div class="contact-content">
+    <!-- Left Column: Contact Information -->
+    <div class="contact-info">
+      <h1>Contact Us</h1>
+      <mat-divider></mat-divider>
+      <br>
+      <p>
+        Have questions or need support? Reach out to us and we'll get back to you as soon as possible.
+      </p>
+      <div class="info-item">
+        <mat-icon>phone</mat-icon>
+        <span>+44 7377097684</span>
+      </div>
+      <div class="info-item">
+        <mat-icon>email</mat-icon>
+        <span>tuneup&#64;gmail.com</span>
+      </div>
+      <div class="info-item">
+        <mat-icon>location_on</mat-icon>
+        <span>TuneUp, Thornhill Grove, Belfast, Northern Ireland</span>
+      </div>
+    </div>
+
+    <!-- Right Column: Contact Form -->
+    <div class="contact-form">
+      <mat-card>
+        <mat-card-content>
+          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+            <div class="form-field">
+              <h3 class="field-title">Name</h3>
+              <mat-form-field appearance="outline">
+                <mat-label>Name</mat-label>
+                <input matInput formControlName="name" placeholder="Your Name" required>
+                <mat-error *ngIf="contactForm.get('name')?.invalid">
+                  Name is required.
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="form-field">
+              <h3 class="field-title">Email</h3>
+              <mat-form-field appearance="outline">
+                <mat-label>example&#64;gexample.com</mat-label>
+                <input matInput formControlName="email" placeholder="Your Email" required>
+                <mat-error *ngIf="contactForm.get('email')?.invalid">
+                  Please enter a valid email.
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="form-field">
+              <h3 class="field-title">Subject</h3>
+              <mat-form-field appearance="outline">
+                <mat-label>Subject</mat-label>
+                <input matInput formControlName="subject" placeholder="Subject" required>
+                <mat-error *ngIf="contactForm.get('subject')?.invalid">
+                  Subject is required.
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="form-field">
+              <h3 class="field-title">Message</h3>
+              <mat-form-field appearance="outline">
+                <mat-label>Your Message</mat-label>
+                <textarea matInput formControlName="message" placeholder="Your message" rows="6" required></textarea>
+                <mat-error *ngIf="contactForm.get('message')?.invalid">
+                  Message is required.
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="form-actions">
+              <button mat-raised-button color="primary" type="submit" [disabled]="contactForm.invalid">
+                Send Message
+              </button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
+

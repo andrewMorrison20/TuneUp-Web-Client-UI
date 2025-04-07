@@ -7,6 +7,7 @@ import { ProfileService } from '../../profiles/profile.service';
 import { TutorProfile } from '../../profiles/interfaces/tutor.model';
 import { StudentProfile } from '../../profiles/interfaces/student.model';
 
+
 type Profile = TutorProfile | StudentProfile;
 
 @Component({
@@ -18,10 +19,11 @@ export class UsersComponent implements OnInit, AfterViewInit {
   totalElements = 0;
   pageSize = 10;
   pageIndex = 0;
-  displayedColumns: string[] = ['name', 'profileType', 'actions'];
+  displayedColumns: string[] = ['select','name', 'profileType', 'actions'];
   dataSource = new MatTableDataSource<Profile>([]);
   profiles: Profile[] = [];
   isLoading = false;
+  selectedProfiles: Profile[] = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -36,7 +38,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // Assign paginator and sort to the data source after view init
+    // Assign paginator and sort just once.
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
@@ -46,11 +48,13 @@ export class UsersComponent implements OnInit, AfterViewInit {
     this.profileService.getAllProfiles(this.pageIndex, this.pageSize)
       .subscribe({
         next: (response) => {
+          // Log the response to verify backend values.
+          console.log('Fetched profiles:', response);
           this.profiles = response.profiles;
-          this.totalElements = response.totalElements; // Update total elements for paginator
+          this.totalElements = response.totalElements;
           this.dataSource.data = this.profiles;
-          // Reassign paginator to ensure updates after each fetch
-          this.dataSource.paginator = this.paginator;
+          // Force update the table (if necessary).
+          this.dataSource._updateChangeSubscription();
           this.isLoading = false;
         },
         error: (error) => {
@@ -62,6 +66,8 @@ export class UsersComponent implements OnInit, AfterViewInit {
   }
 
   onPageChange(event: PageEvent): void {
+    // Debug logging for page changes.
+    console.log('Page change event:', event);
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
     this.fetchProfiles();
@@ -76,4 +82,26 @@ export class UsersComponent implements OnInit, AfterViewInit {
     console.log('View profile:', profile);
     // Implement your view profile logic here.
   }
+
+  confirmDeleteUsers() {
+
+  }
+
+  toggleRow( profile: Profile): void {
+    const index = this.selectedProfiles.findIndex(p => p.id === profile.id);
+    if (index > -1) {
+      this.selectedProfiles.splice(index, 1);
+    } else {
+      this.selectedProfiles.push(profile);
+    }
+  }
+
+  toggleAllRows(): void {
+    if (this.selectedProfiles.length === this.profiles.length) {
+      this.selectedProfiles = [];
+    } else {
+      this.selectedProfiles = [...this.profiles];
+    }
+  }
+
 }

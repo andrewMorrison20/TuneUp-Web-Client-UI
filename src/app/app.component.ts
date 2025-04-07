@@ -9,6 +9,8 @@ import { MatIconModule } from '@angular/material/icon';
 import {MatButtonToggle} from "@angular/material/button-toggle";
 import {HttpClientModule} from "@angular/common/http";
 import {AuthenticationModule} from "./authentication/authentication.module";
+import {NavModule} from "./components/nav/nav.module";
+import {FooterModule} from "./components/footer/footer.module";
 
 
 @Component({
@@ -24,7 +26,9 @@ import {AuthenticationModule} from "./authentication/authentication.module";
     MatButtonModule,
     MatToolbarModule,
     MatInputModule,
-    MatButtonToggle
+    MatButtonToggle,
+    NavModule,
+    FooterModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './app.component.html',

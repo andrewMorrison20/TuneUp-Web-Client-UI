@@ -1,0 +1,83 @@
+
+:host {
+  display: block;
+  background: linear-gradient(to bottom right, #c3c3ef 0%, #ca75e6 100%);
+}
+
+.contact-us-container {
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  border-radius: 8px;
+  background: linear-gradient(to bottom right, #c3c3ef 0%, #ca75e6 100%);
+}
+
+.contact-content {
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+}
+
+.contact-info {
+  flex: 0 0 40%;
+  background: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+  h1 {
+    margin-bottom: 16px;
+    font-size: 2rem;
+  }
+
+  p {
+    margin-bottom: 24px;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .info-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+
+    mat-icon {
+      margin-right: 8px;
+      color: #1976d2;
+    }
+  }
+}
+
+.contact-form {
+  flex: 0 0 55%;
+  mat-card {
+    padding: 16px;
+    border-radius: 8px;
+  }
+
+  .form-field {
+    margin-bottom: 16px;
+    // Ensure the mat-form-field takes up full width of its container
+    mat-form-field {
+      width: 100%;
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+/* Optional: Stack columns on smaller screens */
+@media (max-width: 768px) {
+  .contact-content {
+    flex-direction: column;
+  }
+  .contact-info, .contact-form {
+    flex: 1 1 100%;
+  }
+}
+

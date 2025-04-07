@@ -11,16 +11,6 @@
 }
 
 
-
-
-@media (max-width: 1200px) {
-  .create-payment-container {
-    flex-direction: column;
-  }
-  .create-payment-image {
-    display: none;
-  }
-}
 @media (max-width: 768px) {
   .table-container {
     overflow-x: auto;
@@ -32,11 +22,6 @@ mat-card {
   background: #adade6;
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-mat-form-field {
-  width: 100%;
-  margin-bottom: 16px;
 }
 
 button {
@@ -87,19 +72,6 @@ button.mat-button[color="accent"] {
   background-color: #ffa500;
   color: white;
 }
-
-.paid-button-container {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  padding: 10px 0;
-}
-
-.paid-button {
-  width: auto;
-  min-width: 150px;
-}
-
 
 .sort-filter-container {
   position: relative;
@@ -162,7 +134,6 @@ mat-paginator {
   padding: 10px;
 }
 
-/* Change paginator buttons color */
 .mat-paginator-container {
   background-color: #adade6 !important;
   color: white !important;
@@ -185,13 +156,6 @@ mat-paginator {
 .mat-paginator-range-label {
   color: white !important;
 }
-
-/* Style dropdown arrows */
 .mat-select-arrow {
   color: white !important;
-}
-
-.overdue {
-  color: red;
-  font-weight: bold;
 }

@@ -20,12 +20,15 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
 import {ProfileModule} from "../profiles/profile.module";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
-import {MatCardTitle} from "@angular/material/card";
+import {MatCard, MatCardContent, MatCardTitle} from "@angular/material/card";
+import {ContactUsComponent} from "./contact-us/contact-us.component";
+import {MatDivider} from "@angular/material/divider";
 
 @NgModule({
   declarations: [
     HomeComponent,
-    QuizComponent
+    QuizComponent,
+    ContactUsComponent
   ],
   imports: [
     HomeRoutingModule,
@@ -61,7 +64,10 @@ import {MatCardTitle} from "@angular/material/card";
     FormsModule,
     ProfileModule,
     MatProgressSpinner,
-    MatCardTitle
+    MatCardTitle,
+    MatCardContent,
+    MatCard,
+    MatDivider
   ],
   exports:[HomeComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

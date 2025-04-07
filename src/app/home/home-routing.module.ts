@@ -7,9 +7,11 @@ import {MatIcon} from "@angular/material/icon";
 import {MatFormField} from "@angular/material/form-field";
 import {MatAnchor, MatButton, MatIconButton} from "@angular/material/button";
 import {MatInput} from "@angular/material/input";
+import {ContactUsComponent} from "./contact-us/contact-us.component";
 
 const routes: Routes = [
-  { path: '', component: HomeComponent, title: 'Home Page' }
+  { path: '', component: HomeComponent, title: 'Home Page' },
+  { path: 'contact', component: ContactUsComponent, title: 'Contact us' }
 ];
 
 @NgModule({
