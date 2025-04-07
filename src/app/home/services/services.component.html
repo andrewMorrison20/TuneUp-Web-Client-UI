@@ -1,0 +1,16 @@
+
+<div class="services-container">
+  <h1>Our Services</h1>
+  <div class="services-grid">
+    <mat-card *ngFor="let service of services" class="service-card">
+      <div class="icon-container">
+        <mat-icon>{{ service.icon }}</mat-icon>
+      </div>
+      <mat-card-title>{{ service.title }}</mat-card-title>
+      <mat-card-content>
+        {{ service.description }}
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+

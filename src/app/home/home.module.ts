@@ -24,13 +24,15 @@ import {MatCard, MatCardContent, MatCardTitle} from "@angular/material/card";
 import {ContactUsComponent} from "./contact-us/contact-us.component";
 import {MatDivider} from "@angular/material/divider";
 import {AboutUsComponent} from "./about-us/about-us.component";
+import {ServicesComponent} from "./services/service.component";
 
 @NgModule({
   declarations: [
     HomeComponent,
     QuizComponent,
     ContactUsComponent,
-    AboutUsComponent
+    AboutUsComponent,
+    ServicesComponent
   ],
   imports: [
     HomeRoutingModule,
