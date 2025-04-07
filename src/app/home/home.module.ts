@@ -23,12 +23,14 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatCard, MatCardContent, MatCardTitle} from "@angular/material/card";
 import {ContactUsComponent} from "./contact-us/contact-us.component";
 import {MatDivider} from "@angular/material/divider";
+import {AboutUsComponent} from "./about-us/about-us.component";
 
 @NgModule({
   declarations: [
     HomeComponent,
     QuizComponent,
-    ContactUsComponent
+    ContactUsComponent,
+    AboutUsComponent
   ],
   imports: [
     HomeRoutingModule,

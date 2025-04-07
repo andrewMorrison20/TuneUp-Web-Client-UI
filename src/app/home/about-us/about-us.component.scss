@@ -1,0 +1,106 @@
+/* 1) TOP (HERO) SECTION */
+.hero-section {
+  background-color: #2b84c6; /* Bold blue tone */
+  color: #fff;              /* White text in this entire section */
+  text-align: center;
+  padding: 40px 16px;
+
+  h1 {
+    font-size: 2.2rem;
+    margin-bottom: 24px;
+  }
+
+  .commitment-cards {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    max-width: 1200px;
+  }
+
+  /* Make the cards inherit the section's background and text color */
+  mat-card.commitment-card {
+    background-color: inherit; /* No white background */
+    color: inherit;            /* Inherit white text from parent */
+    box-shadow: none;          /* Remove default card shadow */
+    flex: 1 1 300px;
+    max-width: 300px;
+    margin-bottom: 16px;
+
+    mat-card-title {
+      font-weight: 600;
+      font-size: 1.3rem;
+    }
+  }
+}
+
+/* 2) MIDDLE IMAGE SECTION */
+.image-section {
+  background-color: #f2f2f2;
+  text-align: center;
+  padding: 24px 0;
+
+  img {
+    max-width: 80%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* 3) BOTTOM SECTION */
+.bottom-section {
+  background-color: #daaded; /* Warm yellow tone */
+  color: #090606;               /* White text in this entire section */
+  text-align: center;
+  padding: 40px 16px;
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 24px;
+  }
+
+  .difference-cards {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Make the cards inherit the section's background and text color */
+  mat-card {
+    background-color: inherit; /* No white background */
+    color: inherit;            /* Inherit white text from parent */
+    box-shadow: none;          /* Remove default card shadow */
+    flex: 1 1 300px;
+    max-width: 300px;
+    margin-bottom: 16px;
+
+    mat-card-title {
+      font-weight: 600;
+      font-size: 1.2rem;
+    }
+  }
+}
+
+/* RESPONSIVE: Stack columns on smaller screens */
+@media (max-width: 768px) {
+  .hero-section {
+    .commitment-cards {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  .bottom-section {
+    .difference-cards {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}
+
+
