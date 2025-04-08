@@ -1,4 +1,13 @@
 <div class="app-container">
+  <br>
+  <mat-card class="disclaimer-card">
+    <mat-icon class="warning-icon">warning</mat-icon>
+    <p>
+      <strong>Important:</strong> .
+      All of the following answers are optional. If you are unsure leave empty/unchecked and proceed to the next question.
+    </p>
+  </mat-card>
+
   <div class="content">
     <div class="quiz-container">
       <mat-horizontal-stepper [linear]="true" #stepper>
@@ -6,7 +15,8 @@
         <mat-step [stepControl]="stepZeroFormGroup">
           <form [formGroup]="stepZeroFormGroup">
             <ng-template matStepLabel>Choose Profile Type</ng-template>
-            <p>Are you looking for student or Tutors? </p>
+            <p>All of the following filters are optional, leave empty if unsure</p>
+            <p class = "prompt">Are you looking for student or Tutors? </p>
             <mat-radio-group formControlName="profileType">
               <mat-radio-button *ngFor="let type of profileTypes" [value]="type">
                 {{ type.name }}
@@ -23,7 +33,7 @@
         <mat-step [stepControl]="stepOneFormGroup">
           <form [formGroup]="stepOneFormGroup">
             <ng-template matStepLabel>Choose Lesson Type</ng-template>
-            <p>Do you want online lessons?In person? </p>
+            <p class = "prompt">Do you want online lessons?In person? </p>
             <mat-radio-group formControlName="lessonType">
               <mat-radio-button *ngFor="let type of lessonTypes" [value]="type">
                 {{ type.name }}
@@ -40,7 +50,7 @@
         <mat-step [stepControl]="stepTwoFormGroup">
           <form [formGroup]="stepTwoFormGroup">
             <ng-template matStepLabel>Select Instruments</ng-template>
-            <p>Which Instruments do you play or have an interest in? </p>
+            <p class = "prompt">Which Instruments do you play or have an interest in? </p>
             <div formArrayName="instruments">
               <div *ngFor="let control of instrumentsArray.controls; let i = index">
                 <mat-checkbox [formControlName]="i">
@@ -60,7 +70,7 @@
         <mat-step [stepControl]="stepThreeFormGroup">
           <form [formGroup]="stepThreeFormGroup">
             <ng-template matStepLabel>Select Genres</ng-template>
-            <p>Which styles or genres do you like? </p>
+            <p class = "prompt">Which styles or genres do you like? </p>
             <div formArrayName="genres">
               <div *ngFor="let control of genresArray.controls; let i = index">
                 <mat-checkbox [formControlName]="i">
@@ -80,7 +90,7 @@
         <mat-step [stepControl]="stepFourFormGroup">
           <form [formGroup]="stepFourFormGroup">
             <ng-template matStepLabel>Select Qualifications</ng-template>
-            <p>Are you interested in Qualifications and grades? </p>
+            <p class = "prompt">Are you interested in Qualifications and grades? </p>
             <div formArrayName="qualifications">
               <div *ngFor="let control of qualificationsArray.controls; let i = index">
                 <mat-checkbox [formControlName]="i">
@@ -100,7 +110,7 @@
         <mat-step [stepControl]="stepFiveFormGroup">
           <form [formGroup]="stepFiveFormGroup">
             <ng-template matStepLabel>Select Price Range</ng-template>
-            <p>What is your budget? </p>
+            <p class = "prompt">What is your budget? </p>
             <div class="price-range">
               <mat-form-field appearance="fill">
                 <mat-label>Minimum Price</mat-label>
@@ -123,7 +133,7 @@
         <mat-step [stepControl]="stepSixFormGroup">
           <form [formGroup]="stepSixFormGroup">
             <ng-template matStepLabel>Select Tuition Region</ng-template>
-            <p>Where would you like lessons to take place?</p>
+            <p class = "prompt">Where would you like lessons to take place?</p>
             <div class="search-container">
               <mat-form-field appearance="outline">
                 <mat-label>Tuition Region</mat-label>
@@ -154,33 +164,33 @@
         <!-- Final Step: Review & Search -->
         <mat-step>
           <ng-template matStepLabel>Review Your Answers</ng-template>
-          <p>Review your choices before searching for tutors.</p>
+          <p class = "prompt">Review your choices before searching for tutors.</p>
           <ul class="review-list">
-            <li><strong>Lesson Type:</strong> {{ stepOneFormGroup?.value.lessonType.name }}</li>
+            <li><strong class = "prompt">Lesson Type:</strong> {{ stepOneFormGroup?.value.lessonType.name }}</li>
             <li>
-              <strong>Instruments:</strong>
+              <strong class = "prompt">Instruments:</strong>
               <span *ngFor="let instrument of selectedInstruments; let last = last">
         {{ instrument.name }}<span *ngIf="!last">, </span>
       </span>
             </li>
             <li>
-              <strong>Genres:</strong>
+              <strong class = "prompt">Genres:</strong>
               <span *ngFor="let genre of selectedGenres; let last = last">
         {{ genre.name }}<span *ngIf="!last">, </span>
       </span>
             </li>
             <li>
-              <strong>Qualifications:</strong>
+              <strong class = "prompt" >Qualifications:</strong>
               <span *ngFor="let qual of selectedQualifications; let last = last">
         {{ qual.name }}<span *ngIf="!last">, </span>
       </span>
             </li>
             <li>
-              <strong>Price Range:</strong>
+              <strong class = "prompt" >Price Range:</strong>
               {{ stepFiveFormGroup?.value.minPrice }} - {{ stepFiveFormGroup?.value.maxPrice }}
             </li>
             <li>
-              <strong>Tuition Region:</strong>
+              <strong class = "prompt" >Tuition Region:</strong>
               {{ selectedRegion ? selectedRegion.name : 'any' }}
 
             </li>
