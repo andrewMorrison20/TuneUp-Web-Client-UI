@@ -15,7 +15,6 @@
         <mat-step [stepControl]="stepZeroFormGroup">
           <form [formGroup]="stepZeroFormGroup">
             <ng-template matStepLabel>Choose Profile Type</ng-template>
-            <p>All of the following filters are optional, leave empty if unsure</p>
             <p class = "prompt">Are you looking for student or Tutors? </p>
             <mat-radio-group formControlName="profileType">
               <mat-radio-button *ngFor="let type of profileTypes" [value]="type">
