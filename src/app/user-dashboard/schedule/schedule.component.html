@@ -12,6 +12,22 @@
     <br>
     <mat-divider></mat-divider>
     <br>
+
+    <div class="calendar-legend">
+      <div class="legend-item">
+        <span class="legend-dot available"></span>
+        Available
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot booked"></span>
+        Booked
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot pending"></span>
+        Pending
+      </div>
+    </div>
+
     <mat-card-content>
       <button *ngIf="isTimeGridView" mat-raised-button color="primary" (click)="switchToMonthView()">
         Month View

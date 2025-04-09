@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AvailabilityService } from "../../lessons/availability.service";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -37,10 +37,8 @@ export class ScheduleComponent implements OnInit {
   };
 
   constructor(
-    private route: ActivatedRoute,
-    private availabilityService: AvailabilityService,
-    private router: Router,
-    private dialog: MatDialog
+    private readonly availabilityService: AvailabilityService,
+    private readonly dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -84,7 +82,8 @@ export class ScheduleComponent implements OnInit {
         hour: '2-digit',
         minute: '2-digit',
         meridiem: false
-      }
+      },
+      displayEventEnd: true,
     };
   }
 
@@ -104,7 +103,7 @@ export class ScheduleComponent implements OnInit {
 
   private updateCalendarEvents(): void {
     this.calendarOptions.events = this.availabilitySlots.map((slot: any) => ({
-      title: slot.status,
+      title: '',
       start: slot.startTime,
       id: slot.id,
       end: slot.endTime,
@@ -144,7 +143,6 @@ export class ScheduleComponent implements OnInit {
     console.log(` Fetching for month: ${start} to ${end}`);
     this.fetchAvailabilityForCurrentMonth();
   }
-
 
 
   private getEventColor(status: string): string {
@@ -230,8 +228,6 @@ export class ScheduleComponent implements OnInit {
       );
     }
   }
-
-
 
 
 onBlockBookSubmit(): void {
@@ -354,7 +350,7 @@ private generateDatesToBlock(): { start: string; end: string, profileId:number }
 
     const calendarApi = this.calendarComponent.getApi();
     if (!calendarApi) {
-      console.error("❌ FullCalendar API is unavailable.");
+      console.error("FullCalendar API is unavailable.");
       return;
     }
 
@@ -363,4 +359,15 @@ private generateDatesToBlock(): { start: string; end: string, profileId:number }
     this.fetchAllAvailability(currentDate);
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    if (this.calendarComponent) {
+      if (window.innerWidth < 800 && !this.isTimeGridView) {
+        const today = new Date().toISOString().split('T')[0];
+        this.onDateClick({ dateStr: today });
+      } else if (window.innerWidth >= 768 && this.isTimeGridView) {
+        this.switchToMonthView();
+      }
+    }
+  }
 }

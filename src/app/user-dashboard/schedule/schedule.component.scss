@@ -79,3 +79,37 @@ button[mat-raised-button], button[mat-stroked-button] {
     width: calc(50% - 12px);
   }
 }
+
+.calendar-legend {
+  padding-left: 20px;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: center;
+  font-size: 14px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.legend-dot.available {
+  background-color: green;
+}
+
+.legend-dot.booked {
+  background-color: red;
+}
+
+.legend-dot.pending {
+  background-color: grey;
+}
