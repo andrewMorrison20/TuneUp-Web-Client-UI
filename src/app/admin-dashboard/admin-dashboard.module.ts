@@ -10,6 +10,7 @@ import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
 import {HttpClientModule} from "@angular/common/http";
 import {AdminDashboardRoutingModule} from "./admin-dashboard.routing.module";
 import {UsersComponent} from "./users/users.component";
+import {AdminService} from "./admin.service";
 
 
 @NgModule({
@@ -30,5 +31,6 @@ import {UsersComponent} from "./users/users.component";
     RouterLinkActive,
     RouterLink,
   ],
+  providers:[ AdminService]
 })
 export class AdminDashboardModule { }

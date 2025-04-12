@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProfileService } from '../../profiles/profile.service';
 import { TutorProfile } from '../../profiles/interfaces/tutor.model';
 import { StudentProfile } from '../../profiles/interfaces/student.model';
+import {AdminService} from "../admin.service";
 
 
 type Profile = TutorProfile | StudentProfile;
@@ -30,7 +31,8 @@ export class UsersComponent implements OnInit, AfterViewInit {
 
   constructor(
     private snackBar: MatSnackBar,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private adminService: AdminService
   ) {}
 
   ngOnInit(): void {
@@ -83,8 +85,18 @@ export class UsersComponent implements OnInit, AfterViewInit {
     // Implement your view profile logic here.
   }
 
-  confirmDeleteUsers() {
-
+  confirmDeleteUsers(): void {
+    const userIds = this.selectedProfiles.map(profile => profile.appUserId);
+    this.adminService.softDeleteUsers(userIds).subscribe({
+      next: () => {
+        this.snackBar.open('Users deleted successfully', 'Close', { duration: 3000 });
+        this.selectedProfiles = [];
+        this.fetchProfiles();
+      },
+      error: () => {
+        this.snackBar.open('Failed to delete users', 'Close', { duration: 3000 });
+      }
+    });
   }
 
   toggleRow( profile: Profile): void {
