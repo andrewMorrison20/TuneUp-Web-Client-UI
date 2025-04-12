@@ -2,22 +2,22 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 
 export interface BaseAuthenticatedUser {
   user: string;
-  console: string;
+  roles: string[];
   token: string;
 }
 
 export class AuthenticatedUser implements BaseAuthenticatedUser {
   public user: string;
-  public console: string;
+  public roles: string[];
   public token: string;
   public authType: string;
   public id: number
   public profileId: number;
   public profileType: string;
 
-  constructor(user: string, _console: string, token: string, authType: string, id: number, profileId:number, profileType:string) {
+  constructor(user: string, roles: string[], token: string, authType: string, id: number, profileId:number, profileType:string) {
     this.user = user;
-    this.console = _console;
+    this.roles = roles;
     this.token = token;
     this.authType = authType;
     this.id = id;
@@ -29,8 +29,8 @@ export class AuthenticatedUser implements BaseAuthenticatedUser {
     return JSON.stringify(this);
   }
 
-  forAdminConsole() {
-    return this.console === 'admin';
+  forAdminConsole(): boolean {
+    return this.roles.includes('ADMIN');
   }
 
   static getAuthUserToken(): string {
@@ -77,8 +77,8 @@ export class AuthenticatedUser implements BaseAuthenticatedUser {
     return false;
   }
 
-  static save(user: string, _console: string, token: string, authType: string,id: number, profileId:number, profileType:string): AuthenticatedUser {
-    const objToSave = new AuthenticatedUser(user, _console, token, authType,id, profileId,profileType);
+  static save(user: string, roles:string[], token: string, authType: string,id: number, profileId:number, profileType:string): AuthenticatedUser {
+    const objToSave = new AuthenticatedUser(user,roles, token, authType,id, profileId,profileType);
     sessionStorage.setItem(this.key, objToSave.toString());
     return objToSave;
   }
@@ -89,7 +89,7 @@ export class AuthenticatedUser implements BaseAuthenticatedUser {
 
   static fromString(json: string): AuthenticatedUser {
     const obj = JSON.parse(json);
-    return new AuthenticatedUser(obj.user, obj.console, obj.token, obj.authType,obj.id,obj.profileId,obj.profileType);
+    return new AuthenticatedUser(obj.user, obj.roles, obj.token, obj.authType,obj.id,obj.profileId,obj.profileType);
   }
 
   static key = 'authenticatedUser';

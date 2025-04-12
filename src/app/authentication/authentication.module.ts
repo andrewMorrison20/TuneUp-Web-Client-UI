@@ -13,7 +13,7 @@ import { AuthService } from './auth.service';
       multi: true,
     },
     AuthService,
-    JwtHelperService, // Optional: Keep for decoding/validating tokens
+    JwtHelperService,
   ],
 })
 export class AuthenticationModule {}

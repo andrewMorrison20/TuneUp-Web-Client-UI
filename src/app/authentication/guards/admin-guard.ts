@@ -2,16 +2,18 @@ import { inject } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthenticatedUser } from '../authenticated-user.class';
 
-export const authGuard = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean => {
+export const adminGuard = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean => {
   const router = inject(Router);
 
   if (AuthenticatedUser.userLoggedIn()) {
-    const user = AuthenticatedUser.getAuthenticatedUser();
-    if (user) {
+    if (AuthenticatedUser.currentUserAuthenticatedForAdmin()) {
       return true;
     }
+
+    router.navigate(['/user-dashboard']);
+    return false;
   }
-  // Redirect to login with returnUrl
+
   router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
   return false;
 };

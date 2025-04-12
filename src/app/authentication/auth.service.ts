@@ -12,8 +12,8 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  public login(user: string, _console: string, token: string, refreshToken: string, authType: string, id: number,profileId:number,profileType:string) {
-    const authenticatedUser = new AuthenticatedUser(user, _console, token, authType, id,profileId,profileType);
+  public login(user: string, roles: string [], token: string, refreshToken: string, authType: string, id: number,profileId:number,profileType:string) {
+    const authenticatedUser = new AuthenticatedUser(user, roles, token, authType, id,profileId,profileType);
     sessionStorage.setItem(AuthenticatedUser.key, authenticatedUser.toString());
     this.startTokenRefreshCycle(authenticatedUser);
   }
@@ -65,5 +65,4 @@ export class AuthService {
 
     return Math.max(refreshTime - this.tokenRefreshThreshold, 0);
   }
-
 }

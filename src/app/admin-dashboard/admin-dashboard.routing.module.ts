@@ -7,6 +7,7 @@ import {authGuard} from "../authentication/guards/auth-guard";
 import {NgModule} from "@angular/core";
 import {AdminDashboardComponent} from "./admin-dashboard.component";
 import {UsersComponent} from "./users/users.component";
+import {adminGuard} from "../authentication/guards/admin-guard";
 
 const routes: Routes = [
   {
@@ -18,7 +19,7 @@ const routes: Routes = [
       { path: 'chats', component: StudyHubComponent },
       { path: 'requests', component: StudyHubComponent },
       { path: '', redirectTo: 'users', pathMatch: 'full' } // Default route
-    ],canActivate: [authGuard]
+    ],canActivate: [adminGuard]
   }
 ];
 

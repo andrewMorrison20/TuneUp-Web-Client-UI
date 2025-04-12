@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
 
       const authUserObj = AuthenticatedUser.save(
         decodedToken.name,
-        'user',
+        decodedToken.roles,
         token,
         'form',
         decodedToken.userId,

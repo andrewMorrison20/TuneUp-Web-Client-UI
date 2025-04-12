@@ -54,7 +54,7 @@
       <button mat-menu-item routerLink="/user-dashboard/settings">
         <mat-icon>settings</mat-icon> Account Settings
       </button>
-      <button mat-menu-item routerLink="/user-dashboard">
+      <button mat-menu-item [routerLink]="AuthenticatedUser.currentUserAuthenticatedForAdmin() ? '/admin-dashboard' : '/user-dashboard'">
         <mat-icon>dashboard</mat-icon> Dashboard
       </button>
       <button mat-menu-item (click)="logout()">
