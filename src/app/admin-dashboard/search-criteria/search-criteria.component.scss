@@ -1,0 +1,97 @@
+:host {
+  display: block;
+  padding: 20px;
+  background-color: #f4f4f9;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+
+@media (max-width: 768px) {
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }}
+
+mat-card {
+  padding: 20px;
+  background: #df9494;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+button {
+  margin-top: 10px;
+  width: auto;
+}
+
+table {
+  width: 100%;
+  margin-top: 10px;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: #007bff;
+  color: #090606;
+  padding: 10px;
+  text-align: left;
+}
+
+td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.mat-tab-group {
+  margin-bottom: 20px;
+}
+
+.mat-elevation-z8 {
+  border-radius: 10px;
+}
+
+button.mat-button {
+  font-weight: bold;
+}
+
+button.mat-button[color="warn"] {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+button.mat-button[color="accent"] {
+  background-color: #ffa500;
+  color: white;
+}
+
+.delete-btn {
+  margin-top: 16px;
+}
+
+.table-container {
+  overflow-x: auto;
+  margin-bottom: 16px;
+}
+
+.fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fab mat-icon {
+  font-size: 24px;
+}
+

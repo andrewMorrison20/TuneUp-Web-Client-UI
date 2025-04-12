@@ -1,0 +1,124 @@
+<mat-card class="disclaimer-card">
+  <mat-icon class="warning-icon">warning</mat-icon>
+  <p>
+    <strong>Important:</strong> You can manage and delete instruments, genres, and qualifications here. Deleting is permanent.
+  </p>
+</mat-card>
+<br>
+<mat-card>
+  <mat-tab-group [(selectedIndex)]="selectedTabIndex" (selectedTabChange)="storeSelectedTab($event.index)">
+
+    <!-- Instruments -->
+    <mat-tab label="Instruments">
+      <div class="table-container">
+        <table mat-table [dataSource]="instruments" class="mat-elevation-z8">
+
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox disabled></mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let item">
+              <mat-checkbox
+                [checked]="selectedInstruments.has(item.id)"
+                (change)="toggleSelection(selectedInstruments, item.id)">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let item">{{ item.name }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="['select', 'name']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['select', 'name'];"></tr>
+        </table>
+      </div>
+
+      <button mat-raised-button color="warn" class="delete-btn"
+              (click)="deleteInstruments()" [disabled]="!selectedInstruments.size">
+        Delete Selected Instruments
+      </button>
+
+      <button class="fab" mat-fab color="primary" (click)="addInstrument()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-tab>
+
+    <!-- Genres -->
+    <mat-tab label="Genres">
+      <div class="table-container">
+        <table mat-table [dataSource]="genres" class="mat-elevation-z8">
+
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox disabled></mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let item">
+              <mat-checkbox
+                [checked]="selectedGenres.has(item.id)"
+                (change)="toggleSelection(selectedGenres, item.id)">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let item">{{ item.name }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="['select', 'name']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['select', 'name'];"></tr>
+        </table>
+      </div>
+
+      <button mat-raised-button color="warn" class="delete-btn"
+              (click)="deleteGenres()" [disabled]="!selectedGenres.size">
+        Delete Selected Genres
+      </button>
+
+      <button class="fab" mat-fab color="primary" (click)="addGenre()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-tab>
+
+    <!-- Qualifications -->
+    <mat-tab label="Qualifications">
+      <div class="table-container">
+        <table mat-table [dataSource]="qualifications" class="mat-elevation-z8">
+
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox disabled></mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let item">
+              <mat-checkbox
+                [checked]="selectedQualifications.has(item.id)"
+                (change)="toggleSelection(selectedQualifications, item.id)">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let item">{{ item.name }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="['select', 'name']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['select', 'name'];"></tr>
+        </table>
+      </div>
+
+      <button mat-raised-button color="warn" class="delete-btn"
+              (click)="deleteQualifications()" [disabled]="!selectedQualifications.size">
+        Delete Selected Qualifications
+      </button>
+
+      <button class="fab" mat-fab color="primary" (click)="addQualification()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-tab>
+
+  </mat-tab-group>
+</mat-card>
+
