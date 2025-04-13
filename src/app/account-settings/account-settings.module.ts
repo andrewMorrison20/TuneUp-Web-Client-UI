@@ -13,12 +13,15 @@ import {AccountSettingsRoutingModule} from "./account-settings-routing.module";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {AccountSettingsService} from "./account-settings.service";
 import {MatList, MatListItem} from "@angular/material/list";
+import {ConfirmDeleteDialogComponent} from "./confirm-delete-dialog.component";
+import {MatDialogActions, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
 
 
 
 @NgModule({
   declarations: [
     AccountSettingsComponent,
+    ConfirmDeleteDialogComponent
   ],
   providers:[
     AccountSettingsService,
@@ -44,6 +47,9 @@ import {MatList, MatListItem} from "@angular/material/list";
     MatList,
     MatListItem,
     FormsModule,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogTitle,
   ]
 })
 export class AccountSettingsModule { }

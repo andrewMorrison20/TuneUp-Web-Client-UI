@@ -14,6 +14,12 @@
         <p><strong>City:</strong> {{accountDetails?.address?.city}}</p>
         <p><strong>Country:</strong> {{accountDetails?.address?.country}}</p>
       </mat-card-content>
+      <mat-card-actions>
+        <button mat-stroked-button color="warn" (click)="onDeleteAccount()">
+          <mat-icon>delete</mat-icon>
+          Delete My Account
+        </button>
+      </mat-card-actions>
     </mat-card>
   </div>
 

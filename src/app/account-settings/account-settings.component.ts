@@ -3,6 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AccountResponse, AccountSettingsService } from './account-settings.service';
 import { AuthenticatedUser } from '../authentication/authenticated-user.class';
 import {AddressService} from "../user-dashboard/update-profile/address/address-service.component";
+import {MatDialog} from "@angular/material/dialog";
+import {ConfirmDeleteDialogComponent} from "./confirm-delete-dialog.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 
 @Component({
@@ -22,7 +25,11 @@ export class AccountSettingsComponent {
   addressSuggestions: any;
   searchQuery: any;
 
-  constructor(private fb: FormBuilder, private accountService: AccountSettingsService, private addressService: AddressService) {
+  constructor(private fb: FormBuilder,
+              private accountService: AccountSettingsService,
+              private addressService: AddressService,
+              private dialog:MatDialog,
+              private snackBar: MatSnackBar) {
     this.nameForm = this.fb.group({
       name: ['', [Validators.required]],
     });
@@ -172,4 +179,24 @@ export class AccountSettingsComponent {
     });
   }
 
+  onDeleteAccount(): void {
+    const dialogRef = this.dialog.open(ConfirmDeleteDialogComponent);
+
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        this.accountService.deleteAccount().subscribe({
+          next: () => {
+            this.snackBar.open('Account deleted successfully.', 'Close', { duration: 3000 });
+            // this.authService.logout(); // Optional: redirect or clear token
+          },
+          error: (err) => {
+            this.snackBar.open('Failed to delete account. Please try again.', 'Close', { duration: 4000 });
+            console.error('Delete account error:', err);
+          },
+          complete: () => {
+          }
+        });
+      }
+    });
+  }
 }

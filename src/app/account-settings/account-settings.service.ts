@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {environment} from "../../environments/environment";
 
 export interface AccountResponse{
   id: number,
@@ -19,21 +20,24 @@ export interface AccountResponse{
 
 @Injectable()
 export class AccountSettingsService {
-  private baseServerUrl = "http://localhost:8080/api/users";
+  private apiUrl = environment.apiUrl
 
   constructor(private http: HttpClient) {
 
   }
 
   public getUserAccountDetails(id: number): Observable<AccountResponse> {
-    const reqUrl = `${this.baseServerUrl}/${id}`;
+    const reqUrl = `${this.apiUrl}/users/${id}`;
     return this.http.get<AccountResponse>(reqUrl);
   }
 
   public updateUserDetails(id: number, updateData: Partial<AccountResponse>): Observable<AccountResponse> {
-    const reqUrl = `${this.baseServerUrl}/update`;
+    const reqUrl = `${this.apiUrl}/users/update`;
     const payload = { id, ...updateData };
     return this.http.put<AccountResponse>(reqUrl, payload);
   }
 
+  public deleteAccount(): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/users/delete`);
+  }
 }
