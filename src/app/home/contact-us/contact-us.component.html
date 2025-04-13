@@ -33,7 +33,7 @@
       <mat-card>
         <mat-card-content>
           <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
-            <div class="form-field">
+          <div class="form-field">
               <h3 class="field-title">Name</h3>
               <mat-form-field appearance="outline">
                 <mat-label>Name</mat-label>
@@ -78,8 +78,19 @@
             </div>
 
             <div class="form-actions">
-              <button mat-raised-button color="primary" type="submit" [disabled]="contactForm.invalid">
-                Send Message
+              <button
+                mat-raised-button
+                color="primary"
+                type="submit"
+                [disabled]="contactForm.invalid || isSubmitting">
+                <mat-progress-spinner
+                  *ngIf="isSubmitting"
+                  mode="indeterminate"
+                  diameter="20"
+                  color="accent"
+                  class="spinner"
+                ></mat-progress-spinner>
+                <span *ngIf="!isSubmitting">Send Message</span>
               </button>
             </div>
           </form>

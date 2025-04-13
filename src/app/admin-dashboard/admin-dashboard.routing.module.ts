@@ -9,6 +9,7 @@ import {AdminDashboardComponent} from "./admin-dashboard.component";
 import {UsersComponent} from "./users/users.component";
 import {adminGuard} from "../authentication/guards/admin-guard";
 import {SearchCriteriaComponent} from "./search-criteria/search-criteria.component";
+import {ChatsComponent} from "../user-dashboard/chats/chats.component";
 
 const routes: Routes = [
   {
@@ -17,8 +18,6 @@ const routes: Routes = [
     children: [
       { path: 'users', component: UsersComponent },
       { path: 'search', component: SearchCriteriaComponent },
-      { path: 'chats', component: StudyHubComponent },
-      { path: 'requests', component: StudyHubComponent },
       { path: '', redirectTo: 'users', pathMatch: 'full' } // Default route
     ],canActivate: [adminGuard]
   }
