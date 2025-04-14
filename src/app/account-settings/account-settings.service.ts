@@ -38,6 +38,6 @@ export class AccountSettingsService {
   }
 
   public deleteAccount(): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/users/delete`);
+    return this.http.delete<void>(`${this.apiUrl}/users/anonymise`);
   }
 }
