@@ -13,7 +13,7 @@ export class ReviewCardComponent implements OnInit {
   currentReviewIndex: number = 0;
   showFullText: boolean = false;
 
-  constructor(private profileService: ProfileService) {}
+  constructor() {}
 
   ngOnInit(): void {
     console.log('fetching reviews for', this.profile)
