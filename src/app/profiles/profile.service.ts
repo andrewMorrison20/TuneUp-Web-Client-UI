@@ -197,14 +197,11 @@ export class ProfileService {
    * @private
    */
   private mapReviews(rawReviews: any[]): Review[] {
-    console.log('Reviews', rawReviews)
-    return rawReviews.map(review => {
-      if(rawReviews != null) {
-        return this.mapToReview(review);
-      } else {
-      throw new Error('Empty Review')}});
+    if (!rawReviews) {
+      throw new Error('Empty Review');
+    }
+    return rawReviews.map(review => this.mapToReview(review));
   }
-
 
   /**
    * Map raw profile data to tutor profile interface
@@ -273,6 +270,7 @@ export class ProfileService {
       reviewer: review.reviewerName
     }
   }
+
 
   private mapPriceFormatBackendToFrontend(price: Price): Price {
     return {
