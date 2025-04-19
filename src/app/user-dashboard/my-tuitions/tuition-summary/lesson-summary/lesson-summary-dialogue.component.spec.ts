@@ -64,17 +64,18 @@ describe('LessonSummaryDialogComponent', () => {
       // Arrange
       const err = new Error('fail');
       addressServiceSpy.getLessonTutorLocation.and.returnValue(throwError(() => err));
-      const alertSpy = spyOn(window, 'alert');
+      const alertSpy   = spyOn(window, 'alert');
       const consoleSpy = spyOn(console, 'error');
 
-      // Act
       component.ngOnInit();
       tick();
 
-      // Assert
       expect(consoleSpy).toHaveBeenCalledWith('Error fetching lesson location:', err);
-      expect(alertSpy).toHaveBeenCalledWith('Error retrieving lesson location. Refresh the page.');
+      expect(alertSpy).toHaveBeenCalledWith(
+        'Error retrieving lesson location. Refresh the page.'
+      );
     }));
+
 
     it('sets map coordinates for non in-person when address present', () => {
       // Override data as home lesson
@@ -180,4 +181,39 @@ describe('LessonSummaryDialogComponent', () => {
       expect(dialogRefSpy.close).toHaveBeenCalled();
     });
   });
+
+  describe('fetchLessonLocation', () => {
+    it('should set coordinates and update data.address when in-person address is valid', fakeAsync(() => {
+      // Arrange: simulate address response with lat/lng
+      const address = { latitude: 10, longitude: 20 } as any;
+      addressServiceSpy.getLessonTutorLocation.and.returnValue(of(address));
+      spyOn<any>(component, 'setMapCoordinates');
+
+      // Act
+      (component as any).fetchLessonLocation(123);
+      tick();
+
+      // Assert
+      expect(addressServiceSpy.getLessonTutorLocation).toHaveBeenCalledWith(123);
+      expect((component as any).setMapCoordinates).toHaveBeenCalledWith(10, 20);
+      expect(component.data.address).toBe(address);
+    }));
+
+    it('should log error and show alert when address fetch fails', fakeAsync(() => {
+      // Arrange: simulate error
+      const err = new Error('network');
+      addressServiceSpy.getLessonTutorLocation.and.returnValue(throwError(() => err));
+      const consoleSpy = spyOn(console, 'error');
+      const alertSpy = spyOn<any>(component, 'showAlert');
+
+      // Act
+      (component as any).fetchLessonLocation(456);
+      tick();
+
+      // Assert
+      expect(consoleSpy).toHaveBeenCalledWith('Error fetching lesson location:', err);
+      expect(alertSpy).toHaveBeenCalledWith('Error retrieving lesson location. Refresh the page.');
+    }));
+  });
+
 });

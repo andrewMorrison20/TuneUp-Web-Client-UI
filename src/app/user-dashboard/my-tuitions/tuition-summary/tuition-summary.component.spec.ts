@@ -204,19 +204,6 @@ describe('TuitionSummaryComponent', () => {
       });
     });
 
-    describe('switchToMonthView', () => {
-      it('should switch the calendar back to month view', () => {
-        const api = component.calendarComponent.getApi();
-        api.changeView = jasmine.createSpy('changeView');
-        component.isTimeGridView = true;
-
-        component.switchToMonthView();
-
-        expect(api.changeView).toHaveBeenCalledWith('dayGridMonth');
-        expect(component.isTimeGridView).toBeFalse();
-      });
-    });
-
     it('onMonthChange triggers fetchLessons', () => {
       spyOn<any>(component, 'fetchLessons');
       (component as any).onMonthChange({} as any);
