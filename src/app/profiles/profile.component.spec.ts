@@ -1,12 +1,14 @@
+// profile.component.spec.ts
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ProfileComponent } from './profile.component';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { of, Subject } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 import { ProfileService } from './profile.service';
 import { AvailabilityService } from '../lessons/availability.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
@@ -60,13 +62,12 @@ describe('ProfileComponent', () => {
     availabilitySpy.getPeriodAvailabilityForProfile.and.returnValue(of(mockSlots));
 
     component.ngOnInit();
-    routeParamSubject.next(new Map([['id', '10']]) as any);(new Map([['id', '10']]) as any);
+    routeParamSubject.next(new Map([['id', '10']]) as any);
     tick();
 
     expect(component.profile).toEqual(mockProfile);
     expect(component.profile!.reviews).toEqual(mockReviews);
     expect(component.availabilitySlots).toEqual(mockSlots);
-    // calendarOptions.events updated
     expect((component.calendarOptions.events as any[]).length).toBe(1);
   }));
 
@@ -105,5 +106,91 @@ describe('ProfileComponent', () => {
   it('goBackToResults navigates to search', () => {
     component.goBackToResults();
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/profiles/search']);
+  });
+
+  it('startChat calls openChatDialog', () => {
+    component.profile = { displayName: 'Bob', id: 1, profileType: 'Tutor', reviews: [], instruments: [], lessonType: '', prices: [] } as any;
+    spyOn(component as any, 'openChatDialog');
+    component.startChat();
+    expect((component as any).openChatDialog).toHaveBeenCalled();
+  });
+
+  describe('openChatDialog', () => {
+    it('opens dialog with correct data', () => {
+      component.profile = { id: 2 } as any;
+      const afterClosed$ = of(null);
+      const dialogRef = { afterClosed: () => afterClosed$ } as any;
+      dialogSpy.open.and.returnValue(dialogRef);
+
+      (component as any).openChatDialog();
+      expect(dialogSpy.open).toHaveBeenCalledWith(jasmine.any(Function), jasmine.objectContaining({
+        data: { conversation: null, participantId: 2, userProfileId: jasmine.any(Number) }
+      }));
+    });
+  });
+
+  describe('onResize', () => {
+    beforeEach(() => {
+      const api = { changeView: jasmine.createSpy() };
+      (component as any).calendarComponent = { getApi: () => api };
+    });
+
+    it('switches to timeGridDay when width <768 and not timeGridView', () => {
+      (component as any).isTimeGridView = false;
+      spyOnProperty(window, 'innerWidth').and.returnValue(500);
+      spyOn(component as any, 'onDateClick');
+      component.onResize();
+      expect((component as any).onDateClick).toHaveBeenCalled();
+    });
+
+    it('switches back to month view when width >=768 and is timeGridView', () => {
+      (component as any).isTimeGridView = true;
+      spyOnProperty(window, 'innerWidth').and.returnValue(1024);
+      spyOn(component as any, 'switchToMonthView');
+      component.onResize();
+      expect((component as any).switchToMonthView).toHaveBeenCalled();
+    });
+  });
+
+  it('isPricesMapNotEmpty returns correct boolean', () => {
+    component.profile = { profileType: 'Tutor', prices: [ { amount: 10 } ] } as any;
+    expect(component.isPricesMapNotEmpty()).toBeTrue();
+    component.profile = { profileType: 'Tutor', prices: [] } as any;
+    expect(component.isPricesMapNotEmpty()).toBeFalse();
+    component.profile = { profileType: 'Student', prices: [ { amount: 5 } ] } as any;
+    expect(component.isPricesMapNotEmpty()).toBeFalse();
+  });
+
+  it('ngAfterViewInit logs error when calendarComponent missing', () => {
+    spyOn(console, 'error');
+    component.calendarComponent = undefined!;
+    component.ngAfterViewInit();
+    expect(console.error).toHaveBeenCalledWith('FullCalendar reference not found.');
+  });
+
+  describe('eventDidMount styling', () => {
+    let info: any;
+    let fakeEl: HTMLElement;
+
+    beforeEach(() => {
+      component.ngOnInit(); 
+      fakeEl = document.createElement('div');
+      const timeSpan = document.createElement('span');
+      timeSpan.className = 'fc-event-time';
+      fakeEl.appendChild(timeSpan);
+      info = { el: fakeEl, event: { extendedProps: { status: '' } } };
+    });
+
+    it('should color grey for BOOKED', () => {
+      info.event.extendedProps.status = 'BOOKED';
+      (component.calendarOptions.eventDidMount as any)(info);
+      expect((info.el.querySelector('.fc-event-time') as HTMLElement).style.color).toBe('grey');
+    });
+
+    it('should default color for other statuses', () => {
+      info.event.extendedProps.status = 'AVAILABLE';
+      (component.calendarOptions.eventDidMount as any)(info);
+      expect((info.el.querySelector('.fc-event-time') as HTMLElement).style.color).toBe('inherit');
+    });
   });
 });
