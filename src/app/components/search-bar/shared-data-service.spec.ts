@@ -156,6 +156,18 @@ describe('SharedDataService', () => {
     expect(results.pop()).toEqual(mockRegions);
   });
 
+  it('should show error snackbar on qualifications load failure', () => {
+    service.loadQualifications();
+    const req = httpMock.expectOne('http://localhost:8080/api/qualifications');
+    req.error(new ErrorEvent('Network error'));
+
+    expect(snackBarSpy.open).toHaveBeenCalledWith(
+      'Failed to fetch qualifications. Please refresh the page.',
+      'Close',
+      { duration: 3000 }
+    );
+  });
+
   it('selectRegion clears regionsSubject', () => {
     const results: any[][] = [];
     service.regions$.subscribe(r => results.push(r));
@@ -166,5 +178,29 @@ describe('SharedDataService', () => {
 
     service.selectRegion({});
     expect(results.pop()).toEqual([]);
+  });
+
+  it('should show error snackbar on genres load failure', () => {
+    service.loadGenres();
+    const req = httpMock.expectOne('http://localhost:8080/api/genres');
+    req.error(new ErrorEvent('Network error'));
+
+    expect(snackBarSpy.open).toHaveBeenCalledWith(
+      'Failed to fetch genres. Please refresh the page.',
+      'Close',
+      { duration: 3000 }
+    );
+  });
+
+  it('should show error snackbar on instruments load failure', () => {
+    service.loadInstruments();
+    const req = httpMock.expectOne('http://localhost:8080/api/instruments');
+    req.error(new ErrorEvent('Network error'));
+
+    expect(snackBarSpy.open).toHaveBeenCalledWith(
+      'Failed to fetch instruments. Please refresh the page.',
+      'Close',
+      { duration: 3000 }
+    );
   });
 });
