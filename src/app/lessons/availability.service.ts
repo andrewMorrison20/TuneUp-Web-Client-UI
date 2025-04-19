@@ -171,7 +171,7 @@ export class AvailabilityService {
   updateLessonStatus(lessonStatus: string, lessonId: number) {
     const authToken = AuthenticatedUser.getAuthUserToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${authToken}`);
-    const params = new HttpParams().set('lessonStatus', lessonStatus); // No need to wrap in String()
+    const params = new HttpParams().set('lessonStatus', lessonStatus);
 
     return this.http.patch(`${this.url}/lessons/updateStatus/${lessonId}`, {}, { headers, params });
   }

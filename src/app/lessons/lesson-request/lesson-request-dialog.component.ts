@@ -25,11 +25,10 @@ export class LessonRequestDialogComponent implements OnInit {
     this.lessonTypes = this.getLessonTypes();
   }
 
-  /** 🔹 Precompute Available Slots */
   private calculateAvailableSlots(): void {
     const start = new Date(this.data.startTime);
     const end = new Date(this.data.endTime);
-    const increments = [15,30, 45, 60]; // Lesson duration options in minutes
+    const increments = [15,30, 45, 60];
 
     let current = new Date(start);
 
@@ -53,7 +52,6 @@ export class LessonRequestDialogComponent implements OnInit {
     return localTime.toISOString().slice(0, -1); // Remove trailing 'Z' (UTC indicator)
   }
 
-  /** 🔹 Submit Lesson Request */
   onRequest(): void {
     const startTimeLocal = this.toLocalISOString(this.selectedSlot.startTime);
     const endTimeLocal = this.toLocalISOString(this.selectedSlot.endTime);
@@ -91,8 +89,6 @@ export class LessonRequestDialogComponent implements OnInit {
     return lessonMap[this.data.lessonType.toLowerCase()] || [];
   }
 
-
-  /** 🔹 Cancel Dialog */
   onCancel(): void {
     this.dialogRef.close();
   }
