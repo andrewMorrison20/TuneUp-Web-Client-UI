@@ -173,7 +173,7 @@ describe('ProfileComponent', () => {
     let fakeEl: HTMLElement;
 
     beforeEach(() => {
-      component.ngOnInit(); 
+      component.ngOnInit();
       fakeEl = document.createElement('div');
       const timeSpan = document.createElement('span');
       timeSpan.className = 'fc-event-time';
