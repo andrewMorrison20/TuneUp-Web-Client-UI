@@ -14,7 +14,7 @@ describe('UserDashboardComponent', () => {
     await TestBed.configureTestingModule({
       imports: [UserDashboardModule, NoopAnimationsModule],
       providers: [
-        { provide: ActivatedRoute, useValue: { snapshot: { data: {} }, queryParams: {} } } // ✅ mock
+        { provide: ActivatedRoute, useValue: { snapshot: { data: {} }, queryParams: {} } }
       ]
     }).compileComponents();
 
