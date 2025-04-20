@@ -350,7 +350,6 @@ describe('PaymentsComponent', () => {
       component.paymentForm.patchValue({ invoice: fakeFile });
       component.selectedFileName = 'foo.pdf';
       const input = document.createElement('input');
-      input.type = 'file';
       input.value = 'someFileName';
       component.removeSelectedFile(input);
       expect(component.paymentForm.value.invoice).toBeNull();
