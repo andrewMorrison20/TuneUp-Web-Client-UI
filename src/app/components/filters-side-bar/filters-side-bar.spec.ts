@@ -259,4 +259,80 @@ describe('FiltersSideBarComponent', () => {
       }
     );
   });
+
+  describe('when no filters selected and default priceRange', () => {
+    beforeEach(() => {
+      // stub out all the getters to return “empty”
+      spyOn(component, 'getSelectedInstruments').and.returnValue([]);
+      spyOn(component, 'getSelectedGenres').and.returnValue([]);
+      spyOn(component, 'getSelectedQualifications').and.returnValue([]);
+      spyOn(component, 'getSelectedLessonTypes').and.returnValue([]);
+      component.searchQuery     = '';
+      component.priceRange      = { min: 0, max: 1000 };
+      component.selectedRating  = 0;
+      component.selectedRegion  = null;
+    });
+
+    it('should navigate with all nulls and priceRange null', () => {
+      component.applyFilters();
+
+      expect(routerSpy.navigate).toHaveBeenCalledWith(
+        ['/profiles/search'],
+        {
+          queryParams: {
+            keyword:        null,
+            instruments:    null,
+            qualifications: null,
+            genres:         null,
+            lessonType:     null,
+            rating:         0,
+            regionId:       undefined,
+            priceRange:     null,
+            profileType:    null,
+            page:           0,
+            size:           8,
+            sort:           'displayName,asc'
+          }
+        }
+      );
+    });
+  });
+
+
+  describe('when some filters selected and non‑default priceRange', () => {
+    beforeEach(() => {
+      spyOn(component, 'getSelectedInstruments').and.returnValue([{ id: 1, name:'inst1' }, { id: 2,name: 'inst2' }]);
+      spyOn(component, 'getSelectedGenres').and.returnValue([{ id: 3, name: 'Genre1' }]);
+      spyOn(component, 'getSelectedQualifications').and.returnValue([4, 5]);
+      spyOn(component, 'getSelectedLessonTypes').and.returnValue(['Online']);
+      component.searchQuery     = 'piano';
+      component.priceRange      = { min: 50, max: 500 };
+      component.selectedRating  = 4;
+      component.selectedRegion  = { id: 7 } as any;
+    });
+
+    it('should navigate with arrays and explicit priceRange', () => {
+      component.applyFilters();
+
+      expect(routerSpy.navigate).toHaveBeenCalledWith(
+        ['/profiles/search'],
+        {
+          queryParams: {
+            keyword:        'piano',
+            instruments:    [1, 2],
+            qualifications: [4, 5],
+            genres:         [3],
+            lessonType:     ['Online'],
+            rating:         4,
+            regionId:       7,
+            priceRange:     [50, 500],
+            profileType:    null,
+            page:           0,
+            size:           8,
+            sort:           'displayName,asc'
+          }
+        }
+      );
+    });
+  });
 });

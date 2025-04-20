@@ -96,4 +96,42 @@ describe('LessonRequestDialogComponent', () => {
     expect(window.alert).toHaveBeenCalledWith('Failed to send request: oops');
     expect(dialogRefSpy.close).toHaveBeenCalledWith(false);
   }));
+
+  describe('onRequest()', () => {
+    it('closes dialog with true on success', fakeAsync(() => {
+      availabilitySpy.sendAvailabilityRequest.and.returnValue(of({}));
+      component.onRequest();
+      tick();
+      expect(availabilitySpy.sendAvailabilityRequest).toHaveBeenCalled();
+      expect(dialogRefSpy.close).toHaveBeenCalledWith(true);
+    }));
+
+    it('alerts and closes dialog with false on error', fakeAsync(() => {
+      const fakeErr = { error: { message: 'oops' } };
+      availabilitySpy.sendAvailabilityRequest.and.returnValue(throwError(() => fakeErr));
+      spyOn(window, 'alert');
+      component.onRequest();
+      tick();
+      expect(window.alert).toHaveBeenCalledWith('Failed to send request: oops');
+      expect(dialogRefSpy.close).toHaveBeenCalledWith(false);
+    }));
+  });
+
+  describe('getLessonTypes()', () => {
+    it('returns correct array for known types', () => {
+      component.data.lessonType = 'Online & In-Person';
+      expect(component.getLessonTypes()).toEqual(['Online', 'In Person']);
+
+      component.data.lessonType = 'online';
+      expect(component.getLessonTypes()).toEqual(['Online']);
+
+      component.data.lessonType = 'IN PERSON';
+      expect(component.getLessonTypes()).toEqual(['In Person']);
+    });
+
+    it('falls back to empty array for unknown lessonType', () => {
+      component.data.lessonType = 'Totally New Mode';
+      expect(component.getLessonTypes()).toEqual([]);
+    });
+  });
 });
