@@ -28,7 +28,7 @@ export interface Message {
   senderProfilePictureUrl:string
 }
 
-interface ConversationParticipantDto {
+export interface ConversationParticipantDto {
   id: number;
   displayName: string;
   profilePictureUrl: string | null;

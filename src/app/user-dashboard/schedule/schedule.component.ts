@@ -1,17 +1,17 @@
 import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AvailabilityService } from "../../lessons/availability.service";
+import {AvailabilityService} from "../../lessons/availability.service";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { CalendarOptions, DateSelectArg } from "@fullcalendar/core";
-import { FullCalendarComponent } from "@fullcalendar/angular";
-import { MatDialog } from "@angular/material/dialog";
-import { LessonSummary } from "../my-tuitions/tuition-summary/lesson-summary/lesson-summary.model";
-import { LessonSummaryDialogComponent } from "../my-tuitions/tuition-summary/lesson-summary/lesson-summary-dialgoue.component";
-import { AuthenticatedUser } from "../../authentication/authenticated-user.class";
+import {CalendarOptions, DateSelectArg} from "@fullcalendar/core";
+import {FullCalendarComponent} from "@fullcalendar/angular";
+import {MatDialog} from "@angular/material/dialog";
+import {LessonSummary} from "../my-tuitions/tuition-summary/lesson-summary/lesson-summary.model";
+import {
+  LessonSummaryDialogComponent
+} from "../my-tuitions/tuition-summary/lesson-summary/lesson-summary-dialgoue.component";
+import {AuthenticatedUser} from "../../authentication/authenticated-user.class";
 import {ScheduleAdjustmentDialogComponent} from "./schedule-adjustment-dialogue.component";
-import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-schedule',
@@ -54,10 +54,16 @@ export class ScheduleComponent implements OnInit {
     const end = `${endDate.getFullYear()}-${(endDate.getMonth() + 1).toString().padStart(2, '0')}-${endDate.getDate().toString().padStart(2, '0')}T23:59:59.999`;
 
     this.availabilityService.getPeriodAvailabilityForProfile(AuthenticatedUser.getAuthUserProfileId(), start, end)
-      .subscribe(response => {
-        this.availabilitySlots = response;
-        this.updateCalendarEvents();
-        this.loading = false;
+      .subscribe({
+        next: response => {
+          this.availabilitySlots = response;
+          this.updateCalendarEvents();
+          this.loading = false;
+        },
+        error: err => {
+          console.error('Failed to fetch availability:', err);
+          this.loading = false;
+        }
       });
   }
 
@@ -277,50 +283,56 @@ private isValidInput(): boolean {
 /**
  *  Generates the list of dates to block
  */
-private generateDatesToBlock(): { start: string; end: string, profileId:number }[] {
+private generateDatesToBlock(): { start: string; end: string; profileId: number }[] {
   const profileId = AuthenticatedUser.getAuthUserProfileId();
-  const startBase = new Date(this.blockBookData.startDate);
-  const endBase = new Date(this.blockBookData.endDate);
-  const startTime = this.blockBookData.allDay ? '00:00' : this.blockBookData.startTime;
-  const endTime = this.blockBookData.allDay ? '23:59' : this.blockBookData.endTime;
+  const { startDate, endDate, allDay, startTime, endTime, repeatWeekly, repeatUntil } = this.blockBookData;
 
-  let datesToBlock: { start: string; end: string, profileId:number }[] = [];
+  // canonical “HH:MM” for each slot
+  const slotStart = allDay ? '00:00' : startTime;
+  const slotEnd   = allDay ? '23:59' : endTime;
 
-  let currentDate = new Date(startBase);
-  while (currentDate <= endBase) {
-    const dateStr = currentDate.toISOString().split('T')[0];
-    datesToBlock.push({
-      start: `${dateStr}T${startTime}`,
-      end: `${dateStr}T${endTime}`,
-      profileId
-    });
-    currentDate.setDate(currentDate.getDate() + 1);
+  // build an array of just the *base* dates (YYYY‑MM‑DD) from startDate to endDate inclusive
+  const baseDates: string[] = [];
+  let cursor = new Date(startDate);
+  const final = new Date(endDate);
+  while (cursor <= final) {
+    baseDates.push(cursor.toISOString().slice(0, 10));
+    cursor.setDate(cursor.getDate() + 1);
   }
 
-  if (this.blockBookData.repeatWeekly && this.blockBookData.repeatUntil) {
-    const repeatEnd = new Date(this.blockBookData.repeatUntil);
-    let additionalWeeks: { start: string; end: string, profileId: number}[] = [];
+  // now map each base date to a slot object
+  const datesToBlock = baseDates.map(d =>
+    ({ start: `${d}T${slotStart}`, end: `${d}T${slotEnd}`, profileId })
+  );
 
-    datesToBlock.forEach((slot) => {
-      let repeatDate = new Date(slot.start);
-      repeatDate.setDate(repeatDate.getDate() + 7);
+  // if we need weekly repeats, iterate the *base* dates and append one 7‑day jump at a time
+  if (repeatWeekly && repeatUntil) {
+    const repeatEnd = new Date(repeatUntil);
+    for (const d of baseDates) {
+      let next = new Date(d);
+      next.setDate(next.getDate() + 7);
 
-      while (repeatDate <= repeatEnd) {
-        const repeatStr = repeatDate.toISOString().split('T')[0];
-        additionalWeeks.push({
-          start: `${repeatStr}T${startTime}`,
-          end: `${repeatStr}T${endTime}`,
-          profileId
-        });
-        repeatDate.setDate(repeatDate.getDate() + 7);
+      // keep jumping by 7 days as long as we’re ≤ repeatUntil
+      while (next <= repeatEnd) {
+        const iso = next.toISOString().slice(0, 10);
+        datesToBlock.push({ start: `${iso}T${slotStart}`, end: `${iso}T${slotEnd}`, profileId });
+        next.setDate(next.getDate() + 7);
       }
-    });
-
-    datesToBlock = [...datesToBlock, ...additionalWeeks];
+    }
   }
+  const seen = new Set<string>();
 
-  return datesToBlock;
+  return datesToBlock.filter(slot => {
+    const key = `${slot.start}|${slot.end}|${slot.profileId}`;
+    if (seen.has(key)) {
+      return false;
+    }
+    seen.add(key);
+    return true;
+  });
+
 }
+
 
   /**
    * Batch create the availabilility slots to prevent inconsistent state / partial creates

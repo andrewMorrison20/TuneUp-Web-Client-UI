@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { AvailabilityService } from './availability.service';
 import { AuthenticatedUser } from '../authentication/authenticated-user.class';
+import {HttpRequest} from "@angular/common/http";
 
 
 describe('AvailabilityService', () => {
@@ -190,5 +191,51 @@ describe('AvailabilityService', () => {
     expect(req.request.headers.get('Authorization')).toBe('Bearer fake-token');
     expect(req.request.params.get('lessonStatus')).toBe('foo');
     req.flush({});
+  });
+
+  it('should getLessonRequestsByIds with default page & size', () => {
+    service.getLessonRequestsByIds(10, 20).subscribe();
+    const req = httpMock.expectOne((r: HttpRequest<any>) =>
+      r.method === 'GET' &&
+      r.url === 'http://localhost:8080/api/lessonRequest' &&
+      r.params.get('studentId') === '10' &&
+      r.params.get('tutorId') === '20' &&
+      r.params.get('page') === '0' &&
+      r.params.get('size') === '10'
+    );
+    expect(req.request.headers.get('Authorization')).toBe('Bearer fake-token');
+    req.flush([]);
+  });
+
+  it('should fetchRequestProfiles with default page & size', () => {
+    service.fetchRequestProfiles(99).subscribe();
+    const req = httpMock.expectOne((r: HttpRequest<any>) =>
+      r.method === 'GET' &&
+      r.url === 'http://localhost:8080/api/lessonRequest/students/99' &&
+      r.params.get('page') === '0' &&
+      r.params.get('size') === '10'
+    );
+    req.flush([]);
+  });
+
+  it('should updateLessonRequestStatus default autoDeclineConflicts=false', () => {
+    service.updateLessonRequestStatus(7, 'CONFIRMED').subscribe();
+    const req = httpMock.expectOne('http://localhost:8080/api/lessonRequest/status/7');
+    expect(req.request.method).toBe('PATCH');
+    expect(req.request.body).toEqual({ status: 'CONFIRMED', autoDeclineConflicts: false });
+    expect(req.request.headers.get('Authorization')).toBe('Bearer fake-token');
+    req.flush({});
+  });
+
+  it('should fetchTuitions with default active, page & size', () => {
+    service.fetchTuitions(55).subscribe();
+    const req = httpMock.expectOne((r: HttpRequest<any>) =>
+      r.method === 'GET' &&
+      r.url === 'http://localhost:8080/api/tuitions/tuitionsByProfile/55' &&
+      r.params.get('active') === 'true' &&
+      r.params.get('page') === '0' &&
+      r.params.get('size') === '10'
+    );
+    req.flush([]);
   });
 });
