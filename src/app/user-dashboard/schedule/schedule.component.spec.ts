@@ -108,19 +108,37 @@ describe('ScheduleComponent', () => {
     });
   });
 
-  describe('view switching', () => {
-    it('onDateClick → timeGridDay + flag', () => {
+  describe('onDateClick & switchToMonthView', () => {
+    it('switches to timeGridDay and sets flag', () => {
+
+      const changeSpy = jasmine.createSpy('changeView');
+
+      component.calendarComponent = ({
+        getApi: () => ({ changeView: changeSpy } as any)
+      } as any) as FullCalendarComponent;
+      component.isTimeGridView = false;
       component.onDateClick({ dateStr: '2025-04-05' });
-      expect(fakeApi.changeView).toHaveBeenCalledWith('timeGridDay', '2025-04-05');
+      expect(changeSpy).toHaveBeenCalledWith('timeGridDay', '2025-04-05');
       expect(component.isTimeGridView).toBeTrue();
     });
-    it('switchToMonthView → dayGridMonth + clear flag', () => {
+
+    it('switchToMonthView flips flag back', () => {
+      // stub again, now for the month view switch
+      const changeSpy = jasmine.createSpy('changeView');
+      component.calendarComponent = ({
+        getApi: () => ({ changeView: changeSpy } as any)
+      } as any) as FullCalendarComponent;
       component.isTimeGridView = true;
+
+      // Act
       component.switchToMonthView();
-      expect(fakeApi.changeView).toHaveBeenCalledWith('dayGridMonth');
+
+      // Assert
+      expect(changeSpy).toHaveBeenCalledWith('dayGridMonth');
       expect(component.isTimeGridView).toBeFalse();
     });
   });
+
 
   it('fetchAllAvailability() success → slots + loading=false', fakeAsync(() => {
     const fakeSlots = [{ id:1, startTime:'a', endTime:'b', status:'AVAILABLE' }];
