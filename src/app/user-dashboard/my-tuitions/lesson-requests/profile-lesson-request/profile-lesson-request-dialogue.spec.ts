@@ -93,35 +93,58 @@ describe('ProfileLessonRequestsDialogComponent', () => {
   });
 
   describe('confirmRequest', () => {
+    let consoleLogSpy: jasmine.Spy;
+    let consoleErrorSpy: jasmine.Spy;
+    let alertSpy: jasmine.Spy;
+    let fetchSpy: jasmine.Spy;
+
+    beforeEach(() => {
+      consoleLogSpy   = spyOn(console, 'log');
+      consoleErrorSpy = spyOn(console, 'error');
+      alertSpy        = spyOn(window, 'alert');
+
+      fetchSpy = spyOn(component, 'fetchLessonRequests');
+
+      component.autoDeclineConflicts = false;
+    });
+
     it('confirms request and refreshes on success', fakeAsync(() => {
-      availabilityServiceSpy.updateLessonRequestStatus.and.returnValue(of(null));
-      spyOn(console, 'log');
-      spyOn(component, 'fetchLessonRequests');
+      availabilityServiceSpy
+        .updateLessonRequestStatus
+        .and.returnValue(of(null));
 
       component.confirmRequest(123);
-      expect(console.log).toHaveBeenCalledWith('Confirming request: 123');
-      expect(availabilityServiceSpy.updateLessonRequestStatus)
-        .toHaveBeenCalledWith(123, 'CONFIRMED', component.autoDeclineConflicts);
+
+      expect(consoleLogSpy).toHaveBeenCalledWith('Confirming request: 123');
+      expect(
+        availabilityServiceSpy.updateLessonRequestStatus
+      ).toHaveBeenCalledWith(123, 'CONFIRMED', false);
 
       tick();
-      expect(console.log).toHaveBeenCalledWith('Request 123 confirmed');
-      expect(component.fetchLessonRequests).toHaveBeenCalled();
+
+      expect(consoleLogSpy).toHaveBeenCalledWith('Request 123 confirmed');
+      expect(fetchSpy).toHaveBeenCalled();
     }));
 
     it('alerts and logs error on failure', fakeAsync(() => {
       const errObj = { error: { message: 'Oops' } };
-      availabilityServiceSpy.updateLessonRequestStatus.and.returnValue(throwError(() => errObj));
-      spyOn(window, 'alert');
-      spyOn(console, 'error');
-      spyOn(console, 'log');
+      availabilityServiceSpy
+        .updateLessonRequestStatus
+        .and.returnValue(throwError(() => errObj));
 
       component.confirmRequest(456);
-      expect(console.log).toHaveBeenCalledWith('Confirming request: 456');
+      expect(consoleLogSpy).toHaveBeenCalledWith('Confirming request: 456');
+
       tick();
-      expect(window.alert).toHaveBeenCalledWith('Failed to send request: Oops');
-      expect(console.error).toHaveBeenCalledWith('Error confirming request 456:', errObj);
+
+      expect(alertSpy).toHaveBeenCalledWith('Failed to send request: Oops');
+      expect(consoleErrorSpy)
+        .toHaveBeenCalledWith('Error confirming request 456:', errObj);
+
+      expect(fetchSpy).not.toHaveBeenCalled();
     }));
   });
+
 
   describe('denyRequest', () => {
     it('denies request and refreshes on success', fakeAsync(() => {
