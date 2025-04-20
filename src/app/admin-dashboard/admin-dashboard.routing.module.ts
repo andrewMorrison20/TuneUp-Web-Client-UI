@@ -1,15 +1,10 @@
 import {RouterModule, Routes} from "@angular/router";
-import {UserDashboardComponent} from "../user-dashboard/user-dashboard.component";
-import {UpdateProfileComponent} from "../user-dashboard/update-profile/update-profile.component";
-import {MyTuitionsComponent} from "../user-dashboard/my-tuitions/my-tuitions.component";
-import {StudyHubComponent} from "../user-dashboard/study-hub/study-hub.component";
-import {authGuard} from "../authentication/guards/auth-guard";
 import {NgModule} from "@angular/core";
 import {AdminDashboardComponent} from "./admin-dashboard.component";
 import {UsersComponent} from "./users/users.component";
 import {adminGuard} from "../authentication/guards/admin-guard";
 import {SearchCriteriaComponent} from "./search-criteria/search-criteria.component";
-import {ChatsComponent} from "../user-dashboard/chats/chats.component";
+
 
 const routes: Routes = [
   {
