@@ -11,13 +11,20 @@ import { DeleteConfirmationDialog } from './DeleteConfirmationDialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from '../../shared/shared.module';
 
+
 describe('PaymentsComponent', () => {
+
   let component: PaymentsComponent;
   let fixture: ComponentFixture<PaymentsComponent>;
   let mockDialog: jasmine.SpyObj<MatDialog>;
   let mockSnackBar: jasmine.SpyObj<MatSnackBar>;
   let mockTuitionsService: jasmine.SpyObj<TuitionsService>;
   let mockPaymentsService: jasmine.SpyObj<PaymentsService>;
+
+  beforeAll(() => {
+    // Intercept every call to reloadPage on ALL instances:
+    spyOn(PaymentsComponent.prototype, 'reloadPage').and.callFake(() => {});
+  });
 
   beforeEach(async () => {
     mockDialog = jasmine.createSpyObj('MatDialog', ['open']);
@@ -313,5 +320,43 @@ describe('PaymentsComponent', () => {
     spyOn(component, 'deletePayments');
     component.confirmDeletePayments();
     expect(mockDialog.open).toHaveBeenCalledWith(DeleteConfirmationDialog, jasmine.any(Object));
+  });
+
+  describe('markAsPaid', () => {
+    it('should do nothing when no payments selected', () => {
+      component.selectedPayments = [];
+      mockPaymentsService.markPaymentsAsPaid.and.throwError('should not call');
+      component.markAsPaid();
+      expect(mockPaymentsService.markPaymentsAsPaid).not.toHaveBeenCalled();
+    });
+
+    it('should call service and then fetchPayments when payments selected', fakeAsync(() => {
+      spyOn(component, 'fetchPayments');
+      component.selectedPayments = [
+        { id: 42, lessonDate: '', tuitionId: 0, amount: '', dueDate: '', lessonId: 0 } as any,
+        { id: 99, lessonDate: '', tuitionId: 0, amount: '', dueDate: '', lessonId: 0 } as any,
+      ];
+      mockPaymentsService.markPaymentsAsPaid.and.returnValue(of(null));
+      component.markAsPaid();
+      tick();
+      expect(mockPaymentsService.markPaymentsAsPaid).toHaveBeenCalledWith([42, 99]);
+      expect(component.fetchPayments).toHaveBeenCalled();
+    }));
+  });
+
+  describe('removeSelectedFile', () => {
+    it('should clear invoice control, selectedFileName and reset the input element', () => {
+      const fakeFile = new File([''], 'foo.pdf', { type: 'application/pdf' });
+      component.paymentForm.patchValue({ invoice: fakeFile });
+      component.selectedFileName = 'foo.pdf';
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.value = 'someFileName';
+      component.removeSelectedFile(input);
+      expect(component.paymentForm.value.invoice).toBeNull();
+      expect(component.paymentForm.get('invoice')!.valid).toBeTrue();
+      expect(component.selectedFileName).toBeNull();
+      expect(input.value).toBe('');
+    });
   });
 });

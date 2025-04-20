@@ -202,12 +202,16 @@ export class PaymentsComponent implements OnInit {
             this.fetchPayments();
             this.snackBar.open('Payment successfully created!', 'OK', {duration: 3000});
             setTimeout(() => {
-              window.location.reload();
+              this.reloadPage();
             }, 1000)
           },
           error: (err) => console.error('Error creating payment:', err)
         });
     }
+  }
+
+  reloadPage(): void {
+    window.location.reload();
   }
 
   toggleRow(payment: Payment): void {
