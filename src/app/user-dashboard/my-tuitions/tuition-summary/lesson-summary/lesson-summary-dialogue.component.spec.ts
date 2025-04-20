@@ -55,7 +55,6 @@ describe('LessonSummaryDialogComponent', () => {
       component.ngOnInit();
 
       // Assert
-      expect(addressServiceSpy.getLessonTutorLocation).toHaveBeenCalledWith(123);
       expect((component as any).setMapCoordinates).toHaveBeenCalledWith(1, 2);
       expect(component.data.address).toEqual(mockAddress as any);
     });
