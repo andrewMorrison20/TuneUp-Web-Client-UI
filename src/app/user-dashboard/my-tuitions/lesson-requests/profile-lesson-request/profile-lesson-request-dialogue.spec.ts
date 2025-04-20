@@ -102,9 +102,7 @@ describe('ProfileLessonRequestsDialogComponent', () => {
       consoleLogSpy   = spyOn(console, 'log');
       consoleErrorSpy = spyOn(console, 'error');
       alertSpy        = spyOn(window, 'alert');
-
-      fetchSpy = spyOn(component, 'fetchLessonRequests');
-
+      fetchSpy        = spyOn(component, 'fetchLessonRequests');
       component.autoDeclineConflicts = false;
     });
 
@@ -140,7 +138,22 @@ describe('ProfileLessonRequestsDialogComponent', () => {
       expect(alertSpy).toHaveBeenCalledWith('Failed to send request: Oops');
       expect(consoleErrorSpy)
         .toHaveBeenCalledWith('Error confirming request 456:', errObj);
+      expect(fetchSpy).not.toHaveBeenCalled();
+    }));
 
+    it('alerts fallback message when error.error.message is missing', fakeAsync(() => {
+      const bareError = {};
+      availabilityServiceSpy
+        .updateLessonRequestStatus
+        .and.returnValue(throwError(() => bareError));
+
+      component.confirmRequest(789);
+      tick();
+
+      expect(alertSpy)
+        .toHaveBeenCalledWith('Failed to send request: Please try again.');
+      expect(consoleErrorSpy)
+        .toHaveBeenCalledWith('Error confirming request 789:', bareError);
       expect(fetchSpy).not.toHaveBeenCalled();
     }));
   });
