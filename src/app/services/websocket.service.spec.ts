@@ -125,27 +125,23 @@ describe('WebsocketService', () => {
     });
   });
 
-  it('should call onConnect and emit true', () => {
+  it('should call onConnect and emit true', (done) => {
     spyOn(console, 'log');
-    const mockClient: any = {
-      activate: jasmine.createSpy(),
-      onConnect: null,
-      onStompError: null,
-      onWebSocketClose: null,
-      debug: null
-    };
-
-    spyOn<any>(Client.prototype, 'constructor').and.callFake(() => mockClient);
-
     const service = new WebsocketService();
-    (service as any).stompClient.onConnect();
+    let seen = 0;
 
-    service['connected$'].subscribe((val) => {
-      expect(val).toBeTrue();
+    service['connected$'].subscribe((val: boolean) => {
+      seen++;
+      if (seen === 2) {               // the second emission is the 'true'
+        expect(val).toBeTrue();
+        done();
+      }
     });
+
+    (service as any).stompClient.onConnect();
     expect(console.log).toHaveBeenCalledWith('Connected to WebSocket');
   });
-
+  
   it('should handle stomp error', () => {
     spyOn(console, 'error');
     const service = new WebsocketService();
