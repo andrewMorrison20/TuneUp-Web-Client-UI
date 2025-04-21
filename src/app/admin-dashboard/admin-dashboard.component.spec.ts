@@ -1,5 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AdminDashboardComponent } from './admin-dashboard.component';
+import {SharedModule} from "../shared/shared.module";
+import {NoopAnimationsModule} from "@angular/platform-browser/animations";
+import {AdminDashboardModule} from "./admin-dashboard.module";
+import {RouterTestingModule} from "@angular/router/testing";
 
 describe('AdminDashboardComponent', () => {
   let component: AdminDashboardComponent;
@@ -7,7 +11,7 @@ describe('AdminDashboardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AdminDashboardComponent]
+      imports:[SharedModule, NoopAnimationsModule,AdminDashboardModule, RouterTestingModule]
     }).compileComponents();
 
     fixture = TestBed.createComponent(AdminDashboardComponent);
