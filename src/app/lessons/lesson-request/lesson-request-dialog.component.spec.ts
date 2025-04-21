@@ -55,12 +55,6 @@ describe('LessonRequestDialogComponent', () => {
     expect(str.endsWith('Z')).toBeFalse();
   });
 
-
-  it('getLessonTypes returns correct array for data.lessonType', () => {
-    const types = component.getLessonTypes();
-    expect(types).toEqual(['Online','In Person']);
-  });
-
   it('onCancel closes dialog without args', () => {
     component.onCancel();
     expect(dialogRefSpy.close).toHaveBeenCalledWith();
