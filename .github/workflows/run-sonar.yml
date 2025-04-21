@@ -24,13 +24,12 @@ jobs:
       - name: Install npm packages
         run: npm ci
 
-      - name: Run tests with coverage
-        run: |
-          ng test \
-            --watch=false \
-            --browsers=ChromeHeadless \
-            --code-coverage \
-            --disable-sandbox
+      - name: Run tests with coverage (headless Chrome)
+        run: npx ng test \
+          --watch=false \
+          --browsers=ChromeHeadlessNoSandbox \
+          --code-coverage \
+          --disable-sandbox
 
       - name: Verify coverage output
         run: ls -R coverage
