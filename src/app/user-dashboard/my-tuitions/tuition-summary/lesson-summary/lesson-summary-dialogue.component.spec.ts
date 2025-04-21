@@ -8,6 +8,17 @@ import { LessonSummary } from './lesson-summary.model';
 import {LessonSummaryDialogComponent} from "./lesson-summary-dialgoue.component";
 import {SharedModule} from "../../../../shared/shared.module";
 
+const mockAddressDto = {
+  id: 1,
+  postcode: 'N1 1AA',
+  city: 'London',
+  country: 'UK',
+  addressLine1: '1 Test St',
+  addressLine2: '',
+  latitude: 1,
+  longitude: 2
+} as any;
+
 describe('LessonSummaryDialogComponent', () => {
   let component: LessonSummaryDialogComponent;
   let fixture: ComponentFixture<LessonSummaryDialogComponent>;
@@ -17,7 +28,6 @@ describe('LessonSummaryDialogComponent', () => {
   let dialogRefSpy: jasmine.SpyObj<MatDialogRef<LessonSummaryDialogComponent>>;
 
   const mockLesson: LessonSummary = { id: 99, lessonType: 'In Person', tuitionId: 123 } as any;
-  const mockAddress = { latitude: 1, longitude: 2 };
 
   beforeEach(async () => {
     addressServiceSpy = jasmine.createSpyObj('AddressService', ['getLessonTutorLocation']);
@@ -46,39 +56,40 @@ describe('LessonSummaryDialogComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('fetches lesson location for in-person lessons', () => {
-      // Arrange
-      addressServiceSpy.getLessonTutorLocation.and.returnValue(of(mockAddress as any));
-      spyOn<any>(component, 'setMapCoordinates');
+    it('fetches lesson location for in-person lessons', fakeAsync(() => {
 
-      // Act
-      component.ngOnInit();
-
-      // Assert
-      expect((component as any).setMapCoordinates).toHaveBeenCalledWith(1, 2);
-      expect(component.data.address).toEqual(mockAddress as any);
-    });
-
-    it('handles fetch location error', fakeAsync(() => {
-      // Arrange
-      const err = new Error('fail');
-      addressServiceSpy.getLessonTutorLocation.and.returnValue(throwError(() => err));
-      const alertSpy   = spyOn(window, 'alert');
-      const consoleSpy = spyOn(console, 'error');
+      addressServiceSpy.getLessonTutorLocation.and.returnValue(of(mockAddressDto));
+      const setMapSpy = spyOn<any>(component, 'setMapCoordinates');
 
       component.ngOnInit();
       tick();
 
-      expect(consoleSpy).toHaveBeenCalledWith('Error fetching lesson location:', err);
-      expect(alertSpy).toHaveBeenCalledWith(
-        'Error retrieving lesson location. Refresh the page.'
-      );
+      expect(setMapSpy).toHaveBeenCalledWith(1, 2);
+      expect(component.data.address).toEqual(mockAddressDto);
+    }));
+
+    it('handles fetch location error', fakeAsync(() => {
+
+      component.data.lesson.lessonType = 'In Person';
+      component.data.address = null;
+
+      const err = new Error('fail');
+      addressServiceSpy.getLessonTutorLocation.and.returnValue(throwError(() => err));
+      const alertSpy   = spyOn(window, 'alert');
+      const consoleSpy = spyOn(console, 'error');
+      component.ngOnInit();
+      tick();
+
+      expect(consoleSpy)
+        .toHaveBeenCalledWith('Error fetching lesson location:', err);
+      expect(alertSpy)
+        .toHaveBeenCalledWith('Error retrieving lesson location. Refresh the page.');
     }));
 
 
     it('sets map coordinates for non in-person when address present', () => {
       // Override data as home lesson
-      component.data.address = mockAddress as any;
+      component.data.address = mockAddressDto as any;
       component.data.lesson.lessonType = 'Online';
       spyOn<any>(component, 'setMapCoordinates');
 
@@ -183,33 +194,29 @@ describe('LessonSummaryDialogComponent', () => {
 
   describe('fetchLessonLocation', () => {
     it('should set coordinates and update data.address when in-person address is valid', fakeAsync(() => {
-      // Arrange: simulate address response with lat/lng
+
       const address = { latitude: 10, longitude: 20 } as any;
       addressServiceSpy.getLessonTutorLocation.and.returnValue(of(address));
       spyOn<any>(component, 'setMapCoordinates');
 
-      // Act
       (component as any).fetchLessonLocation(123);
       tick();
 
-      // Assert
       expect(addressServiceSpy.getLessonTutorLocation).toHaveBeenCalledWith(123);
       expect((component as any).setMapCoordinates).toHaveBeenCalledWith(10, 20);
       expect(component.data.address).toBe(address);
     }));
 
     it('should log error and show alert when address fetch fails', fakeAsync(() => {
-      // Arrange: simulate error
+
       const err = new Error('network');
       addressServiceSpy.getLessonTutorLocation.and.returnValue(throwError(() => err));
       const consoleSpy = spyOn(console, 'error');
       const alertSpy = spyOn<any>(component, 'showAlert');
 
-      // Act
       (component as any).fetchLessonLocation(456);
       tick();
 
-      // Assert
       expect(consoleSpy).toHaveBeenCalledWith('Error fetching lesson location:', err);
       expect(alertSpy).toHaveBeenCalledWith('Error retrieving lesson location. Refresh the page.');
     }));
