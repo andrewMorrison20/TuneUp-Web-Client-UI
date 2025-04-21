@@ -1,19 +1,44 @@
-name: run-sonar.yml
+name: run-sonar
+
 on:
   push:
     branches:
       - master
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
   sonarqube:
     name: SonarQube
     runs-on: ubuntu-latest
     steps:
+      # 1. Check out your code (full history for Sonar’s blame data)
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0
+
+      # 2. Set up Node.js (match your project’s version)
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # 3. Install dependencies
+      - name: Install npm packages
+        run: npm ci
+
+      # 4. Run Angular tests and generate an LCOV report
+      - name: Run tests with coverage
+        run: npm test -- --no-watch --code-coverage
+
+      # 5. (Optional) List coverage folder to sanity‑check path
+      - name: Verify coverage output
+        run: ls -R coverage
+
+      # 6. Run SonarScanner (it will pick up your sonar-project.properties)
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
