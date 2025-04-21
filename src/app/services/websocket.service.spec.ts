@@ -141,7 +141,7 @@ describe('WebsocketService', () => {
     (service as any).stompClient.onConnect();
     expect(console.log).toHaveBeenCalledWith('Connected to WebSocket');
   });
-  
+
   it('should handle stomp error', () => {
     spyOn(console, 'error');
     const service = new WebsocketService();
