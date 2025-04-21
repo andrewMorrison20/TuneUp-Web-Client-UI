@@ -29,8 +29,9 @@ jobs:
       - name: Run tests with coverage
         run: |
           npx ng test \
+            --karma-config karma.conf.js \
             --watch=false \
-            --browsers ChromeHeadlessNoSandbox \
+            --browsers ChromeHeadless \
             --code-coverage
 
       - name: Verify coverage output
