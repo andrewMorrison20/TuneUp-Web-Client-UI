@@ -31,7 +31,9 @@ describe('Quiz Flow: From start to search results (E2E)', () => {
     cy.contains('Review your choices before searching for tutors.').should('be.visible');
     cy.contains('button', 'Search Matching Profiles').click();
 
-    cy.contains('Your Top Matches').should('exist');
+    cy.get('mat-spinner', { timeout: 10000 }).should('not.exist');
+
+    cy.contains('Your Top Matches', { timeout: 10000 }).should('be.visible');
     cy.get('app-profile-card').should('have.length.at.least', 1);
   });
 });
