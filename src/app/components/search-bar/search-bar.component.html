@@ -3,8 +3,8 @@
   <mat-form-field appearance="outline" class="dropdown">
     <mat-label>Instrument</mat-label>
     <mat-icon matPrefix>music_note</mat-icon>
-    <mat-select [(value)]="selectedInstrumentId" (selectionChange)="onInstrumentChange()">
-      <mat-option [value]="null">None</mat-option>
+    <mat-select [(value)]="selectedInstrumentId" (selectionChange)="onInstrumentChange()" data-cy="instrument-select">
+    <mat-option [value]="null">None</mat-option>
       <mat-option *ngFor="let instrument of instruments" [value]="instrument.id">
         {{ instrument.name }}
       </mat-option>
