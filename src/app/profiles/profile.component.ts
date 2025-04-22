@@ -41,6 +41,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.initializeCalendar();
+    setTimeout(() => this.handleResponsiveCalendarView(), 0);
     this.route.paramMap.subscribe(params => {
       const profileId = params.get('id');
       if (profileId) {
@@ -51,9 +52,14 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (!this.calendarComponent) {
-      console.error('FullCalendar reference not found.');
-    }
+    setTimeout(() => {
+      const calendarApi = this.calendarComponent?.getApi?.();
+      if (calendarApi) {
+        this.handleResponsiveCalendarView();
+      } else {
+        console.warn('Calendar API not available yet');
+      }
+    }, 100);
   }
 
   private initializeCalendar(): void {
@@ -269,14 +275,15 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
   @HostListener('window:resize', ['$event'])
   onResize() {
-    if (this.calendarComponent) {
-      if (window.innerWidth < 768 && !this.isTimeGridView) {
-        const today = new Date().toISOString().split('T')[0];
-        this.onDateClick({ dateStr: today });
-      } else if (window.innerWidth >= 768 && this.isTimeGridView) {
-        this.switchToMonthView();
-      }
-    }
+    this.handleResponsiveCalendarView();
   }
 
+  private handleResponsiveCalendarView(): void {
+    if (window.innerWidth < 768 && !this.isTimeGridView) {
+      const today = new Date().toISOString().split('T')[0];
+      this.onDateClick({ dateStr: today });
+    } else if (window.innerWidth >= 768 && this.isTimeGridView) {
+      this.switchToMonthView();
+    }
+  }
 }
