@@ -59,7 +59,7 @@
       </mat-card-content>
 
       <mat-card-actions class="button-actions">
-        <button mat-raised-button color="primary" (click)="onLogin()" [disabled]="!loginForm.valid">
+        <button mat-raised-button color="primary" data-cy="login-button" (click)="onLogin()" [disabled]="!loginForm.valid">
           Login
         </button>
       </mat-card-actions>
