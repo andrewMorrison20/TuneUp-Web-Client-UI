@@ -150,5 +150,23 @@
 .chat-display {
   flex: 1;
 }
+@media (max-width: 768px) {
 
+  .conversation-list {
+    width: 100% !important;
+    padding: 0.5rem !important;
+    box-sizing: border-box;
+  }
+
+  .conversation-list .conversation-card mat-card {
+    width: 100% !important;
+    max-width: 100%;
+    margin: 0.5rem 0;
+    box-sizing: border-box;
+  }
+
+  .chat-split-container {
+    flex-direction: column;
+  }
+}
 

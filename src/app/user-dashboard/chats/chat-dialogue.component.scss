@@ -97,6 +97,29 @@ h2 {
   overflow-y: auto;
 }
 
+@media (max-width: 600px) {
+
+  .mat-dialog-container {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+  }
+
+  mat-dialog-content.chat-panel {
+    display: block;
+    box-sizing: border-box;
+    height: calc(100vh - 120px);
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    padding: 0 16px;
+  }
+}
 
 
 

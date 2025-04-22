@@ -2,7 +2,7 @@
   <!-- Sidebar -->
   <mat-sidenav
     #sidenav
-    mode="side"
+    [mode]="!isDesktopView ? 'over' : 'side'"
     class="sidebar"
     [opened]="isDesktopView"
     [disableClose]="isDesktopView"

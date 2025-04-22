@@ -23,7 +23,7 @@ import {Observable, Subscription} from "rxjs";
   templateUrl: './chat-dialogue.component.html',
   styleUrls: ['./chat-dialogue.component.scss']
 })
-export class ChatDialogueComponent implements OnInit, AfterViewChecked {
+export class ChatDialogueComponent implements OnInit {
   messages: any[] = [];
   newMessage = '';
   totalMessages = 0;
@@ -77,12 +77,6 @@ export class ChatDialogueComponent implements OnInit, AfterViewChecked {
   }
 
 
-  ngAfterViewChecked(): void {
-    // Only scroll to bottom if autoScroll is true.
-    if (this.autoScroll) {
-      this.scrollToBottom();
-    }
-  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['conversation'] && !changes['conversation'].firstChange) {
@@ -104,6 +98,7 @@ export class ChatDialogueComponent implements OnInit, AfterViewChecked {
   private initializeConversation(conversationId: number): void {
     this.fetchMessages(conversationId).subscribe();
     this.subscribeToMessages(conversationId);
+    setTimeout(() => this.scrollToBottom(), 0);
   }
 
   private isUserNearBottom(): boolean {
