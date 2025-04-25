@@ -1,5 +1,10 @@
-declare namespace Cypress {
-  interface Chainable<Subject = any> {
-    loginViaApi(): Chainable<void>;
+import 'cypress-axe';
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      loginViaApi(): Chainable<void>;
+      checkAccessibility(): Chainable<void>;
+    }
   }
 }

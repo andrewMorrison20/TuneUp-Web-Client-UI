@@ -110,18 +110,6 @@ export class LoginComponent implements OnInit {
     console.error('Login error:', error);
   }
 
-  loginWithGoogle() {
-    console.log('Login with Google');
-  }
-
-  loginWithFacebook() {
-    console.log('Login with Facebook');
-  }
-
-  loginWithOutlook() {
-    console.log('Login with Outlook');
-  }
-
 
   requestVerificationLink() {
     // Get the email from the login form
