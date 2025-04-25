@@ -10,7 +10,7 @@
       <ng-container *ngIf="!isLoading && conversations.length > 0; else noConversations">
         <h1><strong> All Conversations</strong> </h1>
         <div class="new-conversation">
-          <button mat-raised-button color="accent" (click)="openNewConversationDialog()">
+          <button mat-raised-button color="accent" class="chat-button" (click)="openNewConversationDialog()">
             <mat-icon>chat</mat-icon>
             Start New Conversation
           </button>
@@ -27,7 +27,7 @@
               <div class="conversation-item">
                 <img
                   [src]="participant.profilePictureUrl || 'https://storage.googleapis.com/download/storage/v1/b/tuneup_profile_images/o/79a88d6b-8196-49cf-9cde-d6d4d3bf10fd-defaultProfilePicture.jpg?generation=1735034744997677&alt=media'"
-                  class="profile-picture">
+                  class="profile-picture" [alt]="participant?.displayName + ' profile picture'">
                 <div class="conversation-details">
                   <h3 class="participant-name">{{ participant.displayName }}</h3>
                   <p class="last-message">

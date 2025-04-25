@@ -4,10 +4,20 @@ import 'cypress-axe';
 describe('Accessibility smoke checks', () => {
   const pages = [
     '/login',
+    '/about',
+    '/contact-us',
+    '/services',
     '/home',
     '/profiles/search',
     '/user-dashboard',
     '/profiles/2',
+    '/signup',
+    '/profiles/search',
+    '/user-dashboard',
+    '/user-dashboard/chats',
+    '/user-dashboard/payments',
+    '/user-dashboard/update-profile',
+    '/user-dashboard/settings'
   ];
 
   pages.forEach((path) => {

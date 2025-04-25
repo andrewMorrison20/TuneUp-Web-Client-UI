@@ -10,6 +10,15 @@
   gap: 20px;
 }
 
+.disclaimer-card a[href$="terms-and-conditions"] {
+  color: #090606;          /* Indigo-700 for ≥6.8:1 contrast on white */
+  text-decoration: underline;
+}
+
+.disclaimer-card a[href$="terms-and-conditions"]:hover {
+  text-decoration: underline;
+}
+
 .create-payment-container {
   display: flex;
   flex-direction: row;
