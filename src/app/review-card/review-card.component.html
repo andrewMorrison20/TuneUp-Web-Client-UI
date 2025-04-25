@@ -1,7 +1,11 @@
 <div class="review-card">
-  <!-- Navigation Arrows -->
-  <button class="arrow left-arrow" (click)="prevReview()">
-    <mat-icon>chevron_left</mat-icon>
+  <button
+    class="arrow left-arrow"
+    (click)="prevReview()"
+    aria-label="Previous review"
+  >
+    <mat-icon aria-hidden="true">chevron_left</mat-icon>
+    <span class="sr-only">Previous</span>
   </button>
 
   <!-- Review Content -->
@@ -32,8 +36,13 @@
     </a>
   </div>
 
-  <!-- Navigation Arrows -->
-  <button class="arrow right-arrow" (click)="nextReview()">
-    <mat-icon>chevron_right</mat-icon>
+  <button
+    class="arrow right-arrow"
+    (click)="nextReview()"
+    aria-label="Next review"
+  >
+    <mat-icon aria-hidden="true">chevron_right</mat-icon>
+    <span class="sr-only">Next</span>
   </button>
+
 </div>

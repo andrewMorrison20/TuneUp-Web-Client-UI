@@ -10,33 +10,45 @@
           <mat-error>{{ errorMessage }}</mat-error>
         </div>
 
+        <!-- Email -->
         <mat-form-field appearance="outline" class="full-width">
           <mat-icon matPrefix>person</mat-icon>
-          <mat-label>Email</mat-label>
-          <input matInput type="email" formControlName="email" required />
+          <mat-label id="login-email-label">Email</mat-label>
+          <input
+            matInput
+            id="login-email"
+            type="email"
+            formControlName="email"
+            required
+            aria-labelledby="login-email-label"
+          />
           <mat-error *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
             Please enter a valid email
           </mat-error>
         </mat-form-field>
-        <br>
 
+        <!-- Unverified notice -->
         <div *ngIf="errorMessage === 'Email is not verified. Please verify your email before logging in.'">
-          <a href="#"
-             class="verification-link"
-             (click)="requestVerificationLink(); $event.preventDefault()">
+          <a
+            href="#"
+            class="verification-link"
+            (click)="requestVerificationLink(); $event.preventDefault()"
+          >
             (request a new verification link)
           </a>
         </div>
-        <br>
 
+        <!-- Password -->
         <mat-form-field appearance="outline" class="full-width">
           <mat-icon matPrefix>lock</mat-icon>
-          <mat-label>Password</mat-label>
+          <mat-label id="login-password-label">Password</mat-label>
           <input
             matInput
+            id="login-password"
             [type]="hidePassword ? 'password' : 'text'"
             formControlName="password"
             required
+            aria-labelledby="login-password-label"
           />
           <button
             mat-icon-button
@@ -52,14 +64,26 @@
           </mat-error>
         </mat-form-field>
 
+        <!-- Remember me / Forgot password -->
         <div class="additional-options">
-          <mat-checkbox formControlName="rememberMe">Remember me</mat-checkbox>
+          <mat-checkbox
+            formControlName="rememberMe"
+            aria-label="Remember me"
+          >
+            Remember me
+          </mat-checkbox>
           <a routerLink="/login/reset" class="forgot-password-link">Forgot password?</a>
         </div>
       </mat-card-content>
 
       <mat-card-actions class="button-actions">
-        <button mat-raised-button color="primary" data-cy="login-button" (click)="onLogin()" [disabled]="!loginForm.valid">
+        <button
+          mat-raised-button
+          color="primary"
+          data-cy="login-button"
+          type="submit"
+          [disabled]="!loginForm.valid"
+        >
           Login
         </button>
       </mat-card-actions>
@@ -72,8 +96,11 @@
 
     <!-- Right side: Image -->
     <div class="right-side">
-      <img src="./assets/pexels-yankrukov-8520444.jpg" alt="Login Image" class="login-image" />
+      <img
+        src="assets/pexels-yankrukov-8520444.jpg"
+        alt="Musician practicing instrument"
+        class="login-image"
+      />
     </div>
   </mat-card>
 </form>
-

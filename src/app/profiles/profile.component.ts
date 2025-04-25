@@ -13,6 +13,7 @@ import {LessonRequestDialogComponent} from "../lessons/lesson-request/lesson-req
 import {AuthenticatedUser} from "../authentication/authenticated-user.class";
 import {AvailabilityService} from "../lessons/availability.service";
 import {ChatDialogueComponent} from "../user-dashboard/chats/chat-dialogue.component";
+import { ViewApi } from '@fullcalendar/core';
 
 type Profile = TutorProfile | StudentProfile;
 
@@ -21,14 +22,12 @@ type Profile = TutorProfile | StudentProfile;
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit, AfterViewInit {
-
+export class ProfileComponent implements OnInit {
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
 
   profile: Profile | null = null;
-  isTimeGridView = false;
   calendarOptions!: CalendarOptions;
-  availabilitySlots: any[] = []
+  availabilitySlots: any[] = [];
   isOwnProfile = false;
 
   constructor(
@@ -41,57 +40,56 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.initializeCalendar();
-    setTimeout(() => this.handleResponsiveCalendarView(), 0);
     this.route.paramMap.subscribe(params => {
       const profileId = params.get('id');
       if (profileId) {
-        this.fetchProfile(Number(profileId));
-        this.isOwnProfile = (AuthenticatedUser.getAuthUserProfileId() === +profileId)
+        this.isOwnProfile = AuthenticatedUser.getAuthUserProfileId() === +profileId;
+        this.fetchProfile(+profileId);
       }
     });
   }
 
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      const calendarApi = this.calendarComponent?.getApi?.();
-      if (calendarApi) {
-        this.handleResponsiveCalendarView();
-      } else {
-        console.warn('Calendar API not available yet');
-      }
-    }, 100);
-  }
-
   private initializeCalendar(): void {
+    const initial = window.innerWidth < 768 ? 'timeGridDay' : 'dayGridMonth';
     this.calendarOptions = {
-      initialView: 'dayGridMonth',
-      selectable: true,
+      initialView: initial,
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      },
+      buttonText: {
+        prev: 'Previous',
+        next: 'Next',
+        today: 'Today'
+      },
       plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       height: 'auto',
       contentHeight: 600,
-      slotMinTime: "06:00:00",
-      slotMaxTime: "23:00:00",
-      slotDuration: "00:30:00",
+      slotMinTime: '06:00:00',
+      slotMaxTime: '23:00:00',
+      slotDuration: '00:30:00',
       expandRows: true,
       events: [],
       eventClick: this.onEventClick.bind(this),
       dateClick: this.onDateClick.bind(this),
       datesSet: this.onMonthChange.bind(this),
+      windowResize: ({ view }) => {
+        const viewName = window.innerWidth < 768 ? 'timeGridDay' : 'dayGridMonth';
+        (view as ViewApi).calendar.changeView(viewName);
+      },
       eventTimeFormat: {
         hour: '2-digit',
         minute: '2-digit',
-        meridiem: false
+        hour12: false
       },
+      locale: 'en-GB',
       displayEventEnd: true,
-      eventDidMount: (info) => {
+      eventDidMount: info => {
         const status = info.event.extendedProps['status'];
         const timeEl = info.el.querySelector('.fc-event-time');
-        if (timeEl && timeEl instanceof HTMLElement) {
-          if (status === 'BOOKED') {
-            timeEl.style.color = 'grey';
-          } else {
-            timeEl.style.color = 'inherit';
-          }
+        if (timeEl instanceof HTMLElement) {
+          timeEl.style.color = status === 'BOOKED' ? 'grey' : 'inherit';
         }
       }
     };
@@ -101,26 +99,14 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     this.profileService.getProfileById(profileId).subscribe({
       next: profile => {
         this.profile = profile;
-        console.log('Profile loaded:', profile);
-
-        // Fetch reviews for the profile
         this.profileService.getProfileReviews(profile.id).subscribe({
-          next: reviews => {
-            this.profile!.reviews = reviews;
-            console.log('Resolved reviews:', reviews);
-          },
-          error: err => {
-            console.error('Error fetching reviews:', err);
-          }
+          next: reviews => (this.profile!.reviews = reviews),
+          error: err => console.error('Error fetching reviews:', err)
         });
-
-        // Fetch qualifications and availability
         this.fetchProfileQualifications();
         this.fetchAvailability(new Date());
       },
-      error: err => {
-        console.error('Error fetching profile:', err);
-      }
+      error: err => console.error('Error fetching profile:', err)
     });
   }
 
@@ -154,54 +140,27 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   }
 
   onDateClick(info: any): void {
-    console.log('Clicked date:', info.dateStr);
-    if (this.calendarComponent?.getApi()) {
-      this.calendarComponent.getApi().changeView('timeGridDay', info.dateStr);
-      this.isTimeGridView = true;
-    }
-  }
-
-  switchToMonthView(): void {
-    console.log('Switching back to Month View...');
-    if (this.calendarComponent?.getApi()) {
-      this.calendarComponent.getApi().changeView('dayGridMonth');
-      this.isTimeGridView = false;
-    }
+    this.calendarComponent.getApi()?.changeView('timeGridDay', info.dateStr);
   }
 
   onEventClick(info: any): void {
-    console.log('Event clicked:', info.event.title);
-
     const availabilityId = info.event.extendedProps.availabilityId;
-    console.log(this.profile?.profileType)
-    console.log(AuthenticatedUser.getAuthUserProfileType())
-    if (!availabilityId) {
-      console.error("No availability ID found!");
-      return;
-    }  // Ensure only students can send lesson requests
-    if (this.profile?.profileType === 'Student' || AuthenticatedUser.getAuthUserProfileType()!== 'STUDENT') {
-      console.warn("Only students can send lesson requests.");
-      return;
-    }
+    if (!availabilityId || this.profile?.profileType !== 'Tutor') return;
     const dialogRef = this.dialog.open(LessonRequestDialogComponent, {
       width: '400px',
       data: {
         title: info.event.title,
         startTime: info.event.start.toISOString(),
         endTime: info.event.end?.toISOString(),
-        profileId: this.profile?.id,
-        availabilityId:availabilityId,
+        profileId: this.profile.id,
+        availabilityId,
         status: info.event.title,
-        instruments :this.profile?.instruments,
-        lessonType: this.profile?.lessonType
+        instruments: this.profile.instruments,
+        lessonType: this.profile.lessonType
       }
     });
-
-    // Handle dialog result
     dialogRef.afterClosed().subscribe(result => {
-      if (result=== true) {
-        this.fetchAvailability(this.calendarComponent.getApi().getDate());
-      }
+      if (result) this.fetchAvailability(this.calendarComponent.getApi().getDate());
     });
   }
 
@@ -228,17 +187,17 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       title: '',
       start: slot.startTime,
       end: slot.endTime,
-      extendedProps: { availabilityId: slot.id, status:slot.status},
+      extendedProps: { availabilityId: slot.id, status: slot.status },
       color: this.getEventColor(slot.status)
     }));
   }
 
   private getEventColor(status: string): string {
     switch (status) {
-      case 'AVAILABLE': return '#4CAF50'; // Green
-      case 'PENDING': return '#9E9E9E';   // Grey
-      case 'BOOKED': return '#FF0000';    // Red
-      default: return '#000000';          // Fallback Black
+      case 'AVAILABLE': return '#4CAF50';
+      case 'PENDING':   return '#9E9E9E';
+      case 'BOOKED':    return '#FF0000';
+      default:          return '#000000';
     }
   }
 
@@ -248,42 +207,16 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       data: {
         conversation: null,
         participantId: this.profile?.id,
-        userProfileId: AuthenticatedUser.getAuthUserProfileId(),
-      },
+        userProfileId: AuthenticatedUser.getAuthUserProfileId()
+      }
     });
-
-    dialogRef.afterClosed().subscribe(() => {
-      console.log('Chat dialog closed.');
-    });
+    dialogRef.afterClosed().subscribe();
   }
 
   private fetchProfileQualifications(): void {
-    const currentProfile = this.profile;
-    if (currentProfile) {
-      this.profileService.getProfileQualificationsById(currentProfile.id)
-        .subscribe({
-          next: (results) => {
-            console.log('results are',results)
-            currentProfile.instrumentQuals = results;
-          },
-          error: (err) => {
-            console.error('Error fetching profile qualifications:', err);
-          }
-        });
-    }
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onResize() {
-    this.handleResponsiveCalendarView();
-  }
-
-  private handleResponsiveCalendarView(): void {
-    if (window.innerWidth < 768 && !this.isTimeGridView) {
-      const today = new Date().toISOString().split('T')[0];
-      this.onDateClick({ dateStr: today });
-    } else if (window.innerWidth >= 768 && this.isTimeGridView) {
-      this.switchToMonthView();
-    }
+    if (!this.profile) return;
+    this.profileService.getProfileQualificationsById(this.profile.id)
+      .subscribe({ next: quals => (this.profile!.instrumentQuals = quals), error: err => console.error(err) });
   }
 }
+

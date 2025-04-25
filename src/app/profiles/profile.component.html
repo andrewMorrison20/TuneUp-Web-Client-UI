@@ -64,10 +64,6 @@
                 Pending
               </div>
             </div>
-            <button *ngIf="isTimeGridView" mat-raised-button color="primary" (click)="switchToMonthView()">
-              Month View
-            </button>
-            <br><br>
             <full-calendar #calendar [options]="calendarOptions"></full-calendar>
           </div>
 
@@ -135,8 +131,8 @@
 
 
           <div class="qualifications-section" *ngIf="profile.instrumentQuals && profile.instrumentQuals.length > 0">
+            <h1><b>Qualifications</b></h1>
             <div class="qualifications-container">
-              <h1><b>Qualifications</b></h1>
               <ul>
                 <li *ngFor="let qualification of profile.instrumentQuals">
                   {{ qualification.instrumentName }} : {{ qualification.qualificationName }}
