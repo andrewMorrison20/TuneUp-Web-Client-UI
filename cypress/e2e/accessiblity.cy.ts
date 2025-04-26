@@ -1,4 +1,4 @@
-/// <reference types="cypress" />
+
 import 'cypress-axe';
 
 describe('Accessibility smoke checks', () => {

@@ -60,7 +60,6 @@ export class ChatDialogueComponent implements OnInit {
       this.data.userProfileId = this.userProfileId;
     }
 
-    // Initialize messages and subscription for the current conversation
     if (this.data.conversation) {
       this.initializeConversation(this.data.conversation.id);
     } else {
@@ -75,8 +74,6 @@ export class ChatDialogueComponent implements OnInit {
       });
     }
   }
-
-
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['conversation'] && !changes['conversation'].firstChange) {
