@@ -45,8 +45,8 @@ describe('ProfileComponent', () => {
   });
 
   it('should initialize calendarOptions on init', () => {
-    component.ngOnInit();
     spyOnProperty(window, 'innerWidth').and.returnValue(1024);
+    component.ngOnInit();
     // depending on your test environment window.innerWidth is > 768
     expect(component.calendarOptions.initialView).toBe('dayGridMonth');
     expect(component.calendarOptions.plugins!.length).toBe(3);
