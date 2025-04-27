@@ -77,7 +77,6 @@ jobs:
           FRONTEND_PID=$!
 
       - name: Run Cypress tests
-        working-directory: ./your-frontend-folder
         uses: cypress-io/github-action@v6
         with:
           start: npm run start
