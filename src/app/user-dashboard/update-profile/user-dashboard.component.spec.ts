@@ -39,12 +39,6 @@ describe('UserDashboardComponent', () => {
     expect(component.isDesktopView).toBeFalse();
   });
 
-  it('should toggle sidenav', () => {
-    const sidenav = { toggle: jasmine.createSpy() };
-    component.toggleSidenav(sidenav);
-    expect(sidenav.toggle).toHaveBeenCalled();
-  });
-
   it('should return true if user is tutor', () => {
     spyOn(AuthenticatedUser, 'getAuthUserProfileType').and.returnValue('TUTOR');
     expect(component.isTutorProfile()).toBeTrue();

@@ -23,7 +23,7 @@ import {Observable, Subscription} from "rxjs";
   templateUrl: './chat-dialogue.component.html',
   styleUrls: ['./chat-dialogue.component.scss']
 })
-export class ChatDialogueComponent implements OnInit, AfterViewChecked {
+export class ChatDialogueComponent implements OnInit {
   messages: any[] = [];
   newMessage = '';
   totalMessages = 0;
@@ -60,7 +60,6 @@ export class ChatDialogueComponent implements OnInit, AfterViewChecked {
       this.data.userProfileId = this.userProfileId;
     }
 
-    // Initialize messages and subscription for the current conversation
     if (this.data.conversation) {
       this.initializeConversation(this.data.conversation.id);
     } else {
@@ -73,14 +72,6 @@ export class ChatDialogueComponent implements OnInit, AfterViewChecked {
       ).subscribe({
         error: (error) => console.error("Error fetching or starting conversation:", error)
       });
-    }
-  }
-
-
-  ngAfterViewChecked(): void {
-    // Only scroll to bottom if autoScroll is true.
-    if (this.autoScroll) {
-      this.scrollToBottom();
     }
   }
 
@@ -104,6 +95,7 @@ export class ChatDialogueComponent implements OnInit, AfterViewChecked {
   private initializeConversation(conversationId: number): void {
     this.fetchMessages(conversationId).subscribe();
     this.subscribeToMessages(conversationId);
+    setTimeout(() => this.scrollToBottom(), 0);
   }
 
   private isUserNearBottom(): boolean {

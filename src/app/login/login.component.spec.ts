@@ -123,16 +123,4 @@ describe('LoginComponent', () => {
     component.requestVerificationLink();
     expect(console.error).toHaveBeenCalledWith('Email is required to request verification');
   });
-
-  it('should log social login methods', () => {
-    spyOn(console, 'log');
-    component.loginWithGoogle();
-    expect(console.log).toHaveBeenCalledWith('Login with Google');
-
-    component.loginWithFacebook();
-    expect(console.log).toHaveBeenCalledWith('Login with Facebook');
-
-    component.loginWithOutlook();
-    expect(console.log).toHaveBeenCalledWith('Login with Outlook');
-  });
 });

@@ -11,8 +11,8 @@ body {
   max-width: 1600px;
   margin: 1.5rem auto;
   padding: 1.5rem;
-  background-color: #e6dddd;
-  border-radius: 8px;
+  background-color: rgba(236, 226, 226, 0.76);
+  border-radius: 4px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
@@ -24,7 +24,7 @@ body {
   text-align: center;
   gap: 1.5rem;
   padding: 1.5rem;
-  background-color: #fafafa;
+  background: rgba(255, 255, 255, 0.94);
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 2rem;
@@ -195,7 +195,7 @@ body {
 
 
 .section-card {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.94);
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -204,6 +204,7 @@ body {
 
 .section-card:hover {
   transform: translateY(-3px);
+  background: rgba(250, 242, 242, 0.98);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
 }
 
@@ -219,11 +220,13 @@ body {
 .calendar-container{
   @extend .section-card;
 }
+
 .reviews-section{
   @extend .section-card;
 }
 
 .instrument-container {
+  background: rgba(244, 244, 244, 0.89);
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
@@ -255,12 +258,13 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+  background: rgba(244, 244, 244, 0.89);
   padding-top: 10px;
 }
 
 .genre-container li {
-  background: #ffe0b2;
-  color: #bf360c;
+  background: #ae6300;
+  color: #ffffff;
   padding: 8px 16px;
   border-radius: 20px;
   font-size: 1.4rem;
@@ -272,13 +276,14 @@ body {
 .qualifications-container {
   display: flex;
   flex-wrap: wrap;
+  background: rgba(244, 244, 244, 0.89);
   gap: 12px;
   padding-top: 10px;
 }
 
 
 .qualifications-container li {
-  background: #8989e1;
+  background: #36159c;;
   color: #fffcee;
   padding: 8px 16px;
   border-radius: 20px;
@@ -305,6 +310,7 @@ body {
 .pricing-container {
   display: flex;
   flex-direction: column;
+  background: rgba(244, 244, 244, 0.89);
   gap: 12px;
 }
 
@@ -415,6 +421,13 @@ body {
   align-items: center;
 }
 
+.chat-button.mat-accent {
+  background-color: #8311C0!important;
+}
+.chat-button .mat-button-wrapper {
+  color: rgba(255, 255, 255, 0.84) !important;
+}
+
 .legend-dot {
   width: 10px;
   height: 10px;
@@ -433,5 +446,20 @@ body {
 
 .legend-dot.pending {
   background-color: grey;
+}
+
+@media (max-width: 768px) {
+  .calendar-container,
+  .pricing-section,
+  .instruments-section,
+  .qualifications-section,
+  .genres-section {
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .reviews-section{
+    max-width: 92.5%;
+  }
 }
 

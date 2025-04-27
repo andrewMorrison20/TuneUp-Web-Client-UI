@@ -1,10 +1,10 @@
 
-<div *ngIf="!isMobile" class="desktop-search-bar">
+<div *ngIf="!isMobile" class="desktop-search-bar" data-cy="search-bar">
   <app-search-bar></app-search-bar>
 </div>
 
 <!-- Search Bar Banner for Mobile -->
-<div *ngIf="isMobile" class="mobile-search-banner">
+<div *ngIf="isMobile" class="mobile-search-banner" data-cy="search-bar">
   <div class="banner-header" (click)="toggleSearchBanner()">
     <span>Search</span>
     <button mat-icon-button>
@@ -70,7 +70,7 @@
 </div>
 
 <!-- Main Content for Mobile -->
-<div *ngIf="isMobile" class="search-results-container">
+<div *ngIf="isMobile" class="search-results-container" >
   <mat-spinner *ngIf="isLoading"></mat-spinner>
 
   <div *ngIf="error" class="error-message">

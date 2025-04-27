@@ -37,8 +37,17 @@
           <input matInput type="date" formControlName="dueDate" />
         </mat-form-field>
 
-        <h3><strong>Add an Invoice</strong></h3>
-        <input type="file" #fileInput (change)="onFileSelect($event)" accept=".pdf, .jpg, .jpeg, .png" />
+        <h3><strong>Invoice</strong></h3>
+        <label for="invoice-upload"> Add an Invoice </label>
+        <br>
+        <input
+          id="invoice-upload"
+          type="file"
+          #fileInput
+          (change)="onFileSelect($event)"
+          accept=".pdf, .jpg, .jpeg, .png"
+        />
+
         <p *ngIf="paymentForm.controls['invoice'].errors?.['invalidFileType']" class="error-text">
           Only PDF, JPG, and PNG files are allowed.
         </p>
@@ -103,10 +112,11 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         <ng-container matColumnDef="select">
           <th mat-header-cell *matHeaderCellDef>
-            <mat-checkbox (change)="$event ? toggleAllRows() : null"></mat-checkbox>
+            <mat-checkbox aria-label="Select all payments" (change)="$event ? toggleAllRows() : null" ></mat-checkbox>
           </th>
           <td mat-cell *matCellDef="let payment">
-            <mat-checkbox (change)="$event ? toggleRow(payment) : null" [checked]="selectedPayments.includes(payment)"></mat-checkbox>
+            <mat-checkbox   aria-label="Select payment for {{ payment.displayName }} on {{ payment.lessonDate | date:'dd/MM/yyyy' }}"
+              (change)="$event ? toggleRow(payment) : null" [checked]="selectedPayments.includes(payment)"></mat-checkbox>
           </td>
         </ng-container>
 

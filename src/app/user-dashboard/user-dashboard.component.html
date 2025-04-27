@@ -2,7 +2,7 @@
   <!-- Sidebar -->
   <mat-sidenav
     #sidenav
-    mode="side"
+    [mode]="!isDesktopView ? 'over' : 'side'"
     class="sidebar"
     [opened]="isDesktopView"
     [disableClose]="isDesktopView"
@@ -61,7 +61,7 @@
       <!-- Hamburger menu for mobile view -->
       <button
         mat-icon-button
-        (click)="toggleSidenav(sidenav)"
+        (click)="toggleSidenav()"
         aria-label="Toggle navigation"
         *ngIf="!isDesktopView"
       >

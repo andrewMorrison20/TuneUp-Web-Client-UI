@@ -123,18 +123,6 @@ describe('ChatDialogueComponent', () => {
   });
 
 
-  it('should scroll to bottom if autoScroll is true', () => {
-    component.autoScroll = true;
-    component.chatPanel = {
-      nativeElement: {
-        scrollTop: 0,
-        scrollHeight: 500
-      }
-    } as any;
-    component.ngAfterViewChecked();
-    expect(component.chatPanel.nativeElement.scrollTop).toBe(500);
-  });
-
   it('should assign @Input() values to data if data is missing', () => {
     component.data = undefined as any;
     component.conversation = { id: 99 } as any;

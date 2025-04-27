@@ -14,7 +14,6 @@
     transform: scale(1.02);
   }
 
-  /* ✅ Mobile View: Stack Items Vertically */
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: center;
@@ -23,16 +22,14 @@
 }
 
 .tutor-card {
-  background-color: #f3fbfb; /* Color for tutor */
+  background-color: #f3fbfb;
 }
 
 .student-card {
-  background-color: #f8f2f2; /* Color for student */
+  background-color: #f8f2f2;
 }
 
 
-
-/* ✅ Ensures profile list aligns properly */
 .profile-list {
   display: flex;
   flex-direction: column;
@@ -48,7 +45,7 @@
   margin-right: 15px;
   border: 2px solid #3f51b5;
 
-  /* ✅ Center image on mobile */
+
   @media (max-width: 768px) {
     margin: 0 auto 10px auto;
   }
@@ -84,14 +81,12 @@
   margin-top: 5px;
 }
 
-/* ✅ Buttons should be full width on mobile */
 button {
   @media (max-width: 768px) {
     width: 90%;
   }
 }
 
-/* ✅ Center align pagination */
 mat-paginator {
   display: flex;
   justify-content: center;

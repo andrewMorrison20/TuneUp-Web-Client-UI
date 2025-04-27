@@ -1,13 +1,13 @@
-// profile.component.spec.ts
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ProfileComponent } from './profile.component';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { of, Subject, throwError } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { ProfileService } from './profile.service';
 import { AvailabilityService } from '../lessons/availability.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ChatDialogueComponent } from '../user-dashboard/chats/chat-dialogue.component';
 
 
 describe('ProfileComponent', () => {
@@ -46,8 +46,9 @@ describe('ProfileComponent', () => {
 
   it('should initialize calendarOptions on init', () => {
     component.ngOnInit();
+    // depending on your test environment window.innerWidth is > 768
     expect(component.calendarOptions.initialView).toBe('dayGridMonth');
-    expect(component.calendarOptions!.plugins!.length).toBe(3);
+    expect(component.calendarOptions.plugins!.length).toBe(3);
   });
 
   it('should fetch profile and reviews on param change', fakeAsync(() => {
@@ -71,22 +72,12 @@ describe('ProfileComponent', () => {
     expect((component.calendarOptions.events as any[]).length).toBe(1);
   }));
 
-  it('onDateClick switches to timeGridDay and sets isTimeGridView', () => {
+  it('onDateClick switches to timeGridDay view', () => {
     const api = { changeView: jasmine.createSpy() };
     (component as any).calendarComponent = { getApi: () => api };
 
     component.onDateClick({ dateStr: '2025-04-20' });
     expect(api.changeView).toHaveBeenCalledWith('timeGridDay', '2025-04-20');
-    expect(component.isTimeGridView).toBeTrue();
-  });
-
-  it('switchToMonthView switches back to dayGridMonth', () => {
-    const api = { changeView: jasmine.createSpy() };
-    (component as any).calendarComponent = { getApi: () => api };
-    component.isTimeGridView = true;
-    component.switchToMonthView();
-    expect(api.changeView).toHaveBeenCalledWith('dayGridMonth');
-    expect(component.isTimeGridView).toBeFalse();
   });
 
   it('getEventColor returns correct colors', () => {
@@ -110,7 +101,7 @@ describe('ProfileComponent', () => {
 
   it('startChat calls openChatDialog', () => {
     component.profile = { displayName: 'Bob', id: 1, profileType: 'Tutor', reviews: [], instruments: [], lessonType: '', prices: [] } as any;
-    spyOn(component as any, 'openChatDialog');
+    spyOn<any>(component, 'openChatDialog');
     component.startChat();
     expect((component as any).openChatDialog).toHaveBeenCalled();
   });
@@ -118,37 +109,39 @@ describe('ProfileComponent', () => {
   describe('openChatDialog', () => {
     it('opens dialog with correct data', () => {
       component.profile = { id: 2 } as any;
-      const afterClosed$ = of(null);
-      const dialogRef = { afterClosed: () => afterClosed$ } as any;
+      const dialogRef = { afterClosed: () => of(null) } as any;
       dialogSpy.open.and.returnValue(dialogRef);
 
       (component as any).openChatDialog();
-      expect(dialogSpy.open).toHaveBeenCalledWith(jasmine.any(Function), jasmine.objectContaining({
-        data: { conversation: null, participantId: 2, userProfileId: jasmine.any(Number) }
-      }));
+      expect(dialogSpy.open).toHaveBeenCalledWith(
+        ChatDialogueComponent,
+        jasmine.objectContaining({
+          data: { conversation: null, participantId: 2, userProfileId: jasmine.any(Number) }
+        })
+      );
     });
   });
 
-  describe('onResize', () => {
+  describe('windowResize callback', () => {
+    let apiSpy: jasmine.SpyObj<{ changeView(viewName: string): void }>;
+    let viewObj: any;
+
     beforeEach(() => {
-      const api = { changeView: jasmine.createSpy() };
-      (component as any).calendarComponent = { getApi: () => api };
+      component.ngOnInit(); // ensure calendarOptions is set
+      apiSpy = jasmine.createSpyObj('calendarApi', ['changeView']);
+      viewObj = { calendar: apiSpy };
     });
 
-    it('switches to timeGridDay when width <768 and not timeGridView', () => {
-      (component as any).isTimeGridView = false;
+    it('switches to timeGridDay when width < 768', () => {
       spyOnProperty(window, 'innerWidth').and.returnValue(500);
-      spyOn(component as any, 'onDateClick');
-      component.onResize();
-      expect((component as any).onDateClick).toHaveBeenCalled();
+      (component.calendarOptions.windowResize as any)({ view: viewObj });
+      expect(apiSpy.changeView).toHaveBeenCalledWith('timeGridDay');
     });
 
-    it('switches back to month view when width >=768 and is timeGridView', () => {
-      (component as any).isTimeGridView = true;
+    it('switches to dayGridMonth when width >= 768', () => {
       spyOnProperty(window, 'innerWidth').and.returnValue(1024);
-      spyOn(component as any, 'switchToMonthView');
-      component.onResize();
-      expect((component as any).switchToMonthView).toHaveBeenCalled();
+      (component.calendarOptions.windowResize as any)({ view: viewObj });
+      expect(apiSpy.changeView).toHaveBeenCalledWith('dayGridMonth');
     });
   });
 
@@ -159,13 +152,6 @@ describe('ProfileComponent', () => {
     expect(component.isPricesMapNotEmpty()).toBeFalse();
     component.profile = { profileType: 'Student', prices: [ { amount: 5 } ] } as any;
     expect(component.isPricesMapNotEmpty()).toBeFalse();
-  });
-
-  it('ngAfterViewInit logs error when calendarComponent missing', () => {
-    spyOn(console, 'error');
-    component.calendarComponent = undefined!;
-    component.ngAfterViewInit();
-    expect(console.error).toHaveBeenCalledWith('FullCalendar reference not found.');
   });
 
   describe('eventDidMount styling', () => {

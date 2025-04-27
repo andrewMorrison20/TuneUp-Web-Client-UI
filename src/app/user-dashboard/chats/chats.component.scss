@@ -150,5 +150,30 @@
 .chat-display {
   flex: 1;
 }
+@media (max-width: 768px) {
 
+  .conversation-list {
+    width: 100% !important;
+    padding: 0.5rem !important;
+    box-sizing: border-box;
+  }
+
+  .conversation-list .conversation-card mat-card {
+    width: 100% !important;
+    max-width: 100%;
+    margin: 0.5rem 0;
+    box-sizing: border-box;
+  }
+
+  .chat-split-container {
+    flex-direction: column;
+  }
+}
+
+.chat-button.mat-accent {
+  background-color: #8311C0!important;
+}
+.chat-button .mat-button-wrapper {
+  color: rgba(255, 255, 255, 0.84) !important;
+}
 

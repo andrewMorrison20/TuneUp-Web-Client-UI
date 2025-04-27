@@ -1,29 +1,60 @@
-<!-- Footer -->
+<!-- footer.component.html -->
 <footer class="footer">
-  <div class="footer-content">
-    <div class="footer-links">
-      <a routerLink="/privacy" routerLinkActive="active-link">Privacy Policy</a>
-      <a routerLink="/terms" routerLinkActive="active-link">Terms of Service</a>
-      <a routerLink="/home/contact" routerLinkActive="active-link">Contact Us</a>
+  <div class="footer__container">
+    <!-- Branding -->
+    <div class="footer__branding">
+      <a href="/" class="footer__logo" aria-label="TuneUp Home">
+        <img src="assets/mainLogo.png" alt="TuneUp logo" class="footer__logo-img">
+      </a>
+      <p class="footer__slogan">Take the next step in music mastery.</p>
     </div>
-    <div class="social-media">
-      <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
-        <mat-icon>facebook</mat-icon>
-      </a>
-      <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
-        <mat-icon>x</mat-icon>
-      </a>
-      <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
-        <mat-icon>instagram</mat-icon>
-      </a>
-      <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">
-        <mat-icon>linkedin</mat-icon> <!-- LinkedIn Icon -->
-      </a>
-      <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer">
-        <mat-icon>youtube</mat-icon> <!-- YouTube Icon -->
-      </a>
 
+    <!-- Primary Navigation -->
+    <nav class="footer__nav" aria-labelledby="footer-nav-heading">
+      <h4 id="footer-nav-heading" class="footer__heading">Explore</h4>
+      <ul class="footer__list">
+        <li><a routerLink="/features" routerLinkActive="active">Features</a></li>
+        <li><a routerLink="/pricing" routerLinkActive="active">Pricing</a></li>
+        <li><a routerLink="/blog" routerLinkActive="active">Blog</a></li>
+        <li><a routerLink="/about" routerLinkActive="active">About Us</a></li>
+        <li><a routerLink="/contact" routerLinkActive="active">Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- Support Links -->
+    <nav class="footer__support" aria-labelledby="footer-support-heading">
+      <h4 id="footer-support-heading" class="footer__heading">Support</h4>
+      <ul class="footer__list">
+        <li><a routerLink="/help" routerLinkActive="active">Help Center</a></li>
+        <li><a routerLink="/privacy" routerLinkActive="active">Privacy Policy</a></li>
+        <li><a routerLink="/terms" routerLinkActive="active">Terms of Service</a></li>
+      </ul>
+    </nav>
+
+    <!-- Social Media (using FontAwesome) -->
+    <div class="footer__social" aria-label="Follow us">
+      <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+      <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+      <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+        <i class="fab fa-youtube"></i>
+      </a>
     </div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="footer__bottom">
     <p>&copy; 2024 TuneUp. All Rights Reserved.</p>
   </div>
 </footer>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha384-..." crossorigin="anonymous">
