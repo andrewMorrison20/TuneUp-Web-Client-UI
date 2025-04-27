@@ -1,0 +1,43 @@
+name: run-sonar
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  sonarqube:
+    name: SonarQube
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install npm packages
+        run: npm ci
+
+      - name: Run tests with coverage
+        run: |
+          npx ng test \
+            --karma-config karma.conf.js \
+            --watch=false \
+            --browsers ChromeHeadless \
+            --code-coverage
+
+      - name: Verify coverage output
+        run: ls -R coverage
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
