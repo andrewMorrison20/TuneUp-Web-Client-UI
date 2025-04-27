@@ -111,7 +111,7 @@ describe('PaymentsComponent', () => {
         lessonId:   2,
         amount:     100,
         invoice:    null,
-        dueDate:    '2025-04-21',
+        dueDate:    '2026-04-21',
         tuitionId:  3,
         lessonDate: '2025-04-20T10:00:00'
       });
@@ -139,7 +139,7 @@ describe('PaymentsComponent', () => {
         lessonId:   5,
         amount:     200,
         invoice:    fakeFile,
-        dueDate:    '2025-04-22',
+        dueDate:    '2036-04-22',
         tuitionId:  6,
         lessonDate: '2025-04-22T12:00:00'
       });
