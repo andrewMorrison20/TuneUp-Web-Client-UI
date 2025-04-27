@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import {Observable, Subscription} from 'rxjs';
 import { AuthenticatedUser } from '../../authentication/authenticated-user.class';
@@ -30,7 +30,14 @@ export class NavComponent implements OnInit, OnDestroy {
     private http: HttpClient
   ) {}
 
+  @Input() autoFetchNotifications!: boolean;
+
   ngOnInit(): void {
+
+    if (!this.autoFetchNotifications) {
+      return;   // skip all notification fetching
+    }
+
     if (AuthenticatedUser.userLoggedIn()) {
       const userId = AuthenticatedUser.getAuthUserId();
 

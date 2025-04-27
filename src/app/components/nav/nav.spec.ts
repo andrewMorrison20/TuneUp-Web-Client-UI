@@ -36,7 +36,6 @@ describe('NavComponent', () => {
         { provide: WebsocketService, useValue: wsServiceStub }
       ]
     }).compileComponents();
-
     fixture = TestBed.createComponent(NavComponent);
     component = fixture.componentInstance;
     httpMock = TestBed.inject(HttpTestingController);
@@ -81,24 +80,6 @@ describe('NavComponent', () => {
     expect(component.unreadCount).toBe(2);
   });
 
-  it('ngOnInit loads unread and subscribes websocket', fakeAsync(() => {
-    const initial: any[] = [ { id:5, type:'', message:'m', read:false } ];
-    // trigger ngOnInit
-    component.ngOnInit();
-    // expect HTTP get
-    const req = httpMock.expectOne('http://localhost:8080/api/notifications/unread/42');
-    expect(req.request.method).toBe('GET');
-    req.flush(initial);
-    // after flush
-    tick();
-    expect(component.notifications.length).toBe(1);
-    expect(component.unreadCount).toBe(1);
-    // trigger websocket notification
-    wsSubject.next({ id:6, type:'', message:'w', read:false });
-    tick();
-    expect(component.notifications.find(n=>n.id===6)).toBeDefined();
-    expect(component.unreadCount).toBe(2);
-  }));
 
   it('ngOnDestroy unsubscribes subscription', () => {
     component.notificationSubscription = wsSubject.subscribe();

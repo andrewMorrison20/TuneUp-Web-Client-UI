@@ -111,7 +111,7 @@ describe('PaymentsComponent', () => {
         lessonId:   2,
         amount:     100,
         invoice:    null,
-        dueDate:    '2026-04-21',
+        dueDate:    '2039-04-21',
         tuitionId:  3,
         lessonDate: '2025-04-20T10:00:00'
       });
@@ -139,7 +139,7 @@ describe('PaymentsComponent', () => {
         lessonId:   5,
         amount:     200,
         invoice:    fakeFile,
-        dueDate:    '2036-04-22',
+        dueDate:    '2035-04-22',
         tuitionId:  6,
         lessonDate: '2025-04-22T12:00:00'
       });
@@ -148,23 +148,26 @@ describe('PaymentsComponent', () => {
       mockPaymentsService.createPayment.and.returnValue(of(null));
     });
 
-    it('should upload invoice then create payment', fakeAsync(() => {
+    it('should upload invoice then create payment, but not open a snackBar', fakeAsync(() => {
       expect(component.paymentForm.valid).toBeTrue();
 
       component.submitPayment();
-      tick(); // uploadInvoice
-      tick(); // createPayment
+      expect(mockPaymentsService.uploadInvoice).toHaveBeenCalledWith(fakeFile);
 
-      expect(mockPaymentsService.uploadInvoice)
-        .toHaveBeenCalledWith(fakeFile);
-      expect(mockPaymentsService.createPayment)
-        .toHaveBeenCalledWith(jasmine.objectContaining({
+      tick();
+
+      expect(mockPaymentsService.createPayment).toHaveBeenCalledWith(
+        jasmine.objectContaining({
           invoiceUrl: 'http://url',
           amount:     200,
           lessonId:   5,
           lessonDate: '2025-04-22T12:00:00',
           tuitionId:  6
-        }));
+        })
+      );
+
+      // **no snack bar** in this branch:
+      expect(mockSnackBar.open).not.toHaveBeenCalled();
     }));
   });
 
