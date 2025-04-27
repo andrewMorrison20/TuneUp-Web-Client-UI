@@ -11,7 +11,6 @@ describe('Quiz Flow: From start to search results (E2E)', () => {
     cy.contains('button', 'Next').click({ force: true });
 
     cy.contains('Which Instruments do you play or have an interest in?').should('be.visible');
-    cy.get('mat-checkbox').first().click();
     cy.contains('button', 'Next').click({ force: true });
 
 
