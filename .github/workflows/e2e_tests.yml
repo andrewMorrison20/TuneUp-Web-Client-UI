@@ -35,6 +35,16 @@ jobs:
           echo "SQL Server port never opened" >&2
           exit 1
 
+      - name: Initialize tuneup_test database
+        run: |
+          echo "⏳ Ensuring tuneup_test database exists…"
+          docker run --network host mcr.microsoft.com/mssql-tools \
+            /opt/mssql-tools/bin/sqlcmd \
+              -S localhost -U SA \
+              -P 'YourStrong!Passw0rd' \
+              -Q "IF DB_ID('tuneup_test') IS NULL CREATE DATABASE tuneup_test;"
+          echo "tuneup_test is ready."
+
       - name: Launch backend container
         run: |
           docker run -d --name backend \
