@@ -17,9 +17,6 @@ jobs:
           SA_PASSWORD: "Strong!Passw0rd"
         ports:
           - 1433:1433
-        options: >-
-          --health-cmd ""
-          --health-retries=0
 
     steps:
       - name: Checkout code
