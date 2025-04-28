@@ -42,7 +42,7 @@ jobs:
             -e SPRING_DATASOURCE_USERNAME=sa \
             -e SPRING_DATASOURCE_PASSWORD=Strong!Passw0rd \
             -p 8080:8080 \
-           andrewm95/tuneupserver:latest
+            andrewm95/tuneupserver:latest
 
       - name: Wait for backend to be healthy
         run: |
