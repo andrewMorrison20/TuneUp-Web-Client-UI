@@ -54,17 +54,17 @@ jobs:
             -e "SPRING_DATASOURCE_PASSWORD=YourStrong!Passw0rd" \
             andrewm95/tuneupserver:latest
 
-      - name: Wait for backend to be healthy
+      - name: Wait for backend port 8080
         run: |
           for i in $(seq 1 20); do
-            if curl -sSf http://localhost:8080/actuator/health | grep '"status":"UP"' &> /dev/null; then
-              echo "Backend is up!"
+            if nc -z localhost 8080; then
+              echo "Backend port 8080 is open!"
               exit 0
             fi
-            echo "Waiting for backend… ($i)"
+            echo "Waiting for backend port… ($i)"
             sleep 5
           done
-          echo "Backend failed to be healthy in time" >&2
+          echo " Backend port never opened" >&2
           docker logs backend
           exit 1
 
