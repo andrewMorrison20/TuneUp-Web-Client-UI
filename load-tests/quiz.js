@@ -21,8 +21,8 @@ export const options = {
   },
 };
 
-const UI_URL  = __ENV.UI_URL  || 'http://127.0.0.1:4200';
-const API_URL = __ENV.API_URL || 'http://127.0.0.1:8080';
+const UI_URL  = __ENV.UI_URL  || 'http://localhost:4200';
+const API_URL = __ENV.API_URL || 'http://localhost:8080';
 
 export default function () {
 
