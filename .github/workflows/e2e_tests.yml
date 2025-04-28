@@ -35,14 +35,15 @@ jobs:
           echo "SQL Server port never opened" >&2
           exit 1
 
-      - name: Run backend container
+      - name: Launch backend container
         run: |
           docker run -d --name backend \
-            -e SPRING_DATASOURCE_URL=jdbc:sqlserver://host.docker.internal:1433;databaseName=tuneup_test \
-            -e SPRING_DATASOURCE_USERNAME=sa \
-            -e SPRING_DATASOURCE_PASSWORD=Strong!Passw0rd \
-            -p 8080:8080 \
-            andrewm95/tuneupserver:latest
+          --link tuneup-sql:db \
+          -e "SPRING_DATASOURCE_URL=jdbc:sqlserver://db:1433;databaseName=tuneup_test;encrypt=true;trustServerCertificate=true" \
+          -e "SPRING_DATASOURCE_USERNAME=SA" \
+          -e "SPRING_DATASOURCE_PASSWORD=YourStrong!Passw0rd" \
+          -p 8080:8080 \
+          andrewm95/tuneupserver:latest
 
       - name: Wait for backend to be healthy
         run: |
