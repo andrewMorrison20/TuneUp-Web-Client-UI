@@ -35,10 +35,6 @@ jobs:
           echo "SQL Server port never opened" >&2
           exit 1
 
-      - name: Pull backend Docker image
-        run: |
-          docker pull your-dockerhub-username/your-backend:latest
-
       - name: Run backend container
         run: |
           docker run -d --name backend \
