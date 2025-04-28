@@ -1,0 +1,98 @@
+# .github/workflows/e2e.yml
+name: E2E Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    services:
+      tuneup-sql:
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        env:
+          ACCEPT_EULA: "Y"
+          SA_PASSWORD: "YourStrong!Passw0rd"
+        ports:
+          - 1433:1433
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Wait for SQL Server port
+        run: |
+          for i in $(seq 1 30); do
+            if nc -z localhost 1433; then
+              echo "SQL Server is listening on 1433!"
+              exit 0
+            fi
+            echo "Waiting for SQL Server port… ($i)"
+            sleep 5
+          done
+          echo "SQL Server port never opened" >&2
+          exit 1
+
+      - name: Initialize tuneup_test database
+        run: |
+          echo "⏳ Ensuring tuneup_test database exists…"
+          docker run --network host mcr.microsoft.com/mssql-tools \
+            /opt/mssql-tools/bin/sqlcmd \
+              -S localhost -U SA \
+              -P 'YourStrong!Passw0rd' \
+              -Q "IF DB_ID('tuneup_test') IS NULL CREATE DATABASE tuneup_test;"
+          echo "tuneup_test is ready."
+
+      - name: Launch backend container
+        run: |
+          docker run -d --name backend \
+            --network host \
+            -e "SPRING_DATASOURCE_URL=jdbc:sqlserver://localhost:1433;databaseName=tuneup_test;encrypt=true;trustServerCertificate=true" \
+            -e "SPRING_DATASOURCE_USERNAME=SA" \
+            -e "SPRING_DATASOURCE_PASSWORD=YourStrong!Passw0rd" \
+            andrewm95/tuneupserver:latest
+
+      - name: Wait for backend port 8080
+        run: |
+          for i in $(seq 1 20); do
+            if nc -z localhost 8080; then
+              echo "Backend port 8080 is open!"
+              exit 0
+            fi
+            echo "Waiting for backend port… ($i)"
+            sleep 5
+          done
+          echo " Backend port never opened" >&2
+          docker logs backend
+          exit 1
+
+      - name: Install front-end dependencies
+        run: |
+          npm ci
+
+      - name: Start frontend
+        run: |
+          npm run start &
+          FRONTEND_PID=$!
+
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v6
+        with:
+          start: npm run start
+          wait-on: 'http://localhost:4200'
+          wait-on-timeout: 120000
+          browser: chrome
+
+      - name: Teardown backend
+        if: always()
+        run: |
+          docker stop backend
+          docker rm backend
+          # optionally: docker stop sqlserver; docker rm sqlserver
+
+      - name: Teardown frontend
+        if: always() && env.FRONTEND_PID
+        run: |
+          kill $FRONTEND_PID || true

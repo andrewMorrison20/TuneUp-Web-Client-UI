@@ -11,9 +11,11 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "load-test:home": "k6 run load-tests/homepage.js",
+    "load-test:lesson-request": "k6 run load-tests/lesson-request.js",
     "load-test:quiz": "k6 run load-tests/quiz.js",
     "load-test:chat": "k6 run load-tests/chat.js",
-    "load-test:login": "k6 run load-tests/login.js"
+    "load-test:login": "k6 run load-tests/login.js",
+    "load-test:all": "npm-run-all --serial load-test:*"
   },
   "private": true,
   "dependencies": {
@@ -62,6 +64,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "npm-run-all": "^4.1.5",
     "ts-node": "^10.9.2",
     "typescript": "~5.4.2"
   }
