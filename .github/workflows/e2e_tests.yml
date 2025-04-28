@@ -85,6 +85,9 @@ jobs:
           wait-on-timeout: 120000
           browser: chrome
 
+      - name: Run performance tests
+        run: npm run load-test:all
+
       - name: Teardown backend
         if: always()
         run: |
