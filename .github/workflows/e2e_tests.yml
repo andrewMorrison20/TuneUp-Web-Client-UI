@@ -38,12 +38,11 @@ jobs:
       - name: Launch backend container
         run: |
           docker run -d --name backend \
-          --link tuneup-sql:db \
-          -e "SPRING_DATASOURCE_URL=jdbc:sqlserver://db:1433;databaseName=tuneup_test;encrypt=true;trustServerCertificate=true" \
-          -e "SPRING_DATASOURCE_USERNAME=SA" \
-          -e "SPRING_DATASOURCE_PASSWORD=YourStrong!Passw0rd" \
-          -p 8080:8080 \
-          andrewm95/tuneupserver:latest
+            --network host \
+            -e "SPRING_DATASOURCE_URL=jdbc:sqlserver://localhost:1433;databaseName=tuneup_test;encrypt=true;trustServerCertificate=true" \
+            -e "SPRING_DATASOURCE_USERNAME=SA" \
+            -e "SPRING_DATASOURCE_PASSWORD=YourStrong!Passw0rd" \
+            andrewm95/tuneupserver:latest
 
       - name: Wait for backend to be healthy
         run: |
