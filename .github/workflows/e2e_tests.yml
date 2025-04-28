@@ -10,7 +10,7 @@ jobs:
   e2e:
     runs-on: ubuntu-latest
     services:
-      sqlserver:
+      tuneup-sql:
         image: mcr.microsoft.com/mssql/server:2019-latest
         env:
           ACCEPT_EULA: "Y"
