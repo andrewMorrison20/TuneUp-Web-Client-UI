@@ -22,17 +22,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Wait for SQL Server to be ready
+      - name: Wait for SQL Server port
         run: |
           for i in $(seq 1 30); do
-            if /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'Strong!Passw0rd' -Q 'SELECT 1' &> /dev/null; then
-              echo "SQL Server is up!"
+            if nc -z localhost 1433; then
+              echo "SQL Server is listening on 1433!"
               exit 0
             fi
-            echo "Waiting for SQL Server… ($i)"
+            echo "Waiting for SQL Server port… ($i)"
             sleep 5
           done
-          echo "SQL Server failed to start in time" >&2
+          echo "SQL Server port never opened" >&2
           exit 1
 
       - name: Pull backend Docker image
