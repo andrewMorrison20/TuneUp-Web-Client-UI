@@ -16,7 +16,7 @@
     "load-test:quiz": "k6 run load-tests/quiz.js",
     "load-test:chat": "k6 run load-tests/chat.js",
     "load-test:login": "k6 run load-tests/login.js",
-    "load-test:all": "npm-run-all --serial 'load-test:!(all)'"
+    "load-test:all":  "npm-run-all --serial load-test:home load-test:lesson-request load-test:quiz load-test:chat load-test:login"
   },
   "private": true,
   "dependencies": {
