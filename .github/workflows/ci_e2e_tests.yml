@@ -72,9 +72,9 @@ jobs:
         run: |
           npm ci
 
-      - name: Start frontend
+      - name: Start frontend (CI)
         run: |
-          npx ng serve --host 0.0.0.0 --port 4200 --disable-host-check &
+          npm run start:ci &
           FRONTEND_PID=$!
 
       - name: Run Cypress tests
