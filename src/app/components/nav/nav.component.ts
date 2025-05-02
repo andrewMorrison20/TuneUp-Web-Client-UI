@@ -1,15 +1,16 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import { Router } from '@angular/router';
-import {Observable, Subscription} from 'rxjs';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { AuthenticatedUser } from '../../authentication/authenticated-user.class';
 import { WebsocketService } from '../../services/websocket.service';
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from '@angular/common/http';
 
 interface Notification {
   id: number;
   type: string;
   message: string;
-  read:boolean;
+  read: boolean;
 }
 
 @Component({
@@ -21,7 +22,9 @@ export class NavComponent implements OnInit, OnDestroy {
   isCollapsed = true;
   notifications: Notification[] = [];
   unreadCount = 0;
-  notificationSubscription!: Subscription;
+  private dbSub?: Subscription;
+  private notificationSubscription?: Subscription;
+  private navEndSub?: Subscription;
   protected readonly AuthenticatedUser = AuthenticatedUser;
 
   constructor(
@@ -33,34 +36,40 @@ export class NavComponent implements OnInit, OnDestroy {
   @Input() autoFetchNotifications!: boolean;
 
   ngOnInit(): void {
-
     if (!this.autoFetchNotifications) {
-      return;   // skip all notification fetching
+      return;
     }
-
     if (AuthenticatedUser.userLoggedIn()) {
-      const userId = AuthenticatedUser.getAuthUserId();
-
-      this.getUnreadNotifications(userId)
-        .subscribe((dbNotifications: Notification[]) => {
-          this.notifications = this.mergeNotifications(this.notifications, dbNotifications);
-          this.updateUnreadCount();
-        });
-
-      this.notificationSubscription = this.websocketService
-        .subscribeToNotifications()
-        .subscribe((notification: Notification) => {
-          // Merge new notifications (avoiding duplicates)
-          this.notifications = this.mergeNotifications(this.notifications, [notification]);
-          this.updateUnreadCount();
-        });
+      this.setupNotifications();
     }
+    this.navEndSub = this.router.events
+      .pipe(filter(evt => evt instanceof NavigationEnd))
+      .subscribe(() => {
+        if (AuthenticatedUser.userLoggedIn() && !this.notificationSubscription) {
+          this.setupNotifications();
+        }
+      });
+  }
+
+  private setupNotifications() {
+    const userId = AuthenticatedUser.getAuthUserId();
+    this.dbSub = this.getUnreadNotifications(userId)
+      .subscribe((dbNotifications: Notification[]) => {
+        this.notifications = this.mergeNotifications(this.notifications, dbNotifications);
+        this.updateUnreadCount();
+      });
+    this.notificationSubscription = this.websocketService
+      .subscribeToNotifications()
+      .subscribe((notification: Notification) => {
+        this.notifications = this.mergeNotifications(this.notifications, [notification]);
+        this.updateUnreadCount();
+      });
   }
 
   ngOnDestroy(): void {
-    if (this.notificationSubscription) {
-      this.notificationSubscription.unsubscribe();
-    }
+    this.dbSub?.unsubscribe();
+    this.notificationSubscription?.unsubscribe();
+    this.navEndSub?.unsubscribe();
   }
 
   toggleMenu(): void {
@@ -75,7 +84,6 @@ export class NavComponent implements OnInit, OnDestroy {
   markNotificationAsRead(notification: Notification): void {
     if (!notification.read) {
       this.updateNotificationAsRead(notification.id).subscribe(() => {
-        // Update local state for this notification
         notification.read = true;
         this.updateUnreadCount();
       });
@@ -86,23 +94,19 @@ export class NavComponent implements OnInit, OnDestroy {
     this.unreadCount = this.notifications.filter(n => !n.read).length;
   }
 
-  // Merge notifications from different sources, filtering duplicates by unique id.
   mergeNotifications(existing: Notification[], incoming: Notification[]): Notification[] {
     const mergedMap = new Map<number, Notification>();
     existing.forEach(n => mergedMap.set(n.id, n));
     incoming.forEach(n => mergedMap.set(n.id, n));
-    // Sort by id descending (or sort by timestamp if available)
     return Array.from(mergedMap.values()).sort((a, b) => b.id - a.id);
   }
 
-
-getUnreadNotifications(userId: string | number): Observable<Notification[]> {
-    console.log('fetching db notifications')
+  getUnreadNotifications(userId: string | number): Observable<Notification[]> {
+    console.log('fetching db notifications');
     return this.http.get<Notification[]>(`http://localhost:8080/api/notifications/unread/${userId}`);
   }
 
   updateNotificationAsRead(notificationId: number): Observable<any> {
     return this.http.post(`http://localhost:8080/api/notifications/${notificationId}/mark-read`, {});
   }
-
 }

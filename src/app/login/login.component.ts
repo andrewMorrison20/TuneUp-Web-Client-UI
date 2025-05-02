@@ -81,7 +81,7 @@ export class LoginComponent implements OnInit {
       // Navigate to the original requested page
       await this.router.navigateByUrl(this.returnUrl);
       console.log('Navigation successful:', this.returnUrl);
-      window.location.reload();
+
     } catch (error) {
       console.error('Error during login process:', error);
     }
