@@ -29,7 +29,9 @@ export class WebsocketService {
         this.connected$.next(false);
       },
     });
+  }
 
+  public init(): void {
     this.stompClient.activate();
   }
 

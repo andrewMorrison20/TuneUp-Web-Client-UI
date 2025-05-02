@@ -23,7 +23,7 @@ export class NavComponent implements OnInit, OnDestroy {
   notifications: Notification[] = [];
   unreadCount = 0;
   private dbSub?: Subscription;
-  private notificationSubscription?: Subscription;
+  notificationSubscription?: Subscription;
   private navEndSub?: Subscription;
   protected readonly AuthenticatedUser = AuthenticatedUser;
 

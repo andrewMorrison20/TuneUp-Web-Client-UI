@@ -1,4 +1,4 @@
-import {Component, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {Component, CUSTOM_ELEMENTS_SCHEMA, OnInit} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
@@ -11,6 +11,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {AuthenticationModule} from "./authentication/authentication.module";
 import {NavModule} from "./components/nav/nav.module";
 import {FooterModule} from "./components/footer/footer.module";
+import {WebsocketService} from "./services/websocket.service";
 
 
 @Component({
@@ -34,6 +35,10 @@ import {FooterModule} from "./components/footer/footer.module";
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
-  title = 'TuneUp';
+export class AppComponent implements OnInit {
+  constructor(private ws: WebsocketService) {}
+
+  ngOnInit() {
+    this.ws.init();
+  }
 }
