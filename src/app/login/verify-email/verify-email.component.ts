@@ -31,7 +31,7 @@ export class EmailVerificationComponent implements OnInit {
           this.message = 'Your email has been verified. You may now log in.';
           setTimeout(() => {
             this.router.navigate(['/login']);
-          }, 3000);
+          }, 5000);
         },
         error: (err) => {
           this.isLoading = false;
