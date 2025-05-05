@@ -45,6 +45,9 @@ export class UsersComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
+  /**
+   * Fetches all profiles from the back end - paginated
+   */
   fetchProfiles(): void {
     this.isLoading = true;
     this.profileService.getAllProfiles(this.pageIndex, this.pageSize)
@@ -67,6 +70,10 @@ export class UsersComponent implements OnInit, AfterViewInit {
       });
   }
 
+  /**
+   * Fetches the next page on page update
+   * @param event
+   */
   onPageChange(event: PageEvent): void {
     // Debug logging for page changes.
     console.log('Page change event:', event);
@@ -77,14 +84,15 @@ export class UsersComponent implements OnInit, AfterViewInit {
 
   sendMessage(profile: Profile): void {
     console.log('Send message to profile:', profile);
-    // Implement your send message logic here.
   }
 
   viewProfile(profile: Profile): void {
     console.log('View profile:', profile);
-    // Implement your view profile logic here.
   }
 
+  /**
+   * Prompts user to confirm delete operation
+   */
   confirmDeleteUsers(): void {
     const userIds = this.selectedProfiles.map(profile => profile.appUserId);
     this.adminService.softDeleteUsers(userIds).subscribe({

@@ -14,10 +14,6 @@ export class SearchCriteriaComponent implements OnInit {
   qualifications: Qualification[] = [];
   selectedTabIndex = parseInt(localStorage.getItem('selectedAdminTab') || '0', 10);
 
-  storeSelectedTab(index: number): void {
-    localStorage.setItem('selectedAdminTab', index.toString());
-  }
-
   selectedInstruments: Set<number> = new Set();
   selectedGenres: Set<number> = new Set();
   selectedQualifications: Set<number> = new Set();
@@ -32,6 +28,7 @@ export class SearchCriteriaComponent implements OnInit {
     private snackBar: MatSnackBar
   ) {}
 
+  /** Load all reference data on component initialization */
   ngOnInit(): void {
     this.sharedDataService.instruments$.subscribe(data => this.instruments = data ?? []);
     this.sharedDataService.genres$.subscribe(data => this.genres = data ?? []);
@@ -42,10 +39,30 @@ export class SearchCriteriaComponent implements OnInit {
     this.sharedDataService.loadQualifications();
   }
 
+  /**
+   * Remember which tab the admin selected.
+   * @param index zero-based tab index
+   */
+  storeSelectedTab(index: number): void {
+    localStorage.setItem('selectedAdminTab', index.toString());
+    this.selectedTabIndex = index;
+  }
+
+  /**
+   * Toggle an ID in a Set of selections.
+   * @param set the Set to modify
+   * @param id  the ID to add or remove
+   */
   toggleSelection(set: Set<number>, id: number): void {
     set.has(id) ? set.delete(id) : set.add(id);
   }
 
+  /**
+   * Batch-delete selected items, then refresh.
+   * @param set       selected IDs
+   * @param endpoint  API endpoint (e.g. 'genres')
+   * @param label     human-readable label for notifications
+   */
   deleteSelected(set: Set<number>, endpoint: string, label: string): void {
     const ids = Array.from(set);
     if (!ids.length) return;
@@ -62,29 +79,37 @@ export class SearchCriteriaComponent implements OnInit {
     });
   }
 
-  refreshData(endpoint: string): void {
+  /** Helper to reload data after deletion */
+  private refreshData(endpoint: string): void {
     switch (endpoint) {
       case 'instruments':
-        this.sharedDataService.refreshInstruments(); break;
+        this.sharedDataService.refreshInstruments();
+        break;
       case 'genres':
-        this.sharedDataService.refreshGenres(); break;
+        this.sharedDataService.refreshGenres();
+        break;
       case 'qualifications':
-        this.sharedDataService.loadQualifications(); break;
+        this.sharedDataService.loadQualifications();
+        break;
     }
   }
 
+  /** Delete all selected genres */
   deleteGenres() {
     this.deleteSelected(this.selectedGenres, 'genres', 'Genres');
   }
 
+  /** Delete all selected instruments */
   deleteInstruments() {
     this.deleteSelected(this.selectedInstruments, 'instruments', 'Instruments');
   }
 
+  /** Delete all selected qualifications */
   deleteQualifications() {
     this.deleteSelected(this.selectedQualifications, 'qualifications', 'Qualifications');
   }
 
+  /** Add a new instrument and refresh list on success */
   addInstrument(): void {
     const name = this.newInstrumentName.trim();
     if (!name) return;
@@ -101,6 +126,7 @@ export class SearchCriteriaComponent implements OnInit {
     });
   }
 
+  /** Add a new genre and refresh list on success */
   addGenre(): void {
     const name = this.newGenreName.trim();
     if (!name) return;
@@ -117,6 +143,7 @@ export class SearchCriteriaComponent implements OnInit {
     });
   }
 
+  /** Add a new qualification and refresh list on success */
   addQualification(): void {
     const name = this.newQualificationName.trim();
     if (!name) return;

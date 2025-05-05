@@ -3,6 +3,9 @@ import {AuthenticatedUser} from "./authenticated-user.class";
 import {Injectable} from "@angular/core";
 import {JwtHelperService} from "@auth0/angular-jwt";
 
+/**
+ * Intercepts every request from the app and attaches JWT auth token
+ */
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler) {

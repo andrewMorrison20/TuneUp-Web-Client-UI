@@ -14,17 +14,23 @@ export class AdminDashboardComponent implements OnInit {
     this.updateView();
   }
 
+  /**
+   * Listens for resize events and updates the view
+   */
   @HostListener('window:resize', [])
   onResize(): void {
     this.updateView();
   }
 
+  /**
+   * Adjusts window size
+   */
   updateView(): void {
-    this.isDesktopView = window.innerWidth > 768; // Adjust breakpoint as needed
+    this.isDesktopView = window.innerWidth > 768;
   }
 
   toggleSidenav(sidenav: any): void {
-    sidenav.toggle(); // Toggles sidebar visibility
+    sidenav.toggle();
   }
 
 }
