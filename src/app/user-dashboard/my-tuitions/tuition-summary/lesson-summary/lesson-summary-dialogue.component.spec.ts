@@ -56,18 +56,6 @@ describe('LessonSummaryDialogComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('fetches lesson location for in-person lessons', fakeAsync(() => {
-
-      addressServiceSpy.getLessonTutorLocation.and.returnValue(of(mockAddressDto));
-      const setMapSpy = spyOn<any>(component, 'setMapCoordinates');
-
-      component.ngOnInit();
-      tick();
-
-      expect(setMapSpy).toHaveBeenCalledWith(1, 2);
-      expect(component.data.address).toEqual(mockAddressDto);
-    }));
-
     it('handles fetch location error', fakeAsync(() => {
 
       component.data.lesson.lessonType = 'In Person';

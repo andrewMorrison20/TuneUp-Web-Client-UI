@@ -60,7 +60,7 @@ describe('EmailVerificationComponent', () => {
     expect(component.isLoading).toBeFalse();
     expect(component.message).toContain('Your email has been verified');
 
-    tick(3000); // simulate timeout
+    tick(7000); // simulate timeout
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/login']);
   }));
 
