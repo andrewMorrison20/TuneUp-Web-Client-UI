@@ -1,30 +1,17 @@
-FROM node:18-alpine AS builder
-
-# set working directory
+# Only for development: containerized ng serve on :4200
+FROM node:18-alpine
 WORKDIR /usr/src/app
 
-# copy package manifests and install deps
+# Install everything (including devDependencies)
 COPY package.json package-lock.json ./
 RUN npm ci
 
-# copy all source files and build
+# Copy your entire source
 COPY . .
-RUN npm run build --configuration=production
 
+# Expose the Angular dev server port
+EXPOSE 4200
 
-FROM nginx:stable-alpine
+# Start the dev server and listen on all interfaces
+CMD ["npx","ng","serve","--host","0.0.0.0","--port","4200"]
 
-# remove default nginx website
-RUN rm -rf /usr/share/nginx/html/*
-
-# copy our built files from builder
-COPY --from=builder /usr/src/app/dist/tune-up /usr/share/nginx/html
-
-# optional: copy a custom nginx.conf if you need rewrites, headers, etc.
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# expose port 80
-EXPOSE 80
-
-# start nginx in foreground
-CMD ["nginx", "-g", "daemon off;"]

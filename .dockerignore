@@ -1,0 +1,28 @@
+# Angular CLI cache
+.angular
+
+# Dependencies & build output
+node_modules
+dist
+
+# Git, CI & editor cruft
+.git
+.github
+.vscode
+.idea
+out
+# Test artifacts
+coverage
+cypress
+src/**/*.spec.ts
+src/**/*.spec.js
+
+# Logs & system files
+*.log
+.DS_Store
+
+# Docs / local overrides
+*.md
+src/environments/*.local.ts
+tuneup-cloud-key.json
+sonar-project.properties

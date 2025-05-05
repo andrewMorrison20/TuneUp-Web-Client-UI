@@ -59,7 +59,7 @@ A Dockerfile is provided for production‑style builds and Nginx serving.
      -p 4200:80 \
      --name tuneup-web-client \
      tuneup-frontend:dev
-    ````
+    ```
    or pull the latest image from the docker registry.
    ```
    docker pull andrewm95/tuneupwebclient:latest
@@ -68,8 +68,21 @@ A Dockerfile is provided for production‑style builds and Nginx serving.
    --name tuneup-web-client \
    andrewm95/tuneupwebclient:latest
    ```
-   
-
+   In powershell
+    ```
+    docker build -t tuneup-frontend-dev .
+    docker run -d `
+     -p 4200:4200 `
+    --name tuneup-frontend-dev `
+    tuneup-frontend-dev
+    ```
+     ```
+    docker pull andrewm95/tuneupwebclient:latest
+    docker run -d `
+    -p 4200:4200 `
+    --name tuneup-web-client `
+    andrewm95/tuneupwebclient:latest
+    ```
 2. Visit `http://localhost:4200` to browse the containerized app.
 
 ---
