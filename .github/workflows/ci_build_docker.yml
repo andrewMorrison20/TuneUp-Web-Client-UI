@@ -31,14 +31,14 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
-            tuneupwebclient/tuneup-frontend:latest
-            tuneupwebclient/tuneup-frontend:${{ github.sha }}
-          cache-from: type=registry,ref=tuneupwebclient/tuneup-frontend:cache
-          cache-to:   type=registry,ref=tuneupwebclient/tuneup-frontend:cache,mode=max
+            andrewm95/tuneupwebclient:latest
+            andrewm95/tuneupwebclient:${{ github.sha }}
+          cache-from: type=registry,ref=andrewm95/tuneupwebclient:cache
+          cache-to: type=registry,ref=andrewm95/tuneupwebclient:cache,mode=max
 
       - name: Set outputs
         run: |
-          echo "IMAGE_TAG=tuneupwebclient/tuneup-frontend:${{ github.sha }}" >> $GITHUB_OUTPUT
+          echo "IMAGE_TAG=andrewm95/tuneupwebclient:${{ github.sha }}" >> $GITHUB_OUTPUT
           echo "IMAGE_VERSION=${{ github.sha }}"           >> $GITHUB_OUTPUT
 
     outputs:
