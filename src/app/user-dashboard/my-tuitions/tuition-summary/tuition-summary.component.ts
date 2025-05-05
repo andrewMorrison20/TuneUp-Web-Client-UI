@@ -99,8 +99,8 @@ ngOnInit(): void {
       plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       height: 'auto',
       contentHeight: 600,
-      slotMinTime: "06:00:00",
-      slotMaxTime: "23:00:00",
+      slotMinTime: "05:00:00",
+      slotMaxTime: "24:00:00",
       slotDuration: "00:15:00",
       expandRows: true,
       events: [],
@@ -109,7 +109,7 @@ ngOnInit(): void {
       eventTimeFormat: {
         hour: '2-digit',
         minute: '2-digit',
-        meridiem: false
+        hour12: false
       }
     };
   }

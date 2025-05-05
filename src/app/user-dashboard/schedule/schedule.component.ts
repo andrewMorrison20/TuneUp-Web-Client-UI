@@ -87,7 +87,7 @@ export class ScheduleComponent implements OnInit {
       eventTimeFormat: {
         hour: '2-digit',
         minute: '2-digit',
-        meridiem: false
+        hour12: false
       },
       displayEventEnd: true,
     };

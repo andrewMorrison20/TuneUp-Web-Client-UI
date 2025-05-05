@@ -12,13 +12,13 @@ export class WebsocketService {
   private stompClient: Client;
   private messageSubjects: { [conversationId: number]: Subject<any> } = {};
   private activeSubscriptions: { [conversationId: number]: StompSubscription | null } = {};
-  private baseUrl = environment.apiUrl;
+  private url = environment.url;
 
   private connected$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor() {
     this.stompClient = new Client({
-      webSocketFactory: () => new sockjs(`${this.baseUrl}/chat-ws`),
+      webSocketFactory: () => new sockjs(`${this.url}/chat-ws`),
       reconnectDelay: 5000,
       debug: (msg) => console.log('STOMP:', msg),
       onConnect: () => {
