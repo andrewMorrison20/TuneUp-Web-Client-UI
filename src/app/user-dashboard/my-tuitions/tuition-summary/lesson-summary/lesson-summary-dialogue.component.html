@@ -29,9 +29,6 @@
   </div>
 <br>
   <div class="lesson-actions">
-    <button mat-raised-button color="primary" (click)="redirectToStudyHub()">
-      <mat-icon>book</mat-icon> Go To Study Hub
-    </button>
 
     <!-- Show "Cancel" button ONLY if lesson is NOT completed -->
     <button *ngIf="data.lesson.lessonStatus !== 'completed'" mat-raised-button color="warn" (click)="cancelLesson()">

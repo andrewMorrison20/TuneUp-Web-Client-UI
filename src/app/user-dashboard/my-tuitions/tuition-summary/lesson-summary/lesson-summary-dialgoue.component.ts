@@ -72,10 +72,6 @@ export class LessonSummaryDialogComponent implements OnInit {
     ).subscribe();
   }
 
-  redirectToStudyHub(): void {
-    console.log('Redirecting to Study Hub for Lesson ID:', this.data.lesson.id);
-  }
-
   closeDialog(): void {
     this.dialogRef.close();
   }
