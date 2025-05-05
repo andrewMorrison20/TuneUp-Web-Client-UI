@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
 import { Genre, Instrument, Qualification, SharedDataService } from '../../components/shared-data-service.component';
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-search-criteria',
@@ -21,6 +22,7 @@ export class SearchCriteriaComponent implements OnInit {
   newInstrumentName = '';
   newGenreName = '';
   newQualificationName = '';
+  private baseUrl = environment.apiUrl;
 
   constructor(
     private sharedDataService: SharedDataService,
@@ -67,7 +69,7 @@ export class SearchCriteriaComponent implements OnInit {
     const ids = Array.from(set);
     if (!ids.length) return;
 
-    this.http.post(`http://localhost:8080/api/${endpoint}/delete-batch`, ids).subscribe({
+    this.http.post(`${this.baseUrl}/${endpoint}/delete-batch`, ids).subscribe({
       next: () => {
         this.snackBar.open(`${label} deleted successfully`, 'Close', { duration: 3000 });
         set.clear();
@@ -114,7 +116,7 @@ export class SearchCriteriaComponent implements OnInit {
     const name = this.newInstrumentName.trim();
     if (!name) return;
 
-    this.http.post('http://localhost:8080/api/instruments', { name }).subscribe({
+    this.http.post(`${this.baseUrl}/instruments`, { name }).subscribe({
       next: () => {
         this.snackBar.open('Instrument added', 'Close', { duration: 3000 });
         this.newInstrumentName = '';
@@ -131,7 +133,7 @@ export class SearchCriteriaComponent implements OnInit {
     const name = this.newGenreName.trim();
     if (!name) return;
 
-    this.http.post('http://localhost:8080/api/genres', { name }).subscribe({
+    this.http.post(`${this.baseUrl}/genres`, { name }).subscribe({
       next: () => {
         this.snackBar.open('Genre added', 'Close', { duration: 3000 });
         this.newGenreName = '';
@@ -148,7 +150,7 @@ export class SearchCriteriaComponent implements OnInit {
     const name = this.newQualificationName.trim();
     if (!name) return;
 
-    this.http.post('http://localhost:8080/api/qualifications', { name }).subscribe({
+    this.http.post(`${this.baseUrl}/api/qualifications`, { name }).subscribe({
       next: () => {
         this.snackBar.open('Qualification added', 'Close', { duration: 3000 });
         this.newQualificationName = '';
