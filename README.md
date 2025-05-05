@@ -1,27 +1,100 @@
-# TuneUp
+# TuneUp Web Client (Angular)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.10.
+A modern, TypeScript‐based front‑end for TuneUp, built with Angular. Implements responsive UIs for interacting with TuneUp server APIs.
 
-## Development server
+---
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+##  Prerequisites
 
-## Code scaffolding
+* **Node.js 18+** (includes npm)
+* **Angular CLI** (`npm install -g @angular/cli`)
+* **Docker & Docker Compose** *(optional)*
+* Back‑end Service: Ensure the TuneUp back‑end is running (see tuneupServer/README.md https://github.com/andrewMorrison20/tuneupServer).
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+---
 
-## Build
+##  Configuration & Conventions
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+* **Environment files** live under `src/environments/`:
 
-## Running unit tests
+  * `environment.ts` (development)
+  * `environment.prod.ts` (production)
+* **API Base URL** is configured in environments:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+  ```ts
+  // src/environments/environment.ts
+  export const environment = {
+    production: false,
+    apiBaseUrl: 'http://localhost:8080'
+  };
+  ```
 
-## Running end-to-end tests
+---
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+##  Running Locally (without Docker)
 
-## Further help
+1. **Install dependencies**
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+   ```bash
+   npm ci
+   ```
+2. **Start the development server**
+
+   ```bash
+   ng serve --open
+   ```
+3. The app will launch at `http://localhost:4200` with live reload enabled.
+
+---
+
+##  Running Locally (with Docker)
+
+A Dockerfile is provided for production‑style builds and Nginx serving.
+
+1. **Build & run**
+
+   ```bash
+   docker build -t tuneup-frontend:dev .
+   docker run -d \
+     -p 4200:80 \
+     --name tuneup-web-client \
+     tuneup-frontend:dev
+   ```
+2. Visit `http://localhost:4200` to browse the containerized app.
+
+---
+
+##  Building for Production
+
+```bash
+npm run build -- --configuration=production
+```
+
+* Output appears in `dist/<your-app-name>/`
+* You can then serve the contents of that folder with any static web server (e.g. Nginx).
+
+---
+
+##  Security Considerations
+
+* **CORS**: Ensure the back‑end API allows requests from your front‑end origin.
+* **Environment secrets**: Do **not** commit sensitive keys or URLs in code; use CI/CD environment variables for production builds.
+
+---
+
+##  Further Reading
+
+* [Angular Documentation](https://angular.io/docs)
+* [Dockerizing Angular Apps](https://docs.docker.com/samples/angular/)
+
+
+---
+
+##  Contributing
+
+1. Fork the repo
+2. Create a feature branch (`git checkout -b feature/xyz`)
+3. Commit your changes & push (`git push origin feature/xyz`)
+4. Open a Pull Request and request review from the front‑end team
+
+
