@@ -82,7 +82,7 @@ export class SearchCriteriaComponent implements OnInit {
   }
 
   /** Helper to reload data after deletion */
-  private refreshData(endpoint: string): void {
+  refreshData(endpoint: string): void {
     switch (endpoint) {
       case 'instruments':
         this.sharedDataService.refreshInstruments();
