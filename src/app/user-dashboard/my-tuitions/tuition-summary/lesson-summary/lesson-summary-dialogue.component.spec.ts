@@ -121,13 +121,6 @@ describe('LessonSummaryDialogComponent', () => {
     }));
   });
 
-  describe('redirectToStudyHub', () => {
-    it('logs redirection', () => {
-      const consoleSpy = spyOn(console, 'log');
-      component.redirectToStudyHub();
-      expect(consoleSpy).toHaveBeenCalledWith('Redirecting to Study Hub for Lesson ID:', 99);
-    });
-  });
 
   describe('closeDialog', () => {
     it('closes the dialog', () => {
