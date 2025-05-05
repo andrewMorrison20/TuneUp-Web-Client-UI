@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import {BehaviorSubject, catchError} from 'rxjs';
 import { tap } from 'rxjs/operators';
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {environment} from "../../environments/environment";
 
 export interface Instrument {
   name: string;
@@ -34,6 +35,8 @@ export class SharedDataService {
   private genresCache: Genre[] | null = null;
   private qualificationsCache: Qualification[] | null = null;
 
+  private baseUrl = environment.apiUrl;
+
   private instrumentsSubject = new BehaviorSubject<Instrument[] | null>(null);
   private genresSubject = new BehaviorSubject<Genre[] | null>(null);
   private regionsSubject = new BehaviorSubject<any[]>([]);
@@ -51,7 +54,7 @@ export class SharedDataService {
       this.instrumentsSubject.next(this.instrumentsCache);
     } else {
       this.http
-        .get<Instrument[]>('http://localhost:8080/api/instruments')
+        .get<Instrument[]>(`${this.baseUrl}/instruments`)
         .pipe(
           tap((data) => {
             this.instrumentsCache = data;
@@ -72,7 +75,7 @@ export class SharedDataService {
       this.genresSubject.next(this.genresCache);
     } else {
       this.http
-        .get<Genre[]>('http://localhost:8080/api/genres')
+        .get<Genre[]>(`${this.baseUrl}/genres`)
         .pipe(
           tap((data) => {
             this.genresCache = data;
@@ -93,7 +96,7 @@ export class SharedDataService {
       this.qualificationsSubject.next(this.qualificationsCache);
     } else {
       this.http
-        .get<Qualification[]>('http://localhost:8080/api/qualifications')
+        .get<Qualification[]>(`${this.baseUrl}/qualifications`)
         .pipe(
           tap((data) => {
             const sortedData = data.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
@@ -113,7 +116,7 @@ export class SharedDataService {
 
   refreshInstruments(): void {
     this.http
-      .get<Instrument[]>('http://localhost:8080/api/instruments')
+      .get<Instrument[]>(`${this.baseUrl}/instruments`)
       .pipe(
         tap((data) => {
           this.instrumentsCache = data; // Update cache
@@ -125,7 +128,7 @@ export class SharedDataService {
 
   refreshGenres(): void {
     this.http
-      .get<Genre[]>('http://localhost:8080/api/genres')
+      .get<Genre[]>(`${this.baseUrl}/genres`)
       .pipe(
         tap((data) => {
           this.genresCache = data; // Update cache
@@ -138,7 +141,7 @@ export class SharedDataService {
   searchRegions(query: string): void {
     if (query.trim().length > 2) {
       this.http
-        .get<any[]>(`http://localhost:8080/api/regions?query=${query.trim()}`)
+        .get<any[]>(`${this.baseUrl}/regions?query=${query.trim()}`)
         .subscribe((data) => {
           this.regionsSubject.next(data);
         });

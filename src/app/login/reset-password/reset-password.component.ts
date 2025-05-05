@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-reset-password',
@@ -10,6 +11,7 @@ import { HttpClient } from '@angular/common/http';
 export class ResetPasswordComponent {
   forgotPasswordForm: FormGroup;
   errorMessage: string | null = null;
+  private readonly baseUrl = environment.apiUrl
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.forgotPasswordForm = this.fb.group({
@@ -37,7 +39,7 @@ export class ResetPasswordComponent {
   }
 
   requestEmailLink(email: string) {
-    const url =  'http://localhost:8080/api/users/requestResetPasswordEmail';
+    const url =  this.baseUrl + '/users/requestResetPasswordEmail';
     return this.http.post(url, { email });
   }
 }

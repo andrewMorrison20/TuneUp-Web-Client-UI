@@ -9,6 +9,7 @@ import {Price} from "../../profiles/interfaces/price";
 import {PeriodMap} from "../../profiles/interfaces/period";
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {Qualification, SharedDataService} from "../../components/shared-data-service.component";
+import {environment} from "../../../environments/environment";
 
 
 @Component({
@@ -54,6 +55,8 @@ export class UpdateProfileComponent {
   selectedRegion: any = null;
   standardPrices: Price[] =[];
   selectedQualifications: { qualification: Qualification; instrument: Instrument; }[] = [];
+
+  private baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient, protected profileService: ProfileService,private sharedDataService: SharedDataService, private snackBar: MatSnackBar) {}
 
@@ -104,7 +107,7 @@ export class UpdateProfileComponent {
       const formData = new FormData();
       formData.append('file', file);
 
-      this.http.post('http://localhost:8080/api/images', formData).subscribe({
+      this.http.post( this.baseUrl + '/images', formData).subscribe({
         next: (image: any) => {
           this.profile.profilePicture = image;
           this.snackBar.open('Profile photo uploaded successfully.', 'Close', { duration: 3000 });
@@ -176,7 +179,7 @@ export class UpdateProfileComponent {
     if (this.searchQuery.trim().length > 2) {
 
       this.http
-        .get<any[]>(`http://localhost:8080/api/regions?query=${this.searchQuery.trim()}`)
+        .get<any[]>(`${this.baseUrl}/regions?query=${this.searchQuery.trim()}`)
         .subscribe((data) => {
           this.regionSuggestions = data;
         });
@@ -284,7 +287,7 @@ export class UpdateProfileComponent {
 
   loadPricing(): void {
     console.log('Loading standard pricing...');
-    this.http.get<Price[]>('http://localhost:8080/api/prices/standardPricing')
+    this.http.get<Price[]>(`${this.baseUrl}/prices/standardPricing`)
       .subscribe({
         next: (data: Price[]) => {
           // Convert backend enum strings to human-readable strings for the frontend

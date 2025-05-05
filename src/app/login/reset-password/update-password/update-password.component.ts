@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
+import {environment} from "../../../../environments/environment";
 
 @Component({
   selector: 'app-update-password',
@@ -10,6 +11,8 @@ import { AbstractControl, ValidationErrors } from '@angular/forms';
   styleUrls: ['./update-password.component.scss'],
 })
 export class UpdatePasswordComponent implements OnInit {
+  private readonly baseUrl = environment.apiUrl;
+
   updatePasswordForm: FormGroup;
   errorMessage: string | null = null;
   successMessage: string | null = null;
@@ -66,7 +69,7 @@ export class UpdatePasswordComponent implements OnInit {
   }
 
   updatePassword(password: string) {
-    const url = 'http://localhost:8080/api/users/updatePassword';
+    const url = `${this.baseUrl}/users/updatePassword`;
     return this.http.post<{ message: string }>(url, { token: this.token, password: password });
   }
 }

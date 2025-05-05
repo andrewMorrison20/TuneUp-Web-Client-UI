@@ -11,6 +11,7 @@ import {StudentProfile} from "../../profiles/interfaces/student.model";
 import {NewConversationDialogueComponent} from "./new-conversation-dialogue.component";
 import {ChatDialogueComponent} from "./chat-dialogue.component";
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
+import {environment} from "../../../environments/environment";
 type Profile = TutorProfile | StudentProfile;
 
 export interface Conversation {
@@ -40,7 +41,10 @@ export interface ConversationParticipantDto {
   styleUrls: ['./chats.component.scss'],
 })
 export class ChatsComponent implements OnInit {
+
   protected readonly AuthenticatedUser = AuthenticatedUser;
+  private readonly baseUrl = environment.apiUrl;
+
   userProfileId = AuthenticatedUser.getAuthUserProfileId();
   conversations: Conversation[] = [];
   selectedConversation: Conversation | null = null;
@@ -50,6 +54,7 @@ export class ChatsComponent implements OnInit {
   pageIndex = 0;
   profiles:Profile[] = []
   isMobile: boolean = false;
+
 
 
   constructor(private http: HttpClient,
@@ -67,7 +72,7 @@ export class ChatsComponent implements OnInit {
     this.isLoading = true;
 
     this.http.get<{ content: Conversation[], totalElements: number }>(
-      `http://localhost:8080/api/chats/conversations/${this.userProfileId}?page=${this.pageIndex}&size=${this.pageSize}`
+      `${this.baseUrl}/chats/conversations/${this.userProfileId}?page=${this.pageIndex}&size=${this.pageSize}`
     ).pipe(
       tap((data) => {
         this.conversations = data.content;

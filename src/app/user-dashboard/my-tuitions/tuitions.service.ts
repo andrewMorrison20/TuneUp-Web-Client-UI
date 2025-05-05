@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError, Observable, throwError} from 'rxjs';
 import {tap} from "rxjs/operators";
 import {AuthenticatedUser} from "../../authentication/authenticated-user.class";
+import {environment} from "../../../environments/environment";
 
 
 
@@ -10,8 +11,8 @@ import {AuthenticatedUser} from "../../authentication/authenticated-user.class";
   providedIn: 'root'
 })
 export class TuitionsService {
-  private apiUrl = 'http://localhost:8080/api/tuitions';
-  private baseUrl = 'http://localhost:8080/api'
+  private baseUrl = environment.apiUrl
+  private apiUrl = this.baseUrl + '/tuitions';
 
   constructor(private http: HttpClient) {
   }

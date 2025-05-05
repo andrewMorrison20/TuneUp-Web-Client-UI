@@ -3,6 +3,7 @@ import sockjs from 'sockjs-client/dist/sockjs';
 import { Client, StompSubscription } from '@stomp/stompjs';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import {AuthenticatedUser} from "../authentication/authenticated-user.class";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root',
@@ -11,12 +12,13 @@ export class WebsocketService {
   private stompClient: Client;
   private messageSubjects: { [conversationId: number]: Subject<any> } = {};
   private activeSubscriptions: { [conversationId: number]: StompSubscription | null } = {};
+  private baseUrl = environment.apiUrl;
 
   private connected$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor() {
     this.stompClient = new Client({
-      webSocketFactory: () => new sockjs('http://localhost:8080/chat-ws'),
+      webSocketFactory: () => new sockjs(`${this.baseUrl}/chat-ws`),
       reconnectDelay: 5000,
       debug: (msg) => console.log('STOMP:', msg),
       onConnect: () => {

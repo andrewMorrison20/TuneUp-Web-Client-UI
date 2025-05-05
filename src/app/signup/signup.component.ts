@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Router} from "@angular/router";
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-signup',
@@ -15,6 +16,7 @@ export class SignupComponent {
   errorMessage='';
   successMessage='';
   isLoading = false;
+  private baseUrl = environment.apiUrl;
 
   constructor(private fb: FormBuilder,private http: HttpClient,private router: Router) {
     this.signupForm = this.fb.group({
@@ -39,7 +41,7 @@ export class SignupComponent {
 
       this.isLoading = true;
 
-      const apiUrl = `http://localhost:8080/api/users/createNew?profileType=${formData.accountType.toUpperCase()}`;
+      const apiUrl = `${this.baseUrl}/users/createNew?profileType=${formData.accountType.toUpperCase()}`;
 
       this.http.post(apiUrl, {
         email: formData.email,

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { AuthenticatedUser } from '../authentication/authenticated-user.class';
 import { ActivatedRoute, Router } from '@angular/router';
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-login',
@@ -14,6 +15,8 @@ export class LoginComponent implements OnInit {
   hidePassword = true;
   errorMessage: string = '';
   returnUrl: string = '/'; // Store return URL
+  private baseUrl  = environment.apiUrl;
+  private url = environment.url;
 
   constructor(
     private fb: FormBuilder,
@@ -42,7 +45,7 @@ export class LoginComponent implements OnInit {
     const body = { email, password };
     const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
-    this.http.post('http://localhost:8080/auth/login', body, { headers })
+    this.http.post(`${this.url}/auth/login`, body, { headers })
       .subscribe(
         (response: any) => {
           console.log('RESPONSE:', response);
@@ -119,7 +122,7 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.http.post('http://localhost:8080/api/users/requestVerification', email)
+    this.http.post(`${this.baseUrl}/users/requestVerification`, email)
       .subscribe({
         next: response => console.log('Verification email sent successfully', response),
         error: error => console.error('Error sending verification email', error)

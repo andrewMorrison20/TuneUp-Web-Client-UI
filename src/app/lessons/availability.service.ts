@@ -3,14 +3,15 @@ import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {AuthenticatedUser} from "../authentication/authenticated-user.class";
 import {tap} from "rxjs/operators";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AvailabilityService {
-  private baseUrl = 'http://localhost:8080/api/lessonRequest';
-  private baseTuitionUrl = 'http://localhost:8080/api/tuitions';
-  private url = 'http://localhost:8080/api';
+  private baseUrl = environment.apiUrl;
+  private lessonRequestApiUrl =  this.baseUrl + '/lessonRequest';
+  private tuitionApiUrl =  this.baseUrl + '/tuitions';
 
   constructor(private http: HttpClient) {
 
@@ -19,7 +20,7 @@ export class AvailabilityService {
   createAvailability(profileId:number, startTime:string,endTime: string) {
 
     const availability = { profileId, startTime, endTime };
-    return this.http.post(`${this.url}/availability/${profileId}`, availability);
+    return this.http.post(`${this.baseUrl}/availability/${profileId}`, availability);
   }
 
   sendAvailabilityRequest(
@@ -40,7 +41,7 @@ export class AvailabilityService {
       lessonType:lessonType
     };
 
-    return this.http.post(`${this.baseUrl}`, requestBody);
+    return this.http.post(`${this.lessonRequestApiUrl}`, requestBody);
   }
 
   getLessonRequestsByIds(studentId: number, tutorId: number, page: number = 0, size: number = 10): Observable<any> {
@@ -53,7 +54,7 @@ export class AvailabilityService {
       size: size.toString()
     };
 
-    return this.http.get(`${this.baseUrl}`, { params, headers });
+    return this.http.get(`${this.lessonRequestApiUrl}`, { params, headers });
   }
 
 
@@ -62,7 +63,7 @@ export class AvailabilityService {
       page: page.toString(),
       size: size.toString(),
     };
-    return this.http.get(`${this.baseUrl}/students/${profileId}`, {params});
+    return this.http.get(`${this.lessonRequestApiUrl}/students/${profileId}`, {params});
   }
 
   updateLessonRequestStatus(
@@ -78,7 +79,7 @@ export class AvailabilityService {
       autoDeclineConflicts,
     };
 
-    return this.http.patch(`${this.baseUrl}/status/${requestId}`, requestBody, { headers });
+    return this.http.patch(`${this.lessonRequestApiUrl}/status/${requestId}`, requestBody, { headers });
   }
 
 
@@ -88,7 +89,7 @@ export class AvailabilityService {
       size: size.toString(),
       active: active.toString()
     };
-    return this.http.get(`${this.baseTuitionUrl}/tuitionsByProfile/${profileId}`, { params });
+    return this.http.get(`${this.tuitionApiUrl}/tuitionsByProfile/${profileId}`, { params });
   }
 
   getTuitionSummary(studentProfileId: number, tutorProfileId: number): Observable<any> {
@@ -96,12 +97,12 @@ export class AvailabilityService {
       studentProfileId: studentProfileId.toString(),
       tutorProfileId: tutorProfileId.toString(),
     };
-    return this.http.get(`${this.baseTuitionUrl}/byStudentAndTutor`, { params });
+    return this.http.get(`${this.tuitionApiUrl}/byStudentAndTutor`, { params });
   }
 
 
   public getTuitionLessonSummary(tuitionId: number, start: string, end: string): Observable<any[]> {
-    const url = `${this.url}/lessons/${tuitionId}`;
+    const url = `${this.baseUrl}/lessons/${tuitionId}`;
     const token = AuthenticatedUser.getAuthUserToken();
 
     let headers = new HttpHeaders();
@@ -120,7 +121,7 @@ export class AvailabilityService {
       .set('start', start)
       .set('end', end);
 
-    return this.http.get(`${this.url}/lessons/profileLessons/${profileId}`, { params });
+    return this.http.get(`${this.baseUrl}/lessons/profileLessons/${profileId}`, { params });
   }
 
 
@@ -132,25 +133,25 @@ export class AvailabilityService {
     };
 
     const profileId = AuthenticatedUser.getAuthUserProfileId();
-    return this.http.patch(`${this.url}/availability/update/${profileId}`, body);
+    return this.http.patch(`${this.baseUrl}/availability/update/${profileId}`, body);
   }
 
 
   deleteAvailability(availabilityId: number) {
     const params = new HttpParams().set('availabilityId', availabilityId.toString());
     const profileId = AuthenticatedUser.getAuthUserProfileId();
-    return this.http.delete(`${this.url}/availability/delete/${profileId}`, { params });
+    return this.http.delete(`${this.baseUrl}/availability/delete/${profileId}`, { params });
   }
 
 
   getPeriodAvailabilityForProfile(profileId: number, start: string, end: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.url}/availability/${profileId}/period`, {
+    return this.http.get<any[]>(`${this.baseUrl}/availability/${profileId}/period`, {
       params: { start, end }
     });
   }
 
   fetchLessonSummaryByAvailabilityId(availabilityId:number) {
-    return this.http.get<any[]>(`${this.url}/lessons/byAvailability/${availabilityId}`);
+    return this.http.get<any[]>(`${this.baseUrl}/lessons/byAvailability/${availabilityId}`);
   }
 
   //Again a single method in this class bypassing interceptor, this is incredibly flakey.
@@ -160,12 +161,12 @@ export class AvailabilityService {
 
     const params = new HttpParams().set('resetAvailability', String(resetAvailability));
 
-    return this.http.delete<any>(`${this.url}/lessons/cancel/${id}`, { headers, params });
+    return this.http.delete<any>(`${this.baseUrl}/lessons/cancel/${id}`, { headers, params });
   }
 
 
   batchCreateAvailability(profileId: number, slots: { start: string, end: string }[]) {
-    return this.http.post(`${this.url}/availability/${profileId}/batchCreate`, slots);
+    return this.http.post(`${this.baseUrl}/availability/${profileId}/batchCreate`, slots);
   }
 
   updateLessonStatus(lessonStatus: string, lessonId: number) {
@@ -173,7 +174,7 @@ export class AvailabilityService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${authToken}`);
     const params = new HttpParams().set('lessonStatus', lessonStatus);
 
-    return this.http.patch(`${this.url}/lessons/updateStatus/${lessonId}`, {}, { headers, params });
+    return this.http.patch(`${this.baseUrl}/lessons/updateStatus/${lessonId}`, {}, { headers, params });
   }
 
 }

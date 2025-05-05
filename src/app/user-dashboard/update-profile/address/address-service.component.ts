@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {AuthenticatedUser} from "../../../authentication/authenticated-user.class";
+import {environment} from "../../../../environments/environment";
 
 export interface AddressDto {
   id: number;
@@ -18,7 +19,8 @@ export interface AddressDto {
   providedIn: 'root'
 })
 export class AddressService {
-  private apiUrl = 'http://localhost:8080/api/addresses';
+  private readonly baseUrl = environment.apiUrl;
+  private readonly apiUrl = `${this.baseUrl}/addresses`;
 
   constructor(private http: HttpClient) {}
 
@@ -47,5 +49,4 @@ export class AddressService {
 
     return this.http.get<AddressDto>(`${this.apiUrl}/lesson/${tuitionId}/location`, { headers });
   }
-
 }

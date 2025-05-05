@@ -5,6 +5,7 @@ import { filter } from 'rxjs/operators';
 import { AuthenticatedUser } from '../../authentication/authenticated-user.class';
 import { WebsocketService } from '../../services/websocket.service';
 import { HttpClient } from '@angular/common/http';
+import {environment} from "../../../environments/environment";
 
 interface Notification {
   id: number;
@@ -25,6 +26,8 @@ export class NavComponent implements OnInit, OnDestroy {
   private dbSub?: Subscription;
   notificationSubscription?: Subscription;
   private navEndSub?: Subscription;
+  private readonly baseUrl = environment.apiUrl;
+
   protected readonly AuthenticatedUser = AuthenticatedUser;
 
   constructor(
@@ -103,10 +106,10 @@ export class NavComponent implements OnInit, OnDestroy {
 
   getUnreadNotifications(userId: string | number): Observable<Notification[]> {
     console.log('fetching db notifications');
-    return this.http.get<Notification[]>(`http://localhost:8080/api/notifications/unread/${userId}`);
+    return this.http.get<Notification[]>(`${this.baseUrl}/notifications/unread/${userId}`);
   }
 
   updateNotificationAsRead(notificationId: number): Observable<any> {
-    return this.http.post(`http://localhost:8080/api/notifications/${notificationId}/mark-read`, {});
+    return this.http.post(`${this.baseUrl}/notifications/${notificationId}/mark-read`, {});
   }
 }
