@@ -136,7 +136,7 @@ export class ChatsComponent implements OnInit {
   }
 
   startNewConversation(profileId: number): void {
-    const url = `${this.baseUrl}/api/chats/conversation/start`;
+    const url = `${this.baseUrl}/chats/conversation/start`;
 
     const requestBody = {
       userId: this.userProfileId, // Logged-in user

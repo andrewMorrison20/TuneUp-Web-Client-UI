@@ -150,7 +150,7 @@ export class SearchCriteriaComponent implements OnInit {
     const name = this.newQualificationName.trim();
     if (!name) return;
 
-    this.http.post(`${this.baseUrl}/api/qualifications`, { name }).subscribe({
+    this.http.post(`${this.baseUrl}/qualifications`, { name }).subscribe({
       next: () => {
         this.snackBar.open('Qualification added', 'Close', { duration: 3000 });
         this.newQualificationName = '';
